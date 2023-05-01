@@ -63,5 +63,5 @@ function validarEmail(e) {
         emailMensaje.text('el correo no es valido');
         emailMensaje.css('color', 'red');
     }
-    //return false;
-  }
+    //return false;
+  }

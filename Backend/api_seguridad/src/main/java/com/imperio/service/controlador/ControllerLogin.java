@@ -49,7 +49,7 @@ public class ControllerLogin {
             response.setDocumento(usuariodb.getDocumento());
             response.setNombre(usuariodb.getNombre());
             //falta agregar el rol
-            //response.setRol(usuariodb.getNombre());
+            response.setRol(usuariodb.getIdRol());
             return ResponseEntity.ok(response);
         }else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
