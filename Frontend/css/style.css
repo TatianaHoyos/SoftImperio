@@ -1,7 +1,6 @@
 body{
-    background-image: linear-gradient(to right top, #32496f, #314465, #303f5a, #2e3b50, #2d3646);
-}
-
+    background: radial-gradient(rgb(7, 7, 167),#2b2926);
+    
+    }
 #fondo{
-    background-image: linear-gradient(to right top, #334158, #313041, #27202a, #191317, #000000);
-}
+    background-color: #2b2926;}
