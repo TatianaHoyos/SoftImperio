@@ -33,3 +33,16 @@ function onExito(data){
 function onError(error){
     console.log(error)
 }
+
+
+function validarCampoVacio(longitudCampo,mensaje) {
+    if(longitudCampo <1)
+    {
+       Swal.fire({
+         icon: 'warning',
+         title:'Oops',
+         text: mensaje
+       });
+       return true;
+    }
+}
