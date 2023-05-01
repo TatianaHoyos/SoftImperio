@@ -7,30 +7,42 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name="usuario")
+@Table(name="usuarios")
 public class UsuarioEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @Column(name = "IdUsuario")
+    private Integer idUsuario ;
 
-    @Column(nullable = false)
-    private String documento;
-    @Column(nullable = false)
+    @Column(nullable = false, name = "Nombre")
     private String nombre;
-    @Column(unique=true, nullable=false)
-    private String apellido;
-    @Column(unique=true, nullable=false)
-    private String correo;
-    @Column(unique=true, nullable=false)
+
+    @Column(nullable = false, name = "Documento")
+    private String documento;
+
+    @Column(nullable = false, name="Email")
+    private String email;
+
+    @Column(nullable = false, name="Password")
     private String password;
+
+    @Column(nullable = false, name="IdRol")
+   // @ManyToOne
+   // @JoinColumn(name = "IdRol")
+    private Integer idRol ;
+
+    @Column(nullable=false, name = "Estado")
+    private String estado;
 
 
     public String toString() {
         return "" +
                 "nombre=" + nombre + '\n' +
-                "apellido=" + apellido + '\n' +
-                "correo=" + correo + '\n' +
-                "password=  **** " + '\n';
+                "documento=" + documento + '\n' +
+                "email=" + email + '\n' +
+                "password=" +"******" + '\n' +
+                "idRol=" +  idRol + '\n' +
+                "estado=" + estado ;
     }
 
 }

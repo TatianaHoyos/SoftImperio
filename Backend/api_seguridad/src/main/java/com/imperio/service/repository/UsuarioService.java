@@ -9,7 +9,7 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    public UsuarioEntity obtenerUsuario(String correo, String pass){
-        return usuarioRepository.findByCorreoAndPassword(correo,pass);
+    public UsuarioEntity obtenerUsuario(String email, String pass){
+        return usuarioRepository.findByEmailAndPassword(email,pass);
     }
 }
