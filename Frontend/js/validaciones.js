@@ -52,8 +52,8 @@ const esEmailValido = (email) => {
   };
   
 function validarEmail(e) {
-    const emailMensaje = $('#emailMensaje');
-    const email = $('#emailUsuario').val();
+    const emailMensaje = $('#emailLoginMensaje');
+    const email = $('#emailLogin').val();
     emailMensaje.text('');
   
     if (esEmailValido(email)) {
