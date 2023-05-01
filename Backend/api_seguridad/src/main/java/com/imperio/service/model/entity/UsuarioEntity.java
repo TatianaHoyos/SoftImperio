@@ -14,7 +14,7 @@ public class UsuarioEntity {
     private Integer id;
 
     @Column(nullable = false)
-    private Integer documento;
+    private String documento;
     @Column(nullable = false)
     private String nombre;
     @Column(unique=true, nullable=false)
