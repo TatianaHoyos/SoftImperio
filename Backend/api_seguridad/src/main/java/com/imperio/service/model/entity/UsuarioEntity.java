@@ -34,6 +34,12 @@ public class UsuarioEntity {
     @Column(nullable=false, name = "Estado")
     private String estado;
 
+    @Column(nullable=false, name = "Telefono")
+    private String telefono;
+
+    @Column(nullable=false, name = "Foto")
+    private String foto;
+
 
     public String toString() {
         return "" +
@@ -42,7 +48,9 @@ public class UsuarioEntity {
                 "email=" + email + '\n' +
                 "password=" +"******" + '\n' +
                 "idRol=" +  idRol + '\n' +
-                "estado=" + estado ;
+                "estado=" + estado + '\n' +
+                "telefono=" + telefono + '\n' +
+                "foto=" + foto ;
     }
 
 }

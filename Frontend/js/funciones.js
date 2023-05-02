@@ -52,3 +52,15 @@ function validarCampoVacio(longitudCampo,mensaje) {
        return true;
     }
 }
+
+function crearUsuario(){
+    {
+        /*nombre:$().val,
+        documento:$().val,
+        email:$().val,
+        idRol:$().val
+        telefono:$().val
+        foto:$().val*/
+   
+   }
+}

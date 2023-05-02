@@ -30,6 +30,8 @@ public class ControllerLogin {
         usuarioEntity.setPassword(usuario.getDocumento());
         usuarioEntity.setIdRol(usuario.getIdRol());
         usuarioEntity.setEstado("activo");
+        usuarioEntity.setFoto(usuario.getFoto());
+        usuarioEntity.setTelefono(usuario.getTelefono());
         var usuaridb=usuarioService.crearUsuario(usuarioEntity);
         if (usuaridb==null){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
