@@ -13,8 +13,6 @@ function login(){
         return false;
     }
 
-    
-
     $.ajax({
         type: "POST",
         url:"http://localhost:8080/api/login",
@@ -38,29 +36,4 @@ function onExito(data){
 }
 function onError(error){
     console.log(error)
-}
-
-
-function validarCampoVacio(longitudCampo,mensaje) {
-    if(longitudCampo <1)
-    {
-       Swal.fire({
-         icon: 'warning',
-         title:'Oops',
-         text: mensaje
-       });
-       return true;
-    }
-}
-
-function crearUsuario(){
-    {
-        /*nombre:$().val,
-        documento:$().val,
-        email:$().val,
-        idRol:$().val
-        telefono:$().val
-        foto:$().val*/
-   
-   }
 }

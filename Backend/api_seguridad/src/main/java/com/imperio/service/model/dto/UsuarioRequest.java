@@ -12,5 +12,4 @@ public class UsuarioRequest {
     private int idRol;
     private String estado;
     private String telefono;
-    private String foto;
 }

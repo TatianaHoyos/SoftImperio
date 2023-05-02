@@ -64,4 +64,16 @@ function validarEmail(e) {
         emailMensaje.css('color', 'red');
     }
     //return false;
-  }
+}
+
+function validarCampoVacio(longitudCampo,mensaje) {
+    if(longitudCampo <1)
+    {
+       Swal.fire({
+         icon: 'warning',
+         title:'Oops',
+         text: mensaje
+       });
+       return true;
+    }
+}
