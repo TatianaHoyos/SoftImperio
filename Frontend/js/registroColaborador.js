@@ -31,8 +31,26 @@ function onExitoRoles(data) {
     $.each(data, function () {
         $dropdown.append($("<option />").val(this.idRol).text(this.nombreRol));
     });
-
+    mostrarRolesConPermisos(data);
 }
+
+function mostrarRolesConPermisos(roles) {
+
+    // clear the existing list
+    $("#contentRoles .lista-Roles .card-header").remove();
+    $("#contentRoles .lista-Roles .lista-permisos").remove();
+    
+    $.each(roles, function(index,rol) {
+        debugger;
+      $('#contentRoles .lista-Roles').append('<div class="card-header">'+rol.nombreRol +'</div>')
+      $('#contentRoles .lista-Roles').append('<div class="card-body lista-permisos"><ul></ul></div>')
+     
+      $.each(rol.permisos, function(index,permiso) {
+        $('#contentRoles .lista-Roles .lista-permisos ul').append('<li>'+permiso.nombrePermiso +'</li>')
+    });
+    });
+  
+  }
 
 function onErrorRoles(error) {
     console.log(error)

@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @Data
 @NoArgsConstructor
 @Entity
@@ -15,6 +17,16 @@ public class RolEntity {
 
     @Column(nullable = false, name = "NombreRol")
     private String nombreRol;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "configuracion",
+    joinColumns = {
+            @JoinColumn(name = "IdRol", referencedColumnName = "IdRol")
+    },
+    inverseJoinColumns = {
+            @JoinColumn(name = "IdPermiso", referencedColumnName = "IdPermiso")
+    })
+    private Set<PermisosEntity> permisos;
 
     public String toString() {
         return "" +
