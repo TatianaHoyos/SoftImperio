@@ -4,3 +4,11 @@ body{
     }
 #fondo{
     background-color: #2b2926;}
+
+
+.form-input img {
+    width:100%;
+    display:none;
+    margin-bottom:30px;
+}
+

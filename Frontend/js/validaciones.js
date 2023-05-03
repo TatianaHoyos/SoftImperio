@@ -52,8 +52,8 @@ const esEmailValido = (email) => {
   };
   
 function validarEmail(e) {
-    const emailMensaje = $('#emailMensaje');
-    const email = $('#emailUsuario').val();
+    const emailMensaje = $('#emailLoginMensaje');
+    const email = $('#emailLogin').val();
     emailMensaje.text('');
   
     if (esEmailValido(email)) {
@@ -63,5 +63,17 @@ function validarEmail(e) {
         emailMensaje.text('el correo no es valido');
         emailMensaje.css('color', 'red');
     }
-    //return false;
-  }
+    //return false;
+}
+
+function validarCampoVacio(longitudCampo,mensaje) {
+    if(longitudCampo <1)
+    {
+       Swal.fire({
+         icon: 'warning',
+         title:'Oops',
+         text: mensaje
+       });
+       return true;
+    }
+}

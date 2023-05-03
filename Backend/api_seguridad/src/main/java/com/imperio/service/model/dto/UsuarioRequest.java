@@ -11,4 +11,5 @@ public class UsuarioRequest {
     private String email;
     private int idRol;
     private String estado;
+    private String telefono;
 }
