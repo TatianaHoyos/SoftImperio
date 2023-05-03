@@ -1,3 +1,7 @@
+$(document).ready(function () {
+    $("#resultadoLogin").hide();
+});
+
 function login(){
     var formData = {
         correo:$("#emailLogin").val(),
@@ -22,10 +26,12 @@ function login(){
           "data": JSON.stringify(formData),
           success: onExito,
           error: onError
+          
     });
 }
 
 function onExito(data){
+
     console.log(data)
     //validar si es admin o colaborador para redireccionarlo a cierta interfaz
     if(data.rol==1){
@@ -34,6 +40,11 @@ function onExito(data){
         window.location="./puntomesa.html"
     }
 }
+
 function onError(error){
-    console.log(error)
+
+    console.log(error)   
+    var mensaje =$("#resultadoLogin");
+    mensaje.show();
+    mensaje.text(error.message);
 }
