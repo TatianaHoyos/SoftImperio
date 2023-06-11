@@ -1,14 +1,83 @@
 body{
-    background: radial-gradient(rgb(7, 7, 167),#2b2926);
-    
-    }
+    background-image: url("../img/fondo.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    } 
 #fondo{
-    background-color: #2b2926;}
-
-
+    background-color: #201f1e;
+}
 .form-input img {
     width:100%;
     display:none;
     margin-bottom:30px;
 }
+.form-group button {
+    background-color: #e5c850;
+}
+.form-group button:hover {
+    background-color: #d5c429;
+}
 
+
+.border-grey{
+    box-shadow: 3px 3px 3px 3px rgba(18, 18, 18, 0.434);
+}
+    .menu-item {
+      margin-right: 10px;
+    }
+
+    .active {
+      /* background-color: #fbb82d !important; */
+      background-color: #d5c429 !important;
+      color: #090909 !important;
+    }
+
+    .logout-link {
+      margin-left: 10px;
+    }
+
+    .logo {
+      height: 50px;
+      margin-bottom: 10px;
+    }
+    /* Estilos para el contenedor del logo */
+    .logo-container {
+      display: flex; /* Permite alinear los elementos horizontalmente y verticalmente */
+      justify-content: center; /* Alinea los elementos horizontalmente al centro */
+      align-items: center; /* Alinea los elementos verticalmente al centro */
+      margin-bottom: -20px; /*Margen inferior para crear espacio entre el logo y el menú */
+      background-color: #090909;
+      padding: 10px; /* Espacio interno para el logo */
+    }
+
+    /* Estilos para el logo */
+    .logo {
+      height: 120; /* Tamaño del logo*/
+    }
+    
+    /* Estilos para el menú */
+    .colornavbar {
+      background-color: #e5c850; 
+    }
+    /* Estilos para el contenedor del usuario */
+    .user-container {
+      display: flex;
+      align-items: center;
+    }
+
+    /* Estilos para el nombre de usuario */
+    .username {
+      margin-right: 10px;
+      color: #fff;
+      font-weight: bold;
+    }
+
+    /* Estilos para la foto de usuario */
+    .user-photo {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
