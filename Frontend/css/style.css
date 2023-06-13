@@ -94,6 +94,10 @@ body{
   text-align: center;
 
 }
+.subtitulo{
+  color: #fff;
+  text-align: left;
+}
 #searchInput {
   width: 200px;
   padding: 8px;
@@ -109,3 +113,18 @@ body{
 #results li {
   padding: 5px;
 }
+#content {
+  overflow-y: auto;
+  height: 100vh;
+  padding-bottom: 5rem;
+}
+.btn-primary{
+  background-color: #e5c850 !important;
+  color: #090909;
+  border: 0;
+}
+.card{
+  background-color: #090909 !important;
+  color: #fff;
+}
+
