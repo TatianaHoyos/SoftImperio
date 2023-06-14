@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Permisos</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+
+   
+    </style>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(".nav-link").click(function () {
+                $(".nav-link").removeClass("active");
+                $(this).addClass("active");
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div class="logo-container">
+        <img src="img/logo.png" alt="Logo" class="Logo" height="170">
+    </div>
+    <nav class="navbar navbar-expand-lg navbar-light colornavbar">
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item menu-item">
+                    <a class="nav-link active" href="C:\Users\Daniel\Documents\SoftImperio\Frontend\Inicio.html"><i class="fas fa-home"></i> Inicio</a>
+                </li>
+                <li class="nav-item menu-item">
+                    <a class="nav-link" href="#"><i class="fas fa-box-open"></i> Existencias</a>
+                </li>
+                <li class="nav-item menu-item">
+                    <a class="nav-link" href="#"><i class="fas fa-users"></i> Usuarios</a>
+                </li>
+                <li class="nav-item menu-item">
+                    <a class="nav-link" href="C:\Users\Daniel\Documents\SoftImperio\Frontend\ventas.html"><i class="fas fa-chart-bar"></i> Ventas</a>
+                </li>
+                <li class="nav-item menu-item">
+                    <a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i> Compras</a>
+                </li>
+                <li class="nav-item menu-item">
+                    <a class="nav-link" href="#"><i class="fas fa-truck"></i> Proveedores</a>
+                </li>
+                <li class="nav-item menu-item">
+                    <a class="nav-link" href="#"><i class="fas fa-cash-register"></i> Punto de venta</a>
+                </li>
+                <li class="nav-item menu-item">
+                    <a class="nav-link" href="#"><i class="fas fa-money-check-alt"></i> Créditos</a>
+                </li>
+                <li class="nav-item menu-item">
+                    <a class="nav-link" href="C:\Users\Daniel\Documents\SoftImperio\Frontend\Permisos.html"><i class="fas fa-user-lock"></i> Permisos</a>
+                </li>
+            </ul>
+            <a class="nav-link logout-link text-dark" href="#"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
+        </div>
+    </nav>
+</body>
+
+<div>
+    <div class="container  p-2 g-col-6"><i class="fa fa-xing" aria-hidden="true"></i>
+   
+        <h1 class="Titulo">Permisos</h1>
+        <h3 class="subtitulo">Asignación de permisos</h3>
+
+        <div class="AsignarPermisos">
+            <input type="text" id="searchInput" placeholder="Ingrese el ID del usuario">
+            <button type="button" class="btn btn-secondary">Mostrar Permisos</button>
+            <button type="button" class="btn btn-secondary">Guardar</button>
+
+            <ul id="results"></ul>
+            <script src="script.js"></script>
+            
+            
+
+
+          
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="permiso1" name="permiso1">
+                    <label class="custom-control-label" for="permiso1">Ver Productos</label>
+                  </div>
+                </div>
+            </div>
+              
+            <div class="col-md-4">
+                <div class="form-group">
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="permiso2" name="permiso2">
+                    <label class="custom-control-label" for="permiso2">Agregar Productos</label>
+                  </div>
+                </div>
+            </div>
+              
+            <div class="col-md-4">
+                <div class="form-group">
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="permiso3" name="permiso3">
+                    <label class="custom-control-label" for="permiso3">Eliminar Productos</label>
+                  </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                  <label for="permiso4">Permiso 4:</label>
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="permiso4" name="permiso4">
+                    <label class="custom-control-label" for="permiso4">Inactivo/Activo</label>
+                  </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                  <label for="permiso5">Permiso 5:</label>
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="permiso5" name="permiso5">
+                    <label class="custom-control-label" for="permiso5">Inactivo/Activo</label>
+                  </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                  <label for="permiso6">Permiso 6:</label>
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="permiso6" name="permiso6">
+                    <label class="custom-control-label" for="permiso6">Inactivo/Activo</label>
+                  </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                  <label for="permiso7">Permiso 7:</label>
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="permiso7" name="permiso7">
+                    <label class="custom-control-label" for="permiso7">Inactivo/Activo</label>
+                  </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                  <label for="permiso8">Permiso 8:</label>
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="permiso8" name="permiso8">
+                    <label class="custom-control-label" for="permiso8">Inactivo/Activo</label>
+                  </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                  <label for="permiso9">Permiso 9:</label>
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="permiso9" name="permiso9">
+                    <label class="custom-control-label" for="permiso9">Inactivo/Activo</label>
+                  </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                  <label for="permiso10">Permiso 10:</label>
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="permiso10" name="permiso10">
+                    <label class="custom-control-label" for="permiso10">Inactivo/Activo</label>
+                  </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                  <label for="permiso11">Permiso 11:</label>
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="permiso11" name="permiso11">
+                    <label class="custom-control-label" for="permiso11">Inactivo/Activo</label>
+                  </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                  <label for="permiso12">Permiso 12:</label>
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="permiso12" name="permiso12">
+                    <label class="custom-control-label" for="permiso12">Inactivo/Activo</label>
+                  </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                  <label for="permiso13">Permiso 13:</label>
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="permiso13" name="permiso13">
+                    <label class="custom-control-label" for="permiso13">Inactivo/Activo</label>
+                  </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                  <label for="permiso14">Permiso 14:</label>
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="permiso14" name="permiso14">
+                    <label class="custom-control-label" for="permiso14">Inactivo/Activo</label>
+                  </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                  <label for="permiso15">Permiso 15:</label>
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="permiso15" name="permiso15">
+                    <label class="custom-control-label" for="permiso15">Inactivo/Activo</label>
+                  </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                  <label for="permiso16">Permiso 16:</label>
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="permiso16" name="permiso16">
+                    <label class="custom-control-label" for="permiso16">Inactivo/Activo</label>
+                  </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                  <label for="permiso17">Permiso 17:</label>
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="permiso17" name="permiso17">
+                    <label class="custom-control-label" for="permiso17">Inactivo/Activo</label>
+                  </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                  <label for="permiso18">Permiso 18:</label>
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="permiso18" name="permiso18">
+                    <label class="custom-control-label" for="permiso18">Inactivo/Activo</label>
+                  </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                  <label for="permiso19">Permiso 19:</label>
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="permiso19" name="permiso19">
+                    <label class="custom-control-label" for="permiso19">Inactivo/Activo</label>
+                  </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                  <label for="permiso20">Permiso 20:</label>
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="permiso20" name="permiso20">
+                    <label class="custom-control-label" for="permiso20">Inactivo/Activo</label>
+                  </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                  <label for="permiso21">Permiso 21:</label>
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="permiso21" name="permiso21">
+                    <label class="custom-control-label" for="permiso21">Inactivo/Activo</label>
+                  </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                  <label for="permiso22">Permiso 22:</label>
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="permiso22" name="permiso22">
+                    <label class="custom-control-label" for="permiso22">Inactivo/Activo</label>
+                  </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                  <label for="permiso23">Permiso 23:</label>
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="permiso23" name="permiso23">
+                    <label class="custom-control-label" for="permiso23">Inactivo/Activo</label>
+                  </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                  <label for="permiso24">Permiso 24:</label>
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="permiso24" name="permiso24">
+                    <label class="custom-control-label" for="permiso24">Inactivo/Activo</label>
+                  </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                  <label for="permiso25">Permiso 25:</label>
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="permiso25" name="permiso25">
+                    <label class="custom-control-label" for="permiso25">Inactivo/Activo</label>
+                  </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                  <label for="permiso26">Permiso 26:</label>
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="permiso26" name="permiso26">
+                    <label class="custom-control-label" for="permiso26">Inactivo/Activo</label>
+                  </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                  <label for="permiso27">Permiso 27:</label>
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="permiso27" name="permiso27">
+                    <label class="custom-control-label" for="permiso27">Inactivo/Activo</label>
+                  </div>
+                </div>
+            </div>
+        </div>     
+    
+      <button type="submit" class="btn btn-primary">Agregar Rol</button>
+      <button type="submit" class="btn btn-primary">Backup BD</button>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"
+  integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+<script src="js/validaciones.js"></script>
+<script src="js/funciones.js"></script>
+<script src="js/registroColaborador.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+  integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+  crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+  integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+  crossorigin="anonymous"></script>
+</body>
+</html>
