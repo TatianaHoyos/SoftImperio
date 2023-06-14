@@ -81,3 +81,76 @@ body{
       border-radius: 50%;
       object-fit: cover;
     }
+
+    /* estilos punto de venta */
+   
+    .category {
+        font-size: 24px;
+        font-weight: bold;
+        margin-top: 20px;
+    }
+
+    .product {
+        display: inline-block;
+        width: 200px;
+        margin: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+    }
+
+    .product img {
+        width: 50px;
+        height: 70px;
+        object-fit: cover;
+        margin-bottom: 10px;
+    }
+
+    .product-name {
+        font-weight: bold;
+    }
+
+    .product-quantity {
+        font-style: italic;
+    }
+
+    .select-container {
+        margin-top: 3px;
+        display: inline-block;
+    }
+
+    .quantity-input {
+        width: 60px;
+        padding: 3px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .order-table th,
+    .order-table td {
+        padding: 5px;
+        text-align: center;
+        border: 1px solid #ccc;
+    }
+
+    .order-table th {
+        font-weight: bold;
+    }
+
+    .order-table tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .total-price {
+        font-weight: bold;
+        margin-top: 10px;
+    }
+
+    .action-buttons {
+        margin-top: 10px;
+    }
+
+    .action-buttons button {
+        margin-right: 10px;
+        padding: 5px 10px;
+        border-radius: 4px;
+    }
