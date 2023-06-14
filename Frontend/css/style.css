@@ -83,6 +83,7 @@ body{
     }
 
 
+
     .icolor i{
     color: aqua;
     }
@@ -105,6 +106,7 @@ body{
       justify-content: center ;
     }
     
+
 .AsignarPermisos {
   
   font-weight: bold;
@@ -153,3 +155,24 @@ body{
 }
 
 
+    .icolor i{
+    color: aqua;
+    }
+
+
+    .table {
+      text-align: center;
+      width: 62% ;
+      height: 90% ;
+      
+    }
+
+    .btn-warning{
+      background-color: #e5c850;
+      margin-right: 10px;
+    }
+
+    .bott{
+      display: flex;
+      justify-content: center ;
+    }
