@@ -153,26 +153,7 @@ body{
   background-color: #090909 !important;
   color: #fff;
 }
-
-
-    .icolor i{
-    color: aqua;
-    }
-
-
-    .table {
-      text-align: center;
-      width: 62% ;
-      height: 90% ;
-      
-    }
-
-    .btn-warning{
-      background-color: #e5c850;
-      margin-right: 10px;
-    }
-
-    .bott{
-      display: flex;
-      justify-content: center ;
-    }
+.btn-secondary{
+  background-color: #e5c850;
+  color: #090909;
+}
