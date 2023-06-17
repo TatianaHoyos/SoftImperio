@@ -68,7 +68,7 @@
                     placeholder="Nombre del producto a buscar">
             </div>
             <div class="form-group col-md-3 offset-md-3 ">
-                <button type="button" onclick="crearUsuario()"
+                <button id="openModalBtn" type="button" onclick="crearExistencia()"
                     class="col-md-5 form-control btn mt-5 mb-2"><strong>Crear</strong></button>
                     <button type="button" onclick="crearUsuario()"
                     class="col-md-5 form-control btn mt-5 mb-2"><strong>Reporte</strong></button>
@@ -93,12 +93,12 @@
                                 <td>8</td>
                                 <td>$4000</td>
                                 <td>
-                                    <button class="btn btn-delete" data-id="1">
+                                    <button  onclick="alertaEliminarEditar('eliminar', 1)" class="btn btn-delete" data-id="1">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </td>
                                 <td>
-                                    <button class="btn btn-edit" data-id="1">
+                                    <button onclick="alertaEliminarEditar('editar', 1)" class="btn btn-edit" data-id="1">
                                         <i class="fas fa-edit"></i>
                                     </button>
                                 </td>
@@ -111,19 +111,17 @@
                                 <td>8</td>
                                 <td>$4000</td>
                                 <td>
-                                
-                                    <button class="btn btn-delete" data-id="1">
+                                    <button id="eliminarExistencia1" onclick="alertaEliminarEditar('eliminar', 2)" class="btn btn-delete" data-id="1">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 
                             
                                 </td>
                                 <td>
-
-                                    <button class="btn btn-edit" data-id="1">
+                                    <button id="editarExistencia1" onclick="alertaEliminarEditar('editar', 2)" class="btn btn-edit" data-id="1">
                                         <i class="fas fa-edit"></i>
                                     </button>
-
+                                
                                 </td>
                             </tr>
 
@@ -134,13 +132,13 @@
                                 <td>12</td>
                                 <td>$4000</td>
                                 <td>
-                                    <button class="btn btn-delete" data-id="1">
+                                    <button id="eliminarExistencia2" onclick="alertaEliminarEditar('eliminar', 3)" class="btn btn-delete" data-id="1">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </td>
                                 <td>
-                                    <button class="btn btn-edit" data-id="1">
-                                        <i class="fa fa-edit"></i>
+                                    <button id="editarExistencia2" onclick="alertaEliminarEditar('editar', 3)" class="btn btn-edit" data-id="1">
+                                        <i class="fas fa-edit"></i>
                                     </button>
                                 </td>
                             </tr>
@@ -152,12 +150,12 @@
                                 <td>8</td>
                                 <td>$4000</td>
                                 <td>
-                                    <button class="btn btn-delete" data-id="1">
+                                    <button id="eliminarExistencia3" onclick="alertaEliminarEditar('eliminar', 4)" class="btn btn-delete" data-id="1">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </td>
                                 <td>
-                                    <button class="btn  btn-edit" data-id="1">
+                                    <button id="editarExistencia3" onclick="alertaEliminarEditar('editar', 4)" class="btn btn-edit" data-id="1">
                                         <i class="fas fa-edit"></i>
                                     </button>
                                 </td>
@@ -173,7 +171,7 @@
 
 
     </div>
-    <div class="px-4 py-5 text-center " style=" background-color: #201f1e" >
+    <!-- <div class="px-4 py-5 text-center " style=" background-color: #201f1e" >
         <div class="py-1">
           <h3 class="display-7 fw-bold text-white">Soft Imperio</h3>
           <div class="col-lg-6 mx-auto">
@@ -182,19 +180,27 @@
             <p class="fs-9 mb-1 text-white">© Copyright Derechos Reservados - 2023</p>
           </div>
         </div>
-      </div>
+      </div> -->
+
+
+
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://code.jquery.com/jquery-3.6.1.min.js"
-        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous">
-    </script>
+
+    
+    <script src="js/modales.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
         crossorigin="anonymous">
     </script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous">
+    </script>
+        <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous">
     </script>
 
 </body>
