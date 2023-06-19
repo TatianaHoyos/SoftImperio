@@ -36,7 +36,7 @@ public class ControllerProducto {
             productoEntity.setIdCategoria (producto.getIdCategoria());
             productoEntity.setIdProveedores(producto.getIdProveedores());
             productoEntity.setNombreProducto(producto.getNombreProducto());
-            productoEntity.setCantidad(producto.getCantidad());
+            productoEntity.setCantidad(0);
             productoEntity.setPrecioProducto(producto.getPrecioProducto());
             productoEntity.setFotoProducto(uploadDir + fileName);
             productoEntity.setReferenciaProducto(producto.getReferenciaProducto());

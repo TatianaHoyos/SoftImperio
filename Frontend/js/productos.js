@@ -1,5 +1,5 @@
 $(document).ready(function () {
-   // $("#resultadoCrear").hide();
+  $("#resultadoCrear").hide();
     // consultarCategorias();
 });
 
@@ -41,5 +41,5 @@ function onErrorCrearProducto(error){
     mensaje.addClass("alert-danger");
     mensaje.removeClass("alert-success");
     mensaje.show();
-    mensaje.text(data.message);
+    mensaje.text(error.message);
 }
