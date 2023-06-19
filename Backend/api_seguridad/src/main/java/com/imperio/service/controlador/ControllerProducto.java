@@ -21,6 +21,7 @@ public class ControllerProducto {
 
     @Autowired
     private ProductoService productoService;
+    private String urlServer = "http:localhost:8080/";
 
     @PostMapping(value = "api/producto/crear", produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -57,4 +58,60 @@ public class ControllerProducto {
         }
     }
 
+
+    @GetMapping(value = "api/producto/consultar", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> obtenerProductos(){
+        return ResponseEntity.ok(productoService.obtenerProductos());
+    }
+
+    @DeleteMapping("api/producto/eliminar/{id}")
+    public ResponseEntity<?> deleteProducto(@PathVariable("id") Integer id){
+        try {
+            productoService.eliminarProductos(id);
+            return ResponseEntity.ok(new Response("exito", "se elimino el producto con exito"));
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new Response("error", "Ha ocurrido un error al intentar eliminar el producto"));
+        }
+
+
+    }
+
+    @PutMapping(value = "api/producto/actualizar/{id}", produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> updateProductos( ProductoRequest producto,
+                                             @PathVariable("id") Integer id,
+                                             @RequestParam("foto") MultipartFile multipartFile) throws Exception {
+
+        try {
+            String uploadDir = "producto-photos/";
+            String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+            fileName = producto.getNombreProducto()  +"-"+ fileName;
+
+            var productoEntity = new ProductoEntity();
+            productoEntity.setIdProductos(id);
+            productoEntity.setIdCategoria (producto.getIdCategoria());
+            productoEntity.setIdProveedores(producto.getIdProveedores());
+            productoEntity.setNombreProducto(producto.getNombreProducto());
+            productoEntity.setCantidad(0);
+            productoEntity.setPrecioProducto(producto.getPrecioProducto());
+            productoEntity.setFotoProducto(uploadDir + fileName);
+            productoEntity.setReferenciaProducto(producto.getReferenciaProducto());
+
+            var productodb = productoService.crearProducto(productoEntity);
+            FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+
+            if (productodb == null) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body(new Response("error", "Error al actualizar el producto"));
+            } else {
+                return ResponseEntity.ok(new Response("exito", "se actualizo el producto con exito"));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new Response("error", "Ha ocurrido un error al actualizar el producto"));
+        }
+    }
 }
+
+
