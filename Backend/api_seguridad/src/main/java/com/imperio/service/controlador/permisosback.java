@@ -10,7 +10,7 @@ public class permisosback {
     private Connection connection;
 
     public permisosback() {
-        // Configura la conexión a la base de datos
+        // Configurar la conexión a la base de datos en este caso mysql no xampp
         String url = "jdbc:mysql://localhost:3306/soft_imperiof";
         String username = "root";
         String password = "Sena1234";
@@ -21,81 +21,84 @@ public class permisosback {
             e.printStackTrace();
         }
     }
-
+    //Metodo Create
     public void crearRegistro(String Documento, String Nombre, String Telefono) {
         try {
-            // Prepara la sentencia SQL para insertar un nuevo registro
+            //  Aqui va la sentencia SQL para insertar un nuevo registro
             String sql = "INSERT INTO usuariocredito (Documento, Nombre, Telefono) VALUES (?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, Documento);
-            statement.setString(2, Nombre);
-            statement.setString(3, Telefono);
+            //Aqui deben ir los atributos a insertar segun la tabla ya creada.
+            statement.setString(1, Documento); //tener en cuenta el tipo de dato si es entero o texto
+            statement.setString(2, Nombre); //tener en cuenta el tipo de dato si es entero o texto
+            statement.setString(3, Telefono); //tener en cuenta el tipo de dato si es entero o texto
 
             // Ejecuta la sentencia SQL
             statement.executeUpdate();
 
-            System.out.println("Registro creado con éxito.");
+            System.out.println("Registro creado con éxito."); //Mensaje de confirmación
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace(); //Mensaje de Error
         }
     }
 
+    //Metodo Read
     public void obtenerRegistros() {
         try {
-            // Prepara la sentencia SQL para obtener todos los registros
+            //  Aqui va la sentencia SQL para obtener todos los registros
             String sql = "SELECT * FROM usuariocredito";
             PreparedStatement statement = connection.prepareStatement(sql);
 
             // Ejecuta la sentencia SQL
             ResultSet resultSet = statement.executeQuery();
 
-            // Itera sobre los resultados y los imprime
+            // El ciclo que itera sobre los resultados y los imprime
             while (resultSet.next()) {
                 String Documento = resultSet.getString("Documento");
                 String Nombre = resultSet.getString("Nombre");
                 String Telefono = resultSet.getString("Telefono");
-
+                //Mensaje con resultados 
                 System.out.println("Documento: " + Documento + " Nombre: " + Nombre + " Telefono: " + Telefono);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace(); //Mensaje de Error
         }
     }
-
+    //Metodo Update
     public void actualizarRegistro(String Documento, String Nombre, String Telefono) {
         try {
-            // Prepara la sentencia SQL para actualizar un registro existente
+            //  Aqui va la sentencia SQL para actualizar un registro existente
             String sql = "UPDATE usuariocredito SET Documento = ?, Nombre = ?, Telefono = ? WHERE IdUsuarioCredito = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, Documento);
-            statement.setString(2, Nombre);
-            statement.setString(3, Telefono);
+            //Aqui deben ir los atributos a insertar segun la tabla ya creada.
+            statement.setString(1, Documento); //tener en cuenta el tipo de dato si es entero o texto
+            statement.setString(2, Nombre); //tener en cuenta el tipo de dato si es entero o texto
+            statement.setString(3, Telefono); //tener en cuenta el tipo de dato si es entero o texto
 
             // Ejecuta la sentencia SQL
             statement.executeUpdate();
 
-            System.out.println("Registro actualizado con éxito.");
+            System.out.println("Registro actualizado con éxito."); //Mensaje de Confirmación
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // Mensaje de Error
         }
     }
-
+    //Metodo Delete
     public void eliminarRegistro(int IdUsuarioCredito) {
         try {
-            // Prepara la sentencia SQL para eliminar un registro existente
+            // Aqui va la sentencia SQL para eliminar un registro existente
             String sql = "DELETE FROM usuariocredito WHERE IdUsuarioCredito= ?";
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1, IdUsuarioCredito);
+            statement.setInt(1, IdUsuarioCredito);//Se elimina por el ID del Usuario
 
             // Ejecuta la sentencia SQL
             statement.executeUpdate();
 
-            System.out.println("Registro eliminado con éxito.");
+            System.out.println("Registro eliminado con éxito."); //Mensaje de confirmación
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace(); //Mensaje de error
         }
     }
-
+    //llamada  de metodos con paso de parametros
     public static void main(String[] args) {
         permisosback crud = new permisosback();
 
