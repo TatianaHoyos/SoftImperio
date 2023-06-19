@@ -1,4 +1,4 @@
-package com.imperio.service.model.dto;
+package com.imperio.service.model.dto.comun;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
