@@ -1,6 +1,7 @@
 $(document).ready(function () {
   $("#resultadoCrear").hide();
     consultarProductos();
+    buscarProductosTabla();
 
 });
 
@@ -169,4 +170,16 @@ function actualizarProducto(idProductos){
     success: onExitoCrearProducto,
     error: onErrorCrearProducto
 });
+}
+function buscarProductosTabla(){
+    $("#consultarTabla").keyup(function(){
+        _this = this;
+        // Show only matching TR, hide rest of them
+        $.each($("#tablaProductos tbody tr"), function() {
+        if($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) === -1)
+        $(this).hide();
+        else
+        $(this).show();
+        });
+        });
 }
