@@ -81,6 +81,7 @@ body{
       border-radius: 50%;
       object-fit: cover;
     }
+<<<<<<< HEAD
 
 
     .icolor i{
@@ -105,6 +106,9 @@ body{
       justify-content: center ;
     }
     
+=======
+<<<<<<< HEAD
+>>>>>>> a99d173a1a8c0d6fe97a928bff100dfdc110801c
 .AsignarPermisos {
   
   font-weight: bold;
@@ -151,5 +155,33 @@ body{
   background-color: #090909 !important;
   color: #fff;
 }
+<<<<<<< HEAD
 
 
+=======
+=======
+
+    .icolor i{
+    color: aqua;
+    }
+
+
+    .table {
+      text-align: center;
+      width: 62% ;
+      height: 90% ;
+      
+    }
+
+    .btn-warning{
+      background-color: #e5c850;
+      margin-right: 10px;
+    }
+
+    .bott{
+      display: flex;
+      justify-content: center ;
+    }
+>>>>>>> origin/Yeimar
+
+>>>>>>> a99d173a1a8c0d6fe97a928bff100dfdc110801c
