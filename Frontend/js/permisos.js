@@ -75,19 +75,11 @@ var nuevoData=agruparPorModulo(data.permisos);
         fila=fila + "<td>" + crear+ "</td>"+"<td>" + modificar+ "</td>"+"<td>" + ver+ "</td>"+"<td>" + eliminar+ "</td>";
         console.log(fila);
         $('#'+nombreModulo+'-tr').append(fila);
-        // $.each(permiso.permisos, function(id, permiso) {
-        //     $("#"+nombreModulo+"-"+permiso.nombrePermiso.toLowerCase()).val(permiso.idPermisos);
-        // });
-        $.each(permiso.permisos, function(id, permiso) {
+           $.each(permiso.permisos, function(id, permiso) {
             var id =nombreModulo+"-"+permiso.nombrePermiso.toLowerCase();
             $("#"+id).val(permiso.idPermisos);
-            /*var idModificar=id+"-"+permiso.idPermisos+"-modificar";
-            var idVer=id+"-"+permiso.idPermisos+"-ver";
-            var idEliminar=id+"-"+permiso.idPermisos+"-eliminar";*/
+          
             estaElPermisoActivo(permiso.nombrePermiso.toLowerCase(), permiso.nombrePermiso.toLowerCase(),$('#'+id));
-            /*estaElPermisoActivo(permiso.nombrePermiso.toLowerCase(), "editar",$('#'+idModificar));
-            estaElPermisoActivo(permiso.nombrePermiso.toLowerCase(), "ver",$('#'+idVer));
-            estaElPermisoActivo(permiso.nombrePermiso.toLowerCase(), "eliminar",$('#'+idEliminar));*/
         });
     });
  }
