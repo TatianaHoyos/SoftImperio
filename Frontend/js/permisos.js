@@ -56,23 +56,28 @@ function mostrarTablaRoles(data) {
      });
 }
 
-function mostrarTablaRolYPermisos(data) {
-    $('#tablaRolYPermisos > tbody > form').empty();
-    $.each(data, function(id, rol) {
+function mostrarListaRolyPermisos(data) {
+    $('#tablaRolYPermisos > tbody').empty();
+    // $('#tablaRolYPermisos > tbody').append("<form id='formGuardarConfiguracion'></form>");
 
-        var crear = "<input name='permiso' class='form-check-input' type='checkbox' id='permiso1' value='"+rol.nombreRol+"' "+estaElPermisoActivo(rol.permisos, "Crear")+">";
-        var modificar = "<input name='permiso' class='form-check-input' type='checkbox' id='permiso1' value='"+rol.nombreRol+"' "+estaElPermisoActivo(rol.permisos, "Modificar")+">";
-        var ver = "<input name='permiso' class='form-check-input' type='checkbox' id='permiso1' value='"+rol.nombreRol+"' "+estaElPermisoActivo(rol.permisos, "Ver")+">";
-        var eliminar = "<input name='permiso' class='form-check-input' type='checkbox' id='permiso1' value='"+rol.nombreRol+"'  "+estaElPermisoActivo(rol.permisos, "Eliminar")+">";
+    $.each(data.permisos, function(id, permiso) {
+        
 
-        $('#tablaRolYPermisos >').append('<tr><td>' + crear + '</td><td>' + modificar+
+        var crear = "<input name='permiso' class='form-check-input' type='checkbox' id='permiso1' value='"+permiso.nombrePermiso+"' "+estaElPermisoActivo(permiso.nombrePermiso, "Crear")+">";
+        var modificar = "<input name='permiso' class='form-check-input' type='checkbox' id='permiso1' value='"+permiso.nombrePermiso+"' "+estaElPermisoActivo(permiso.nombrePermiso, "Modificar")+">";
+        var ver = "<input name='permiso' class='form-check-input' type='checkbox' id='permiso1' value='"+permiso.nombrePermiso+"' "+estaElPermisoActivo(permiso.nombrePermiso, "Ver")+">";
+        var eliminar = "<input name='permiso' class='form-check-input' type='checkbox' id='permiso1' value='"+permiso.nombrePermiso+"'  "+estaElPermisoActivo(permiso.nombrePermiso, "Eliminar")+">";
+
+        $('#tablaRolYPermisos > tbody').append('<tr><td>' + permiso.modulo + '</td><td>' + crear+'</td><td>' + modificar+
+ 
         '</td><td>' + ver + '</td><td>' + eliminar + '</td></tr>');
     });
-}
+ }
+
 
 function estaElPermisoActivo(permisos, permiso){
-    let result = permisos.find((item) => item === permiso);
-    if (result == undefined) {
+    // let result = permisos.find((item) => item === permiso);
+    if (permisos == permiso) {
         return "checked";
     } else {
     return "";
