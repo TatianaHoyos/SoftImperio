@@ -60,29 +60,42 @@ function mostrarTablaRoles(data) {
 function mostrarListaRolyPermisos(data) {
     $('#tablaRolYPermisos > tbody').empty();
     console.log(JSON.stringify(data))
-var nuevoData=agruparPorModulo(data.permisos);
-    $.each(nuevoData, function(id, permiso) {
+    var nuevoData = agruparPorModulo(data.permisos);
+
+//Pintamos los permisos con la info consultada en la tabla permiso
+    $.each(permisosCache, function(id, permiso) {
        var nombreModulo=permiso.nombreModulo;
         $('#tablaRolYPermisos > tbody').append('<tr id="'+nombreModulo+'-tr"></tr>');
 
        var fila= "<td>" + permiso.nombreModulo + "</td>";
-       var crear = "<input name='permiso' class='form-check-input' type='checkbox' id='"+nombreModulo+"-crear'>";//id='"+idCrear+"' value='"+permiso.idPermisos+"'
-       var modificar = "<input name='permiso' class='form-check-input' type='checkbox' id='"+nombreModulo+"-editar' >";//id='"+idModificar+"' value='"+permiso.idPermisos+"'
-       var ver = "<input name='permiso' class='form-check-input' type='checkbox' id='"+nombreModulo+"-ver' >";// id='"+idVer+"' value='"+permiso.idPermisos+"'
-       var eliminar = "<input name='permiso' class='form-check-input' type='checkbox' id='"+nombreModulo+"-eliminar' >";// id='"+idEliminar+"' value='"+permiso.idPermisos+"'
+       var crear = "<input name='permiso' class='form-check-input' type='checkbox' id='"+nombreModulo+"-crear'>";
+       var modificar = "<input name='permiso' class='form-check-input' type='checkbox' id='"+nombreModulo+"-editar' >";
+       var ver = "<input name='permiso' class='form-check-input' type='checkbox' id='"+nombreModulo+"-ver' >";
+       var eliminar = "<input name='permiso' class='form-check-input' type='checkbox' id='"+nombreModulo+"-eliminar' >";
 
         fila=fila + "<td>" + crear+ "</td>"+"<td>" + modificar+ "</td>"+"<td>" + ver+ "</td>"+"<td>" + eliminar+ "</td>";
         $('#'+nombreModulo+'-tr').append(fila);
+
         $.each(permiso.permisos, function(id, permiso) {
             var id =nombreModulo+"-"+permiso.nombrePermiso.toLowerCase();
-            // $('#'+id).val(permiso.idPermisos);
             var $checkbox= $('#'+id);
             $checkbox.attr('value', permiso.idPermisos);
 
-            estaElPermisoActivo(permiso.nombrePermiso.toLowerCase(), 
-             permiso.nombrePermiso.toLowerCase(),
-             $checkbox);
+            //estaElPermisoActivo(permiso.nombrePermiso.toLowerCase(),
+             //permiso.nombrePermiso.toLowerCase(),
+             //$checkbox);
         });
+    });
+//Verificamos si están activos (asociados al rol)
+    $.each(nuevoData, function(id, permiso) {
+       $.each(permiso.permisos, function(id, permiso) {
+           var id =nombreModulo+"-"+permiso.nombrePermiso.toLowerCase();
+           var $checkbox= $('#'+id);
+
+            estaElPermisoActivo(permiso.nombrePermiso.toLowerCase(),
+            permiso.nombrePermiso.toLowerCase(),
+            $checkbox);
+       });
     });
  }
  
@@ -252,7 +265,7 @@ function guardarConfiguracion() {
 
     $.ajax({
          type: "PUT",
-         url:"http://localhost:8080/api/configuracion/actualizar"+idRol,
+         url:"http://localhost:8080/api/configuracion/actualizar/"+idRol,
          "headers": {
            "Content-Type": "application/json"
          },
@@ -290,14 +303,11 @@ function consultarPermiso() {
         error: onErrorPermisos
     });
 }
-
+var permisosCache = {};
 function onExitoPermisos(data) {
     console.log("consulta de permisos");
     console.log(data);
-
-    // mostrarTablaPermmisos(data);
-    // mostrarListaRolesyPermisos(data);
-
+    permisosCache = agruparPorModulo(data);
 
 }
 function onErrorPermisos(error) {
