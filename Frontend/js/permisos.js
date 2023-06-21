@@ -66,20 +66,21 @@ var nuevoData=agruparPorModulo(data.permisos);
 
        var fila= "<td>" + permiso.nombreModulo + "</td>";
        var crear = "<input name='permiso' class='form-check-input' type='checkbox' id='"+nombreModulo+"-crear'>";//id='"+idCrear+"' value='"+permiso.idPermisos+"'
-       var modificar = "<input name='permiso' class='form-check-input' type='checkbox' id='"+nombreModulo+"-modificar' >";//id='"+idModificar+"' value='"+permiso.idPermisos+"'
+       var modificar = "<input name='permiso' class='form-check-input' type='checkbox' id='"+nombreModulo+"-editar' >";//id='"+idModificar+"' value='"+permiso.idPermisos+"'
        var ver = "<input name='permiso' class='form-check-input' type='checkbox' id='"+nombreModulo+"-ver' >";// id='"+idVer+"' value='"+permiso.idPermisos+"'
        var eliminar = "<input name='permiso' class='form-check-input' type='checkbox' id='"+nombreModulo+"-eliminar' >";// id='"+idEliminar+"' value='"+permiso.idPermisos+"'
 
-        $.each(permiso.permisos, function(id, permiso) {
-            $("#"nombreModulo+"-"+permiso.toLowerCase()).val(rol.idPermisos);
-        });
+       
 
         fila=fila + "<td>" + crear+ "</td>"+"<td>" + modificar+ "</td>"+"<td>" + ver+ "</td>"+"<td>" + eliminar+ "</td>";
         console.log(fila);
         $('#'+nombreModulo+'-tr').append(fila);
-
+        // $.each(permiso.permisos, function(id, permiso) {
+        //     $("#"+nombreModulo+"-"+permiso.nombrePermiso.toLowerCase()).val(permiso.idPermisos);
+        // });
         $.each(permiso.permisos, function(id, permiso) {
-            var id =nombreModulo+"-"+permiso.toLowerCase();
+            var id =nombreModulo+"-"+permiso.nombrePermiso.toLowerCase();
+            $("#"+id).val(permiso.idPermisos);
             /*var idModificar=id+"-"+permiso.idPermisos+"-modificar";
             var idVer=id+"-"+permiso.idPermisos+"-ver";
             var idEliminar=id+"-"+permiso.idPermisos+"-eliminar";*/
