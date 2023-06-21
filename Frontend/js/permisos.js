@@ -65,47 +65,22 @@ var nuevoData=agruparPorModulo(data.permisos);
         $('#tablaRolYPermisos > tbody').append('<tr id="'+nombreModulo+'-tr"></tr>');
 
        var fila= "<td>" + permiso.nombreModulo + "</td>";
-       var crear = "<input name='permiso' class='form-check-input' type='checkbox' id='"+nombreModulo+"-crear' {value}>";
-       var modificar = "<input name='permiso' class='form-check-input' type='checkbox' id='"+nombreModulo+"-editar' {value}>";
-       var ver = "<input name='permiso' class='form-check-input' type='checkbox' id='"+nombreModulo+"-ver' {value}>"
-       var eliminar = "<input name='permiso' class='form-check-input' type='checkbox' id='"+nombreModulo+"-eliminar'{value} >";
+       var crear = "<input name='permiso' class='form-check-input' type='checkbox' id='"+nombreModulo+"-crear'>";//id='"+idCrear+"' value='"+permiso.idPermisos+"'
+       var modificar = "<input name='permiso' class='form-check-input' type='checkbox' id='"+nombreModulo+"-editar' >";//id='"+idModificar+"' value='"+permiso.idPermisos+"'
+       var ver = "<input name='permiso' class='form-check-input' type='checkbox' id='"+nombreModulo+"-ver' >";// id='"+idVer+"' value='"+permiso.idPermisos+"'
+       var eliminar = "<input name='permiso' class='form-check-input' type='checkbox' id='"+nombreModulo+"-eliminar' >";// id='"+idEliminar+"' value='"+permiso.idPermisos+"'
 
-       
-
-        //fila=fila + "<td>" + crear+ "</td>"+"<td>" + modificar+ "</td>"+"<td>" + ver+ "</td>"+"<td>" + eliminar+ "</td>";
-       // $('#'+nombreModulo+'-tr').append(fila);
+        fila=fila + "<td>" + crear+ "</td>"+"<td>" + modificar+ "</td>"+"<td>" + ver+ "</td>"+"<td>" + eliminar+ "</td>";
+        $('#'+nombreModulo+'-tr').append(fila);
         $.each(permiso.permisos, function(id, permiso) {
-           /* var id =nombreModulo+"-"+permiso.nombrePermiso.toLowerCase();
+            var id =nombreModulo+"-"+permiso.nombrePermiso.toLowerCase();
+            // $('#'+id).val(permiso.idPermisos);
             var $checkbox= $('#'+id);
             $checkbox.attr('value', permiso.idPermisos);
 
             estaElPermisoActivo(permiso.nombrePermiso.toLowerCase(), 
              permiso.nombrePermiso.toLowerCase(),
-             $checkbox);*/
-
-             if (permiso.nombrePermiso.toLowerCase() === "crear"){
-                crear.replace("{value}", "value='"+permiso.idPermisos+"'");
-             } else if (permiso.nombrePermiso.toLowerCase() === "editar"){
-                 modificar.replace("{value}", "value='"+permiso.idPermisos+"'");
-             } else if (permiso.nombrePermiso.toLowerCase() === "ver"){
-                              ver.replace("{value}", "value='"+permiso.idPermisos+"'");
-                          }
-             } else if (permiso.nombrePermiso.toLowerCase() === "eliminar"){
-                              eliminar.replace("{value}", "value='"+permiso.idPermisos+"'");
-                          }
-
-        });
-
-        fila=fila + "<td>" + crear+ "</td>"+"<td>" + modificar+ "</td>"+"<td>" + ver+ "</td>"+"<td>" + eliminar+ "</td>";
-        $('#'+nombreModulo+'-tr').append(fila);
-        $.each(permiso.permisos, function(id, permiso) {
-                    var id =nombreModulo+"-"+permiso.nombrePermiso.toLowerCase();
-                    var $checkbox= $('#'+id);
-                    //$checkbox.attr('value', permiso.idPermisos);
-
-                    estaElPermisoActivo(permiso.nombrePermiso.toLowerCase(),
-                     permiso.nombrePermiso.toLowerCase(),
-                     $checkbox);
+             $checkbox);
         });
     });
  }
