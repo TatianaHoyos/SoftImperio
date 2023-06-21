@@ -6,6 +6,7 @@ import com.imperio.service.model.dto.comun.Response;
 import com.imperio.service.model.dto.rol.RolRequest;
 import com.imperio.service.model.entity.ProductoEntity;
 import com.imperio.service.model.entity.RolEntity;
+import com.imperio.service.repository.PermisosService;
 import com.imperio.service.repository.RolService;
 import com.imperio.service.util.FileUploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,9 @@ import org.springframework.web.bind.annotation.*;
 public class ControllerPermisos {
     @Autowired
     private RolService rolService;
+
+    @Autowired
+    private PermisosService permisosService;
 
     @GetMapping(value = "api/roles", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> obtenerRoles(){
@@ -75,5 +79,9 @@ public class ControllerPermisos {
         }
 
 
+    }
+    @GetMapping(value = "api/permisos", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> obtenerPermisos(){
+        return ResponseEntity.ok(permisosService.obtenerPermisos());
     }
 }

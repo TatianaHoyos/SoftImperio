@@ -2,6 +2,7 @@ $(document).ready(function () {
     $("#resultadoCrear").hide();
     $("#resultadoCrearConfig").hide();
     consultarRoles();
+    consultarPermiso();
 });
 
 function consultarRoles() {
@@ -278,4 +279,29 @@ function onErrorCrearConfiguracion(error){
     mensaje.show();
     mensaje.text(error.message);
 }
+function consultarPermiso() {
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/api/permisos",
+        "headers": {
+            "Content-Type": "application/json"
+          },
+        success: onExitoPermisos,
+        error: onErrorPermisos
+    });
+}
 
+function onExitoPermisos(data) {
+    console.log("consulta de permisos");
+    console.log(data);
+
+    // mostrarTablaPermmisos(data);
+    // mostrarListaRolesyPermisos(data);
+
+
+}
+function onErrorPermisos(error) {
+    console.log("consulta de permisos");
+    console.log(error);
+
+}
