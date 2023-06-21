@@ -15,4 +15,11 @@ public class RolService {
     public List<RolEntity> obtenerRoles(){
         return rolRepository.findAll();
     }
+    public  RolEntity guardarRol( RolEntity rol){
+        return rolRepository.save(rol);
+    }
+    public void eliminarRol(int idRol){
+       //var rol = rolRepository.findById(idRol);
+       rolRepository.deleteById(idRol);
+    }
 }

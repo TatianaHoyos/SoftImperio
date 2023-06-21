@@ -126,7 +126,7 @@ function actualizarRol(idRol){
 
     $.ajax({
      type: "PUT",
-     url:"http://localhost:8080/api/rol/actualizar"+idRol,
+     url:"http://localhost:8080/api/rol/actualizar/"+idRol,
      "headers": {
        "Content-Type": "application/json"
      },
@@ -189,7 +189,7 @@ Swal.fire({
 }
 function EditarRol(rol){
     mostrarFormularioActualizar();
-    $("#estado option[value='"+ rol.estado +"']").attr("selected", true);
+    $("#estado option[value="+ rol.estado +"]").attr("selected", true);
     $("#nombreRol").val(rol.nombreRol);
     var btnform = $("#btn-form");
     btnform.click(function(){ actualizarRol(rol.idRol); });

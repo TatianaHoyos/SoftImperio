@@ -22,7 +22,7 @@ public class RolEntity {
     @Column(nullable = false, name = "Estado")
     private String estado;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE})
     @JoinTable(name = "configuracion",
     joinColumns = {
             @JoinColumn(name = "IdRol", referencedColumnName = "IdRol")

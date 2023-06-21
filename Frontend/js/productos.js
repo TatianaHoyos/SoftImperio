@@ -139,8 +139,8 @@ function EliminarProducto(Producto){
 
 function EditarProducto(producto){
     mostrarFormularioActualizar();
-    $("#categoria option[value='"+ producto.idProductos +"']").attr("selected", true);
-    $("#proveedor option[value='"+ producto.idProveedores +"']").attr("selected", true);
+    $("#categoria option[value="+ producto.idProductos +"]").attr("selected", true);
+    $("#proveedor option[value="+ producto.idProveedores +"]").attr("selected", true);
     $("#nombre").val(producto.nombreProducto);
     $("#referencia").val(producto.referenciaProducto);
     $("#precio").val(producto.precioProducto);
