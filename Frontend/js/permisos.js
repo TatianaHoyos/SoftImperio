@@ -58,29 +58,28 @@ function mostrarTablaRoles(data) {
 
 function mostrarListaRolyPermisos(data) {
     $('#tablaRolYPermisos > tbody').empty();
-    // $('#tablaRolYPermisos > tbody').append("<form id='formGuardarConfiguracion'></form>");
 
     $.each(data.permisos, function(id, permiso) {
-        
-
-        var crear = "<input name='permiso' class='form-check-input' type='checkbox' id='permiso1' value='"+permiso.nombrePermiso+"' "+estaElPermisoActivo(permiso.nombrePermiso, "Crear")+">";
-        var modificar = "<input name='permiso' class='form-check-input' type='checkbox' id='permiso1' value='"+permiso.nombrePermiso+"' "+estaElPermisoActivo(permiso.nombrePermiso, "Modificar")+">";
-        var ver = "<input name='permiso' class='form-check-input' type='checkbox' id='permiso1' value='"+permiso.nombrePermiso+"' "+estaElPermisoActivo(permiso.nombrePermiso, "Ver")+">";
-        var eliminar = "<input name='permiso' class='form-check-input' type='checkbox' id='permiso1' value='"+permiso.nombrePermiso+"'  "+estaElPermisoActivo(permiso.nombrePermiso, "Eliminar")+">";
+        var crear = "<input name='permiso' class='form-check-input' type='checkbox' id='"+permiso.nombrePermiso+id+"' value='"+permiso.idPermiso+"' >";
+        var modificar = "<input name='permiso' class='form-check-input' type='checkbox' id='"+permiso.nombrePermiso+id+"' value='"+permiso.idPermiso+"' >";
+        var ver = "<input name='permiso' class='form-check-input' type='checkbox' id='"+permiso.nombrePermiso+id+"' value='"+permiso.idPermiso+"' >";
+        var eliminar = "<input name='permiso' class='form-check-input' type='checkbox' id='"+permiso.nombrePermiso+id+"' value='"+permiso.idPermiso+"' >";
 
         $('#tablaRolYPermisos > tbody').append('<tr><td>' + permiso.modulo + '</td><td>' + crear+'</td><td>' + modificar+
- 
         '</td><td>' + ver + '</td><td>' + eliminar + '</td></tr>');
+
+        estaElPermisoActivo(permiso.nombrePermiso, "Crear", $("#"+permiso.nombrePermiso+id));
+        estaElPermisoActivo(permiso.nombrePermiso, "Modificar", $("#"+permiso.nombrePermiso+id));
+        estaElPermisoActivo(permiso.nombrePermiso, "Ver", $("#"+permiso.nombrePermiso+id));
+        estaElPermisoActivo(permiso.nombrePermiso, "Eliminar", $("#"+permiso.nombrePermiso+id));
     });
  }
 
 
-function estaElPermisoActivo(permisos, permiso){
+function estaElPermisoActivo(permisos, permiso, checkbox){
     // let result = permisos.find((item) => item === permiso);
     if (permisos == permiso) {
-        return "checked";
-    } else {
-    return "";
+        checkbox.prop('checked', true);
     }
 }
 

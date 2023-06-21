@@ -90,6 +90,8 @@
                 <div class="form-group col-md-6">
                     <div id="resultadoCrearConfig" class="alert alert-danger" role="alert">Error</div>
                 </div>
+
+                <form id="formGuardarConfiguracion"  method="" action="">
                 <table id="tablaRolYPermisos" class="table table-dark table-striped table-striped mx-auto mt-3">
                     <thead class="text-center">
                     <tr>
@@ -107,7 +109,6 @@
                     </tr>
                     </thead>
                     <tbody class="text-center">
-                    <form id="formGuardarConfiguracion"  method="" action="">
                     <tr>
                         <td>Producto</td>
                         <td><input name="permiso" class="form-check-input" type="checkbox" id="permiso1" value="Crear"  checked></td>
@@ -115,9 +116,10 @@
                         <td><input name="permiso" class="form-check-input" type="checkbox" id="permiso3" value="Ver"></td>
                         <td><input name="permiso" class="form-check-input" type="checkbox" id="permiso4" value="Eliminar"></td>
                     </tr>
-                    </form>
+
                     </tbody>
                 </table>
+                </form>
             </div>
             <button  type="button" class="btn btn-primary col-md-5 form-control mb-3"
                      onclick="guardarConfiguracion()"><strong>Guardar configuración</strong>
