@@ -73,13 +73,15 @@ var nuevoData=agruparPorModulo(data.permisos);
        
 
         fila=fila + "<td>" + crear+ "</td>"+"<td>" + modificar+ "</td>"+"<td>" + ver+ "</td>"+"<td>" + eliminar+ "</td>";
-        console.log(fila);
         $('#'+nombreModulo+'-tr').append(fila);
            $.each(permiso.permisos, function(id, permiso) {
             var id =nombreModulo+"-"+permiso.nombrePermiso.toLowerCase();
-            $("#"+id).val(permiso.idPermisos);
-          
-            estaElPermisoActivo(permiso.nombrePermiso.toLowerCase(), permiso.nombrePermiso.toLowerCase(),$('#'+id));
+            // $('#'+id).val(permiso.idPermisos);
+            var $checkbox= $('#'+id);
+            $checkbox.prop('value', permiso.idPermisos+"");
+
+            estaElPermisoActivo(permiso.nombrePermiso.toLowerCase(), 
+             permiso.nombrePermiso.toLowerCase(),$checkbox);
         });
     });
  }
@@ -104,13 +106,11 @@ var nuevoData=agruparPorModulo(data.permisos);
     });
     
     // return Object.values(resultado);
-
     return resultado;
   }
 
-
 function estaElPermisoActivo(permisos, permiso, checkbox){
-    // let result = permisos.find((item) => item === permiso);
+    
     if (permisos == permiso) {
         checkbox.prop('checked', true);
     }
