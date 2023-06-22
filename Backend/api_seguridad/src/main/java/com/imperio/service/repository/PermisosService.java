@@ -14,5 +14,8 @@ public class PermisosService {
 
     public List<PermisosEntity> obtenerPermisos(){
         return permisosRepository.findAll();
+
     }
+
+
 }

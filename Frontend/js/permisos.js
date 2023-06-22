@@ -61,7 +61,8 @@ function mostrarListaRolyPermisos(data) {
     $('#tablaRolYPermisos > tbody').empty();
     console.log(JSON.stringify(data))
     var nuevoData = agruparPorModulo(data.permisos);
-
+$("#idRol").val(data.idRol);
+$("#nombreRolTitulo").text(data.nombreRol);
 //Pintamos los permisos con la info consultada en la tabla permiso
     $.each(permisosCache, function(id, permiso) {
        var nombreModulo=permiso.nombreModulo;
@@ -88,6 +89,7 @@ function mostrarListaRolyPermisos(data) {
     });
 //Verificamos si están activos (asociados al rol)
     $.each(nuevoData, function(id, permiso) {
+        var nombreModulo=permiso.nombreModulo;
        $.each(permiso.permisos, function(id, permiso) {
            var id =nombreModulo+"-"+permiso.nombrePermiso.toLowerCase();
            var $checkbox= $('#'+id);
@@ -264,8 +266,8 @@ function guardarConfiguracion() {
     console.log(JSON.stringify(data));
 
     $.ajax({
-         type: "PUT",
-         url:"http://localhost:8080/api/configuracion/actualizar/"+idRol,
+         type: "Post",
+         url:"http://localhost:8080/api/configuracion/guardar",
          "headers": {
            "Content-Type": "application/json"
          },

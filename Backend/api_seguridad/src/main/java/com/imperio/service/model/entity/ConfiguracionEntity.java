@@ -17,9 +17,9 @@ public class ConfiguracionEntity {
     @Column(nullable = false, name = "IdPermisos")
     private Integer idPermisos;
 
-    @Column(nullable = false, name = "IdRol")
-    private Integer IdRol  ;
+    @Column(nullable = false, name = "idRol")
+    private Integer idRol  ;
 
     @Column(nullable = false, name = "Estado")
-    private Integer estado  ;
+    private String estado  ;
 }

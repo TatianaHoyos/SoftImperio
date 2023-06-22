@@ -3,9 +3,12 @@ package com.imperio.service.controlador;
 import com.imperio.service.model.dto.LoginRequest;
 import com.imperio.service.model.dto.LoginResponse;
 import com.imperio.service.model.dto.comun.Response;
+import com.imperio.service.model.dto.rol.ConfiguracionRequest;
 import com.imperio.service.model.dto.rol.RolRequest;
+import com.imperio.service.model.entity.ConfiguracionEntity;
 import com.imperio.service.model.entity.ProductoEntity;
 import com.imperio.service.model.entity.RolEntity;
+import com.imperio.service.repository.ConfiguracionService;
 import com.imperio.service.repository.PermisosService;
 import com.imperio.service.repository.RolService;
 import com.imperio.service.util.FileUploadUtil;
@@ -24,6 +27,8 @@ public class ControllerPermisos {
 
     @Autowired
     private PermisosService permisosService;
+    @Autowired
+    private ConfiguracionService configuracionService;
 
     @GetMapping(value = "api/roles", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> obtenerRoles(){
@@ -83,5 +88,43 @@ public class ControllerPermisos {
     @GetMapping(value = "api/permisos", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> obtenerPermisos(){
         return ResponseEntity.ok(permisosService.obtenerPermisos());
+    }
+
+    @PostMapping (value = "api/configuracion/guardar", produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> guardarConfiguracion(@RequestBody ConfiguracionRequest configuracion) {
+        try {
+            configuracionService.eliminarConfiguracion(configuracion.getIdRol());
+            for (int i=0; i<configuracion.getPermisos().size();i++){
+                var configuracionEntity = new ConfiguracionEntity();
+                configuracionEntity.setIdRol(configuracion.getIdRol());
+                configuracionEntity.setIdPermisos (configuracion.getPermisos().get(i));
+                configuracionEntity.setEstado("Activo");
+                var resultadoGuardar = configuracionService.guardarConfiguracion(configuracionEntity);
+        if (resultadoGuardar!=null){
+            System.out.println("se guardo con exito");
+        }else {
+            System.out.println("no se guardo");
+        }
+             /*   var configuraciondb=configuracionService.obtenerConfiguracionPorIdRolYIdPermisos
+                        (configuracion.getIdRol(),configuracion.getPermisos().get(i));
+                if (configuraciondb==null){
+                    var configuracionEntity = new ConfiguracionEntity();
+                    configuracionEntity.setIdRol(configuracion.getIdRol());
+                    configuracionEntity.setIdPermisos (configuracion.getPermisos().get(i));
+                    configuracionEntity.setEstado("Activo");
+                    var resultadoGuardar = configuracionService.guardarConfiguracion(configuracionEntity);
+
+                }else {
+
+                }*/
+
+            }
+            return  ResponseEntity.ok(new Response("exito", "se guardo el permiso con exito"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new Response("error", "Ha ocurrido un error"));
+        }
     }
 }
