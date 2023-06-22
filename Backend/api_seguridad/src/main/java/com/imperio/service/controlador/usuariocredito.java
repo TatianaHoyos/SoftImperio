@@ -6,10 +6,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class permisosback {
+public class usuariocredito {
     private Connection connection;
 
-    public permisosback() {
+    public usuariocredito() {
         // Configurar la conexión a la base de datos en este caso mysql no xampp
         String url = "jdbc:mysql://localhost:3306/soft_imperiof";
         String username = "root";
@@ -100,7 +100,7 @@ public class permisosback {
     }
     //llamada  de metodos con paso de parametros
     public static void main(String[] args) {
-        permisosback crud = new permisosback();
+        usuariocredito crud = new usuariocredito();
 
         // Ejemplos de uso
         // crud.crearRegistro("52568987", "Andrey Guzman", "3125468974");
@@ -109,3 +109,17 @@ public class permisosback {
         // crud.eliminarRegistro(7);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
