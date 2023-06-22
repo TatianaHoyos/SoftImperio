@@ -1,6 +1,8 @@
 package com.imperio.service.controlador;
 
 import com.imperio.service.model.dto.*;
+import com.imperio.service.model.dto.comun.Response;
+import com.imperio.service.model.dto.usuario.UsuarioRequest;
 import com.imperio.service.model.entity.UsuarioEntity;
 import com.imperio.service.repository.RolService;
 import com.imperio.service.repository.UsuarioService;
@@ -20,19 +22,18 @@ public class ControllerLogin {
     @Autowired
     private UsuarioService usuarioService;
 
-    @Autowired
-    private RolService rolService;
+
 
     private String urlServer = "http:localhost:8080/";
 
     @PostMapping(value = "api/usuario/crear", produces = MediaType.APPLICATION_JSON_VALUE,
-    consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> crearUsuario(UsuarioRequest usuario,
-                                          @RequestParam("foto") MultipartFile multipartFile){
+                                          @RequestParam("foto") MultipartFile multipartFile) {
         try {
             String uploadDir = "user-photos/";
             String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-            fileName = usuario.getDocumento()  +"-"+ fileName;
+            fileName = usuario.getDocumento() + "-" + fileName;
 
             var usuarioEntity = new UsuarioEntity();
             usuarioEntity.setNombre(usuario.getNombre());
@@ -59,28 +60,25 @@ public class ControllerLogin {
                     .body(new Response("error", "Ha ocurrido un error"));
         }
     }
+
     @PostMapping(value = "api/login", produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> login(@RequestBody LoginRequest usuario){
+    public ResponseEntity<?> login(@RequestBody LoginRequest usuario) {
         System.out.println("usuario");
 
         var usuariodb = usuarioService.obtenerUsuario(usuario.getCorreo(), usuario.getPassword());
-        if (usuariodb != null ){
+        if (usuariodb != null) {
             LoginResponse response = new LoginResponse();
             response.setDocumento(usuariodb.getDocumento());
             response.setNombre(usuariodb.getNombre());
-            response.setFoto(urlServer+usuariodb.getFoto());
+            response.setFoto(urlServer + usuariodb.getFoto());
             //falta agregar el rol
             response.setRol(usuariodb.getIdRol());
             return ResponseEntity.ok(response);
-        }else {
+        } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(new Response("error", "no esta autorizado"));
         }
     }
 
-    @GetMapping(value = "api/roles", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> obtenerRoles(){
-        return ResponseEntity.ok(rolService.obtenerRoles());
-    }
 }

@@ -24,6 +24,112 @@
 </head>
 
 <body>
+<!--Modal formulario-->
+<div class="modal fade" id="modalRoles" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div  style="background-color: rgba(0, 0, 0, 0.869);">
+                <form id="formCrearRol" enctype="multipart/form-data"  method="" action="">
+                    <h4 id="tituloFomularioRol" class="mt-3  text-white  text-center">Crear Rol</h4>
+                    <div class="form-row justify-content-center">
+                        <div class="form-group col-md-6">
+                            <div id="resultadoCrear" class="alert alert-danger" role="alert">Error</div>
+                        </div>
+                    </div>
+
+                    <div class="form-row justify-content-center">
+                        <div class="form-group col-md-6">
+                            <label for="nombreRol" class="text-white">
+                                Nombre del Rol
+                            </label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" style="background-color: #e5c850"><i class="far fa-envelope"></i></span>
+                                </div>
+                                <input type="text" class="form-control" id="nombreRol" name="nombreRol" placeholder="Nombre Rol">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row justify-content-center">
+                        <div class="form-group col-md-6">
+                            <label for="estado" class="text-white">
+                                Seleccione un estado
+                            </label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" style="background-color: #e5c850"><i class="fas fa-user"></i></span>
+                                </div>
+                                <select id="estado" name="estado" class="form-control">
+                                    <option value="Activo">Activo</option>
+                                    <option value="Inactivo">Inactivo</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group text-center mt-3">
+                        <input type="hidden" name="operacion" id="operacionRol" value="">
+                        <input type="hidden" name="operacion" id="idRolActualizar" value="">
+                        <button id="btn-form" onclick="eventoFormularioRol()" type="button"
+                                class="col-md-2 form-control btn"><strong>Guardar</strong></button>
+                                
+                        <button type="button" data-dismiss="modal" class="col-md-2 form-control btn"><strong>Cancelar</strong></button>
+                        <!-- <p class="mt-4">¿Sin cuenta? <a id="login" href="v_registro.php">Registrate</a></p> -->
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Modal tabla roles y permisos-->
+<div class="modal fade" id="modalRolesYPermisos" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content row justify-content-center align-items-center" style="background-color: rgba(0, 0, 0, 0.869);">
+            <div class="col-12">
+                <div class="form-group col-md-6">
+                    <div id="resultadoCrearConfig" class="alert alert-danger" role="alert">Error</div>
+                </div>
+
+                <form id="formGuardarConfiguracion"  method="" action="">
+                <table id="tablaRolYPermisos" class="table table-dark table-striped table-striped mx-auto mt-3">
+                    <thead class="text-center">
+                    <tr>
+                        <th><input id="idRol" type="hidden" value=""></th>
+                        <th></th>
+                        <th id="nombreRolTitulo" class="text-center">Administrador</th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <th>Modulo</th>
+                        <th>Crear</th>
+                        <th>Modificar</th>
+                        <th>Ver</th>
+                        <th>Eliminar</th>
+                    </tr>
+                    </thead>
+                    <tbody class="text-center">
+                    <tr>
+                        <td>Producto</td>
+                        <td><input name="permiso" class="form-check-input" type="checkbox" id="permiso1" value="Crear"  checked></td>
+                        <td><input name="permiso" class="form-check-input" type="checkbox" id="permiso2" value="Modificar"></td>
+                        <td><input name="permiso" class="form-check-input" type="checkbox" id="permiso3" value="Ver"></td>
+                        <td><input name="permiso" class="form-check-input" type="checkbox" id="permiso4" value="Eliminar"></td>
+                    </tr>
+
+                    </tbody>
+                </table>
+                </form>
+            </div>
+            <button  type="button" class="btn btn-primary col-md-5 form-control mb-3"
+                     onclick="guardarConfiguracion()"><strong>Guardar configuración</strong>
+            </button>
+        </div>
+    </div>
+</div>
+
     <div class="logo-container">
         <img src="img/logo.png" alt="Logo" class="Logo" height="170">
     </div>
@@ -61,28 +167,51 @@
             <a class="nav-link logout-link text-dark" href="iniciosesion.html"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
         </div>
     </nav>
-</body>
 
-<div>
-    <div class="container  p-2 g-col-6"><i class="fa fa-xing" aria-hidden="true"></i>
-   
-        <h1 class="Titulo">Permisos</h1>
-        <h3 class="subtitulo">Asignación de permisos</h3>
+    <div class="container">
+        <h1 class="Titulo">Roles</h1>
+        <!--Botones - crear, reporte -->
+        <div class="row">
+            <div class="col col-lg-2"></div>
+            <div class="col ml-3">
+            <div class="form-group ">
+                <button  type="button" class="btn btn-primary col-md-5 form-control btn mt-5 mb-2"
+            onclick="mostrarFormularioCrear()" data-toggle="modal" data-target="#modalRoles"><strong>Crear</strong>
+                </button>
+                  <button type="button" class="col-md-5 form-control btn mt-5 mb-2" ><strong>Reporte</strong>
+                  </button>
+            </div>
+            </div>
+            <div class="col"></div>
+        </div>
+        <!--Tabla roles-->
+        <div class="row justify-content-md-center">
+                <table id="tablaRol" class="table table-dark table-striped table-striped">
+                    <thead class="text-center">
+                        <tr>
+                            <th>Rol </th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center">
+                    </tbody>
+                </table>
+        </div>
 
-        <div class="AsignarPermisos">
-            <input type="text" id="searchInput" placeholder="Ingrese el ID del usuario">
-            <button type="button" class="btn btn-secondary">Mostrar Permisos</button>
-            <button type="button" class="btn btn-secondary">Guardar</button>
-
-            <ul id="results"></ul>
-            <script src="script.js"></script>
-            <div class="row">
-              <div class="col-md-4">
-                <div class="form-group">
-                  <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="permiso1" name="permiso1">
-                    <label class="custom-control-label" for="permiso1"><strong>Ver Productos</strong></label>
-                  </div>
+        <!--Roles y sus permisos-->
+        <h1 class="Titulo">Roles y sus permisos</h1>
+        <div class="row justify-content-md-center">
+            <div id="contentRoles">
+                <div class="card lista-Roles">
+                    <div class="card-header">
+                        rol
+                    </div>
+                    <div class="card-body lista-permisos">
+                        <ul>
+                            <li>permiso</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
               
@@ -92,8 +221,242 @@
                     <input type="checkbox" class="custom-control-input" id="permiso2" name="permiso2">
                     <label class="custom-control-label" for="permiso2"><strong>Crear Productos</strong></label>
                   </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                      <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="permiso2" name="permiso2">
+                        <label class="custom-control-label" for="permiso2"><strong>Agregar Productos</strong></label>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                      <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="permiso3" name="permiso3">
+                        <label class="custom-control-label" for="permiso3"><strong>Eliminar Productos</strong></label>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                      <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="permiso4" name="permiso4">
+                        <label class="custom-control-label" for="permiso4"><strong>Inactivo/Activo</strong></label>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                      <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="permiso5" name="permiso5">
+                        <label class="custom-control-label" for="permiso5"><strong>Inactivo/Activo</strong></label>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                      <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="permiso6" name="permiso6">
+                        <label class="custom-control-label" for="permiso6"><strong>Inactivo/Activo</strong></label>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                      <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="permiso7" name="permiso7">
+                        <label class="custom-control-label" for="permiso7"><strong>Inactivo/Activo</strong></label>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                      <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="permiso8" name="permiso8">
+                        <label class="custom-control-label" for="permiso8"><strong>Inactivo/Activo</strong></label>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                      <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="permiso9" name="permiso9">
+                        <label class="custom-control-label" for="permiso9"><strong>Inactivo/Activo</strong></label>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                      <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="permiso10" name="permiso10">
+                        <label class="custom-control-label" for="permiso10"><strong>Inactivo/Activo</strong></label>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                      <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="permiso11" name="permiso11">
+                        <label class="custom-control-label" for="permiso11"><strong>Inactivo/Activo</strong></label>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                      <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="permiso12" name="permiso12">
+                        <label class="custom-control-label" for="permiso12"><strong>Inactivo/Activo</strong></label>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                      <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="permiso13" name="permiso13">
+                        <label class="custom-control-label" for="permiso13"><strong>Inactivo/Activo</strong></label>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                      <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="permiso14" name="permiso14">
+                        <label class="custom-control-label" for="permiso14"><strong>Inactivo/Activo</strong></label>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                      <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="permiso15" name="permiso15">
+                        <label class="custom-control-label" for="permiso15"><strong>Inactivo/Activo</strong></label>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                      <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="permiso16" name="permiso16">
+                        <label class="custom-control-label" for="permiso16"><strong>Inactivo/Activo</strong></label>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                      <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="permiso17" name="permiso17">
+                        <label class="custom-control-label" for="permiso17"><strong>Inactivo/Activo</strong></label>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                      <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="permiso18" name="permiso18">
+                        <label class="custom-control-label" for="permiso18"><strong>Inactivo/Activo</strong></label>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                      <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="permiso19" name="permiso19">
+                        <label class="custom-control-label" for="permiso19"><strong>Inactivo/Activo</strong></label>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                      <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="permiso20" name="permiso20">
+                        <label class="custom-control-label" for="permiso20"><strong>Inactivo/Activo</strong></label>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                      <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="permiso21" name="permiso21">
+                        <label class="custom-control-label" for="permiso21"><strong>Inactivo/Activo</strong></label>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                      <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="permiso22" name="permiso22">
+                        <label class="custom-control-label" for="permiso22"><strong>Inactivo/Activo</strong></label>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                      <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="permiso23" name="permiso23">
+                        <label class="custom-control-label" for="permiso23"><strong>Inactivo/Activo</strong></label>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                      <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="permiso24" name="permiso24">
+                        <label class="custom-control-label" for="permiso24"><strong>Inactivo/Activo</strong></label>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                      <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="permiso25" name="permiso25">
+                        <label class="custom-control-label" for="permiso25"><strong>Inactivo/Activo</strong></label>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                      <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="permiso26" name="permiso26">
+                        <label class="custom-control-label" for="permiso26"><strong>Inactivo/Activo</strong></label>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                      <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="permiso27" name="permiso27">
+                        <label class="custom-control-label" for="permiso27"><strong>Inactivo/Activo</strong></label>
+                      </div>
+                    </div>
                 </div>
             </div>
+<<<<<<< HEAD
               
             <div class="col-md-4">
                 <div class="form-group">
@@ -324,6 +687,15 @@
       <button type="submit" class="btn btn-primary">Agregar Rol</button>
       <button type="submit" class="btn btn-primary">BackupBD</button>
 
+=======
+            </div>
+
+          <button type="submit" class="btn btn-primary">Agregar Rol</button>
+          <button type="submit" class="btn btn-primary">BackupBD</button>
+        </div>
+        -->
+    </div>
+>>>>>>> ef10b8c30bc7c34b35d9c66ee2f78f04de56a92f
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -331,8 +703,9 @@
 <script src="https://code.jquery.com/jquery-3.6.1.min.js"
   integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
 <script src="js/validaciones.js"></script>
+
 <script src="js/funciones.js"></script>
-<script src="js/registroColaborador.js"></script>
+<script src="js/permisos.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
   integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
   crossorigin="anonymous"></script>

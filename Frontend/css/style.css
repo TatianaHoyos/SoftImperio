@@ -153,7 +153,39 @@ body{
   background-color: #090909 !important;
   color: #fff;
 }
+.card-header{
+  background-color: #262525 !important;
+  color: #fff;
+}
+.card-body{
+  background-color: #3a3a3a !important;
+  color: #fff;
+}
+
 .btn-secondary{
   background-color: #e5c850;
   color: #090909;
+}
+.swal2-modal {
+  background-color: #1c1c1c;
+   
+}
+.swal2-title {
+  color: white !important;
+}
+.swal2-label {
+  color: white !important;
+}
+.swal2-popup .swal2-actions .swal2-confirm {
+  background-color: #e5c850;
+  font-weight: bold;
+  color: black;
+
+}
+
+.swal2-popup .swal2-actions .swal2-cancel {
+  background-color: #e5c850;
+  font-weight: bold;
+  color: black;
+ 
 }

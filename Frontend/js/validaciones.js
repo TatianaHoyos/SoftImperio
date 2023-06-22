@@ -65,6 +65,20 @@ function validarEmail(e) {
     }
     //return false;
 }
+function validarEmail(e) {
+    const emailMensaje = $('#emailMensaje');
+    const email = $('#email').val();
+    emailMensaje.text('');
+  
+    if (esEmailValido(email)) {
+        emailMensaje.text('correo valido');
+        emailMensaje.css('color', 'green');
+    } else {
+        emailMensaje.text('el correo no es valido');
+        emailMensaje.css('color', 'red');
+    }
+    //return false;
+}
 
 function validarCampoVacio(longitudCampo,mensaje) {
     if(longitudCampo <1)
