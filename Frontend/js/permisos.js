@@ -58,6 +58,7 @@ function mostrarTablaRoles(data) {
 }
 
 function mostrarListaRolyPermisos(data) {
+    $("#resultadoCrearConfig").hide();
     $('#tablaRolYPermisos > tbody').empty();
     console.log(JSON.stringify(data))
     var nuevoData = agruparPorModulo(data.permisos);
@@ -138,7 +139,10 @@ function mostrarFormularioCrear(){
     titulo.text("Crear un nuevo rol");
     var btnform = $("#btn-form");
     btnform.text("Guardar");
-    btnform.click(crearRol);
+   //btnform.click(crearRol);
+   $("#operacionRol").val("crearRol");
+   $("#idRolActualizar").val("");
+  // btnform.click(function(){ crearRol(); });
 }
 function mostrarFormularioActualizar(){
     var titulo = $("#tituloFomularioRol");
@@ -146,6 +150,15 @@ function mostrarFormularioActualizar(){
     var btnform = $("#btn-form");
     btnform.text("Actualizar");
    
+}
+function eventoFormularioRol(){
+    var operacion=$("#operacionRol").val();
+    if(operacion=="crearRol"){
+        crearRol();
+    }else if(operacion=="actualizarRol"){
+        var idRol=$("#idRolActualizar").val();
+        actualizarRol(idRol);
+    }
 }
 function crearRol(){
     console.log("crear rol");
@@ -242,8 +255,10 @@ function EditarRol(rol){
     mostrarFormularioActualizar();
     $("#estado option[value="+ rol.estado +"]").attr("selected", true);
     $("#nombreRol").val(rol.nombreRol);
-    var btnform = $("#btn-form");
-    btnform.click(function(){ actualizarRol(rol.idRol); });
+    $("#operacionRol").val("actualizarRol");
+    $("#idRolActualizar").val(rol.idRol);
+    // var btnform = $("#btn-form");
+    // btnform.click(function(){ actualizarRol(rol.idRol); });
 }
 
 function guardarConfiguracion() {

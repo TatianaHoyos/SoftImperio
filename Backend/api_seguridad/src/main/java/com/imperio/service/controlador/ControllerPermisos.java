@@ -49,6 +49,7 @@ public class ControllerPermisos {
                 return ResponseEntity.ok(new Response("exito", "se creo el rol con exito"));
             }
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new Response("error", "Ha ocurrido un error"));
         }
@@ -61,6 +62,8 @@ public class ControllerPermisos {
             rolEntity.setIdRol(id);
             rolEntity.setNombreRol (rol.getNombreRol());
             rolEntity.setEstado(rol.getEstado());
+            var rolConsulta=rolService.obtenerRolesPorId(id);
+            rolEntity.setPermisos(rolConsulta.getPermisos());
             var roldb = rolService.guardarRol(rolEntity);
             if (roldb == null) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
