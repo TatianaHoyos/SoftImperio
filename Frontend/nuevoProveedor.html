@@ -33,7 +33,7 @@
                     <a class="nav-link" href="Existencias.html"><i class="fas fa-box-open"></i> Existencias</a>
                 </li>
                 <li class="nav-item menu-item">
-                    <a class="nav-link" href="#"><i class="fas fa-users"></i> Usuarios</a>
+                    <a class="nav-link" href="nuestrosUsuarios.html"><i class="fas fa-users"></i> Usuarios</a>
                 </li>
                 <li class="nav-item menu-item">
                     <a class="nav-link" href="ventas.html"><i class="fas fa-chart-bar"></i> Ventas</a>
@@ -42,19 +42,19 @@
                     <a class="nav-link" href="compras.html"><i class="fas fa-shopping-cart"></i> Compras</a>
                 </li>
                 <li class="nav-item menu-item">
-                    <a class="nav-link" href="#"><i class="fas fa-truck"></i> Proveedores</a>
+                    <a class="nav-link" href="nuevoProveedor.html"><i class="fas fa-truck"></i> Proveedores</a>
                 </li>
                 <li class="nav-item menu-item">
-                    <a class="nav-link" href="#"><i class="fas fa-cash-register"></i> Punto de venta</a>
+                    <a class="nav-link" href="puntomesa.html"><i class="fas fa-cash-register"></i> Punto de venta</a>
                 </li>
                 <li class="nav-item menu-item">
                     <a class="nav-link" href="creditos.html"><i class="fas fa-money-check-alt"></i> Créditos</a>
                 </li>
                 <li class="nav-item menu-item">
-                    <a class="nav-link" href="#"><i class="fas fa-user-lock"></i> Permisos</a>
+                    <a class="nav-link" href="Permisos.html"><i class="fas fa-user-lock"></i> Permisos</a>
                 </li>
             </ul>
-            <a class="nav-link logout-link text-dark" href="#"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
+            <a class="nav-link logout-link text-dark" href="iniciosesion.html"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
         </div>
     </nav>
 </div>
@@ -73,7 +73,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" style="background-color: #e5c850"><i class="fas fa-user"></i></span>
                             </div>
-                            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre de proveedor">
+                            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre de proveedor" onkeypress="return sololetras(event)">
                         </div>
                     </div>
                
@@ -91,7 +91,7 @@
                             <div class="input-group-prepend">
                             <span class="input-group-text" style="background-color: #e5c850"><i class="far fa-envelope"></i></span>
                             </div>
-                            <input type="email" class="form-control" id="email" name="email" placeholder="Email"onkeypress="return validarEmail(event)">                
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Email" onkeypress="return validarEmail(event)">                
                         </div>   
                     </div>
                     <div class="form-group col-md-4">
@@ -99,7 +99,7 @@
                             <div class="input-group-prepend">
                             <span class="input-group-text" style="background-color: #e5c850"><i class="fas fa-phone"></i></span>
                             </div>
-                            <input type="tel" class="form-control" id="telefono" name="telefono" placeholder="Teléfono de colaborador">
+                            <input type="tel" class="form-control" id="telefono" name="telefono" placeholder="Teléfono de colaborador" onkeypress="return validarNumero(event)">
                         </div>
                     </div>
                     <div class="form-group col-md-4">
@@ -114,11 +114,38 @@
                         <input type="hidden" name="operacion" value="login">
                         <button type="button" onclick="crearUsuario()"
                         class="col-md-2 form-control btn"><strong>Guardar</strong></button>
-                        <button type="button" onclick="recuperar()" class="col-md-2 form-control btn"><strong>Cancelar</strong></button>
+                        <button type="button" onclick="recuperar()"
+                         class="col-md-2 form-control btn"><strong>Cancelar</strong></button>
                         <!-- <p class="mt-4">¿Sin cuenta? <a id="login" href="v_registro.php">Registrate</a></p> -->
                     </div>        
         </center>
+
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"
+          integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+          <script src="js/validaciones.js"></script>
+    <script src="js/funciones.js"></script>
+          <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
     </form>
-</div>                 
+</div>       
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"
+          integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+          <script src="js/validaciones.js"></script>
+    <script src="js/funciones.js"></script>
+          <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>          
 
                 

@@ -18,7 +18,7 @@ public class RolEntity {
     @Column(nullable = false, name = "NombreRol")
     private String nombreRol;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    /*@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "configuracion",
     joinColumns = {
             @JoinColumn(name = "IdRol", referencedColumnName = "IdRol")
@@ -26,7 +26,8 @@ public class RolEntity {
     inverseJoinColumns = {
             @JoinColumn(name = "IdPermiso", referencedColumnName = "IdPermiso")
     })
-    private Set<PermisosEntity> permisos;
+    private Set<PermisosEntity> permisos;*/
+
 
     public String toString() {
         return "" +
