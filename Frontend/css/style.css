@@ -165,11 +165,23 @@ body{
 }
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 
 =======
 =======
 =======
+=======
+.card-header{
+  background-color: #262525 !important;
+  color: #fff;
+}
+.card-body{
+  background-color: #3a3a3a !important;
+  color: #fff;
+}
+
+>>>>>>> ef10b8c30bc7c34b35d9c66ee2f78f04de56a92f
 .btn-secondary{
   background-color: #e5c850;
   color: #090909;

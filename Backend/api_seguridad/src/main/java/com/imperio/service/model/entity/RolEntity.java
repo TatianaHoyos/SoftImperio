@@ -12,21 +12,25 @@ import java.util.Set;
 @Table(name="rol")
 public class RolEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "IdRol")
     private Integer idRol  ;
 
     @Column(nullable = false, name = "NombreRol")
     private String nombreRol;
 
-    /*@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @Column(nullable = false, name = "Estado")
+    private String estado;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE})
     @JoinTable(name = "configuracion",
     joinColumns = {
             @JoinColumn(name = "IdRol", referencedColumnName = "IdRol")
     },
     inverseJoinColumns = {
-            @JoinColumn(name = "IdPermiso", referencedColumnName = "IdPermiso")
+            @JoinColumn(name = "IdPermisos", referencedColumnName = "IdPermisos")
     })
-    private Set<PermisosEntity> permisos;*/
+    private Set<PermisosEntity> permisos;
 
 
     public String toString() {
