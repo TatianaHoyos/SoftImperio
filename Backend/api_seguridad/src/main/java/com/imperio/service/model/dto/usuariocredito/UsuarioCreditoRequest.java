@@ -1,4 +1,4 @@
-package com.imperio.service.model.dto.producto;
+package com.imperio.service.model.dto.usuariocredito;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
