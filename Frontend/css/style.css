@@ -81,11 +81,6 @@ body{
       border-radius: 50%;
       object-fit: cover;
     }
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
->>>>>>> 7cebe256f8c02812d7d269a55826bf94141c4d52
 
 
     .icolor i{
@@ -110,13 +105,6 @@ body{
       justify-content: center ;
     }
     
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> a99d173a1a8c0d6fe97a928bff100dfdc110801c
-=======
-
->>>>>>> 7cebe256f8c02812d7d269a55826bf94141c4d52
 .AsignarPermisos {
   
   font-weight: bold;
@@ -163,15 +151,8 @@ body{
   background-color: #090909 !important;
   color: #fff;
 }
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 
 
-=======
-=======
-=======
-=======
 .card-header{
   background-color: #262525 !important;
   color: #fff;
@@ -181,14 +162,14 @@ body{
   color: #fff;
 }
 
->>>>>>> ef10b8c30bc7c34b35d9c66ee2f78f04de56a92f
+
 .btn-secondary{
   background-color: #e5c850;
   color: #090909;
 }
 .swal2-modal {
   background-color: #1c1c1c;
-   
+
 }
 .swal2-title {
   color: white !important;
@@ -200,11 +181,9 @@ body{
   background-color: #e5c850;
   font-weight: bold;
   color: black;
->>>>>>> 7cebe256f8c02812d7d269a55826bf94141c4d52
 
 }
 
-<<<<<<< HEAD
 
     .table {
       text-align: center;
@@ -222,14 +201,9 @@ body{
       display: flex;
       justify-content: center ;
     }
->>>>>>> origin/Yeimar
 
->>>>>>> a99d173a1a8c0d6fe97a928bff100dfdc110801c
-=======
 .swal2-popup .swal2-actions .swal2-cancel {
   background-color: #e5c850;
   font-weight: bold;
   color: black;
- 
 }
->>>>>>> 7cebe256f8c02812d7d269a55826bf94141c4d52
