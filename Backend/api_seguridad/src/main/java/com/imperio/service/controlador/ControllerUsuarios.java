@@ -1,8 +1,8 @@
 package com.imperio.service.controlador;
 
 import com.imperio.service.model.dto.comun.Response;
-import com.imperio.service.model.dto.usuario.UsuarioRequest;
-import com.imperio.service.model.entity.UsuarioEntity;
+import com.imperio.service.model.dto.usuarios.UsuariosRequest;
+import com.imperio.service.model.entity.UsuariosEntity;
 import com.imperio.service.repository.UsuariosService;
 import com.imperio.service.util.FileUploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,12 +37,12 @@ public class ControllerUsuarios {
             usuariosEntity.setNombre(usuario.getNombre());
             usuariosEntity.setDocumento(usuario.getDocumento());
             usuariosEntity.setEmail(usuario.getEmail());
-            usuariosEntity.setTelefono(usuario.getTelefono())
+            usuariosEntity.setTelefono(usuario.getTelefono());
             usuariosEntity.setFoto(uploadDir + fileName);
-            usuariosEntity.setPassword(usuario.getPassword())
-            usuariosEntity.setEstado(usuario.getEstado());
+            usuariosEntity.setPassword(usuario.getDocumento());
+            usuariosEntity.setEstado("Activo");
 
-            var usuariodb = UsuariosService.crearUsuario(usuariosEntity);
+            var usuariodb = usuariosService.crearUsuario(usuariosEntity);
             //Se guarda la foto en una carpeta del servidor
             FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
 
@@ -61,7 +61,7 @@ public class ControllerUsuarios {
 
     @GetMapping(value = "api/usuarios/consultar", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> obtenerUsurios(){
-        return ResponseEntity.ok(usuariosService.obtenerUsurios());
+        return ResponseEntity.ok(usuariosService.obtenerUsuarios());
     }
 
     @DeleteMapping("api/usuarios/eliminar/{id}")
@@ -85,7 +85,7 @@ public class ControllerUsuarios {
         try {
             String uploadDir = "producto-photos/";
             String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-            fileName = usuario.getNombreProducto()  +"-"+ fileName;
+            fileName = usuario.getNombre()  +"-"+ fileName;
 
             var usuariosEntity = new UsuariosEntity();
             usuariosEntity.setIdUsuarios(id);
@@ -93,9 +93,9 @@ public class ControllerUsuarios {
             usuariosEntity.setNombre(usuario.getNombre());
             usuariosEntity.setDocumento(usuario.getDocumento());
             usuariosEntity.setEmail(usuario.getEmail());
-            usuariosEntity.setTelefono(usuario.getTelefono())
+            usuariosEntity.setTelefono(usuario.getTelefono());
             usuariosEntity.setFoto(uploadDir + fileName);
-            usuariosEntity.setPassword(usuario.getPassword())
+            usuariosEntity.setPassword(usuario.getPassword());
             usuariosEntity.setEstado(usuario.getEstado());
 
             var usuariodb = usuariosService.crearUsuario(usuariosEntity);

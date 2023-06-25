@@ -1,4 +1,4 @@
-package com.imperio.service.model.dto.producto;
+package com.imperio.service.model.dto.usuarios;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,12 +8,11 @@ import lombok.NoArgsConstructor;
 public class UsuariosRequest {
 
     private int idUsuarios;
-    private int idRol
+    private int idRol;
     private String nombre ;
     private String documento;
     private String email;
     private String telefono;
-    private String foto;
     private String Password;
     private String estado;
 

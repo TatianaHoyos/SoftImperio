@@ -1,4 +1,4 @@
-package com.imperio.service.model.dto.rol;
+package com.imperio.service.model.dto.usuarios;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
