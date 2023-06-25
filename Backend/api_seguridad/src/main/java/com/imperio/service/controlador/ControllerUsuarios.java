@@ -32,7 +32,6 @@ public class ControllerUsuarios {
 
 
             var usuariosEntity = new UsuariosEntity();
-            usuariosEntity.setIdUsuarios (usuario.getIdUsuarios());
             usuariosEntity.setIdRol(usuario.getIdRol());
             usuariosEntity.setNombre(usuario.getNombre());
             usuariosEntity.setDocumento(usuario.getDocumento());
@@ -95,7 +94,7 @@ public class ControllerUsuarios {
             usuariosEntity.setEmail(usuario.getEmail());
             usuariosEntity.setTelefono(usuario.getTelefono());
             usuariosEntity.setFoto(uploadDir + fileName);
-            usuariosEntity.setPassword(usuario.getPassword());
+            usuariosEntity.setPassword(usuario.getDocumento());
             usuariosEntity.setEstado(usuario.getEstado());
 
             var usuariodb = usuariosService.crearUsuario(usuariosEntity);
