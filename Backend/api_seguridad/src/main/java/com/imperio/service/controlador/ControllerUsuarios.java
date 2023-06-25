@@ -32,7 +32,6 @@ public class ControllerUsuarios {
 
 
             var usuariosEntity = new UsuariosEntity();
-            usuariosEntity.setIdUsuarios (usuario.getIdUsuarios());
             usuariosEntity.setIdRol(usuario.getIdRol());
             usuariosEntity.setNombre(usuario.getNombre());
             usuariosEntity.setDocumento(usuario.getDocumento());

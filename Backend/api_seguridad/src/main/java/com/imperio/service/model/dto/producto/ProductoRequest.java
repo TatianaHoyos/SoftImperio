@@ -14,3 +14,4 @@ public class ProductoRequest {
    private float precioProducto;
 
 }
+
