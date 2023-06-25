@@ -83,7 +83,6 @@ body{
     }
 
 
-
     .icolor i{
     color: aqua;
     }
@@ -106,7 +105,6 @@ body{
       justify-content: center ;
     }
     
-
 .AsignarPermisos {
   
   font-weight: bold;
@@ -153,6 +151,8 @@ body{
   background-color: #090909 !important;
   color: #fff;
 }
+
+
 .card-header{
   background-color: #262525 !important;
   color: #fff;
@@ -162,13 +162,14 @@ body{
   color: #fff;
 }
 
+
 .btn-secondary{
   background-color: #e5c850;
   color: #090909;
 }
 .swal2-modal {
   background-color: #1c1c1c;
-   
+
 }
 .swal2-title {
   color: white !important;
@@ -183,9 +184,26 @@ body{
 
 }
 
+
+    .table {
+      text-align: center;
+      width: 62% ;
+      height: 90% ;
+      
+    }
+
+    .btn-warning{
+      background-color: #e5c850;
+      margin-right: 10px;
+    }
+
+    .bott{
+      display: flex;
+      justify-content: center ;
+    }
+
 .swal2-popup .swal2-actions .swal2-cancel {
   background-color: #e5c850;
   font-weight: bold;
   color: black;
- 
 }
