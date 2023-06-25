@@ -12,7 +12,7 @@ public class UsuariosRequest {
     private String nombre ;
     private String documento;
     private String email;
-    private String telefono;g
+    private String telefono;
     private String Password;
     private String estado;
 
