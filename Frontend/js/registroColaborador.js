@@ -20,7 +20,7 @@ function consultarRoles() {
 
 function onExitoRoles(data) {
     console.log(data);
-    var $dropdown = $("#roles");
+    var $dropdown = $("#idRol");
     $.each(data, function () {
         $dropdown.append($("<option />").val(this.idRol).text(this.nombreRol));
     });
@@ -39,7 +39,7 @@ function mostrarRolesConPermisos(roles) {
       $('#contentRoles .lista-Roles').append('<div class="card-body lista-permisos"><ul></ul></div>')
      
       $.each(rol.permisos, function(index,permiso) {
-        $('#contentRoles .lista-Roles .lista-permisos ul').append('<li>'+permiso.nombrePermiso +'</li>')
+        $('#contentRoles .lista-Roles .lista-permisos ul').append('<li>'+permiso.nombrePermiso +" "+permiso.modulo+'</li>')
     });
     });
   
@@ -61,7 +61,7 @@ function crearUsuario(){
    $.ajax({
     type: "POST",
     enctype: 'multipart/form-data',
-    url:"http://localhost:8080/api/usuario/crear",
+    url:"http://localhost:8080/api/usuarios/crear",
     data: formData,
     processData: false,
     contentType: false,
@@ -87,6 +87,6 @@ function onErrorCrearUsuario(error){
     mensaje.addClass("alert-danger");
     mensaje.removeClass("alert-success");
     mensaje.show();
-    mensaje.text(data.message);
+    mensaje.text(error.message);
 }
 

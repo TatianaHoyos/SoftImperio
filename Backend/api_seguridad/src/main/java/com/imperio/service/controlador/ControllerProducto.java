@@ -2,9 +2,9 @@ package com.imperio.service.controlador;
 
 import com.imperio.service.model.dto.comun.Response;
 import com.imperio.service.model.dto.producto.ProductoRequest;
-import com.imperio.service.model.dto.usuario.UsuarioRequest;
+import com.imperio.service.model.dto.usuarios.UsuariosRequest;
 import com.imperio.service.model.entity.ProductoEntity;
-import com.imperio.service.model.entity.UsuarioEntity;
+import com.imperio.service.model.entity.UsuariosEntity;
 import com.imperio.service.repository.ProductoService;
 import com.imperio.service.util.FileUploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;

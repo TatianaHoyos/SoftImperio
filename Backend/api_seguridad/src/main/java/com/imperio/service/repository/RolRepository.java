@@ -1,7 +1,7 @@
 package com.imperio.service.repository;
 
 import com.imperio.service.model.entity.RolEntity;
-import com.imperio.service.model.entity.UsuarioEntity;
+import com.imperio.service.model.entity.UsuariosEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
