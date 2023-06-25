@@ -7,10 +7,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UsuarioCreditoRequest {
 
-    private int IdUsuarioCredito;
-    private String Nombre;
-    private String Documento;
-    private String Telefono;
+
+    private String nombre;
+    private String documento;
+    private String telefono;
 
 
 }

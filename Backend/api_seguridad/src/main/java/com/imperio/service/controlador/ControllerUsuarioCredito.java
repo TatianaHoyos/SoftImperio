@@ -2,6 +2,7 @@ package com.imperio.service.controlador;
 
 import com.imperio.service.model.dto.comun.Response;
 import com.imperio.service.model.dto.usuariocredito.UsuarioCreditoRequest;
+
 import com.imperio.service.model.entity.UsuarioCreditoEntity;
 import com.imperio.service.repository.UsuarioCreditoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,15 +22,12 @@ public class ControllerUsuarioCredito {
     private String urlServer = "http:localhost:8080/";
 
     @PostMapping(value = "api/usuariocredito/crear", produces = MediaType.APPLICATION_JSON_VALUE,
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> crearUsuarioCredito(UsuarioCreditoRequest usuariocredito){
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> crearUsuarioCredito(@RequestBody UsuarioCreditoRequest usuariocredito){
 
         try {
 
-
-
             var usuariocreditoEntity = new UsuarioCreditoEntity();
-            usuariocreditoEntity.setIdUsuarioCredito (usuariocredito.getIdUsuarioCredito());
             usuariocreditoEntity.setNombre(usuariocredito.getNombre());
             usuariocreditoEntity.setDocumento(usuariocredito.getDocumento());
             usuariocreditoEntity.setTelefono(usuariocredito.getTelefono());
@@ -70,14 +68,11 @@ public class ControllerUsuarioCredito {
     }
 
     @PutMapping(value = "api/usuariocredito/actualizar/{id}", produces = MediaType.APPLICATION_JSON_VALUE,
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+            consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updateUsuarioCredito(UsuarioCreditoRequest usuariocredito,
-                                                  @PathVariable("id") Integer id, MultipartFile multipartFile){
+                                                  @PathVariable("id") Integer id){
 
         try {
-            String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-            fileName = usuariocredito.getNombre()  +"-"+ fileName;
-
             var usuariocreditoEntity = new UsuarioCreditoEntity();
             usuariocreditoEntity.setIdUsuarioCredito (id);
             usuariocreditoEntity.setNombre(usuariocredito.getNombre());
@@ -95,7 +90,7 @@ public class ControllerUsuarioCredito {
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new Response("Error","Ha ocurrido un error al actualizar el producto"));
+                    .body(new Response("Error","Ha ocurrido un error al actualizar el usuario"));
         }
     }
 }

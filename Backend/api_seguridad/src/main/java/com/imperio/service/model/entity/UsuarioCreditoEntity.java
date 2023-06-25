@@ -1,5 +1,6 @@
 package com.imperio.service.model.entity;
 
+
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name="usuarioCreditos")
+
 public class UsuarioCreditoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,3 +26,4 @@ public class UsuarioCreditoEntity {
     private String telefono;
 
 }
+
