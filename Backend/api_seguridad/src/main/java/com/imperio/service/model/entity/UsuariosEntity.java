@@ -34,9 +34,9 @@ public class UsuariosEntity {
     private String foto;
 
     @Column(nullable = false, name="Password")
-    private String Password;
+    private String password;
 
-    @Column(nullable = false, name="Estaso")
+    @Column(nullable = false, name="Estado")
     private String estado;
 
 }

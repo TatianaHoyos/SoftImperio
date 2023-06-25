@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:5000
--- Tiempo de generación: 22-06-2023 a las 05:46:05
+-- Tiempo de generación: 25-06-2023 a las 21:38:03
 -- Versión del servidor: 10.4.27-MariaDB
 -- Versión de PHP: 8.0.25
 
@@ -247,8 +247,7 @@ CREATE TABLE `rol` (
 INSERT INTO `rol` (`IdRol`, `NombreRol`, `Estado`) VALUES
 (1, 'Administrador', 'Activo'),
 (4, 'Supervisor', 'Activo'),
-(8, 'Colaborador', 'Inactivo'),
-(9, 'mesero', 'Inactivo');
+(8, 'Colaborador', 'Activo');
 
 -- --------------------------------------------------------
 
@@ -278,9 +277,15 @@ CREATE TABLE `usuarios` (
   `Telefono` varchar(15) DEFAULT NULL,
   `Foto` varchar(200) DEFAULT NULL,
   `Password` varchar(15) DEFAULT NULL,
-  `Estado` char(10) DEFAULT NULL,
-  `IdUsuario` int(11) NOT NULL
+  `Estado` char(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `usuarios`
+--
+
+INSERT INTO `usuarios` (`IdUsuarios`, `IdRol`, `Nombre`, `Documento`, `Email`, `Telefono`, `Foto`, `Password`, `Estado`) VALUES
+(1, 1, 'tatiana', '123456', 'tatiana@gmail.com', '43562778', 'usuarios-photos/tatiana-tati.jpg', '123456', 'Activo');
 
 -- --------------------------------------------------------
 
@@ -519,7 +524,7 @@ ALTER TABLE `usuariocredito`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `IdUsuarios` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `IdUsuarios` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `venta`
