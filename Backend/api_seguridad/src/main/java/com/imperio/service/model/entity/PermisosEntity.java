@@ -10,9 +10,15 @@ import lombok.NoArgsConstructor;
 @Table(name="permisos")
 public class PermisosEntity {
     @Id
-    @Column(name = "IdPermiso")
-    private Integer idPermiso;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "IdPermisos")
+    private Integer idPermisos;
 
-    @Column(nullable = false, name = "NombrePermiso")
+    @Column(nullable = false, name = "NombrePermisos")
     private String nombrePermiso;
+    @Column(nullable = false, name = "Modulo")
+    private String modulo;
+
+    // @ManyToMany(mappedBy = "permisos", fetch = FetchType.LAZY)
+    // private Set<RolEntity> roles;
 }

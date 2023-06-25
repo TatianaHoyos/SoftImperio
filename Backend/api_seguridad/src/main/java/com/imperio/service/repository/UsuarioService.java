@@ -12,4 +12,9 @@ public class UsuarioService {
     public UsuarioEntity obtenerUsuario(String email, String pass){
         return usuarioRepository.findByEmailAndPassword(email,pass);
     }
+
+    public UsuarioEntity crearUsuario(UsuarioEntity usuario){
+        return  usuarioRepository.save(usuario);
+    }
 }
+
