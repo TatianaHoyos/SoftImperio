@@ -95,7 +95,7 @@ public class ControllerUsuarios {
             usuariosEntity.setEmail(usuario.getEmail());
             usuariosEntity.setTelefono(usuario.getTelefono());
             usuariosEntity.setFoto(uploadDir + fileName);
-            usuariosEntity.setPassword(usuario.getPassword());
+            usuariosEntity.setPassword(usuario.getDocumento());
             usuariosEntity.setEstado(usuario.getEstado());
 
             var usuariodb = usuariosService.crearUsuario(usuariosEntity);
