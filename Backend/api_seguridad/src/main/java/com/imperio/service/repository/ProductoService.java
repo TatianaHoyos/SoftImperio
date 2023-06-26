@@ -2,7 +2,7 @@ package com.imperio.service.repository;
 
 import com.imperio.service.model.entity.ProductoEntity;
 import com.imperio.service.model.entity.RolEntity;
-import com.imperio.service.model.entity.UsuarioEntity;
+import com.imperio.service.model.entity.UsuariosEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

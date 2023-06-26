@@ -82,75 +82,128 @@ body{
       object-fit: cover;
     }
 
-    /* estilos punto de venta */
-   
-    .category {
-        font-size: 24px;
-        font-weight: bold;
-        margin-top: 20px;
+
+    .icolor i{
+    color: aqua;
     }
 
-    .product {
-        display: inline-block;
-        width: 200px;
-        margin: 10px;
-        padding: 10px;
-        border: 1px solid #ccc;
+
+    .table {
+      text-align: center;
+      width: 62% ;
+      height: 90% ;
+      
     }
 
-    .product img {
-        width: 50px;
-        height: 70px;
-        object-fit: cover;
-        margin-bottom: 10px;
+    .btn-warning{
+      background-color: #e5c850;
+      margin-right: 10px;
     }
 
-    .product-name {
-        font-weight: bold;
+    .bott{
+      display: flex;
+      justify-content: center ;
+    }
+    
+.AsignarPermisos {
+  
+  font-weight: bold;
+  color: #fff;
+}
+.subtitulo {
+  color: #fff;
+}
+.Titulo {
+  color: #fff;
+  text-align: center;
+
+}
+.subtitulo{
+  color: #fff;
+  text-align: left;
+}
+#searchInput {
+  width: 200px;
+  padding: 8px;
+  font-size: 14px;
+}
+
+#results {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 10px;
+}
+
+#results li {
+  padding: 5px;
+}
+#content {
+  overflow-y: auto;
+  height: 100vh;
+  padding-bottom: 5rem;
+}
+.btn-primary{
+  background-color: #e5c850 !important;
+  color: #090909;
+  border: 0;
+}
+.card{
+  background-color: #090909 !important;
+  color: #fff;
+}
+
+
+.card-header{
+  background-color: #262525 !important;
+  color: #fff;
+}
+.card-body{
+  background-color: #3a3a3a !important;
+  color: #fff;
+}
+
+
+.btn-secondary{
+  background-color: #e5c850;
+  color: #090909;
+}
+.swal2-modal {
+  background-color: #1c1c1c;
+
+}
+.swal2-title {
+  color: white !important;
+}
+.swal2-label {
+  color: white !important;
+}
+.swal2-popup .swal2-actions .swal2-confirm {
+  background-color: #e5c850;
+  font-weight: bold;
+  color: black;
+
+}
+
+
+    .table {
+      text-align: center;
+      width: 62% ;
+      height: 90% ;
+      
     }
 
-    .product-quantity {
-        font-style: italic;
+    .btn-warning{
+      background-color: #e5c850;
+      margin-right: 10px;
     }
 
-    .select-container {
-        margin-top: 3px;
-        display: inline-block;
+    .bott{
+      display: flex;
+      justify-content: center ;
     }
 
-    .quantity-input {
-        width: 60px;
-        padding: 3px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-    }
-
-    .order-table th,
-    .order-table td {
-        padding: 5px;
-        text-align: center;
-        border: 1px solid #ccc;
-    }
-
-    .order-table th {
-        font-weight: bold;
-    }
-
-    .order-table tr:nth-child(even) {
-        background-color: #f2f2f2;
-    }
-
-    .total-price {
-        font-weight: bold;
-        margin-top: 10px;
-    }
-
-    .action-buttons {
-        margin-top: 10px;
-    }
-
-    .action-buttons button {
-        margin-right: 10px;
-        padding: 5px 10px;
-        border-radius: 4px;
-    }
+.swal2-popup .swal2-actions .swal2-cancel {
+  background-color: #e5c850;
+  font-weight: bold;
+  color: black;
+}
