@@ -78,7 +78,7 @@ public class ControllerProveedor {
 
         try {
             var proveedoresEntity = new ProveedoresEntity();
-            proveedoresEntity.setIdProveedores(proveedor.getIdProveedores());
+            proveedoresEntity.setIdProveedores(id);
             proveedoresEntity.setNombre(proveedor.getNombre());
             proveedoresEntity.setDocumento(proveedor.getDocumento());
             proveedoresEntity.setEmail(proveedor.getEmail());
