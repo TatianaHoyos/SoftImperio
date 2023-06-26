@@ -25,6 +25,7 @@ public class ProveedorService {
     public List<ProveedoresEntity> obtenerProveedores(){
         return ProveedorRepository.findAll();
     }
+
     public void eliminarProveedores(int idProveedores){
         ProveedorRepository.deleteById(idProveedores);
     }

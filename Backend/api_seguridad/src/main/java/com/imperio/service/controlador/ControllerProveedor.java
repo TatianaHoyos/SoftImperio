@@ -61,6 +61,7 @@ public class ControllerProveedor {
     }
 
 
+
     @DeleteMapping("api/proveedor/eliminar/{id}")
     public ResponseEntity<?> deleteProveedor(@PathVariable("id") Integer id){
         try {
@@ -72,12 +73,12 @@ public class ControllerProveedor {
         }
     }
 
-    @PutMapping(value = "api/proveedor/actualizar/{id}",  produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "api/proveedor/actualizar/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updateProveedor(@RequestBody ProveedorRequest proveedor,@PathVariable("id") Integer id){
-        System.out.println("prove "+proveedor.toString());
+
         try {
             var proveedoresEntity = new ProveedoresEntity();
-            proveedoresEntity.setIdProveedores(id);
+            proveedoresEntity.setIdProveedores(proveedor.getIdProveedores());
             proveedoresEntity.setNombre(proveedor.getNombre());
             proveedoresEntity.setDocumento(proveedor.getDocumento());
             proveedoresEntity.setEmail(proveedor.getEmail());
