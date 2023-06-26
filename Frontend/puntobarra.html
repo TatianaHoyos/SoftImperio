@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+        <link rel="stylesheet" href="css/style.css">
+       
+        </style>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                $(".nav-link").click(function () {
+                    $(".nav-link").removeClass("active");
+                    $(this).addClass("active");
+                });
+            });
+        </script>
+    </head>
+    
+    <body>
+        <div class="logo-container">
+            <img src="img/logo.png" alt="Logo" class="Logo" height="170">
+        </div>
+        <nav class="navbar navbar-expand-lg navbar-light colornavbar">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item menu-item">
+                        <a class="nav-link active" href="#"><i class="fas fa-home"></i> Inicio</a>
+                    </li>
+                    <li class="nav-item menu-item">
+                        <a class="nav-link" href="#"><i class="fas fa-box-open"></i> Existencias</a>
+                    </li>
+                    <li class="nav-item menu-item">
+                        <a class="nav-link" href="#"><i class="fas fa-users"></i> Usuarios</a>
+                    </li>
+                    <li class="nav-item menu-item">
+                        <a class="nav-link" href="#"><i class="fas fa-chart-bar"></i> Ventas</a>
+                    </li>
+                    <li class="nav-item menu-item">
+                        <a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i> Compras</a>
+                    </li>
+                    <li class="nav-item menu-item">
+                        <a class="nav-link" href="#"><i class="fas fa-truck"></i> Proveedores</a>
+                    </li>
+                    <li class="nav-item menu-item">
+                        <a class="nav-link" href="#"><i class="fas fa-cash-register"></i> Punto de venta</a>
+                    </li>
+                    <li class="nav-item menu-item">
+                        <a class="nav-link" href="#"><i class="fas fa-money-check-alt"></i> Créditos</a>
+                    </li>
+                    <li class="nav-item menu-item">
+                        <a class="nav-link" href="#"><i class="fas fa-user-lock"></i> Permisos</a>
+                    </li>
+                </ul>
+                <a class="nav-link logout-link text-dark" href="#"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
+            </div>
+        </nav>
+    </body>
+<div class="container">
+      <!--Seccione de licores  -->  
+    <div class="row">
+      <div class="col-xs-12 col-md-7 ">
+        <div class="container">
+            <div class="row">
+                <div class="category col-12">Cervezas</div>
+            </div>
+
+            <div class="row">
+
+                <div class="product col-3">
+                    <center><img src="https://www.bavaria.co/sites/g/files/phfypu1316/f/201903/AGUILA330_1.png" alt="Cerveza 1"></center>
+                    <div class="product-name">Aguila original</div>
+                    <div class="select-container">
+                        <select class="select">
+                            <option value="opcion1">355 ml</option>
+                            <option value="opcion2">330 ml</option>
+                            <option value="opcion3">700 ml</option>
+                        </select>
+                    </div>
+                    <div class="select-container">
+                        <input type="number" class="quantity-input" value="1" min="1" max="50">
+                    </div>
+                    <!-- <a href="#" class="view-button">Ver</a> -->
+                </div>
+                <div class="product col-3">
+                   <center><img src="https://www.bavaria.co/sites/g/files/phfypu1316/f/201903/AGUILALIGHT330.png" height="80px" alt="Cerveza 2"></center>
+                    <div class="product-name">Aguila light</div>
+                    <div class="select-container">
+                        <select class="select">
+                            <option value="opcion1">355 ml</option>
+                            <option value="opcion2">330 ml</option>
+                            <option value="opcion3">700 ml</option>
+                        </select>
+                    </div>
+                    <div class="select-container">
+                        <input type="number" class="quantity-input" value="1" min="0" max="50">
+                    </div>
+                </div>
+
+                <div class="product col-3">
+                    <center><img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Botella-330-sm-cerveza.png"  alt="Cerveza 2"></center>
+                    <div class="product-name">Pilsen</div>
+                    <div class="select-container">
+                        <select class="select">
+                            <option value="opcion1">355 ml</option>
+                            <option value="opcion2">330 ml</option>
+                            <option value="opcion3">700 ml</option>
+                        </select>
+                    </div>
+                    <div class="select-container">
+                        <input type="number" class="quantity-input" value="1" min="1" max="50">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">  
+
+                <div class="product col-3">
+                <center><img src="https://www.bavaria.co/sites/g/files/phfypu1316/f/201810/Club%20Colombia%20Dorada.png" alt="Cerveza 2"></center>
+                    <div class="product-name">Club Colombia</div>
+                    <div class="select-container">
+                        <select class="select">
+                            <option value="opcion1">355 ml</option>
+                            <option value="opcion2">330 ml</option>
+                            <option value="opcion3">700 ml</option>
+                        </select>
+                    </div>
+                    <div class="select-container">
+                        <input type="number" class="quantity-input" value="1" min="1" max="50">
+                    </div>
+                </div>
+                <div class="product col-3">
+                    <center><img src="https://assets.stickpng.com/images/585e5e47cb11b227491c33ee.png"  alt="Cerveza 2"></center>
+                    <div class="product-name">Corona</div>
+                    <div class="select-container">
+                        <select class="select">
+                            <option value="opcion1">355 ml</option>
+                            <option value="opcion2">330 ml</option>
+                            <option value="opcion3">700 ml</option>
+                        </select>
+                    </div>
+                    <div class="select-container">
+                        <input type="number" class="quantity-input" value="1" min="1" max="50">
+                    </div>
+                </div>
+
+                <div class="product col-3">
+                    <center><img src="https://dislicoresqa.vtexassets.com/arquivos/ids/313822/002227-SMIRNOFF-ICE-RED--RTD--0.png?v=638049483325700000" alt="Cerveza 2"></center>
+                    <div class="product-name">Smirnoff</div>
+                    <div class="select-container">
+                        <select class="select">
+                            <option value="opcion1">Media</option>
+                            <option value="opcion2">Botella</option>
+                        </select>
+                    </div>
+                    <div class="select-container">
+                        <input type="number" class="quantity-input" value="1" min="1" max="50">
+                    </div>
+                </div>
+
+            </div>
+
+        </div>    
+    </div>    
+      
+    <!--tabla de pedidos 5/12-->
+    
+        <div class="col-xs-12 col-md-5 mt-5">
+            <div class="container">
+                <div class="row ">
+                    <h3 class="col-12"><b>Id Pedido 000</b></h3>
+                    <div class="col-12 ">
+                        <table class="table table-striped">
+                        
+                            <tr>
+                                <th>Foto</th>
+                                <th>Producto</th>
+                                <th>Precio</th>
+                                <th>Cantidad</th>
+                                <th>Total</th>
+                                <th>Acción</th>
+                            </tr>
+                            <tr>
+                                <td><img src="https://assets.stickpng.com/images/585e5e47cb11b227491c33ee.png" height="60px" alt="Cerveza 1"></td>
+                                <td>Coronita 350 ml</td>
+                                <td>8.00</td>
+                                <td>2</td>
+                                <td>20.00</td>
+                                <td>  
+                                    <button class="btn btn-link btn-delete" data-id="1">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><img src="cerveza2.jpg" alt="Cerveza 2"></td>
+                                <td>Cerveza 2</td>
+                                <td>12.00</td0>
+                                <td>1</td>
+                                <td>12.00</td>
+                                <td>
+                                    <button class="btn btn-link btn-delete" data-id="1">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                                
+                            </tr>
+                        </table>
+                        <div class="total-price">Precio Total: $32.00</div>
+                        <div class="action-buttons">
+                            <button>Confirmar</button>
+                            <button>Despachar a Crédito</button>
+                            <button>Cancelar</button>
+                        </div>
+                    </div>    
+                </div>
+            </div>
+
+        </div>  
+ </div> 
+ </div>   
+</body>
+</html>
