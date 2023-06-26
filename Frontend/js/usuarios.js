@@ -1,185 +1,206 @@
 $(document).ready(function () {
     $("#resultadoCrear").hide();
-      consultarUsuario();
-      buscarUsuarioTabla();
-  
-  });
-  
-  function mostrarFormularioCrear(){
-      var titulo = $("#tituloFomularioProducto");
-      titulo.text("Crear un nuevo productos");
-      var btnform = $("#btn-form");
-      btnform.text("Guardar");
-      btnform.click(crearProducto);
-  }
-  function mostrarFormularioActualizar(){
-      var titulo = $("#tituloFomularioProducto");
-      titulo.text("Actualizar un producto");
-      var btnform = $("#btn-form");
-      btnform.text("Actualizar");
+    consultarUsuarios();
+    consultarRoles();
+    buscarUsuarioTabla();
+});
+
+function consultarUsuarios() {
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/api/usuarios/consultar",
+        "headers": {
+            "Content-Type": "application/json"
+          },
+        success: onExitoUsuarios,
+        error: onErrorUsuarios
+    });
+}
+function onErrorUsuarios(error) {
+    console.log(error)
+}
+
+function onExitoUsuarios(data) {
+    console.log("consulta de Usuarios");
+    console.log(data);
+    mostrarTablaUsuarios(data);
+
+}
+
+
+
+function mostrarTablaUsuarios(data) {
+    $('#tablaUsuarios > tbody').empty();
+    $.each(data, function(id, usuarios) {
+
+        var boton1 = "<button onclick='EliminarUsuario("+ JSON.stringify(usuarios) +")' class='btn btn-delete' data-id='1'><i class='fas fa-trash'></i></button>";
+        var boton2 = "<button onclick='EditarUsuario("+ JSON.stringify(usuarios) +")' class='btn btn-edit' data-toggle='modal' data-target='#formActualizarUsuarios'><i class='fas fa-edit'></i></button>";
+
+        $('#tablaUsuarios').append('<tr><td>' + usuarios.idUsuarios + '</td><td>' + usuarios.idRol+ '</td><td>' + usuarios.nombre+
+        '</td><td>' + usuarios.documento+ '</td><td>' + usuarios.email+ '</td><td>' + usuarios.telefono+ '</td><td>' + usuarios.estado+
+        '</td><td>' + boton2 + '</td><td>' + boton1 + '</td></tr>');
+        console.log(usuarios.idUsuarios + ' ' + usuarios.idRol + ' ' + usuarios.nombre + ' ' + usuarios.documento 
+        + ' ' + usuarios.email + ' ' + usuarios.telefono + ' ' + usuarios.estado);
+
+    });
+}
+
+
+function mostrarFormularioActualizar(){
+    var titulo = $("#tituloFormularioUsuarios");
+    titulo.text("Actualizar un usuario");
+    var btnform = $("#btn-form");
+    btnform.text("Actualizar");
+   
+}
+
+
+
+function consultarRoles() {
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/api/roles",
+        "headers": {
+            "Content-Type": "application/json"
+          },
+        success: onExitoRoles,
+        error: onErrorRoles
+    });
+}
+
+function onExitoRoles(data) {
+    console.log(data);
+    var $dropdown = $("#idRol");
+    $.each(data, function () {
+        $dropdown.append($("<option />").val(this.idRol).text(this.nombreRol));
+    });
+    mostrarRolesConPermisos(data);
+}
+
+function mostrarRolesConPermisos(roles) {
+
+    // clear the existing list
+    $("#contentRoles .lista-Roles .card-header").remove();
+    $("#contentRoles .lista-Roles .lista-permisos").remove();
+    
+    $.each(roles, function(index,rol) {
+        debugger;
+      $('#contentRoles .lista-Roles').append('<div class="card-header">'+rol.nombreRol +'</div>')
+      $('#contentRoles .lista-Roles').append('<div class="card-body lista-permisos"><ul></ul></div>')
      
-  }
-  
-  
-  function crearProducto(){
-      var form = $('#formCrearProducto')[0];
-  
-      // Create an FormData object 
-      var formData = new FormData(form);
-  
-     console.log(formData);
-  
-     $.ajax({
-      type: "POST",
-      enctype: 'multipart/form-data',
-      url:"http://localhost:8080/api/producto/crear",
-      data: formData,
-      processData: false,
-      contentType: false,
-      success: onExitoCrearProducto,
-      error: onErrorCrearProducto
-  });
+      $.each(rol.permisos, function(index,permiso) {
+        $('#contentRoles .lista-Roles .lista-permisos ul').append('<li>'+permiso.nombrePermiso +" "+permiso.modulo+'</li>')
+    });
+    });
   
   }
-  
-  function onExitoCrearProducto(data){
-      console.log(data);
-      var mensaje = $("#resultadoCrear");
-      mensaje.addClass("alert-success");
-      mensaje.removeClass("alert-danger");
-      mensaje.show();
-      mensaje.text(data.message);
-      $("#formCrearProducto").trigger("reset");
-      $("#foto-preview").attr('src', '');
-      consultarProductos();
-  }
-  function onErrorCrearProducto(error){
-      console.log(error);
-      var mensaje = $("#resultadoCrear");
-      mensaje.addClass("alert-danger");
-      mensaje.removeClass("alert-success");
-      mensaje.show();
-      mensaje.text(error.message);
-  }
-  
-  
-  function consultarUsuario() {
-      $.ajax({
-          type: "GET",
-          url: "http://localhost:8080/api/producto/consultar",
-          "headers": {
-              "Content-Type": "application/json"
-            },
-          success: onExitoProductos,
-          error: onErrorProductos
-      });
-  }
-  
-  function onExitoProductos(data) {
-      console.log(data);
-     
-  $('#tablaProductos > tbody').empty();
-  $.each(data, function(id, productos) {
-      //alert('Estoy recorriendo el registro numero: ' + idx);
-      var nombreCategoria="";
-      if(productos.idCategoria==1){
-          nombreCategoria="cervezas";
-      } else if(productos.idCategoria==2){
-          nombreCategoria="aguardientes";
-      }else if(productos.idCategoria==3){
-          nombreCategoria="wiskey";
-      }
-  
-      var boton1 = "<button onclick='EliminarProducto("+ JSON.stringify(productos) +")' class='btn btn-delete' data-id='1'><i class='fas fa-trash'></i></button>";
-      var boton2 = "<button onclick='EditarProducto("+ JSON.stringify(productos) +")' class='btn btn-edit' data-toggle='modal' data-target='#formCrearProductos'><i class='fas fa-edit'></i></button>";
-  
-      $('#tablaProductos').append('<tr><td>' + nombreCategoria + '</td><td>' + productos.nombreProducto + '</td><td>'+ productos.referenciaProducto + '</td><td>' + productos.cantidad + '</td><td>' + productos.precioProducto + 
-      '</td><td>' + boton1 + '</td><td>' + boton2 + '</td></tr>');
-      console.log(productos.id + ' ' + productos.nombreProducto + ' ' + productos.idCategoria + ' ' +
-       productos.referenciaProducto + ' ' + productos.precioProducto);
-       
-  });
-      
-  
-  }
-  function onErrorProductos(error) {
-      console.log(error)
-  }
-  
-  function EliminarProducto(Producto){
-      Swal.fire({
-          title: '¿Estás seguro?',
-          text: 'Esta seguro de eliminar el producto '+ Producto.nombreProducto,
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#d33',
-          cancelButtonColor: '#3085d6',
-          confirmButtonText: 'Eliminar',
-          cancelButtonText: 'Cancelar'
-      }).then((result) => {
-          if (result.isConfirmed) {
-              // Realizar la solicitud de eliminación AJAX
-              $.ajax({
-                  url: 'http://localhost:8080/api/producto/eliminar/'+Producto.idProductos,
-                  type: 'Delete',
-                  success: function(response) {
-                      // Manejar la respuesta de eliminación exitosa
-                      Swal.fire('Eliminado',response.message, 'success');
-                      // Actualizar la tabla o realizar cualquier otra acción necesaria
-                      consultarProductos();
-                  },
-                  error: function(xhr, status, error) {
-                      // Manejar los errores de la solicitud AJAX
-                      Swal.fire('Error', error.message, 'error');
-                  }
-              });
-          }
-      });
-  }
-  
-  function EditarProducto(producto){
-      mostrarFormularioActualizar();
-      $("#categoria option[value="+ producto.idProductos +"]").attr("selected", true);
-      $("#proveedor option[value="+ producto.idProveedores +"]").attr("selected", true);
-      $("#nombre").val(producto.nombreProducto);
-      $("#referencia").val(producto.referenciaProducto);
-      $("#precio").val(producto.precioProducto);
-      var preview = document.getElementById("foto-preview");
-      preview.src = "http://localhost:8080/"+producto.fotoProducto;
-      preview.style.display = "block";
-      var btnform = $("#btn-form");
-      btnform.click(function(){ actualizarProducto(producto.idProductos); });
-     
-  }
-  
-  function actualizarProducto(idProductos){
-      var form = $('#formCrearProducto')[0];
-  
-      // Create an FormData object 
-      var formData = new FormData(form);
-  
-     console.log(formData);
-  
-     $.ajax({
-      type: "Put",
-      enctype: 'multipart/form-data',
-      url:"http://localhost:8080/api/producto/actualizar/"+idProductos,
-      data: formData,
-      processData: false,
-      contentType: false,
-      success: onExitoCrearProducto,
-      error: onErrorCrearProducto
-  });
-  }
-  function buscarUsuarioTabla(){
-      $("#consultarTabla").keyup(function(){
-          _this = this;
-          // Show only matching TR, hide rest of them
-          $.each($("#tablaProductos tbody tr"), function() {
-          if($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) === -1)
-          $(this).hide();
-          else
-          $(this).show();
-          });
-          });
-  }
+
+function onErrorRoles(error) {
+    console.log(error)
+}
+
+
+
+
+
+
+
+function EditarUsuario(usuarios){
+    mostrarFormularioActualizar();
+    $("#roles option[value="+ usuarios.idRol +"]").attr("selected", true);
+    $("#nombre").val(usuarios.nombre);
+    $("#documento").val(usuarios.documento );
+    $("#email").val(usuarios.email);
+    $("#telefono").val(usuarios.telefono );
+    $("#estado").val(usuarios.estado);
+    var preview = document.getElementById("foto-preview");
+    preview.src = "http://localhost:8080/"+usuarios.foto;
+    preview.style.display = "block";
+    var btnform = $("#btn-form");
+    btnform.click(function(){ actualizarUsuario(usuarios.idUsuarios); });
+   
+}
+
+function actualizarUsuario(idUsuarios){
+    var form = $('#formActualizarUsuario')[0];
+
+	// Create an FormData object 
+    var formData = new FormData(form);
+
+   console.log(formData);
+
+   $.ajax({
+    type: "Put",
+    enctype: 'multipart/form-data',
+    url:"http://localhost:8080/api/usuarios/actualizar/"+idUsuarios,
+    data: formData,
+    processData: false,
+    contentType: false,
+    success: onExitoCrearUsuario,
+    error: onErrorCrearUsuario
+});
+}
+
+function buscarUsuarioTabla(){
+    $("#consultarTablaUsuario").keyup(function(){
+        _this = this;
+        // Show only matching TR, hide rest of them
+        $.each($("#tablaUsuarios tbody tr"), function() {
+        if($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) === -1)
+        $(this).hide();
+        else
+        $(this).show();
+        });
+        });
+}
+function onExitoCrearUsuario(data){
+    console.log(data);
+    var mensaje = $("#resultadoCrear");
+    mensaje.addClass("alert-success");
+    mensaje.removeClass("alert-danger");
+    mensaje.show();
+    mensaje.text(data.message);
+    $("#formCrearUsuario").trigger("reset");
+    $("#foto-preview").attr('src', '');
+}
+function onErrorCrearUsuario(error){
+    console.log(error);
+    var mensaje = $("#resultadoCrear");
+    mensaje.addClass("alert-danger");
+    mensaje.removeClass("alert-success");
+    mensaje.show();
+    mensaje.text(error.message);
+}
+
+
+
+function EliminarUsuario(usuarios){
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: 'Esta seguro de eliminar el usuario '+ usuarios.nombre,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Eliminar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Realizar la solicitud de eliminación AJAX
+            $.ajax({
+                url: 'http://localhost:8080/api/usuarios/eliminar/'+usuarios.idUsuarios,
+                type: 'Delete',
+                success: function(response) {
+                    // Manejar la respuesta de eliminación exitosa
+                    Swal.fire('Eliminado',response.message, 'success');
+                    // Actualizar la tabla o realizar cualquier otra acción necesaria
+                    consultarUsuarios();
+                },
+                error: function(xhr, status, error) {
+                    // Manejar los errores de la solicitud AJAX
+                    Swal.fire('Error', error.message, 'error');
+                }
+            });
+        }
+    });
+}
