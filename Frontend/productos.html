@@ -79,7 +79,7 @@
                             <div class="input-group-prepend">
                               <span class="input-group-text" style="background-color: #e5c850"><i class="far fa-envelope"></i></span>
                             </div>
-                            <input type="text" class="form-control" id="nombre" name="nombreProducto" placeholder="Nombre Producto">            
+                            <input type="text" class="form-control" id="nombre" name="nombreProducto" placeholder="Nombre Producto" onkeypress="return sololetras(event)">            
                         </div>   
                     </div>
                                       
@@ -94,7 +94,7 @@
                             <div class="input-group-prepend">
                               <span class="input-group-text" style="background-color: #e5c850"><i class="far fa-envelope"></i></span>
                             </div>
-                            <input type="text" class="form-control" id="referencia" name="referenciaProducto" placeholder="Referencia Producto">            
+                            <input type="text" class="form-control" id="referencia" name="referenciaProducto" placeholder="Referencia Producto" onkeypress="return validarNumero(event)">            
                         </div>   
                     </div>
                                       
@@ -109,7 +109,7 @@
                             <div class="input-group-prepend">
                               <span class="input-group-text" style="background-color: #e5c850"><i class="far fa-envelope"></i></span>
                             </div>
-                            <input type="text" class="form-control" id="precio" name="precioProducto" placeholder="Precio Producto">            
+                            <input type="text" class="form-control" id="precio" name="precioProducto" placeholder="Precio Producto" onkeypress="return validarNumero(event)">            
                         </div>   
                     </div>
                                       
@@ -186,7 +186,7 @@
                     <a class="nav-link" href="compras.html"><i class="fas fa-shopping-cart"></i> Compras</a>
                 </li>
                 <li class="nav-item menu-item">
-                    <a class="nav-link" href="nuevoProveedor.html"><i class="fas fa-truck"></i> Proveedores</a>
+                    <a class="nav-link" href="nuestrosProveedores.html"><i class="fas fa-truck"></i> Proveedores</a>
                 </li>
                 <li class="nav-item menu-item">
                     <a class="nav-link" href="puntomesa.html"><i class="fas fa-cash-register"></i> Punto de venta</a>
@@ -197,7 +197,7 @@
                 </li>
 
                 <li class="nav-item menu-item">
-                    <a class="nav-link" href="productos.html"><i class="fas fa-user-lock"></i> Productos</a>
+                    <a class="nav-link" href="productos.html"><i class="fas fa-box"></i> Productos</a>
                 </li>
                 <li class="nav-item menu-item">
                     <a class="nav-link" href="Permisos.html"><i class="fas fa-user-lock"></i> Permisos</a>
@@ -277,6 +277,7 @@
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous">
     </script>
+    <script src="js/validaciones.js"></script>
         <script src="https://code.jquery.com/jquery-3.6.1.min.js"
         integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous">
     </script>
@@ -284,6 +285,5 @@
     <script src="js/productos.js"></script>
 
 </body>
-
 
 </html>

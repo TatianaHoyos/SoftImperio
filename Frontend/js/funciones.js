@@ -48,3 +48,66 @@ function onError(error){
     mensaje.show();
     mensaje.text(error.message);
 }
+//logica para crear proveedor
+function onExitoCrearProveedor(data){
+
+   
+        Swal.fire({
+          type: 'success',
+          text: 'Registro guardado',
+          icon:"success",
+          showConfirmButton: false,
+          timer: 2000
+        });
+
+        window.location="./nuestrosProveedores.html"
+
+}
+
+function onErrorProv(error){
+
+    console.log(error)   
+    var mensaje =error;
+    mensaje.show();
+    mensaje.text(error.message);
+}
+
+function crearUsuario(){
+    var formData = {
+        nombre:$("#nombre").val(),
+        documento:$("#documento").val(),
+        email:$("#email").val(),
+        telefono:$("#telefono").val(),
+        direccion:$("#direccion").val(),
+      };
+
+      console.log(JSON.stringify(formData))
+    
+    if (validarCampoVacio($("#nombre").val().length ,'Por favor ingrese un nombre')) {
+        return false;
+    }
+    if (validarCampoVacio($("#documento").val().length ,'Por favor ingrese documento')) {
+        return false;
+    }
+    if (validarCampoVacio($("#email").val().length ,'Por favor ingrese email')) {
+        return false;
+    }
+    if (validarCampoVacio($("#telefono").val().length ,'Por favor ingrese telefono')) {
+        return false;
+    }
+    if (validarCampoVacio($("#direccion").val().length ,'Por favor ingrese direccion')) {
+        return false;
+    }
+
+    $.ajax({
+        type: "POST",
+        url:"http://localhost:8080/api/proveedor/crear",
+        "headers": {
+            "Content-Type": "application/json"
+          },
+          "data": JSON.stringify(formData),
+          success: onExitoCrearProveedor,
+          error: onErrorProv
+          
+    });
+}
