@@ -9,10 +9,10 @@ public class copiaSegurity {
             // Parámetros de conexión a la base de datos
             String user = "root";
             String password = "2002";
-            String database = "soft_imperio";
+            String database = "imperiosoft_funcional";
 
             // Ruta donde se guardará el archivo de copia de seguridad
-            String backupPath = "C:\\Users\\USUARIO\\Downloads\\copiasegurity\\backup.sql";
+            String backupPath = "C:\\Users\\USUARIO\\Documents\\copiasegurity\\CopiaSegurida.sql";
 
             // Comando para generar la copia de seguridad usando el comando mysqldump
             String dumpCommand = "\"C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysqldump\" --user=" + user + " --password=" + password + " --databases " + database;

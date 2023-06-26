@@ -23,7 +23,6 @@ function onExitoRoles(data) {
 
     mostrarTablaRoles(data);
     mostrarListaRolesyPermisos(data);
-
 }
 
 function mostrarTablaRoles(data) {
@@ -331,4 +330,13 @@ function onErrorPermisos(error) {
     console.log("consulta de permisos");
     console.log(error);
 
+}
+
+
+
+
+function downloadBackup() {
+    $.get("http://localhost:8080/api/backup/download", function(response) {
+        alert(response);
+    });
 }
