@@ -20,7 +20,7 @@ public class UsuarioCreditoService {
         return usuariocreditoRepository.findAll();
     }
 
-    public void eliminarUsuarioCredito(int IdUsuarioCredito){
+    public void eliminarUsuarioCredito(Integer IdUsuarioCredito){
         usuariocreditoRepository.deleteById(IdUsuarioCredito);
     }
 }

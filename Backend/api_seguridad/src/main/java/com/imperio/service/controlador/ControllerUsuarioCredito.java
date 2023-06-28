@@ -69,7 +69,7 @@ public class ControllerUsuarioCredito {
 
     @PutMapping(value = "api/usuariocredito/actualizar/{id}", produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> updateUsuarioCredito(UsuarioCreditoRequest usuariocredito,
+    public ResponseEntity<?> updateUsuarioCredito(@RequestBody UsuarioCreditoRequest usuariocredito,
                                                   @PathVariable("id") Integer id){
 
         try {

@@ -14,7 +14,7 @@ public class UsuarioCreditoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "IdUsuarioCredito")
-    private Integer idUsuarioCredito ;
+    private Integer idUsuarioCredito;
 
     @Column(nullable = false, name = "Nombre")
     private String nombre;
