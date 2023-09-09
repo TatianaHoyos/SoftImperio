@@ -16,14 +16,14 @@ function consultarCategorias() {
         url: "https://localhost:7084/api/Categorias",
         "headers": {
             "Content-Type": "application/json"
-          },
+        },
         success: onExitoCategorias,
         error: onErrorCategorias
     });
 }
 
 function onExitoCategorias(data) {
-    categorias=data;
+    categorias = data;
     console.log(data);
     consultarProductos(data);
     var $dropdown = $("#idCategoria");
@@ -44,32 +44,32 @@ function consultarProductos(categorias) {
         url: "https://localhost:7084/api/Productos/Agrupados",
         "headers": {
             "Content-Type": "application/json"
-          },
+        },
         success: function (data) {
             onExitoProductos(data, categorias);
         },
         error: onErrorProductos
     });
 }
-function onExitoProductos(data,categorias) {
-    productos=data;
+function onExitoProductos(data, categorias) {
+    productos = data;
     console.log(data);
-   mostrarProductos(data,categorias);
+    mostrarProductos(data, categorias);
 }
 
-function mostrarProductos(data,categorias){
+function mostrarProductos(data, categorias) {
     var $contenedor = $("#ContenedorProductos");
     $contenedor.empty();
 
     $.each(data, function () {
         var categoriaId = this.idCategoria;
         var productos = this.productos;
-        var nombreCategoria="";
+        var nombreCategoria = "";
 
-        $.each(categorias,function(){
-          if(this.idCategoria==categoriaId){
-            nombreCategoria=this.nombreCategoria;
-          }
+        $.each(categorias, function () {
+            if (this.idCategoria == categoriaId) {
+                nombreCategoria = this.nombreCategoria;
+            }
         });
 
         // Crear un contenedor para la categoría
@@ -95,7 +95,7 @@ function mostrarProductos(data,categorias){
 
             // Crear un select para las referencias
             var stringSinEspacios = producto.nombreProducto.replace(/\s+/g, '')
-            var selectReferencia = $("<select>").attr("id", "select"+stringSinEspacios).attr("name", "select"+stringSinEspacios).addClass("form-control");
+            var selectReferencia = $("<select>").attr("id", "select" + stringSinEspacios).attr("name", "select" + stringSinEspacios).addClass("form-control");
 
             // Iterar a través de las referencias del producto
             $.each(producto.referencias, function () {
@@ -108,7 +108,7 @@ function mostrarProductos(data,categorias){
             });
 
             cardBody.append(selectReferencia);
-            cardBody.append("<button type='button' onclick='seleccionarProducto("+ JSON.stringify(producto) +", this)' class='btn btn-primary mt-2'>Agregar</button>");
+            cardBody.append("<button type='button' onclick='seleccionarProducto(" + JSON.stringify(producto) + ", this)' class='btn btn-primary mt-2'>Agregar</button>");
 
             productoCard.append(cardBody);
             productoContainer.append(productoCard);
@@ -123,69 +123,74 @@ function onErrorProductos(error) {
     console.log(error)
 }
 
-function selectCategoria(){
+function selectCategoria() {
     // Captura el evento 'change' en el elemento <select> con id 'miSelect'
-  $("#idCategoria").change(function () {
-    // Obtiene el valor seleccionado
-    var seleccion = $(this).val();
-    var productoSeleccionado;
+    $("#idCategoria").change(function () {
+        // Obtiene el valor seleccionado
+        var seleccion = $(this).val();
+        var productoSeleccionado;
 
-    $.each(productos, function () {
-        if (seleccion == this.idCategoria){
-            productoSeleccionado = [this];
-            return;
-        }
-        
-        if(seleccion==-1){
-            productoSeleccionado = productos;
-            return;
-        }
+        $.each(productos, function () {
+            if (seleccion == this.idCategoria) {
+                productoSeleccionado = [this];
+                return;
+            }
+
+            if (seleccion == -1) {
+                productoSeleccionado = productos;
+                return;
+            }
+        });
+        mostrarProductos(productoSeleccionado, categorias);
     });
-    mostrarProductos(productoSeleccionado,categorias);
-  });
 }
 
-function seleccionarProducto(producto, button){
+function seleccionarProducto(producto, button) {
     var selectId = button.previousElementSibling.id;
-    var seleccion = $("#"+selectId).val();
+    var seleccion = $("#" + selectId).val();
     var referencia;
 
-    $.each(producto.referencias,function(){
-        if(this.idProducto==seleccion){
-            referencia=this;
+    $.each(producto.referencias, function () {
+        if (this.idProducto == seleccion) {
+            referencia = this;
             return;
         }
     });
 
-    if (existeIdEnTabla(seleccion)){
+    if (existeIdEnTabla(seleccion)) {
         alert("Ya seleccionó el producto");
         return;
     }
-    mostrarProductosTabla(producto.nombreProducto+" "+referencia.nombreReferencia,        
-    referencia.precio, seleccion);
+    mostrarProductosTabla(producto.nombreProducto + " " + referencia.nombreReferencia,
+        referencia.precio, seleccion);
+
+        //agregar valor de primer registro
+        var venta=  parseInt($("#totalVenta").text());
+        $("#totalVenta").text(referencia.precio + venta);
 }
 
 function existeIdEnTabla(id) {
     return $("#tabla tbody tr#tr-" + id).length > 0;
 }
 
-function mostrarProductosTabla(nombre,precio, idProducto){
-    var botonEliminar=' <th><button class="btn btn-danger"  onclick="eliminarRegistroPedido(this)"><i class="fas fa-trash-alt"></i></button></th>';
-    var nombreProducto=' <th>'+nombre+'</th>';
-    var precioProducto=' <th class="precio">'+precio+'</th>';
-    var cantidadBoton='<th><div class="quantity">'
-    +'<div class="qty">'
-       +' <span class="minus bg-dark">-</span>'
-        +'<input type="number" class="count" name="qty" value="1">'
-       +' <span class="plus bg-dark">+</span>'
-    +'</div>'+
+function mostrarProductosTabla(nombre, precio, idProducto) {
+    var botonEliminar = ' <th><button class="btn btn-danger"  onclick="eliminarRegistroPedido(this)"><i class="fas fa-trash-alt"></i></button></th>';
+    var nombreProducto = ' <th>' + nombre + '</th>';
+    var precioProducto = ' <th class="precio">' + precio + '</th>';
+    var cantidadBoton = '<th><div class="quantity">'
+        + '<div class="qty">'
+        + ' <span class="minus bg-dark">-</span>'
+        + '<input type="number" class="count" name="qty" value="1">'
+        + ' <span class="plus bg-dark">+</span>'
+        + '</div>' +
         '</div></th>';
-        var totalProductos=' <th class="total">'+precio+'</th>';
-    $('#tabla').append('<tr id="tr-'+idProducto+'" >'+nombreProducto+precioProducto+cantidadBoton+totalProductos+botonEliminar+'</tr>');
+
+    var totalProductos = ' <th class="total">' + precio + '</th>';
+    $('#tabla').append('<tr id="tr-' + idProducto + '" >' + nombreProducto + precioProducto + cantidadBoton + totalProductos + botonEliminar + '</tr>');
 }
 
 
-function contadorCantidad(){
+function contadorCantidad() {
     $('.count').prop('disabled', true);
 
     $(document).on('click', '.plus', function () {
@@ -193,16 +198,19 @@ function contadorCantidad(){
 
         var precio = $(this).closest('tr').find('.precio');
         var total = $(this).closest('tr').find('.total');
-       
+
 
         input.val(parseInt(input.val()) + 1);
         var cantidad = parseInt(input.val());
 
-        total.text(parseInt(precio.text())*cantidad);
-        
-        
+        total.text(parseInt(precio.text()) * cantidad);
+
+  //agregar valor de primer registro
+        var venta=  parseInt($("#totalVenta").text());
+        $("#totalVenta").text( venta+ parseInt( precio.text()));
+
     });
-    
+
     $(document).on('click', '.minus', function () {
         var input = $(this).closest('tr').find('.count');
         var precio = $(this).closest('tr').find('.precio');
@@ -213,16 +221,94 @@ function contadorCantidad(){
         if (input.val() <= 0) {
             input.val(1);
         }
-         if(cantidad > 0){
-            total.text(parseInt(total.text())-parseInt(precio.text()));
-         }
-       
+        if (cantidad > 0) {
+            total.text(parseInt(total.text()) - parseInt(precio.text()));
+             //agregar valor de primer registro
+        var venta=  parseInt($("#totalVenta").text());
+        $("#totalVenta").text( venta- parseInt( precio.text()));
+        }
+
+
     });
 }
-function cancelarPedido(){
-    $('#tabla > tbody').empty();
+
+function cancelarPedido() {
+    var tbody = $("#tabla tbody");
+    if (tbody.find("tr").length != 0){
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: 'Esta seguro de cancelar el Pedido ',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Confirmar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            var venta= 0;
+            $("#totalVenta").text( venta);
+         $('#tabla > tbody').empty();
+              } else {
+        
+              }
+    });
+
+      
+}   
+     
 }
-function eliminarRegistroPedido(button){
-    // Encuentra la fila (tr) a la que pertenece el botón y elimínala
+function eliminarRegistroPedido(button) {
+      //agregar valor de primer registro
+      var total = $(button).closest('tr').find('.total');
+      var venta=  parseInt($("#totalVenta").text());
+      $("#totalVenta").text( venta - parseInt( total.text()));
+
+      // Encuentra la fila (tr) a la que pertenece el botón y elimínala
     $(button).closest('tr').remove();
+}
+function despacharCredito(){
+    Swal.fire({
+        title: 'Lo sentimos!',
+        text: 'Esta funcionalidad se encuentra en construcción ',
+        icon: 'warning',
+        showCancelButton: false,
+        confirmButtonColor: ' #d5c429 ',
+        confirmButtonText: 'Confirmar',
+      
+    }).then((result) => {
+       
+    });
+
+}
+function confirmarVenta(){
+    var tbody = $("#tabla tbody");
+    if (tbody.find("tr").length != 0){
+    Swal.fire({
+        title: '¿Esta seguro de registrar esta venta?',
+        // text: 'Su venta se registro con éxito ',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: ' #d5c429 ',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Confirmar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            var venta= 0;
+            $("#totalVenta").text( venta);
+         $('#tabla > tbody').empty();
+         Swal.fire({
+            // title: '¿Esta seguro de registrar esta venta?',
+             text: 'Su venta se registro con éxito ',
+             type: 'success',
+             icon:"success",
+            showCancelButton: false,
+            confirmButtonColor: ' #d5c429 ',
+            confirmButtonText: 'Aceptar',
+        }).then((result) => { });
+              } else {
+              }
+    });
+}
 }
