@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:5000
--- Tiempo de generación: 25-06-2023 a las 21:38:03
+-- Tiempo de generación: 04-09-2023 a las 00:09:06
 -- Versión del servidor: 10.4.27-MariaDB
 -- Versión de PHP: 8.0.25
 
@@ -31,6 +31,14 @@ CREATE TABLE `categoria` (
   `IdCategoria` int(11) NOT NULL,
   `NombreCategoria` varchar(25) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `categoria`
+--
+
+INSERT INTO `categoria` (`IdCategoria`, `NombreCategoria`) VALUES
+(1, 'Cerveza'),
+(2, 'Whisky');
 
 -- --------------------------------------------------------
 
@@ -182,6 +190,22 @@ CREATE TABLE `productos` (
   `PrecioProducto` float DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `productos`
+--
+
+INSERT INTO `productos` (`IdProductos`, `IdCategoria`, `IdProveedores`, `Cantidad`, `NombreProducto`, `ReferenciaProducto`, `FotoProducto`, `PrecioProducto`) VALUES
+(1, 1, 1, 30, 'Budweiser', '269ml', 'img/Cervezas/budweiser.jpg', 5000),
+(2, 1, 1, 20, 'Budweiser', '250', 'img/Cervezas/budweiser.jpg', 4000),
+(3, 1, 1, 10, 'Budweiser', 'lata', 'img/Cervezas/budweiser.jpg', 3000),
+(4, 1, 1, 30, 'Aguila', '269ml', 'img/Cervezas/budweiser.jpg', 5000),
+(5, 1, 1, 20, 'Aguila', '250', 'img/Cervezas/budweiser.jpg', 4000),
+(6, 1, 1, 10, 'Aguila', 'lata', 'img/Cervezas/budweiser.jpg', 3000),
+(7, 2, 1, 30, 'buchanans 12 años', '750ml', 'img/Whiskey/buchanans.jpg', 200000),
+(8, 2, 1, 30, 'buchanans 12 años', '1000ml', 'img/Whiskey/buchanans.jpg', 250000),
+(9, 2, 1, 30, 'buchanans master', '1000ml', 'img/Whiskey/buchanans.jpg', 200000),
+(10, 2, 1, 30, 'buchanans master', '750ml', 'img/Whiskey/buchanans.jpg', 190000);
+
 -- --------------------------------------------------------
 
 --
@@ -196,6 +220,13 @@ CREATE TABLE `proveedores` (
   `Direccion` varchar(20) DEFAULT NULL,
   `Telefono` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `proveedores`
+--
+
+INSERT INTO `proveedores` (`IdProveedores`, `Nombre`, `Documento`, `Email`, `Direccion`, `Telefono`) VALUES
+(1, 'Bavaria', '5565656', 'bavaria@gmail.com', 'centro', '7787645');
 
 -- --------------------------------------------------------
 
@@ -245,7 +276,7 @@ CREATE TABLE `rol` (
 --
 
 INSERT INTO `rol` (`IdRol`, `NombreRol`, `Estado`) VALUES
-(1, 'Administrador', 'Activo'),
+(1, 'Administrador', 'Inactivo'),
 (4, 'Supervisor', 'Activo'),
 (8, 'Colaborador', 'Activo');
 
@@ -260,6 +291,19 @@ CREATE TABLE `usuariocredito` (
   `Nombre` varchar(30) DEFAULT NULL,
   `Documento` varchar(15) DEFAULT NULL,
   `Telefono` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usuariocreditos`
+--
+
+CREATE TABLE `usuariocreditos` (
+  `IdUsuarioCredito` int(11) NOT NULL,
+  `Documento` varchar(255) NOT NULL,
+  `Nombre` varchar(255) NOT NULL,
+  `Telefono` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -285,7 +329,8 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`IdUsuarios`, `IdRol`, `Nombre`, `Documento`, `Email`, `Telefono`, `Foto`, `Password`, `Estado`) VALUES
-(1, 1, 'tatiana', '123456', 'tatiana@gmail.com', '43562778', 'usuarios-photos/tatiana-tati.jpg', '123456', 'Activo');
+(1, 1, 'tatiana', '123456', 'tatiana@gmail.com', '43562778', 'usuarios-photos/tatiana-tati.jpg', '123456', 'Activo'),
+(2, 1, 'tati', '08865', 'tati@gmail.com', '54637', 'usuarios-photos/tati-tati.jpg', '08865', 'Activo');
 
 -- --------------------------------------------------------
 
@@ -413,6 +458,12 @@ ALTER TABLE `usuariocredito`
   ADD PRIMARY KEY (`IdUsuarioCredito`);
 
 --
+-- Indices de la tabla `usuariocreditos`
+--
+ALTER TABLE `usuariocreditos`
+  ADD PRIMARY KEY (`IdUsuarioCredito`);
+
+--
 -- Indices de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
@@ -434,7 +485,7 @@ ALTER TABLE `venta`
 -- AUTO_INCREMENT de la tabla `categoria`
 --
 ALTER TABLE `categoria`
-  MODIFY `IdCategoria` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `IdCategoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `compra`
@@ -488,13 +539,13 @@ ALTER TABLE `permisos`
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `IdProductos` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `IdProductos` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `proveedores`
 --
 ALTER TABLE `proveedores`
-  MODIFY `IdProveedores` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `IdProveedores` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `puntodeventaenbarra`
@@ -521,10 +572,16 @@ ALTER TABLE `usuariocredito`
   MODIFY `IdUsuarioCredito` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de la tabla `usuariocreditos`
+--
+ALTER TABLE `usuariocreditos`
+  MODIFY `IdUsuarioCredito` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `IdUsuarios` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `IdUsuarios` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `venta`
