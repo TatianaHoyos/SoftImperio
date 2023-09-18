@@ -19,9 +19,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
      debugShowCheckedModeBanner: false,
      theme: AppTheme().theme,
-      home: LoginPage(),
+      home: //LoginPage(),
      //Formulario(title: 'Form',),
-     //Inicio(),
+     Inicio(),
     );
   }
 }

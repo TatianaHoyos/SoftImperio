@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:login/components/my_button.dart';
 import 'package:login/components/my_text_field.dart';
-import 'package:login/model/usuario.dart';
+import 'package:login/infraestructura/models/usuarios_response.dart';
 import 'package:login/pages/formulario_usuarios.dart';
+import 'package:http/http.dart' as http;
 
 class Usuarios extends StatefulWidget {
   const Usuarios({super.key});
@@ -16,7 +17,15 @@ enum Actions{delete,edit}
 
 class _CampoTextoState extends State<Usuarios> {
    final searchController = TextEditingController();
-   final List<Usuario> usuarios = listaUsuarios;
+   List<UsuariosResponse> usuarios = [];
+     bool _isLoading = false;
+
+ @override
+  void initState() {
+    super.initState();
+   consumirApiUsuarios();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -58,40 +67,57 @@ class _CampoTextoState extends State<Usuarios> {
                 ],
               ),
               const SizedBox(height: 25),
-             Expanded(child:  ListView.builder(
-                  itemCount: usuarios.length+1,
-                  physics: const BouncingScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    if(index==0){
-                      return buildHeaderList();
-                    }
-                    index-=1;
-                    final user = usuarios[index];
-                    return Slidable(
-                      startActionPane: ActionPane(
-                        motion: const StretchMotion(),
-                        children: [SlidableAction(backgroundColor: Colors.lightBlueAccent,
-                        icon:Icons.edit ,
-                        label: 'Editar',
-                        onPressed: (context) => onEditarUsuario(context),)],
-                      ),
-                      endActionPane: ActionPane(motion: const BehindMotion(),
-                       children:[SlidableAction(backgroundColor: Colors.redAccent,
-                        icon:Icons.delete ,
-                        label: 'Eliminar',
-                        onPressed: (context) => onEliminarUsuario(context, index),)] ),
-                      child: buildItemList(user),
-                    );
-                  }),
+             Expanded(
+              child:  mostrarListaUsuarios(),
              )
           ],   
         ),   
       ),
+      floatingActionButton:  _isLoading
+          ? const AlertDialog(
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CircularProgressIndicator(),
+                  SizedBox(height: 16.0),
+                  Text('Cargando...'),
+                ],
+              ),
+            ) // Muestra el modal si isLoading es verdadero
+          : Container(), // Oculta el modal si isLoading es falso,
     );
      
   }
 
-  Widget buildItemList(Usuario usuario) => Container(
+  ListView mostrarListaUsuarios() {
+    return ListView.builder(
+                itemCount: usuarios.length+1,
+                physics: const BouncingScrollPhysics(),
+                itemBuilder: (context, index) {
+                  if(index==0){
+                    return buildHeaderList();
+                  }
+                  index-=1;
+                  final user = usuarios[index];
+                  return Slidable(
+                    startActionPane: ActionPane(
+                      motion: const StretchMotion(),
+                      children: [SlidableAction(backgroundColor: Colors.lightBlueAccent,
+                      icon:Icons.edit ,
+                      label: 'Editar',
+                      onPressed: (context) => onEditarUsuario(context),)],
+                    ),
+                    endActionPane: ActionPane(motion: const BehindMotion(),
+                     children:[SlidableAction(backgroundColor: Colors.redAccent,
+                      icon:Icons.delete ,
+                      label: 'Eliminar',
+                      onPressed: (context) => onEliminarUsuario(context, index),)] ),
+                    child: buildItemList(user),
+                  );
+                });
+  }
+
+  Widget buildItemList(UsuariosResponse usuario) => Container(
     decoration: BoxDecoration(
       border: Border(bottom: BorderSide(
         color: Colors.grey.shade400
@@ -101,10 +127,10 @@ class _CampoTextoState extends State<Usuarios> {
       padding:const EdgeInsets.all(16),
       child: Row(
         children: [
-          Expanded(child: Text(usuario.nombre)),
-          Expanded(child: Text(usuario.documento)),
-          Expanded(child: Text(usuario.correo)),
-          Expanded(child: Text(usuario.telefono))
+          Expanded(child: Text(usuario.nombre, style:TextStyle(color: Colors.white))),
+          Expanded(child: Text(usuario.documento,style:TextStyle(color: Colors.white))),
+          Expanded(child: Text(usuario.email,style:TextStyle(color: Colors.white))),
+          Expanded(child: Text(usuario.telefono,style:TextStyle(color: Colors.white)))
         ],
       ),
       ),
@@ -174,6 +200,38 @@ class _CampoTextoState extends State<Usuarios> {
     },
   );
   
+ }
+
+  Future<void> consumirApiUsuarios() async {
+   
+    setState(() {
+       _isLoading = true;
+    });
+      final url = Uri.parse('http://localhost:8080/api/usuarios/consultar' );
+      final headers = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      };
+       try {
+       final response = await http.get(url, headers: headers);
+
+         if (response.statusCode == 200) {
+          setState(() {
+          usuarios = usuariosResponseFromJson(response.body);
+             _isLoading = false;
+
+          });
+      
+      } else {
+       //usuarios=[];
       }
+    } catch (e) {
+      // Oculta el modal cuando se recibe la respuesta de la API
+      setState(() {
+         _isLoading = false;
+      });
+    }
+
+  }
   
 }

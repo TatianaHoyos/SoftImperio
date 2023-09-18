@@ -139,41 +139,44 @@ class _LoginPageState extends State<LoginPage> {
     setState(() {
       _isLoading = true;
     });
-      final url = Uri.parse('http://localhost:8080/api/login');
-      final headers = {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      };
-      final body = jsonEncode({
-        'correo': usernameController.value.text,
-        'password': passwordController.value.text,
-      });
+    final url = Uri.parse('http://localhost:8080/api/login');
+    final headers = {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    };
+    final body = jsonEncode({
+      'correo': usernameController.value.text,
+      'password': passwordController.value.text,
+    });
 
     try {
-    final response = await http.post(url, headers: headers, body: body);
+      final response = await http.post(url, headers: headers, body: body);
 
 // Oculta el modal cuando se recibe la respuesta de la API
-    setState(() {
-      _isLoading = false;
-    });
+      setState(() {
+        _isLoading = false;
+      });
 
-    if (response.statusCode == 200) {
-      usuario = Usuario.fromJson(jsonDecode(response.body));
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => const Inicio()));
-    } else {
-      this.response = Response.fromJson(jsonDecode(response.body));
-      _mostrarAlerta(context, this.response);
-    }
+      if (response.statusCode == 200) {
+        usuario = Usuario.fromJson(jsonDecode(response.body));
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => const Inicio()));
+      } else {
+        this.response = Response.fromJson(jsonDecode(response.body));
+        _mostrarAlerta(context, this.response);
+      }
     } catch (e) {
       // Oculta el modal cuando se recibe la respuesta de la API
-    setState(() {
-      _isLoading = false;
-    });
-    // Manejo de errores de red u otros
-    _mostrarAlerta(context, Response(message: "Error al consumir el API de login", status: "Error"));
-    print('Error: $e');
-  }
+      setState(() {
+        _isLoading = false;
+      });
+      // Manejo de errores de red u otros
+      _mostrarAlerta(
+          context,
+          Response(
+              message: "Error al consumir el API de login", status: "Error"));
+      print('Error: $e');
+    }
   }
 
   void _mostrarAlerta(BuildContext context, Response? response) {
