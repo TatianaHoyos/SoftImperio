@@ -19,6 +19,10 @@ public class UsuariosService {
         return usuariosRepository.findAll();
     }
 
+    public UsuariosEntity obtenerUsuarioLogin(String correo, String pass){
+        return usuariosRepository.findByEmailAndPassword(correo,pass);
+    }
+
     public void eliminarUsuario(int IdUsuarios){
         usuariosRepository.deleteById(IdUsuarios);
     }
