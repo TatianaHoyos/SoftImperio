@@ -1,14 +1,14 @@
 // To parse this JSON data, do
 //
-//     final usuariosRegistrar = usuariosRegistrarFromJson(jsonString);
+//     final usuariosRequest = usuariosRequestFromJson(jsonString);
 
 import 'dart:convert';
 
-UsuariosRegistrar usuariosRegistrarFromJson(String str) => UsuariosRegistrar.fromJson(json.decode(str));
+UsuariosRequest usuariosRequestFromJson(String str) => UsuariosRequest.fromJson(json.decode(str));
 
-String usuariosRegistrarToJson(UsuariosRegistrar data) => json.encode(data.toJson());
+String usuariosRequestToJson(UsuariosRequest data) => json.encode(data.toJson());
 
-class UsuariosRegistrar {
+class UsuariosRequest {
     final int idRol;
     final String nombre;
     final String documento;
@@ -16,7 +16,7 @@ class UsuariosRegistrar {
     final String telefono;
     final String estado;
 
-    UsuariosRegistrar({
+    UsuariosRequest({
         required this.idRol,
         required this.nombre,
         required this.documento,
@@ -25,7 +25,7 @@ class UsuariosRegistrar {
         required this.estado,
     });
 
-    factory UsuariosRegistrar.fromJson(Map<String, dynamic> json) => UsuariosRegistrar(
+    factory UsuariosRequest.fromJson(Map<String, dynamic> json) => UsuariosRequest(
         idRol: json["idRol"],
         nombre: json["nombre"],
         documento: json["documento"],
