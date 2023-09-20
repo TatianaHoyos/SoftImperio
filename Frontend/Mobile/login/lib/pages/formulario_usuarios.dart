@@ -8,6 +8,7 @@ import 'package:login/components/my_dropdown.dart';
 import 'package:login/components/my_text_field.dart';
 import 'package:login/infraestructura/models/response.dart';
 import 'package:login/infraestructura/models/roles.dart';
+import 'package:login/infraestructura/models/usuarios_response.dart';
 import 'package:login/pages/inicio_page.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:http/http.dart' as http;
@@ -16,7 +17,9 @@ import 'package:mime/mime.dart';
 GlobalKey<FormState> keyForm = new GlobalKey();
 
 class Formulario extends StatefulWidget {
-  const Formulario({super.key, required this.title});
+  final UsuariosResponse? usuario;
+
+  const Formulario({super.key, required this.title, this.usuario});
   final String title;
 
   @override
@@ -31,12 +34,14 @@ class _FormularioState extends State<Formulario> {
   final fotoCtrl = TextEditingController();
   //final rolCtrl = DropdownController<String>('j');
   String? selectedRol;
+  String? selectedEstado;
   PlatformFile? _selectedFile;
 
   bool _isLoading = false;
   bool enableButton = false;
   List<Roles> roles = [];
   List<String> rolesList = [];
+  List<String> estadosList = ['Activo','Inactivo'];
 
   String? get validateName {
     final name = nameCtrl.value.text;
@@ -96,6 +101,14 @@ class _FormularioState extends State<Formulario> {
     return null;
   }
 
+String? get validateEstado {
+    //final selectedRol = rolCtrl.selectedValue.value;
+    if (selectedEstado == null) {
+      return 'Seleccione un Estado';
+    }
+    return null;
+  }
+
   String? get validateFoto {
     //final selectedRol = rolCtrl.selectedValue.value;
     if (_selectedFile == null) {
@@ -105,10 +118,13 @@ class _FormularioState extends State<Formulario> {
   }
 
   @override
-  void initState() {//evento de cuando se inicia la pantalla
+  void initState() {
+    //evento de cuando se inicia la pantalla
     super.initState();
     apiConsultarRoles(context);
-   
+
+    mostrarDatosEditar();
+
     nameCtrl.addListener(() {
       validateEmptyTextField();
     });
@@ -131,7 +147,6 @@ class _FormularioState extends State<Formulario> {
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-            const SizedBox(height: 50),
             const Text(
               'Nuevo Usuario',
               style: TextStyle(
@@ -175,6 +190,7 @@ class _FormularioState extends State<Formulario> {
             const SizedBox(height: 10),
             MyDropDown(
               items: rolesList,
+              selectedValue: selectedRol,
               hintText: 'Rol',
               errorText: validateRol,
               prefixIcon: Icon(Icons.verified_user),
@@ -185,6 +201,25 @@ class _FormularioState extends State<Formulario> {
               },
             ),
             const SizedBox(height: 10),
+             if (esActualizar())
+               ...[
+                const SizedBox(height: 10),
+                MyDropDown(
+                    items: estadosList,
+                    selectedValue: selectedEstado,
+                    hintText: 'Estado',
+                    errorText: validateEstado,
+                    prefixIcon: Icon(Icons.verified_user),
+                    onChanged: (value) {
+                      setState(() {
+                        selectedEstado = value;
+                      });
+                    },
+                  ),
+                  const SizedBox(height: 25)]
+               else ...[
+                    const SizedBox(height: 50)
+                  ],
             GestureDetector(
               onTap: () {
                 _pickFile();
@@ -200,7 +235,7 @@ class _FormularioState extends State<Formulario> {
             ),
             const SizedBox(height: 10),
             MyButton(
-              text: 'Registrar',
+              text: esActualizar() ? 'Actualizar' : 'Registrar',
               onPressed: enableButton
                   ? () {
                       onclickLogin(context);
@@ -235,11 +270,10 @@ class _FormularioState extends State<Formulario> {
   }
 
   void onclickLogin(BuildContext context) {
-    if(enableButton){
-        apiRegistrarUsuario(context);
-      // Navigator.push(
-      //   context, MaterialPageRoute(builder: (context) => const Inicio())
-      //   );
+    if (enableButton) {
+      esActualizar() ?  
+      apiEditarUsuario(context) :
+      apiRegistrarUsuario(context);
     }
   }
 
@@ -257,9 +291,31 @@ class _FormularioState extends State<Formulario> {
     }
   }
 
-  bool isWeb() {
-  return Platform.isAndroid || Platform.isIOS ? false : true;
-}
+  void mostrarDatosEditar() {
+    if (esActualizar()) {
+      nameCtrl.text = widget.usuario!.nombre;
+      documentCtrl.text = widget.usuario!.documento;
+      emailCtrl.text = widget.usuario!.email;
+      mobileCtrl.text = widget.usuario!.telefono;
+      // fotoCtrl.text = widget.usuario!.foto;
+      selectedEstado = widget.usuario!.estado;
+    }
+  }
+
+  void mostarRolUsuarioEditar() {
+    if (esActualizar()) {
+      for (var rol in roles) {
+        if (widget.usuario!.idRol == rol.idRol) {
+          selectedRol = rol.nombreRol;
+          break;
+        }
+      }
+    }
+  }
+
+  bool esActualizar(){
+    return widget.usuario != null;
+  }
 
   Future<void> apiConsultarRoles(BuildContext context) async {
     setState(() {
@@ -283,14 +339,16 @@ class _FormularioState extends State<Formulario> {
           String nombreRol = rol.nombreRol;
           rolesList.add(nombreRol);
         }
-      ocultarCargando();
+
+        mostarRolUsuarioEditar();
+        ocultarCargando();
       } else {
         ocultarCargando();
         var responseError = Response.fromJson(jsonDecode(response.body));
-        _mostrarAlerta(context, responseError,(){
-                // Cierra la alerta cuando se presiona "Aceptar"
-                Navigator.of(context).pop();
-              });
+        _mostrarAlerta(context, responseError, () {
+          // Cierra la alerta cuando se presiona "Aceptar"
+          Navigator.of(context).pop();
+        });
       }
       // Oculta el modal cuando se recibe la respuesta de la API
     } catch (e) {
@@ -298,41 +356,20 @@ class _FormularioState extends State<Formulario> {
       ocultarCargando();
       // Manejo de errores de red u otros
       _mostrarAlerta(
-          context,
-          Response(
-              message: "Error al consumir el API de login", status: "Error"),(){
-                // Cierra la alerta cuando se presiona "Aceptar"
-                Navigator.of(context).pop();
-              },);
+        context,
+        Response(message: "Error al consumir el API de login", status: "Error"),
+        () {
+          // Cierra la alerta cuando se presiona "Aceptar"
+          Navigator.of(context).pop();
+        },
+      );
       print('Error: $e');
     }
   }
 
-  void ocultarCargando() {
-    setState(() {
-            _isLoading = false;
-          });
-  }
-
-  void _mostrarAlerta(BuildContext context, Response? response, Function() onPressed) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(response!.status),
-          content: Text(response.message),
-          actions: [
-            ElevatedButton(
-              onPressed: onPressed,
-              child: Text('Aceptar'),
-            ),
-          ],
-        );
-      },
-    );
-  }
 
   Future<void> apiRegistrarUsuario(BuildContext context) async {
+
     setState(() {
       _isLoading = true;
     });
@@ -341,18 +378,18 @@ class _FormularioState extends State<Formulario> {
     // Archivo que deseas enviar
     final file = http.MultipartFile.fromBytes(
       'foto', // Nombre del campo en la solicitud
-      _selectedFile!.bytes!, 
-     filename: _selectedFile!.name, // Ruta del archivo en el dispositivo
+      _selectedFile!.bytes!,
+      filename: _selectedFile!.name, // Ruta del archivo en el dispositivo
     );
 
     // Otros datos de texto que deseas enviar
-  var idRoles = 0;
-  for (var rol in roles) {
-  if (selectedRol == rol.nombreRol) {
-    idRoles = rol.idRol;  // Almacena el idRol si es el rol seleccionado
-    break;
-  }
-}
+    var idRoles = 0;
+    for (var rol in roles) {
+      if (selectedRol == rol.nombreRol) {
+        idRoles = rol.idRol; // Almacena el idRol si es el rol seleccionado
+        break;
+      }
+    }
     final Map<String, String> body = {
       'nombre': nameCtrl.value.text,
       'documento': documentCtrl.value.text,
@@ -373,23 +410,24 @@ class _FormularioState extends State<Formulario> {
       ocultarCargando();
 
       if (response.statusCode == 200) {
-         //Qué vas hacer cuando se cree el usuario de forma exitosa?
-       var responseExito = Response.fromJson(jsonDecode(response.body));
-         _mostrarAlerta(context, responseExito,(){
-                // Cierra la alerta cuando se presiona "Aceptar"
-                Navigator.of(context).pop();
-                Navigator.push(
-         context, MaterialPageRoute(builder: (context) => const Inicio())
-       );
-              },);
- 
-
+        //Qué vas hacer cuando se cree el usuario de forma exitosa?
+        var responseExito = Response.fromJson(jsonDecode(response.body));
+        _mostrarAlerta(
+          context,
+          responseExito,
+          () {
+            // Cierra la alerta cuando se presiona "Aceptar"
+            Navigator.of(context).pop();
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const Inicio()));
+          },
+        );
       } else {
-         var responseError = Response.fromJson(jsonDecode(response.body));
-        _mostrarAlerta(context, responseError,(){
-                // Cierra la alerta cuando se presiona "Aceptar"
-                Navigator.of(context).pop();
-                });
+        var responseError = Response.fromJson(jsonDecode(response.body));
+        _mostrarAlerta(context, responseError, () {
+          // Cierra la alerta cuando se presiona "Aceptar"
+          Navigator.of(context).pop();
+        });
       }
     } catch (e) {
       // Oculta el modal cuando se recibe la respuesta de la API
@@ -397,4 +435,108 @@ class _FormularioState extends State<Formulario> {
       // Manejo de errores de red u otros
     }
   }
+
+ Future<void> apiEditarUsuario(BuildContext context) async {
+    setState(() {
+      _isLoading = true;
+    });
+     final url = Uri.parse('http://localhost:8080/api/usuarios/actualizar/' + widget.usuario!.idUsuarios.toString());
+    // Archivo que deseas enviar
+    final file = http.MultipartFile.fromBytes(
+      'foto', // Nombre del campo en la solicitud
+      _selectedFile!.bytes!,
+      filename: _selectedFile!.name, // Ruta del archivo en el dispositivo
+    );
+
+    // Otros datos de texto que deseas enviar
+    var idRoles = 0;
+    for (var rol in roles) {
+      if (selectedRol == rol.nombreRol) {
+        idRoles = rol.idRol; // Almacena el idRol si es el rol seleccionado
+        break;
+      }
+    }
+    final Map<String, String> body = {
+      'nombre': nameCtrl.value.text,
+      'documento': documentCtrl.value.text,
+      'email': emailCtrl.value.text,
+      'telefono': mobileCtrl.value.text,
+      'idRol': idRoles.toString(),
+      'estado':selectedEstado!
+      // 'idRol':['Administrador', 'Usuario', 'Invitado'],
+    };
+    // Crear la solicitud multipart
+    final request = http.MultipartRequest('PUT', url)
+      ..fields.addAll(body)
+      ..files.add(file);
+    try {
+      final responseStreamed = await request.send();
+      // Espera a que la respuesta esté completa y obtén el cuerpo como String
+      final response = await http.Response.fromStream(responseStreamed);
+      // Oculta el modal cuando se recibe la respuesta de la API
+      ocultarCargando();
+
+      if (response.statusCode == 200) {
+        //Qué vas hacer cuando se cree el usuario de forma exitosa?
+        var responseExito = Response.fromJson(jsonDecode(response.body));
+        _mostrarAlerta(
+          context,
+          responseExito,
+          () {
+            // Cierra la alerta cuando se presiona "Aceptar"
+            Navigator.of(context).pop();
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const Inicio()));
+          },
+        );
+      } else {
+        var responseError = Response.fromJson(jsonDecode(response.body));
+        _mostrarAlerta(context, responseError, () {
+          // Cierra la alerta cuando se presiona "Aceptar"
+          Navigator.of(context).pop();
+        });
+      }
+    } catch (e) {
+      // Oculta el modal cuando se recibe la respuesta de la API
+      ocultarCargando();
+      // Manejo de errores de red u otros
+      _mostrarAlerta(
+          context,
+          Response(
+              message: "Error al consumir el API de Actualizar usuario", status: "Error"),() {
+          // Cierra la alerta cuando se presiona "Aceptar"
+          Navigator.of(context).pop();
+        });
+      print('Error: $e');
+    }
+    
+  
+}
+
+  void ocultarCargando() {
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  void _mostrarAlerta(
+      BuildContext context, Response? response, Function() onPressed) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(response!.status),
+          content: Text(response.message),
+          actions: [
+            ElevatedButton(
+              onPressed: onPressed,
+              child: Text('Aceptar'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+  
+ 
 }

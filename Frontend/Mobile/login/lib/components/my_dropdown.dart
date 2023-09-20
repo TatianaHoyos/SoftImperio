@@ -16,6 +16,7 @@ class MyDropDown extends StatefulWidget {
   final String? errorText;
   final Icon? prefixIcon;
   final ValueChanged<String> onChanged;
+  final String? selectedValue;
 
   
 
@@ -25,18 +26,22 @@ class MyDropDown extends StatefulWidget {
     required this.hintText,
     required this.onChanged,
     this.errorText,
-    this.prefixIcon
+    this.prefixIcon,
+    this.selectedValue
   });
 
   @override
   State<MyDropDown> createState() => _MyDropDownState();
 }
 
+String? _selectedValue;
+
 class _MyDropDownState extends State<MyDropDown> {
-  String? _selectedValue;
 
   @override
   Widget build(BuildContext context) {
+    _selectedValue = widget.selectedValue;
+
     return  Padding(
   padding: const EdgeInsets.symmetric(horizontal: 25.0),
   child: DecoratedBox(
