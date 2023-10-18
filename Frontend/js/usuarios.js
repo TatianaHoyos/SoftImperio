@@ -27,16 +27,40 @@ function onExitoUsuarios(data) {
 
 }
 
+function consultarRoles() {
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/api/roles",
+        "headers": {
+            "Content-Type": "application/json"
+          },
+        success: onExitoRoles,
+        error: onErrorRoles
+    });
+}
+
 
 
 function mostrarTablaUsuarios(data) {
     $('#tablaUsuarios > tbody').empty();
-    $.each(data, function(id, usuarios) {
+    $.each(data, function(id, usuarios,) {
+        var nombreRol="";
+    if(usuarios.idRol==1){
+        nombreRol="Administrador";
+    } else if(usuarios.idRol==4){
+        nombreRol="Supervisor";
+    }else if(usuarios.idRol==8){
+        nombreRol="Colaborador";
+    }else if(usuarios.idRol==9){
+        nombreRol="Mesero";
+    }
+
 
         var boton1 = "<button onclick='EliminarUsuario("+ JSON.stringify(usuarios) +")' class='btn btn-delete' data-id='1'><i class='fas fa-trash'></i></button>";
         var boton2 = "<button onclick='EditarUsuario("+ JSON.stringify(usuarios) +")' class='btn btn-edit' data-toggle='modal' data-target='#formActualizarUsuarios'><i class='fas fa-edit'></i></button>";
+        
 
-        $('#tablaUsuarios').append('<tr><td>' + usuarios.idUsuarios + '</td><td>' + usuarios.idRol+ '</td><td>' + usuarios.nombre+
+        $('#tablaUsuarios').append('<tr><td>' + usuarios.idUsuarios + '</td><td>' + nombreRol+ '</td><td>' + usuarios.nombre+
         '</td><td>' + usuarios.documento+ '</td><td>' + usuarios.email+ '</td><td>' + usuarios.telefono+ '</td><td>' + usuarios.estado+
         '</td><td>' + boton2 + '</td><td>' + boton1 + '</td></tr>');
         console.log(usuarios.idUsuarios + ' ' + usuarios.idRol + ' ' + usuarios.nombre + ' ' + usuarios.documento 
