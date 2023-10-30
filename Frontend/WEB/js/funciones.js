@@ -2,10 +2,32 @@ $(document).ready(function () {
     $("#resultadoLogin").hide();
 });
 
+function decrypt(encryptedText) {
+    const secreto = "eq#jQ_@o)l^0MDvE";
+    const salt = CryptoJS.enc.Utf8.parse(secreto).toString(CryptoJS.enc.Hex);
+    const key = CryptoJS.enc.Hex.parse(salt);
+    const decrypted = CryptoJS.AES.decrypt(encryptedPassword, key, {
+        mode: CryptoJS.mode.ECB,
+        padding: CryptoJS.pad.Pkcs7,
+    });
+    return decrypted.toString(CryptoJS.enc.Utf8);
+}
+
 function login(){
+    var secreto="eq#jQ_@o)l^0MDvE";
+    var password = $("#passwordLogin").val();
+
+    const salt = CryptoJS.enc.Utf8.parse(secreto).toString(CryptoJS.enc.Hex);
+    const key = CryptoJS.enc.Hex.parse(salt);
+    const encrypted = CryptoJS.AES.encrypt(password, key, {
+        mode: CryptoJS.mode.ECB,
+        padding: CryptoJS.pad.Pkcs7,
+    });
+    var passwordEncryptada=  encrypted.toString();
+
     var formData = {
         correo:$("#emailLogin").val(),
-        password:$("#passwordLogin").val(),
+        password:passwordEncryptada,
       };
 
       console.log(JSON.stringify(formData))
@@ -43,10 +65,10 @@ function onExito(data){
 
 function onError(error){
 
-    console.log(error)   
+    console.log(error.responseJSON)   
     var mensaje =$("#resultadoLogin");
     mensaje.show();
-    mensaje.text(error.message);
+    mensaje.text(error.responseJSON.message);
 }
 //logica para crear proveedor
 function onExitoCrearProveedor(data){
