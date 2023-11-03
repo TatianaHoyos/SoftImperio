@@ -34,7 +34,6 @@ function mostrarRolesConPermisos(roles) {
     $("#contentRoles .lista-Roles .lista-permisos").remove();
     
     $.each(roles, function(index,rol) {
-        debugger;
       $('#contentRoles .lista-Roles').append('<div class="card-header">'+rol.nombreRol +'</div>')
       $('#contentRoles .lista-Roles').append('<div class="card-body lista-permisos"><ul></ul></div>')
      

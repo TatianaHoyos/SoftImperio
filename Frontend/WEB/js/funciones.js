@@ -53,7 +53,6 @@ function login(){
 }
 
 function onExito(data){
-
     console.log(data)
     //validar si es admin o colaborador para redireccionarlo a cierta interfaz
     if(data.rol==1){

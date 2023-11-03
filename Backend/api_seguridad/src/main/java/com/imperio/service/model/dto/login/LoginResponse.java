@@ -1,4 +1,4 @@
-package com.imperio.service.model.dto;
+package com.imperio.service.model.dto.login;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,4 +10,6 @@ public class LoginResponse {
     private String documento;
     private String foto;
     private Integer rol;
+
+    private Authoritation authoritation;
 }

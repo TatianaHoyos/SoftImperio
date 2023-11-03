@@ -1,14 +1,12 @@
 package com.imperio.service.controlador;
 
-import com.imperio.service.model.dto.*;
-import com.imperio.service.model.dto.LoginRequest;
+import com.imperio.service.model.dto.login.Authoritation;
+import com.imperio.service.model.dto.login.LoginRequest;
 import com.imperio.service.model.dto.comun.Response;
-import com.imperio.service.model.dto.usuarios.UsuariosRequest;
-import com.imperio.service.model.entity.UsuariosEntity;
-import com.imperio.service.repository.RolService;
+import com.imperio.service.model.dto.login.LoginResponse;
+import com.imperio.service.oauth2.jwt.JwtService;
 import com.imperio.service.repository.UsuariosService;
 import com.imperio.service.services.EncryptService;
-import com.imperio.service.util.FileUploadUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -18,10 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.security.NoSuchAlgorithmException;
 
@@ -35,6 +30,9 @@ public class ControllerLogin {
 
     @Autowired
     private EncryptService encryptService;
+
+    @Autowired
+    private JwtService jwtService;
 
     private String urlServer = "http:localhost:8080/";
 
@@ -59,6 +57,14 @@ public class ControllerLogin {
                     response.setNombre(usuariodb.getNombre());
                     response.setFoto(urlServer + usuariodb.getFoto());
                     response.setRol(usuariodb.getIdRol());
+
+                    String jwt = jwtService.generarToken(usuariodb);
+
+                    response.setAuthoritation(Authoritation.builder()
+                                    .token(jwt)
+                                    .refreshToken("")
+                            .build());
+
                     return ResponseEntity.ok(response);
                 }
                 else {

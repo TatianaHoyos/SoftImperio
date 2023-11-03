@@ -1,22 +1,17 @@
 package com.imperio.service.controlador;
 
-import com.imperio.service.model.dto.LoginRequest;
-import com.imperio.service.model.dto.LoginResponse;
 import com.imperio.service.model.dto.comun.Response;
 import com.imperio.service.model.dto.rol.ConfiguracionRequest;
 import com.imperio.service.model.dto.rol.RolRequest;
 import com.imperio.service.model.entity.ConfiguracionEntity;
-import com.imperio.service.model.entity.ProductoEntity;
 import com.imperio.service.model.entity.RolEntity;
 import com.imperio.service.repository.ConfiguracionService;
 import com.imperio.service.repository.PermisosService;
 import com.imperio.service.repository.RolService;
-import com.imperio.service.util.FileUploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
