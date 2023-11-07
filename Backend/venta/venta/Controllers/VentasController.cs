@@ -4,21 +4,28 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using venta.Data;
+using venta.DTO;
+using venta.DTO.Pedido;
 using venta.Models;
+using venta.SignalR;
 
 namespace venta.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
     public class VentasController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IHubContext<MiClaseSignalR> _hubContext;
 
-        public VentasController(ApplicationDbContext context)
+        public VentasController(ApplicationDbContext context, IHubContext<MiClaseSignalR> hubContext)
         {
             _context = context;
+            _hubContext = hubContext;
         }
 
         // GET: api/Ventas/ByFecha
@@ -135,6 +142,33 @@ namespace venta.Controllers
         private bool VentaExists(int id)
         {
             return (_context.Ventas?.Any(e => e.idVenta == id)).GetValueOrDefault();
+        }
+
+        // POST: api/Ventas
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        [Route("Mesa")]
+        public async Task<ActionResult<Pedido>> PostVentaMesa(Pedido pedido)
+        {
+            if (_context.PuntoDeVentaEnMesa == null)
+            {
+                return NotFound();
+            }
+            //_context.PuntoDeVentaEnMesa.Add(venta);
+            //await _context.SaveChangesAsync();
+
+            var response = new Response
+            {
+                message = "El pedido de mesa se agrego correctamente",
+                status = "Success"
+            };
+
+            // Notificar a los clientes a través de SignalR
+            _hubContext.Clients.All.SendAsync("ReceiveMessage", "id del pedido " + pedido.pedido[0].idProducto 
+                +" - cantidad "+ pedido.pedido[0].cantidad, "Usuario");
+
+            // Serializar la instancia en formato JSON y retornarla como JsonResult
+            return new JsonResult(response);
         }
     }
 }

@@ -23,6 +23,7 @@ namespace venta.Data
         public DbSet<Existencia> Existencia { get; set; }
         public DbSet<Categoria> Categoria { get; set; }
         public DbSet<Productos> Productos { get; set; }
+        public DbSet<VentaMesa> PuntoDeVentaEnMesa { get; set; }
 
     }
 }
