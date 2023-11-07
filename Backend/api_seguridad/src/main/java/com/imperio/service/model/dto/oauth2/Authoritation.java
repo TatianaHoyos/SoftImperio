@@ -1,18 +1,17 @@
-package com.imperio.service.model.dto.login;
+package com.imperio.service.model.dto.oauth2;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Authoritation {
-    String token;
+    String accessToken;
     @Builder.Default
-    String type="Bearer";
+    String tokenType ="Bearer";
     String refreshToken;
 }
