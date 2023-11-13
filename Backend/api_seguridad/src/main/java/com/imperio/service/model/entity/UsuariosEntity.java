@@ -21,10 +21,10 @@ public class UsuariosEntity {
     private String nombre  ;
 
 
-    @Column(nullable = false, name = "Documento")
+    @Column(nullable = false, unique = true, name = "Documento")
     private String documento;
 
-    @Column(nullable = false, name = "Email")
+    @Column(nullable = false, unique = true, name = "Email")
     private String email;
 
     @Column(nullable = false, name="Telefono")

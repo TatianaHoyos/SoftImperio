@@ -60,7 +60,7 @@ namespace venta.Controllers
                                IdProducto = producto.IdProductos,
                                NombreReferencia = producto.ReferenciaProducto,
                                Precio = producto.PrecioProducto,
-                               Cantidad = producto.Cantidad
+                             //  Cantidad = producto.Cantidad
                            }).ToList()
                        }).ToList()
                }).ToList();

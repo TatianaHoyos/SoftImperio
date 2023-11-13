@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace venta.Controllers
+namespace venta.DTO
 {
     internal class ErrorResponse : ModelStateDictionary
     {

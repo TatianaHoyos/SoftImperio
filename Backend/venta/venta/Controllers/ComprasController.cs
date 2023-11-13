@@ -4,6 +4,7 @@ using venta.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using venta.Controllers;
+using venta.DTO;
 
 namespace Compras_SoftImperio.Controllers
 {

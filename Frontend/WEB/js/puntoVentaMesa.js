@@ -282,6 +282,7 @@ function despacharCredito(){
 
 }
 function confirmarVenta(){
+    
     var tbody = $("#tabla tbody");
     if (tbody.find("tr").length != 0){
     Swal.fire({
@@ -296,7 +297,7 @@ function confirmarVenta(){
     }).then((result) => {
         if (result.isConfirmed) {
             var venta= 0;
-            $("#totalVenta").text( venta);
+            //Hacer el llamado al api
             var pedido=[];
             $('#tabla tbody tr').each(function() {
                 // Obtiene el ID de la fila, que parece estar en el formato 'tr-N'
@@ -311,28 +312,30 @@ function confirmarVenta(){
             
                 // Hacer lo que desees con los datos, por ejemplo, imprimirlos en la consola
                 console.log('ID: ' + id);
-                // console.log('Producto: ' + producto);
-                // console.log('Precio: ' + precio);
+                console.log('Producto: ' + producto);
+                console.log('Precio: ' + precio);
                 console.log('Cantidad: ' + cantidad);
-                // console.log('Total: ' + total);
-                pedido.push({"idProducto": Number(id), "cantidad": Number(cantidad)});
+                console.log('Total: ' + total);
+                pedido.push({"idProducto":id, "cantidad":cantidad});
               });
               var pedidoTotal={"pedido":pedido};
               console.log(pedidoTotal);
               $.ajax({
                 type: "POST",
-                url:"https://localhost:7084/api/Ventas/Barra",
+                url:"https://localhost:7084/api/Ventas/Mesa",
                 "headers": {
                     "Content-Type": "application/json"
                   },
                   "data": JSON.stringify(pedidoTotal),
                   success: onExitoPedido,
                   error: onErrorPedido
-                });
-        }
+                  
+            });
+        
+              } else {
+              }
     });
 }
-
 }
 
 function onExitoPedido(data){
@@ -362,5 +365,4 @@ function onErrorPedido(error){
     }).then((result) => {
        
     });
-
 }

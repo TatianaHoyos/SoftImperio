@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UsuariosService {
@@ -24,6 +25,9 @@ public class UsuariosService {
     }
     public UsuariosEntity obtenerUsuarioCorreo(String correo){
         return usuariosRepository.findByEmail(correo);
+    }
+    public Optional<UsuariosEntity>  obtenerUsuarioId(int idUser){
+        return usuariosRepository.findById(idUser);
     }
 
     public void eliminarUsuario(int IdUsuarios){
