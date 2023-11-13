@@ -331,17 +331,7 @@ function confirmarVenta(){
                   error: onErrorPedido
                   
             });
-         /*   $("#totalVenta").text( venta);
-            $('#tabla > tbody').empty();
-         Swal.fire({
-            // title: '¿Esta seguro de registrar esta venta?',
-             text: 'Su venta se registro con éxito ',
-             type: 'success',
-             icon:"success",
-            showCancelButton: false,
-            confirmButtonColor: ' #d5c429 ',
-            confirmButtonText: 'Aceptar',
-        }).then((result) => { });*/
+        
               } else {
               }
     });
@@ -364,8 +354,15 @@ function onExitoPedido(data){
 }
 
 function onErrorPedido(error){
-    console.log(error.responseJSON)   
-    var mensaje =$("#resultadoLogin");
-    mensaje.show();
-    mensaje.text(error.responseJSON.message);
+    console.log(error.responseJSON.value)   
+    Swal.fire({
+        title: 'Error',
+        text: error.responseJSON.value.message,
+        icon:"warning",
+        showCancelButton: false,
+        confirmButtonColor: ' #d5c429 ',
+        confirmButtonText: 'Confirmar',
+    }).then((result) => {
+       
+    });
 }

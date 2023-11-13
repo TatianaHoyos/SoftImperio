@@ -7,15 +7,10 @@ namespace venta.Data
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
+
         {
         }
 
-        //// Define tus DbSet y relaciones aquí
-        //public DbSet<Libro> Libros { get; set; }
-        //public DbSet<Usuario> Usuarios { get; set; }
-        //public DbSet<Préstamo> Préstamos { get; set; }
-        //public DbSet<Libro> Libros { get; set; }
-        //public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<UsuarioCredito> UsuarioCredito { get; set; }
         public DbSet<Venta> Venta { get; set; }
         public DbSet<Compra> Compra { get; set; }
@@ -24,6 +19,18 @@ namespace venta.Data
         public DbSet<Categoria> Categoria { get; set; }
         public DbSet<Productos> Productos { get; set; }
         public DbSet<DetalleVenta> DetalleVenta { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // Configurar el valor predeterminado de la propiedad TuCampoTimestamp en la entidad Venta
+            modelBuilder.Entity<Venta>()
+                .Property(e => e.fechaVenta)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+            // Otros ajustes de configuración si los tienes
+
+            base.OnModelCreating(modelBuilder);
+        }
 
     }
 }

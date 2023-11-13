@@ -351,10 +351,10 @@ function onExitoPedido(data){
 }
 
 function onErrorPedido(error){
-    console.log(error.responseJSON)   
+    console.log(error.responseJSON.value)   
     Swal.fire({
         title: 'Error',
-        text: error.responseJSON.message,
+        text: error.responseJSON.value.message,
         icon:"warning",
         showCancelButton: false,
         confirmButtonColor: ' #d5c429 ',

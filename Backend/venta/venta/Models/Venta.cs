@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace venta.Models
 {
@@ -6,8 +7,8 @@ namespace venta.Models
     {
         [Key]
         public int idVenta { get; set; }
-        //public int idVentaEnBarra { get; set; }
-
+       
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime fechaVenta { get; set; }
 
         public float totalVenta { get; set; }

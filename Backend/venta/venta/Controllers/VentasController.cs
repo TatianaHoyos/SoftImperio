@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using venta.Data;
 using venta.DTO;
 using venta.DTO.Pedido;
@@ -60,6 +61,19 @@ namespace venta.Controllers
                 return NotFound();
             }
             return await _context.Venta.ToListAsync();
+        }
+
+        // GET: api/Ventas
+        [HttpGet]
+        [Route("Pendientes")]
+        public async Task<ActionResult<IEnumerable<Venta>>> GetVentasPendientes()
+        {
+            if (_context.Venta == null)
+            {
+                return NotFound();
+            }
+            return await ConsultarVentasPendientes();
+;
         }
 
         // GET: api/Ventas/5
@@ -155,58 +169,106 @@ namespace venta.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         [Route("Mesa")]
-        public async Task<ActionResult<Pedido>> PostVentaMesa(Pedido pedido)
+        public async Task<ActionResult<Pedido>> PostVentaMesa(Pedido pedidoRequest)
         {
             if (_context.DetalleVenta == null)
             {
                 return NotFound();
             }
-            //_context.PuntoDeVentaEnMesa.Add(venta);
-            //await _context.SaveChangesAsync();
-
-            var response = new Response
+            var response = await ProcesarPedido(pedidoRequest, "pendiente", "Mesa");
+            if (response.status == "Error")
             {
-                message = "El pedido de mesa se agrego correctamente",
-                status = "Success"
-            };
+                return StatusCode(424, new JsonResult(response));
+            }
 
-            // Notificar a los clientes a través de SignalR
-            _hubContext.Clients.All.SendAsync("ReceiveMessage", "id del pedido " + pedido.pedido[0].idProducto
-                + " - cantidad " + pedido.pedido[0].cantidad, "Usuario");
-
-            // Serializar la instancia en formato JSON y retornarla como JsonResult
+            NotificarBarra();
             return new JsonResult(response);
+          
         }
+        
         [HttpPost]
         [Route("Barra")]
         public async Task<ActionResult<Pedido>> PostVentaBarra(Pedido pedidoRequest)
         {
-            Response response = new Response();
-            if (_context.DetalleVenta == null)
+
+            var response = await ProcesarPedido(pedidoRequest, "vendido", "Barra");
+            if (response.status == "Error")
             {
-                return NotFound();
+                return StatusCode(424, new JsonResult(response));
             }
-            // garantizo que no hayan id repetidos
-            var pedidos = pedidoRequest.pedido
-            .GroupBy(detalle => detalle.idProducto)
-            .Select(grupo => new DetallePedido
+            return new JsonResult(response);
+        }
+
+        private async Task<Response> ProcesarPedido(Pedido pedidoRequest, string estadoVenta, string origenVenta)
+        {
+            Response response = new Response();
+            var pedidos = AgruparPedidos(pedidoRequest);
+
+            try
             {
-                idProducto = grupo.Key,
-                cantidad = grupo.Sum(detalle => detalle.cantidad)
-            })
-            .ToList();
+                var (detalleDeVentaAguardar, existenciasActualizar, totalP) = RealizarValidaciones(pedidos);
 
-            List<DetalleVenta> detalleDeVentaAguardar = new List<DetalleVenta>();
-            List<Existencia> existenciasActualizar = new List<Existencia>();
+                await using (var transaction = await _context.Database.BeginTransactionAsync().ConfigureAwait(false))
+                {
+                try
+                {
+                    var venta = await GuardarVenta(estadoVenta, origenVenta, totalP);
 
+                    AsignarIdVenta(detalleDeVentaAguardar, venta.idVenta);
+
+                    await GuardarDetallesVenta(detalleDeVentaAguardar);
+
+                    await ActualizarExistencias(existenciasActualizar);
+
+                        await _context.SaveChangesAsync().ConfigureAwait(false); // Guarda los cambios de manera asincrónica
+
+                        await transaction.CommitAsync().ConfigureAwait(false); // Commit de la transacción
+                    }
+                catch (Exception ex) //Capturamos error de guardado o actualización en la db
+                {
+                    Console.WriteLine($"Error: {ex.Message}");
+                        await transaction.RollbackAsync().ConfigureAwait(false);
+                        response = new Response { message = "No se pudo completar la venta", status = "Error" };
+                    return response;
+                }
+
+                response = new Response { message = $"Se pudo completar la venta con éxito: {totalP}", status = "Exito" };
+                return response;
+            }
+        
+            }
+            catch (Exception e) //Capturamos errores lanzados del metodo RealizarValidaciones()
+            {
+                response = new Response { message = e.Message, status = "Error" };
+                return response;
+            }
+        }
+
+        // garantizo que no hayan id repetidos
+        private List<DetallePedido> AgruparPedidos(Pedido pedidoRequest)
+        {
+            return pedidoRequest.pedido
+                .GroupBy(detalle => detalle.idProducto)
+                .Select(grupo => new DetallePedido
+                {
+                    idProducto = grupo.Key,
+                    cantidad = grupo.Sum(detalle => detalle.cantidad)
+                })
+                .ToList();
+        }
+
+        private (List<DetalleVenta>, List<Existencia>, float) RealizarValidaciones(List<DetallePedido> pedidos)
+        {
+            var detalleDeVentaAguardar = new List<DetalleVenta>();
+            var existenciasActualizar = new List<Existencia>();
+            var totalP = 0f;
 
             List<int> listaDeId = pedidos.Select(detalle => detalle.idProducto).ToList();
+
             //consulto de la db la tabla de existencia  
             var existencias = _productoService.ObtenerExitencia(listaDeId);
-
             //consulto de la db todos los productos del pedido con el id
             var productos = _productoService.ObtenerProductos(listaDeId);
-            var totalP = 0f;
 
             foreach (var pedido in pedidos)
             {
@@ -226,12 +288,10 @@ namespace venta.Controllers
                         var precioProducto = (producto.PrecioProducto * pedido.cantidad);
                         totalP += precioProducto;
 
-
                         existencia.Cantidad -= pedido.cantidad;
                         existenciasActualizar.Add(existencia);
 
                         //le asigno los valores a detalle venta para guardarlos en la tabla
-
                         DetalleVenta detalleDeVenta = new DetalleVenta();
                         detalleDeVenta.IdExistencias = existencia.IdExistencias;
                         detalleDeVenta.CantidadProducto = pedido.cantidad;
@@ -246,88 +306,80 @@ namespace venta.Controllers
                         Console.WriteLine($"No hay suficientes existencias para el producto " +
                             $"{producto.NombreProducto} para satisfacer el pedido. " +
                             $"Cantidad disponible: {existencia.Cantidad}");
-                        response = new Response
+                        /*response = new Response
                         {
                             message = "El pedido no se puede procesar con exito, la existencia no es suficiente",
                             status = "Error"
-                        };
-                        break;
+                        };*/
+                        throw new Exception("No hay suficientes existencias para completar el pedido.");
                     }
                 }
                 else
                 {
                     Console.WriteLine($"No se encontró el producto con id {pedido.idProducto} " +
                         $"o las existencias correspondientes para el pedido");
-                    response = new Response
+                    /*response = new Response
                     {
                         message = "El producto no exite",
                         status = "Error"
-                    };
+                    };*/
+                    throw new Exception("No se encontró el producto o las existencias correspondientes.");
                 }
             }
-            if (response.status != null)
+           
+
+            return (detalleDeVentaAguardar, existenciasActualizar, totalP);
+        }
+
+        private async Task<Venta> GuardarVenta(string estado, string origen, float totalP)
+        {
+            var venta = new Venta { totalVenta = totalP, estado = estado, origen = origen };
+            _context.Venta.Add(venta);
+            await _context.SaveChangesAsync();
+            return venta;
+        }
+
+        private void AsignarIdVenta(List<DetalleVenta> detalleDeVentaAguardar, int idVenta)
+        {
+            foreach (var detalle in detalleDeVentaAguardar)
             {
-                return StatusCode(424, new JsonResult(response));
-            }
-
-
-            using (var transaction = _context.Database.BeginTransaction())
-            {
-                try
-                {
-                    var valorTotal = totalP;
-                    //voy a guardar en la tabla venta
-                    Venta venta = new Venta();
-                    venta.totalVenta = valorTotal;
-                    venta.estado = "vendido";
-                    venta.origen = "Barra";
-
-                    _context.Venta.Add(venta);
-                    await _context.SaveChangesAsync();
-
-                    //obtengo el id de la venta guardada
-                    //venta.idVenta;
-
-                    //recorro el detalleventaguardar para asignarle el id venta que hacia falta
-                    foreach (var Detalle in detalleDeVentaAguardar)
-                    {
-                        Detalle.IdVenta = venta.idVenta;
-                    }
-
-
-                    // Guardar los detalles de venta
-                    _context.DetalleVenta.AddRange(detalleDeVentaAguardar);
-                    await _context.SaveChangesAsync();
-
-                    //Actualizamos la tabla, refrescando las existencias
-                    _context.Existencia.UpdateRange(existenciasActualizar);
-                    await _context.SaveChangesAsync();
-
-                    // Commit de la transacción si todo fue exitoso
-                    transaction.Commit();
-                }
-                catch (Exception ex)
-                {
-                    // Algo salió mal, realiza un rollback de la transacción
-                    Console.WriteLine($"Error: {ex.Message}");
-                    transaction.Rollback();
-
-                    response = new Response
-                    {
-                        message = "No se pudo completar la venta",
-                        status = "Error"
-                    };
-                    return StatusCode(424, new JsonResult(response));
-                }
-
-                response = new Response
-                {
-                    message = "Se pudo completar la venta con exito " + totalP,
-                    status = "Exito"
-                };
-                return new JsonResult(response);
+                detalle.IdVenta = idVenta;
             }
         }
+
+        private async Task GuardarDetallesVenta(List<DetalleVenta> detalleDeVentaAguardar)
+        {
+            _context.DetalleVenta.AddRange(detalleDeVentaAguardar);
+            await _context.SaveChangesAsync();
+        }
+
+        private async Task ActualizarExistencias(List<Existencia> existenciasActualizar)
+        {
+            _context.Existencia.UpdateRange(existenciasActualizar);
+            await _context.SaveChangesAsync();
+        }
+
+        private async void NotificarBarra()
+        {
+           List<Venta> ventasPendientes = await ConsultarVentasPendientes();
+            // Convertir la lista a una cadena JSON
+            string jsonString = JsonConvert.SerializeObject(ventasPendientes);
+            // Notificar a la barra los pedidos en estado pendiente que hay en ventas a través de SignalR
+            _hubContext.Clients.All.SendAsync("ReceiveMessage", jsonString, "Usuario");
+        }
+        private async Task<List<Venta>> ConsultarVentasPendientes()
+        {
+            string estadoPendiente = "pendiente";
+
+            // Filtra las ventas por el estado pendiente
+            var ventas = await _context.Venta
+                .Where(v => v.estado.Equals(estadoPendiente))
+                .ToListAsync();
+
+            return ventas;
+        }
+
+
     }
 
 }
