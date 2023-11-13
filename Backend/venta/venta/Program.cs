@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using venta.Data;
+using venta.Repository;
 using venta.SignalR;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -34,11 +35,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
 
-//builder.Services.AddCors(policyBuider=>
-//    policyBuider.AddDefaultPolicy(
-//        policy=>
-//        policy.WithOrigins("http://localhost:5500").AllowAnyHeader().AllowAnyMethod()
-//));
+
+// Registro de IProductoRepository con ProductoService como implementación
+builder.Services.AddScoped<IProductoRepository, ProductoService>();
 
 
 var app = builder.Build();

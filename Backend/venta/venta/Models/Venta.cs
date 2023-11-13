@@ -11,5 +11,7 @@ namespace venta.Models
         public DateTime fechaVenta { get; set; }
 
         public float totalVenta { get; set; }
+        public string estado { get; set; }
+        public string origen { get; set; }
     }
 }

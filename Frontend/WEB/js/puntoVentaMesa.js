@@ -346,6 +346,7 @@ function confirmarVenta(){
               }
     });
 }
+}
 
 function onExitoPedido(data){
     console.log(data)
@@ -367,5 +368,4 @@ function onErrorPedido(error){
     var mensaje =$("#resultadoLogin");
     mensaje.show();
     mensaje.text(error.responseJSON.message);
-}
 }

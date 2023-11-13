@@ -17,13 +17,13 @@ namespace venta.Data
         //public DbSet<Libro> Libros { get; set; }
         //public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<UsuarioCredito> UsuarioCredito { get; set; }
-        public DbSet<Venta> Ventas { get; set; }
+        public DbSet<Venta> Venta { get; set; }
         public DbSet<Compra> Compra { get; set; }
         public DbSet<DetalleCompra> DetalleCompra { get; set; }
         public DbSet<Existencia> Existencia { get; set; }
         public DbSet<Categoria> Categoria { get; set; }
         public DbSet<Productos> Productos { get; set; }
-        public DbSet<VentaMesa> PuntoDeVentaEnMesa { get; set; }
+        public DbSet<DetalleVenta> DetalleVenta { get; set; }
 
     }
 }

@@ -297,18 +297,70 @@ function confirmarVenta(){
         if (result.isConfirmed) {
             var venta= 0;
             $("#totalVenta").text( venta);
-         $('#tabla > tbody').empty();
-         Swal.fire({
-            // title: '¿Esta seguro de registrar esta venta?',
-             text: 'Su venta se registro con éxito ',
-             type: 'success',
-             icon:"success",
-            showCancelButton: false,
-            confirmButtonColor: ' #d5c429 ',
-            confirmButtonText: 'Aceptar',
-        }).then((result) => { });
-              } else {
-              }
+            var pedido=[];
+            $('#tabla tbody tr').each(function() {
+                // Obtiene el ID de la fila, que parece estar en el formato 'tr-N'
+                var id = $(this).attr('id');
+                var partes = id.split('-');
+                id = partes[1];
+                // Obtiene los datos de cada columna en la fila
+                var producto = $(this).find('th:eq(0)').text();
+                var precio = $(this).find('th:eq(1)').text();
+                var cantidad = $(this).find('.count').val(); // Aquí se usa la clase 'count' del input
+                var total = $(this).find('.total').text();
+            
+                // Hacer lo que desees con los datos, por ejemplo, imprimirlos en la consola
+                console.log('ID: ' + id);
+                // console.log('Producto: ' + producto);
+                // console.log('Precio: ' + precio);
+                console.log('Cantidad: ' + cantidad);
+                // console.log('Total: ' + total);
+                pedido.push({"idProducto": Number(id), "cantidad": Number(cantidad)});
+              });
+              var pedidoTotal={"pedido":pedido};
+              console.log(pedidoTotal);
+              $.ajax({
+                type: "POST",
+                url:"https://localhost:7084/api/Ventas/Barra",
+                "headers": {
+                    "Content-Type": "application/json"
+                  },
+                  "data": JSON.stringify(pedidoTotal),
+                  success: onExitoPedido,
+                  error: onErrorPedido
+                });
+        }
     });
 }
+
+}
+
+function onExitoPedido(data){
+    console.log(data)
+    Swal.fire({
+        title: 'Exito',
+        text: 'El pedido fue enviado con exito',
+        type: 'success',
+        icon:"success",
+        showCancelButton: false,
+        confirmButtonColor: ' #d5c429 ',
+        confirmButtonText: 'Confirmar',
+    }).then((result) => {
+       
+    });
+}
+
+function onErrorPedido(error){
+    console.log(error.responseJSON)   
+    Swal.fire({
+        title: 'Error',
+        text: error.responseJSON.message,
+        icon:"warning",
+        showCancelButton: false,
+        confirmButtonColor: ' #d5c429 ',
+        confirmButtonText: 'Confirmar',
+    }).then((result) => {
+       
+    });
+
 }

@@ -2,8 +2,8 @@
 {
     public class DetallePedido
     {
-        public string idProducto { get; set; }
-        public string cantidad { get; set; }
+        public int idProducto { get; set; }
+        public int cantidad { get; set; }
 
     }
 }

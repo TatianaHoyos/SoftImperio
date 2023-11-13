@@ -7,70 +7,10 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/styles_Notificacion.css">
    
     </style>
-    <style>
-       .qty .count {
-    color: #000;
-    display: inline-block;
-    vertical-align: top;
-    font-size: 25px;
-    font-weight: 700;
-    line-height: 30px;
-    padding: 0 2px
-    ;min-width: 35px;
-    text-align: center;
-}
-.qty .plus {
-    cursor: pointer;
-    display: inline-block;
-    vertical-align: top;
-    color: white;
-    width: 30px;
-    height: 30px;
-    font: 30px/1 Arial,sans-serif;
-    text-align: center;
-    border-radius: 50%;
-    }
-.qty .minus {
-    cursor: pointer;
-    display: inline-block;
-    vertical-align: top;
-    color: white;
-    width: 30px;
-    height: 30px;
-    font: 30px/1 Arial,sans-serif;
-    text-align: center;
-    border-radius: 50%;
-    background-clip: padding-box;
-}
-
-.minus:hover{
-    background-color: #717fe0 !important;
-}
-.plus:hover{
-    background-color: #717fe0 !important;
-}
-/*Prevent text selection*/
-span{
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-}
-input{  
-    border: 0;
-    width: 2%;
-}
-nput::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-input:disabled{
-    background-color:white;
-}
-         
-    </style>
+ 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script>
@@ -86,7 +26,9 @@ input:disabled{
 <body>
     <div class="logo-container">
         <img src="img/logo.png" alt="Logo" class="Logo" height="170">
+        
     </div>
+    
     <nav class="navbar navbar-expand-lg navbar-light colornavbar">
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
@@ -117,12 +59,95 @@ input:disabled{
                 <li class="nav-item menu-item">
                     <a class="nav-link" href="#"><i class="fas fa-user-lock"></i> Permisos</a>
                 </li>
+               <li> 
+                <!--Notificación-->
+                <div class="dropdown" style="float: right; padding: 13px">
+                <a href="#" onclick="return false;" role="button" data-toggle="dropdown" id="dropdownMenu1" data-target="#" style="float: left" aria-expanded="true">
+                    <i class="fas fa-bell" style="font-size: 20px; float: left; color:black">
+                    </i>
+                </a>
+                <span id="contadorNotificaciones" class="badge badge-danger"></span>
+                <ul class="dropdown-menu dropdown-menu-left pull-right" role="menu" aria-labelledby="dropdownMenu1">
+                   <!--header-->
+                    <li role="presentation">
+                        <p class="dropdown-menu-header">Notificaciones</p>
+                    </li>
+                    <!--scrollable-->
+                     <div class="btn-group pull-right top-head-dropdown">
+                        <div class="scrollable-content dropdown-menu-right">
+                            <li>
+                            <a href="#" class="top-text-block">
+                                <div class="top-text-heading">You have <b>3 new themes</b> trending</div>
+                                <span class="top-text-light">15 minutes ago</span>
+                            </a> 
+                            </li>
+                            <li>
+                            <a href="#" class="top-text-block">
+                                <div class="top-text-heading">New asset recommendations in <b>Gaming Laptop</b></div>
+                                <span class="top-text-light">2 hours ago</span>
+                            </a> 
+                            </li>
+                            <li>
+                            <a href="#" class="top-text-block">
+                                <div class="top-text-heading">New asset recommendations in <b>5 themes</b></div>
+                                <span class="top-text-light">4 hours ago</span>
+                            </a> 
+                            </li>
+                            <li>
+                            <a href="#" class="top-text-block">
+                                <div class="top-text-heading">Assets specifications modified in themes</div>
+                                <span class="top-text-light">4 hours ago</span>
+                            </a> 
+                            </li>
+                            <li>
+                            <a href="#" class="top-text-block">
+                                <div class="top-text-heading">We crawled <b>www.dell.com</b> successfully</div>
+                                <span class="top-text-light">5 hours ago</span>
+                            </a> 
+                            </li>
+                            <li>
+                            <a href="#" class="top-text-block">
+                                <div class="top-text-heading">Next crawl scheduled on <b>10 Oct 2016</b></div>
+                                <span class="top-text-light">6 hours ago</span>
+                            </a> 
+                            </li>
+                            <li>
+                            <a href="#" class="top-text-block">
+                                <div class="top-text-heading">You have an update for <b>www.dell.com</b></div>
+                                <span class="top-text-light">7 hours ago</span>
+                            </a> 
+                            </li>
+                            <li>
+                            <a href="#" class="top-text-block">
+                                <div class="top-text-heading"><b>"Gaming Laptop"</b> is now trending</div>
+                                <span class="top-text-light">7 hours ago</span>
+                            </a> 
+                            </li>
+                            <li>
+                            <a href="#" class="top-text-block">
+                                <div class="top-text-heading">New asset recommendations in <b>Gaming Laptop</b></div>
+                                <span class="top-text-light">7 hours ago</span>
+                            </a> 
+                            </li>
+                        <li>
+                            <div class="loader-topbar"></div>
+                        </li>
+                        </div>
+                      </div>
+                      <!--Footer-->
+                      <div class="notification-footer">
+                        <a class="menu-title" href="#">Ver Todo<i class="fas fa-chevron-right"></i> </a>
+                    </div>
+                </ul>
+            </div>
+        </li>
             </ul>
-            <a class="nav-link logout-link text-dark" href="#"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
+            <a class="nav-link logout-link text-dark" href="#">Cerrar sesión <i class="fas fa-sign-out-alt"></i> </a>
         </div>
     </nav>
 </body>
 <div>
+   
     <div class="container  p-2 g-col-6 ">
         <h4 class="mt-5 text-white  text-center">Punto de Venta en Barra</h4>
         <div class="form-row justify-content-center">
