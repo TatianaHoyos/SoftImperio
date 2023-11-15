@@ -268,3 +268,25 @@ margin: 0;
 input:disabled{
 background-color:white;
 }
+
+/**Cargando**/
+#contenedorCargando {
+  position: relative;
+}
+
+.blur-background {
+  background-color: rgba(214, 214, 214, 0.269); 
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(8px); /* Ajusta el valor de blur según sea necesario */
+  -webkit-backdrop-filter: blur(8px); /* Soporte para navegadores WebKit */
+  z-index: -1;
+}
+
+#cargando.show {
+  backdrop-filter: blur(8px); /* Ajusta el valor de blur según sea necesario */
+  -webkit-backdrop-filter: blur(8px); /* Soporte para navegadores WebKit */
+}
