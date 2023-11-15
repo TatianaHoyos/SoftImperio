@@ -3,9 +3,11 @@ var productos;
 
 
 $(document).ready(function () {
+    $("#cargando").modal("show");
     consultarCategorias();
     selectCategoria();
     contadorCantidad();
+    preventCloseLoading();
 });
 
 
@@ -35,6 +37,7 @@ function onExitoCategorias(data) {
 }
 function onErrorCategorias(error) {
     console.log(error)
+    $("#cargando").modal("hide");
 }
 
 
@@ -55,6 +58,7 @@ function onExitoProductos(data, categorias) {
     productos = data;
     console.log(data);
     mostrarProductos(data, categorias);
+    $("#cargando").modal("hide");
 }
 
 function mostrarProductos(data, categorias) {
@@ -121,6 +125,7 @@ function mostrarProductos(data, categorias) {
 
 function onErrorProductos(error) {
     console.log(error)
+    $("#cargando").modal("hide");
 }
 
 function selectCategoria() {
@@ -319,6 +324,7 @@ function confirmarVenta(){
               });
               var pedidoTotal={"pedido":pedido};
               console.log(pedidoTotal);
+              $("#cargando").modal("show");
               $.ajax({
                 type: "POST",
                 url:"https://localhost:7084/api/Ventas/Barra",
@@ -336,6 +342,7 @@ function confirmarVenta(){
 }
 
 function onExitoPedido(data){
+    $("#cargando").modal("hide");
     console.log(data)
     Swal.fire({
         title: 'Exito',
@@ -346,11 +353,14 @@ function onExitoPedido(data){
         confirmButtonColor: ' #d5c429 ',
         confirmButtonText: 'Confirmar',
     }).then((result) => {
-       
+        var venta= 0;
+            $("#totalVenta").text( venta);
+         $('#tabla > tbody').empty();
     });
 }
 
 function onErrorPedido(error){
+    $("#cargando").modal("hide");
     console.log(error.responseJSON.value)   
     Swal.fire({
         title: 'Error',
@@ -363,4 +373,18 @@ function onErrorPedido(error){
        
     });
 
+}
+
+
+function preventCloseLoading() {
+    document.addEventListener('keydown', function(event) {
+        // Obtener el modal
+        var modal = document.getElementById('cargando');
+    
+        // Verificar si la tecla presionada es "Esc" y si el modal está abierto
+        if (event.key === 'Escape' && modal.classList.contains('show')) {
+          event.preventDefault(); // Evitar el comportamiento por defecto (cerrar el modal)
+          event.stopPropagation(); // Detener la propagación del evento
+        }
+      });
 }
