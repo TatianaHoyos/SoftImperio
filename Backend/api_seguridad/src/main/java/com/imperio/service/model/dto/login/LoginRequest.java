@@ -1,4 +1,4 @@
-package com.imperio.service.model.dto;
+package com.imperio.service.model.dto.login;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -3,11 +3,9 @@ var productos;
 
 
 $(document).ready(function () {
-    $("#cargando").modal("show");
     consultarCategorias();
     selectCategoria();
     contadorCantidad();
-    preventCloseLoading();
 });
 
 
@@ -37,7 +35,6 @@ function onExitoCategorias(data) {
 }
 function onErrorCategorias(error) {
     console.log(error)
-    $("#cargando").modal("hide");
 }
 
 
@@ -58,7 +55,6 @@ function onExitoProductos(data, categorias) {
     productos = data;
     console.log(data);
     mostrarProductos(data, categorias);
-    $("#cargando").modal("hide");
 }
 
 function mostrarProductos(data, categorias) {
@@ -125,7 +121,6 @@ function mostrarProductos(data, categorias) {
 
 function onErrorProductos(error) {
     console.log(error)
-    $("#cargando").modal("hide");
 }
 
 function selectCategoria() {
@@ -287,6 +282,7 @@ function despacharCredito(){
 
 }
 function confirmarVenta(){
+    
     var tbody = $("#tabla tbody");
     if (tbody.find("tr").length != 0){
     Swal.fire({
@@ -301,7 +297,7 @@ function confirmarVenta(){
     }).then((result) => {
         if (result.isConfirmed) {
             var venta= 0;
-            $("#totalVenta").text( venta);
+            //Hacer el llamado al api
             var pedido=[];
             $('#tabla tbody tr').each(function() {
                 // Obtiene el ID de la fila, que parece estar en el formato 'tr-N'
@@ -316,33 +312,33 @@ function confirmarVenta(){
             
                 // Hacer lo que desees con los datos, por ejemplo, imprimirlos en la consola
                 console.log('ID: ' + id);
-                // console.log('Producto: ' + producto);
-                // console.log('Precio: ' + precio);
+                console.log('Producto: ' + producto);
+                console.log('Precio: ' + precio);
                 console.log('Cantidad: ' + cantidad);
-                // console.log('Total: ' + total);
-                pedido.push({"idProducto": Number(id), "cantidad": Number(cantidad)});
+                console.log('Total: ' + total);
+                pedido.push({"idProducto":id, "cantidad":cantidad});
               });
               var pedidoTotal={"pedido":pedido};
               console.log(pedidoTotal);
-              $("#cargando").modal("show");
               $.ajax({
                 type: "POST",
-                url:"https://localhost:7084/api/Ventas/Barra",
+                url:"https://localhost:7084/api/Ventas/Mesa",
                 "headers": {
                     "Content-Type": "application/json"
                   },
                   "data": JSON.stringify(pedidoTotal),
                   success: onExitoPedido,
                   error: onErrorPedido
-                });
-        }
+                  
+            });
+        
+              } else {
+              }
     });
 }
-
 }
 
 function onExitoPedido(data){
-    $("#cargando").modal("hide");
     console.log(data)
     Swal.fire({
         title: 'Exito',
@@ -353,14 +349,11 @@ function onExitoPedido(data){
         confirmButtonColor: ' #d5c429 ',
         confirmButtonText: 'Confirmar',
     }).then((result) => {
-        var venta= 0;
-            $("#totalVenta").text( venta);
-         $('#tabla > tbody').empty();
+       
     });
 }
 
 function onErrorPedido(error){
-    $("#cargando").modal("hide");
     console.log(error.responseJSON.value)   
     Swal.fire({
         title: 'Error',
@@ -372,19 +365,4 @@ function onErrorPedido(error){
     }).then((result) => {
        
     });
-
-}
-
-
-function preventCloseLoading() {
-    document.addEventListener('keydown', function(event) {
-        // Obtener el modal
-        var modal = document.getElementById('cargando');
-    
-        // Verificar si la tecla presionada es "Esc" y si el modal está abierto
-        if (event.key === 'Escape' && modal.classList.contains('show')) {
-          event.preventDefault(); // Evitar el comportamiento por defecto (cerrar el modal)
-          event.stopPropagation(); // Detener la propagación del evento
-        }
-      });
 }
