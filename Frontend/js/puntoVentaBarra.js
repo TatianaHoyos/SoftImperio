@@ -198,8 +198,7 @@ function contadorCantidad(){
         input.val(parseInt(input.val()) + 1);
         var cantidad = parseInt(input.val());
 
-        total.text(parseInt(precio.text())*cantidad);
-        
+        total.text(parseInt(precio.text())*cantidad);        
         
     });
     

@@ -12,8 +12,7 @@ function addCompra() {
       success: function(response) {
         // Procesar la respuesta exitosa
         console.log(response);
-        let response = JSON.parse(response);
-       // habilitarVistaDetalle(idCompra);
+        habilitarVistaDetalle(response.idCompra);
         //window.location.reload();
       },
       error: function(error) {
@@ -26,20 +25,20 @@ function addCompra() {
   function deleteCompra(idCompra) {
     // Display a confirmation dialog using SweetAlert
     Swal.fire({
-      title: 'Confirm Deletion',
-      text: 'Are you sure you want to delete this Compra?',
+      title: 'Confirma Eliminación',
+      text: 'Estás seguro de eliminar esta Compra?',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
+      confirmButtonText: 'Sí, eliminar!'
     }).then((result) => {
       if (result.isConfirmed) {
         // User clicked "Yes," proceed with the API call
         $.ajax({
           type: 'POST',
           url: 'http://localhost:5175/Compras/delete',
-          data: JSON.stringify({ idCompra: idCompra }),
+          data: JSON.stringify({ id: idCompra }),
           contentType: 'application/json',
           success: function (response) {
             // Process the successful response
@@ -69,7 +68,7 @@ function addCompra() {
             if (!response.ok) {
             throw new Error('Network response was not ok');
             }
-            return response.json(); // Parse the JSON response
+            return response.json(); 
         })
         .then((responseData) => {
             console.log(responseData);
@@ -78,12 +77,10 @@ function addCompra() {
   
             // Iterate over each object in the response data array
             responseData.forEach(function (item) {
-                console.log(item)
               const row = createTableRow(item);
               tableBody.appendChild(row);
             });
             
-            // You can use the data in your JavaScript code
         })
         .catch((error) => {
             // Handle errors here
