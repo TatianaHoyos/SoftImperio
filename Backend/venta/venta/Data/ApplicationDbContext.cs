@@ -10,7 +10,8 @@ namespace venta.Data
 
         {
         }
-
+        public DbSet<DetalleCreditos> DetalleCreditos { get; set; }
+        public DbSet<Creditos> Creditos { get; set; }
         public DbSet<UsuarioCredito> UsuarioCredito { get; set; }
         public DbSet<Venta> Venta { get; set; }
         public DbSet<Compra> Compra { get; set; }

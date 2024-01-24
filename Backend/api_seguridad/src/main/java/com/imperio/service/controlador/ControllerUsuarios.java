@@ -75,6 +75,17 @@ public class ControllerUsuarios {
         return ResponseEntity.ok(usuariosService.obtenerUsuarios());
     }
 
+    @GetMapping(value = "api/usuarios/consultar/{id}")
+    public ResponseEntity<?> obtenerUsuarioPorId(@PathVariable Integer id) {
+        UsuariosEntity usuario = usuariosService.obtenerUsuarioPorId(id);
+
+        if (usuario != null) {
+            return ResponseEntity.ok(usuario);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @DeleteMapping("api/usuarios/eliminar/{id}")
     public ResponseEntity<?> deleteUsuario(@PathVariable("id") Integer id){
         try {
