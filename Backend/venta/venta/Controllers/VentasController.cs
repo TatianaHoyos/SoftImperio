@@ -228,6 +228,20 @@ namespace venta.Controllers
             return new JsonResult(response);
         }
 
+        [HttpPost]
+        [Route("Barra/{idVenta}")]
+        public async Task<ActionResult<Venta>> PostVentaBarra(Venta venta)
+        {
+            if (_context.Venta == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.Ventas'  is null.");
+            }
+            _context.Venta.Add(venta);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetVenta", new { id = venta.idVenta }, venta);
+        }
+
         private async Task<Response> ProcesarPedido(Pedido pedidoRequest, string estadoVenta, string origenVenta)
         {
             Response response = new Response();

@@ -103,7 +103,7 @@ function onExitoVentasPendientes(data){
             //se selecciona la notificacion por medio de los id de los li
             $("#contenedorNotificaciones li").on("click", function() {
                 // Muestra una alerta con el ID de la etiqueta li clicada
-                alert("ID de la etiqueta: " + $(this).attr("id"));
+              
                consultarApiVentasPorNotificacion( $(this).attr("id"));
                
 
@@ -118,19 +118,20 @@ function consultarApiVentasPorNotificacion(idVenta){
             "Content-Type": "application/json"
         },
         success: function (data) {
-            onExitoVentasPorNotificacion(data);
+            onExitoVentasPorNotificacion(data,idVenta);
         },
         error: onErrorVentasPorNotificacion
         
     });
 }
-function onExitoVentasPorNotificacion(data){
+function onExitoVentasPorNotificacion(data,idVenta){
     data.forEach(function (detalleVenta) {
         console.log(detalleVenta)
-        alert(detalleVenta.nombreProducto);
+        // alert(detalleVenta.nombreProducto);
         mostrarProductosTablaNotificacion(detalleVenta.nombreProducto+' '+detalleVenta.referenciaProducto,
         detalleVenta.subTotalAPagar,detalleVenta.idProductos, detalleVenta.cantidadProducto)
         $("#totalVenta").text(detalleVenta.totalVenta);
+        $("#estadoPedidoVenta").val(idVenta);
        
     });
     
