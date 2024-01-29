@@ -3,24 +3,15 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>registroColaborador</title>
+    <title>PuntoVentaBarra</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/styles_Notificacion.css">
    
-    </style>
  
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $(".nav-link").click(function () {
-                $(".nav-link").removeClass("active");
-                $(this).addClass("active");
-            });
-        });
-    </script>
 </head>
 
 <body>
@@ -74,7 +65,7 @@
                     <a class="nav-link" href="#"><i class="fas fa-truck"></i> Proveedores</a>
                 </li>
                 <li class="nav-item menu-item">
-                    <a class="nav-link" href="#"><i class="fas fa-cash-register"></i> Punto de venta</a>
+                    <a class="nav-link active" href="#"><i class="fas fa-cash-register"></i> Punto de venta</a>
                 </li>
                 <li class="nav-item menu-item">
                     <a class="nav-link" href="creditos.html"><i class="fas fa-money-check-alt"></i> Créditos</a>
@@ -140,7 +131,6 @@
     </nav>
 </body>
 <div>
-   
     <div class="container  p-2 g-col-6 ">
         <h4 class="mt-5 text-white  text-center">Punto de Venta en Barra</h4>
         <div class="form-row justify-content-center">
@@ -156,11 +146,11 @@
                     </select>
                 </div>
             </div>
-           
+
         </div>
     </div>
     <div class="row ml-4 mr-4 mb-3">
-        <div class="col-md-7" id="ContenedorProductos">            
+        <div class="col-md-7" id="ContenedorProductos">
         </div>
         <div class="col-md-5">
             <div class="row justify-content-md-center">
@@ -172,7 +162,7 @@
                       <th>Cantidad</th>
                       <th>Total</th>
                       <th>Acciones</th>
-      
+
                     </tr>
                   </thead>
                   <tbody class="text-center">

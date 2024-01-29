@@ -1,13 +1,13 @@
 body{
-    background-image: url("../img/fondo.jpg");
+    /* background-image: url("../img/ej.jpg"); */
+    /* background-color: #201f1e; */
+    font-family:"Baskerville", serif;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
     background-attachment: fixed;
-    } 
-#fondo{
-    background-color: #201f1e;
-}
+    }
+
 .form-input img {
     width:100%;
     display:none;
@@ -17,25 +17,19 @@ body{
     background-color: #e5c850;
 }
 .form-group button:hover {
-    background-color: #d5c429;
+    background-color: #ae9243;
 }
 
-
 .border-grey{
-    box-shadow: 3px 3px 3px 3px rgba(18, 18, 18, 0.434);
+    box-shadow: 3px 3px 3px 3px rgba(5, 5, 5, 0.434);
 }
     .menu-item {
       margin-right: 10px;
     }
 
     .active {
-      /* background-color: #fbb82d !important; */
-      background-color: #d5c429 !important;
+      background-color: #ae9243 !important;
       color: #090909 !important;
-    }
-
-    .logout-link {
-      margin-left: 10px;
     }
 
     .logo {
@@ -47,9 +41,9 @@ body{
       display: flex; /* Permite alinear los elementos horizontalmente y verticalmente */
       justify-content: center; /* Alinea los elementos horizontalmente al centro */
       align-items: center; /* Alinea los elementos verticalmente al centro */
-      margin-bottom: -20px; /*Margen inferior para crear espacio entre el logo y el menú */
+      margin-bottom: -30px; /*Margen inferior para crear espacio entre el logo y el menú */
       background-color: #090909;
-      padding: 10px; /* Espacio interno para el logo */
+      padding: 1px; /* Espacio interno para el logo */
     }
 
     /* Estilos para el logo */
@@ -59,8 +53,39 @@ body{
     
     /* Estilos para el menú */
     .colornavbar {
-      background-color: #e5c850; 
+      background-color: #090909;
     }
+    .logout-link {
+      margin-left: auto; /* Mover el enlace de cierre de sesión a la derecha */
+      padding: 5px;
+      border-radius: 10px;
+    }
+    .nav-link i {
+      margin-right: 7px; /* Espaciado entre el ícono y el texto del enlace */
+
+    }
+
+    .nav-item {
+      margin-right: 20px; /* Espaciado entre elementos del menú */
+
+    }
+    .nav-item.menu-item .nav-link {
+      font-size: 16px;
+      color: #959292; /* Un tono de gris oscuro */
+      text-decoration: none;
+      padding: 5px;
+      border-radius: 10px;
+      transition: background-color 0.3s ease;
+      font-family: "Baskerville", serif;
+  }
+  .nav-item.menu-item .nav-link.active {
+    background-color: #2c3e50;
+    color: #ffffff;
+}
+.nav-link:hover {
+  color: #e2c651 !important;
+
+}
     /* Estilos para el contenedor del usuario */
     .user-container {
       display: flex;
@@ -82,7 +107,6 @@ body{
       object-fit: cover;
     }
 
-
     .icolor i{
     color: aqua;
     }
@@ -92,7 +116,7 @@ body{
       text-align: center;
       width: 62% ;
       height: 90% ;
-      
+
     }
 
     .btn-warning{
@@ -143,12 +167,12 @@ body{
   padding-bottom: 5rem;
 }
 .btn-primary{
-  background-color: #e5c850 !important;
+  background-color: #ae9243 !important;
   color: #090909;
   border: 0;
 }
 .card{
-  background-color: #090909 !important;
+  background-color: #09090995 !important;
   color: #fff;
 }
 
@@ -164,7 +188,7 @@ body{
 
 
 .btn-secondary{
-  background-color: #e5c850;
+  background-color: #ae9243;
   color: #090909;
 }
 .swal2-modal {
@@ -252,15 +276,15 @@ background-color: #717fe0 !important;
 }
 /*Prevent text selection*/
 span{
--webkit-user-select: none;
--moz-user-select: none;
--ms-user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 input{  
 border: 0;
 width: 2%;
 }
-nput::-webkit-outer-spin-button,
+input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
 -webkit-appearance: none;
 margin: 0;
@@ -275,7 +299,7 @@ background-color:white;
 }
 
 .blur-background {
-  background-color: rgba(214, 214, 214, 0.269); 
+  background-color: rgba(214, 214, 214, 0.269);
   position: absolute;
   top: 0;
   left: 0;
@@ -290,3 +314,49 @@ background-color:white;
   backdrop-filter: blur(8px); /* Ajusta el valor de blur según sea necesario */
   -webkit-backdrop-filter: blur(8px); /* Soporte para navegadores WebKit */
 }
+    /* Estilos generales para el modal */
+    .modal-content {
+        border-radius: 15px;
+        border: 2px solid #ae9243;
+        box-shadow: 0px 0px 10px 0px #ae9243;
+    }
+
+    .modal-header {
+        background-color: #ae9243;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+    }
+
+    /* Estilos para el formulario dentro del modal */
+    #formUsuarioCredito {
+        padding: 20px;
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+    /* Estilos para los botones del formulario */
+    #btn-form {
+        margin-right: 10px;
+    }
+
+    .form-control {
+        border-radius: 0.75rem; /* Bordes redondeados para los campos de formulario */
+    }
+
+    .input-group-text {
+        border-radius: 0.75rem 0 0 0.75rem; /* Bordes redondeados para el área de texto de entrada en el grupo de entrada */
+    }
+
+    .btn {
+        border-radius: 0.75rem; /* Bordes redondeados para los botones */
+        transition: background-color 0.3s; /* Transición suave del color de fondo al pasar el ratón */
+    }
+
+    .btn:hover {
+        background-color: #e2c651; /* Cambiar color al pasar el ratón */
+    }
+
+
+

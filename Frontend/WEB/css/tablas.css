@@ -1,0 +1,52 @@
+/* Estilo para el wrapper de DataTables */
+#miTabla_wrapper {
+    background-color: grey;
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+/* Estilo para las filas impares */
+#miTabla tbody tr:nth-child(odd) {
+    background-color: #f2f2f2; /* Color de fondo más claro */
+}
+
+/* Estilo para las filas pares */
+#miTabla tbody tr:nth-child(even) {
+    background-color: #e5e5e5; /* Color de fondo más oscuro */
+}
+
+/* Estilo para el input de búsqueda de DataTables */
+#miTabla_filter label {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+#miTabla_filter input {
+    width: 200px; /* Ancho personalizado */
+    padding: 5px 10px 5px 10px; /* Espaciado interno */
+    border-radius: 5px; /* Bordes redondeados */
+    border: 1px solid #ccc; /* Borde */
+    background-color: #fff; /* Fondo blanco */
+    margin-bottom: 10px; /* Espaciado inferior */
+}
+
+/* Estilo para los botones de DataTables */
+#miTabla tbody .btn-editar {
+    background-color: #4285f4; /* Color de fondo para el botón Editar */
+    color: #fff; /* Color del texto */
+    border: none; /* Sin borde */
+    padding: 5px 10px; /* Espaciado interno */
+    border-radius: 5px; /* Bordes redondeados */
+    cursor: pointer;
+}
+
+#miTabla tbody .btn-eliminar {
+    background-color: #090909; /* Color de fondo para el botón Eliminar */
+    color: #fff; /* Color del texto */
+    border: none; /* Sin borde */
+    padding: 5px 10px; /* Espaciado interno */
+    border-radius: 5px; /* Bordes redondeados */
+    cursor: pointer;
+}

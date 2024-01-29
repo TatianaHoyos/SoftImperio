@@ -11,8 +11,7 @@
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script  src="js/compra.js"></script>    
-    
+
     <script>
         $(document).ready(function () {
             $(".nav-link").click(function () {
@@ -21,6 +20,7 @@
             });
         });
     </script>
+
 </head>
 
 <body>
@@ -31,7 +31,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item menu-item">
-                    <a class="nav-link active" href="Inicio.html"><i class="fas fa-home"></i> Inicio</a>
+                    <a class="nav-link" href="Inicio.html"><i class="fas fa-home"></i> Inicio</a>
                 </li>
                 <li class="nav-item menu-item">
                     <a class="nav-link" href="Existencias.html"><i class="fas fa-box-open"></i> Existencias</a>
@@ -43,10 +43,10 @@
                     <a class="nav-link" href="ventas.html"><i class="fas fa-chart-bar"></i> Ventas</a>
                 </li>
                 <li class="nav-item menu-item">
-                    <a class="nav-link" href="compras.html"><i class="fas fa-shopping-cart"></i> Compras</a>
+                    <a class="nav-link active" href="compras.html"><i class="fas fa-shopping-cart"></i> Compras</a>
                 </li>
                 <li class="nav-item menu-item">
-                    <a class="nav-link" href="nuevoProveedor.html"><i class="fas fa-truck"></i> Proveedores</a>
+                    <a class="nav-link" href="nuestrosProveedores.html"><i class="fas fa-truck"></i> Proveedores</a>
                 </li>
                 <li class="nav-item menu-item">
                     <a class="nav-link" href="PuntoVentaBarra.html"><i class="fas fa-cash-register"></i> Punto de venta</a>
@@ -79,14 +79,14 @@
     </div> -->
 
     <div class="form-group" id="tab_compra">
-            
+
                 <button style="margin-left: 120px;" type="button" class="col-md-1 btn mt-5 mb-2" onclick="addCompra()">
                   <strong>Agregar</strong>
                 </button>
             </div>
                 <div class="form-group col-12 ">
 
-                    <table class="table table-dark table-striped table-striped w-100 offset-1 col-10 offset-1">
+                    <table id="tablaCompra" class="table table-dark table-striped table-striped w-100 offset-1 col-10 offset-1">
                         <thead class="text-center">
                             <tr>
                                 <th>Id de Compra </th>
@@ -96,7 +96,7 @@
                             </tr>
                         </thead>
 
-                        <tbody class="text-center" id="tbody_compras">
+                        <tbody class="text-center">
                         <!--tbody se llena con la funcion listCompras()-->
                         </tbody>
 
@@ -104,6 +104,7 @@
             </div>
             
     </div>
+    <script  src="js/compras.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"
         integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous">

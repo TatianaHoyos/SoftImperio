@@ -12,14 +12,6 @@
     <link rel="stylesheet" href="css/style.css">
  <!--   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>-->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $(".nav-link").click(function () {
-                $(".nav-link").removeClass("active");
-                $(this).addClass("active");
-            });
-        });
-    </script>    
 
 </head>
 
@@ -31,7 +23,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item menu-item">
-                    <a class="nav-link active" href="Inicio.html"><i class="fas fa-home"></i> Inicio</a>
+                    <a class="nav-link" href="Inicio.html"><i class="fas fa-home"></i> Inicio</a>
                 </li>
                 <li class="nav-item menu-item">
                     <a class="nav-link" href="Existencias.html"><i class="fas fa-box-open"></i> Existencias</a>
@@ -43,10 +35,10 @@
                     <a class="nav-link" href="ventas.html"><i class="fas fa-chart-bar"></i> Ventas</a>
                 </li>
                 <li class="nav-item menu-item">
-                    <a class="nav-link" href="compras.html"><i class="fas fa-shopping-cart"></i> Compras</a>
+                    <a class="nav-link active" href="compras.html"><i class="fas fa-shopping-cart"></i> Compras</a>
                 </li>
                 <li class="nav-item menu-item">
-                    <a class="nav-link" href="nuevoProveedor.html"><i class="fas fa-truck"></i> Proveedores</a>
+                    <a class="nav-link" href="nuestrosProveedores.html"><i class="fas fa-truck"></i> Proveedores</a>
                 </li>
                 <li class="nav-item menu-item">
                     <a class="nav-link" href="puntoVentaBarra.html"><i class="fas fa-cash-register"></i> Punto de venta</a>
@@ -77,18 +69,14 @@
                         <label for="" class="text-white">
                             <h5>Seleccione el Producto</h5>
                         </label>
+                      
+
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" style="background-color: #e5c850">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                        class="bi bi-search" viewBox="0 0 16 16">
-                                        <path
-                                            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                                    </svg>
-                                </span>
+                                <span class="input-group-text" style="background-color: #e5c850"><i class="fas fa-box-open"></i></span>
                             </div>
-                            <select id="idExistencia" name="idExistencia" class="form-control" onclick="listExistenciaProductos()">
-                            seleccione ..
+                            <select id="idProductos" name="idProductos" class="form-control">
+                                <!-- Opciones del select pueden agregarse aquí -->
                             </select>
                         </div>
                     </div>
@@ -100,8 +88,8 @@
 
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" style="background-color: #e5c850"><i class="fa fa-list-ul"
-                                        aria-hidden="true"></i></span>
+                                <span class="input-group-text" style="background-color: #e5c850">
+                                    <i class="fa fa-list-ul" aria-hidden="true"></i></span>
                             </div>
                             <input type="text" class="form-control" id="Cantidad" name="Cantidad" placeholder="Cantidad" onkeypress="return validarNumero(event)">
 
@@ -115,23 +103,19 @@
 
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" style="background-color: #e5c850">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                        class="bi bi-currency-dollar" viewBox="0 0 16 16">
-                                        <path
-                                            d="M4 10.781c.148 1.667 1.513 2.85 3.591 3.003V15h1.043v-1.216c2.27-.179 3.678-1.438 3.678-3.3 0-1.59-.947-2.51-2.956-3.028l-.722-.187V3.467c1.122.11 1.879.714 2.07 1.616h1.47c-.166-1.6-1.54-2.748-3.54-2.875V1H7.591v1.233c-1.939.23-3.27 1.472-3.27 3.156 0 1.454.966 2.483 2.661 2.917l.61.162v4.031c-1.149-.17-1.94-.8-2.131-1.718H4zm3.391-3.836c-1.043-.263-1.6-.825-1.6-1.616 0-.944.704-1.641 1.8-1.828v3.495l-.2-.05zm1.591 1.872c1.287.323 1.852.859 1.852 1.769 0 1.097-.826 1.828-2.2 1.939V8.73l.348.086z" />
-                                    </svg>
-                                </span>
+                              <span class="input-group-text" style="background-color: #e5c850">
+                                <i class="fas fa-dollar-sign" aria-hidden="true"></i>
+                              </span>
                             </div>
-                            <input type="text" class="form-control" id="Precio" name="Precio" placeholder="Precio"onkeypress="return validarNumero(event)">
-
-                        </div>
+                            <input type="text" class="form-control" id="Precio" name="Precio" placeholder="Precio" onkeypress="return validarNumero(event)">
+                          </div>
                     </div>
 
                 </div>
 
                 <div class="form-group text-center ">
-                    <input type="hidden" id="accion" name="accion" value="add">
+
+                   
                     <input type="hidden" id="idDetalleCompra" name="idDetalleCompra">
                     <input type="hidden" id="optionEdit" >
 
@@ -140,7 +124,7 @@
                             class="offset-md-2 col-md-4 form-control btn"><strong>Guardar</strong></button>
                         <button type="button" onclick="limpiarFormulario()"
                             class="col-md-4 offset-md-1 form-control btn"><strong>Cancelar</strong></button>
-                    </div>        
+                    </div>
                 </div>
 
             </form>
@@ -149,7 +133,7 @@
         <!--Termina formulario detalle compra-->
 
         <!--Empieza Tabla de detalle compra-->
-    <div class="col-9">    
+    <div class="col-9">
         <table id="miTabla" class="table table-striped table-bordered table-dark offset-md-1 col-md-10 offset-md-1 w-100 ">
             <thead>
               <tr>
@@ -168,12 +152,11 @@
     </div>
      <!--   </div> -->
         <!--Termina Tabla de detalle compra-->
-    </div>            
+    </div>
 
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
         </script>
@@ -181,9 +164,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
         </script>
-    <script  src="js/detalleCompra.js"></script>    
-  
-    
+    <script  src="js/compras.js"></script>
+
 </body>
 
 </html>
