@@ -1,0 +1,70 @@
+.side-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 150vh;
+  background-color: #211f1f;
+  transition: transform 0.3s ease-in-out; 
+  transform: translateX(-100%);
+  
+}
+
+.side-nav.open {
+  transform: translateX(0);
+}
+
+.side-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  
+}
+.side-nav li {
+  display: flex; /* Utilizar flexbox */
+  align-items: center; /* Centrar verticalmente */
+  text-align: left;
+  margin-bottom: 10px; /* Añadido espacio entre elementos */
+  padding-left: 30px; /* Añadido espacio a la izquierda */
+}
+.side-nav li a {
+  display: block;
+  padding: 3%;
+  text-decoration: none;
+  color: #818c23;
+}
+.side-nav li i {
+  margin-left: 1px; /* Espacio entre el icono y el texto */
+}
+.side-nav-toggle {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background-color:transparent ;
+  border: none;
+  cursor: pointer;
+}
+
+.side-nav-toggle.hidden {
+  display: none;
+}
+
+.logo {
+  width: 220px;
+  height: 150px;
+  margin: 0 auto;
+  padding-top: 5px;
+   
+}
+
+.close-menu-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 15px;
+  text-decoration: none;
+  color: #818c23;
+}

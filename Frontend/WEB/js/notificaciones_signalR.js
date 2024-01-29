@@ -67,6 +67,7 @@ function onExitoVentasPendientes(data){
             contenedorNotificaciones.innerHTML = '';
             // Recorre el array de pedidos
             data.forEach(function (pedido) {
+                // console.log(pedido)
                 // Crea un elemento de lista
                 var listItem = document.createElement('li');
 
@@ -80,6 +81,9 @@ function onExitoVentasPendientes(data){
                 contenidoEnlace.className = 'top-text-heading';
                 contenidoEnlace.innerHTML = 'Pedido: <b>' + pedido.idVenta + '</b> - Total: <b>$' + pedido.totalVenta + '</b>';
                
+                $(listItem).attr('id', '' + pedido.idVenta);
+
+
                 var resultado = tiempoTranscurrido(pedido.fechaVenta);
                 // Crea el span con la información de la hora
                 var spanHora = document.createElement('span');
@@ -96,8 +100,67 @@ function onExitoVentasPendientes(data){
                 // Añade el elemento de lista al contenedor de notificaciones
                 contenedorNotificaciones.appendChild(listItem);
             });
+            //se selecciona la notificacion por medio de los id de los li
+            $("#contenedorNotificaciones li").on("click", function() {
+                // Muestra una alerta con el ID de la etiqueta li clicada
+                alert("ID de la etiqueta: " + $(this).attr("id"));
+               consultarApiVentasPorNotificacion( $(this).attr("id"));
+               
+
+              });
 
 }
+function consultarApiVentasPorNotificacion(idVenta){
+    $.ajax({
+        type: "GET",
+        url: "https://localhost:7084/api/Ventas/" + idVenta,
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        success: function (data) {
+            onExitoVentasPorNotificacion(data);
+        },
+        error: onErrorVentasPorNotificacion
+        
+    });
+}
+function onExitoVentasPorNotificacion(data){
+    data.forEach(function (detalleVenta) {
+        console.log(detalleVenta)
+        alert(detalleVenta.nombreProducto);
+        mostrarProductosTablaNotificacion(detalleVenta.nombreProducto+' '+detalleVenta.referenciaProducto,
+        detalleVenta.subTotalAPagar,detalleVenta.idProductos, detalleVenta.cantidadProducto)
+        $("#totalVenta").text(detalleVenta.totalVenta);
+       
+    });
+    
+    
+    // mostrarProductosTabla(producto.nombreProducto + " " + referencia.nombreReferencia,
+    // referencia.precio, seleccion);
+}
+
+function mostrarProductosTablaNotificacion(nombre, precio, idProducto,cantidad) {
+    var botonEliminar = ' <th><button class="btn btn-danger"  onclick="eliminarRegistroPedido(this)"><i class="fas fa-trash-alt"></i></button></th>';
+    var nombreProducto = ' <th>' + nombre + '</th>';
+    var precioProducto = ' <th class="precio">' + precio + '</th>';
+    var cantidadBoton = '<th><div class="quantity">'
+        + '<div class="qty">'
+        + ' <span class="minus bg-dark">-</span>'
+        + '<input type="number" class="count" name="qty" value="'+cantidad+'">'
+        + ' <span class="plus bg-dark">+</span>'
+        + '</div>' +
+        '</div></th>';
+
+    var totalProductos = ' <th class="total">' + precio + '</th>';
+    $('#tabla').append('<tr id="tr-' + idProducto + '" >' + nombreProducto + precioProducto + cantidadBoton + totalProductos + botonEliminar + '</tr>');
+}
+
+
+function onErrorVentasPorNotificacion(error){
+    console.log(error.responseJSON)   
+
+}
+
 
 function onErrorVentasPendientes(error){
     console.log(error.responseJSON)   
