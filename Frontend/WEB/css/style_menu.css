@@ -1,0 +1,45 @@
+.side-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100vh;
+    background-color: #f0f0f0;
+    transition: transform 0.3s ease-in-out;
+    transform: translateX(-100%);
+  }
+  
+  .side-nav.open {
+    transform: translateX(0);
+  }
+  
+  .side-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .side-nav li a {
+    display: block;
+    padding: 15px;
+    text-decoration: none;
+    color: #333;
+  }
+  
+  .side-nav-toggle{
+    position: absolute;
+    
+
+    top: 25px;
+    left: 20px; /* Cambiado de "right" a "left" */
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+   
+  
+  }
+  .logo {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+  }

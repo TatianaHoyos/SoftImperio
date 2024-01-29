@@ -77,21 +77,50 @@ namespace venta.Controllers
         }
 
         // GET: api/Ventas/5
+        //[HttpGet("{id}")]
+        //public async Task<ActionResult<Venta>> GetVenta(int id)
+        //{
+        //    if (_context.Venta == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    var venta = await _context.Venta.FindAsync(id);
+
+        //    if (venta == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return venta;
+        //}
+
+        //para hacer la consulta de el pedido
         [HttpGet("{id}")]
-        public async Task<ActionResult<Venta>> GetVenta(int id)
+        public async Task<ActionResult<IEnumerable<VentaDetalleResponseDto>>> ObtenerDetalleVenta(int id)
         {
-            if (_context.Venta == null)
-            {
-                return NotFound();
-            }
-            var venta = await _context.Venta.FindAsync(id);
+            var ventaExistente = await _context.Venta.AnyAsync(v => v.idVenta == id);
 
-            if (venta == null)
+            if (!ventaExistente)
             {
-                return NotFound();
+                return NotFound($"No se encontró la venta con ID {id}");
             }
 
-            return venta;
+            var resultado = await _context.Venta
+                .Where(v => v.idVenta == id)
+                .Join(_context.DetalleVenta, v => v.idVenta, dv => dv.IdVenta, (v, dv) => new { v, dv })
+                .Join(_context.Existencia, vd => vd.dv.IdExistencias, e => e.IdExistencias, (vd, e) => new { vd, e })
+                .Join(_context.Productos, vde => vde.e.IdProductos, p => p.IdProductos, (vde, p) => new VentaDetalleResponseDto
+                {
+                    NombreProducto = p.NombreProducto,
+                    ReferenciaProducto = p.ReferenciaProducto,
+                    SubTotalAPagar = vde.vd.dv.SubTotalAPagar,
+                    IdProductos = p.IdProductos,
+                    CantidadProducto = vde.vd.dv.CantidadProducto,
+                    TotalVenta = vde.vd.v.totalVenta
+                })
+                .ToListAsync();
+
+            return Ok(resultado);
         }
 
         // PUT: api/Ventas/5
