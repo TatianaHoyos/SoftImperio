@@ -133,3 +133,4 @@ function validarCampoVacio(longitudCampo,mensaje) {
        return true;
     }
 }
+
