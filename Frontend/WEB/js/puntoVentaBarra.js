@@ -7,12 +7,13 @@ $(document).ready(function () {
     consultarCategorias();
     selectCategoria();
     contadorCantidad();
-    preventCloseLoading();
+    // preventCloseLoading();
 });
 
 
 
 function consultarCategorias() {
+    $("#textCargando").text("Cargando Categorias");
     $.ajax({
         type: "GET",
         url: "https://localhost:7084/api/Categorias",
@@ -42,6 +43,7 @@ function onErrorCategorias(error) {
 
 
 function consultarProductos(categorias) {
+    $("#textCargando").text("Cargando Productos");
     $.ajax({
         type: "GET",
         url: "https://localhost:7084/api/Productos/Agrupados",
@@ -172,6 +174,9 @@ function seleccionarProducto(producto, button) {
         //agregar valor de primer registro
         var venta=  parseInt($("#totalVenta").text());
         $("#totalVenta").text(referencia.precio + venta);
+
+    //se esta limpiando un input oculto que ayuda a validar si el pedido proviene de notificacion
+        $("#estadoPedidoVenta").val("");
 }
 
 function existeIdEnTabla(id) {
@@ -300,45 +305,63 @@ function confirmarVenta(){
         cancelButtonText: 'Cancelar'
     }).then((result) => {
         if (result.isConfirmed) {
-            var venta= 0;
-            $("#totalVenta").text( venta);
-            var pedido=[];
-            $('#tabla tbody tr').each(function() {
-                // Obtiene el ID de la fila, que parece estar en el formato 'tr-N'
-                var id = $(this).attr('id');
-                var partes = id.split('-');
-                id = partes[1];
-                // Obtiene los datos de cada columna en la fila
-                var producto = $(this).find('th:eq(0)').text();
-                var precio = $(this).find('th:eq(1)').text();
-                var cantidad = $(this).find('.count').val(); // Aquí se usa la clase 'count' del input
-                var total = $(this).find('.total').text();
-            
-                // Hacer lo que desees con los datos, por ejemplo, imprimirlos en la consola
-                console.log('ID: ' + id);
-                // console.log('Producto: ' + producto);
-                // console.log('Precio: ' + precio);
-                console.log('Cantidad: ' + cantidad);
-                // console.log('Total: ' + total);
-                pedido.push({"idProducto": Number(id), "cantidad": Number(cantidad)});
-              });
-              var pedidoTotal={"pedido":pedido};
-              console.log(pedidoTotal);
-              $("#cargando").modal("show");
-              $.ajax({
-                type: "POST",
-                url:"https://localhost:7084/api/Ventas/Barra",
-                "headers": {
-                    "Content-Type": "application/json"
-                  },
-                  "data": JSON.stringify(pedidoTotal),
-                  success: onExitoPedido,
-                  error: onErrorPedido
-                });
-        }
+            var estadoNotificacion = $("#estadoPedidoVenta").val();
+            if(estadoNotificacion != ""){
+                confirmarVentaNotificacion(estadoNotificacion);
+            }else{
+                var venta= 0;
+                $("#totalVenta").text( venta);
+                var pedido=[];
+                $('#tabla tbody tr').each(function() {
+                    // Obtiene el ID de la fila, que parece estar en el formato 'tr-N'
+                    var id = $(this).attr('id');
+                    var partes = id.split('-');
+                    id = partes[1];
+                    // Obtiene los datos de cada columna en la fila
+                    var producto = $(this).find('th:eq(0)').text();
+                    var precio = $(this).find('th:eq(1)').text();
+                    var cantidad = $(this).find('.count').val(); // Aquí se usa la clase 'count' del input
+                    var total = $(this).find('.total').text();
+                
+                    // Hacer lo que desees con los datos, por ejemplo, imprimirlos en la consola
+                    console.log('ID: ' + id);
+                    // console.log('Producto: ' + producto);
+                    // console.log('Precio: ' + precio);
+                    console.log('Cantidad: ' + cantidad);
+                    // console.log('Total: ' + total);
+                    pedido.push({"idProducto": Number(id), "cantidad": Number(cantidad)});
+                  });
+                  var pedidoTotal={"pedido":pedido};
+                  console.log(pedidoTotal);
+                  $("#cargando").modal("show");
+                  $.ajax({
+                    type: "POST",
+                    url:"https://localhost:7084/api/Ventas/Barra",
+                    "headers": {
+                        "Content-Type": "application/json"
+                      },
+                      "data": JSON.stringify(pedidoTotal),
+                      success: onExitoPedido,
+                      error: onErrorPedido
+                    });
+     
+            }
+                    }
     });
 }
 
+}
+function confirmarVentaNotificacion(idPedido){
+    $.ajax({
+        type: "POST",
+        url:"https://localhost:7084/api/Ventas/Barra/"+idPedido,
+        "headers": {
+            "Content-Type": "application/json"
+          },
+          data: JSON.stringify({ idPedido: idPedido }), // Convertir a JSON
+          success: onExitoPedido,
+          error: onErrorPedido
+        });
 }
 
 function onExitoPedido(data){
@@ -353,6 +376,7 @@ function onExitoPedido(data){
         confirmButtonColor: ' #d5c429 ',
         confirmButtonText: 'Confirmar',
     }).then((result) => {
+        consultarApiVentasPendientes();
         var venta= 0;
             $("#totalVenta").text( venta);
          $('#tabla > tbody').empty();
@@ -376,15 +400,15 @@ function onErrorPedido(error){
 }
 
 
-function preventCloseLoading() {
-    document.addEventListener('keydown', function(event) {
-        // Obtener el modal
-        var modal = document.getElementById('cargando');
+// function preventCloseLoading() {
+//     document.addEventListener('keydown', function(event) {
+//         // Obtener el modal
+//         var modal = document.getElementById('cargando');
     
-        // Verificar si la tecla presionada es "Esc" y si el modal está abierto
-        if (event.key === 'Escape' && modal.classList.contains('show')) {
-          event.preventDefault(); // Evitar el comportamiento por defecto (cerrar el modal)
-          event.stopPropagation(); // Detener la propagación del evento
-        }
-      });
-}
+//         // Verificar si la tecla presionada es "Esc" y si el modal está abierto
+//         if (event.key === 'Escape' && modal.classList.contains('show')) {
+//           event.preventDefault(); // Evitar el comportamiento por defecto (cerrar el modal)
+//           event.stopPropagation(); // Detener la propagación del evento
+//         }
+//       });
+// }

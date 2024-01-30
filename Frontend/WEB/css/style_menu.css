@@ -1,3 +1,16 @@
+.superpuesto {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999; /* Ajusta según sea necesario, asegúrate de que sea mayor que el z-index de otros elementos si hay superposición */
+  /* Otros estilos que desees aplicar al encabezado */
+}
+.contenido-principal {
+    /* Ajusta el espacio debajo del encabezado según sea necesario */
+    margin-top: 100px; /* Usa la altura de tu encabezado */
+    /* Otros estilos para el contenido principal */
+}
 .side-nav {
   position: fixed;
   top: 0;
@@ -31,7 +44,7 @@
   display: block;
   padding: 3%;
   text-decoration: none;
-  color: #818c23;
+  color:  #e5c850;
 }
 .side-nav li i {
   margin-left: 1px; /* Espacio entre el icono y el texto */
@@ -40,7 +53,7 @@
   position: absolute;
   top: 20px;
   left: 20px;
-  background-color:transparent ;
+  background-color: #e5c850 ;
   border: none;
   cursor: pointer;
 }
@@ -66,5 +79,5 @@
   cursor: pointer;
   padding: 15px;
   text-decoration: none;
-  color: #818c23;
+  color: #e5c850;
 }
