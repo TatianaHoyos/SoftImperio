@@ -83,7 +83,8 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text" style="background-color: #e5c850"><i class="fas fa-user"></i></span>
                         </div>
-                        <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre de colaborador">
+                        <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre de colaborador"
+                        onkeypress="return sololetras(event)">
                     </div>
                 </div>
 
@@ -91,9 +92,10 @@
                     <label for="documento" class="text-white">Ingrese el documento</label>
                     <div class="input-group">
                         <div class="input-group-prepend">
-                          <span class="input-group-text" style="background-color: #e5c850"><i class="far fa-id-card"></i></span>
+                            <span class="input-group-text" style="background-color: #e5c850"><i class="far fa-id-card"></i></span>
                         </div>
-                        <input type="" class="form-control" id="documento" name="documento" placeholder="Documento">
+                        <input type="" class="form-control" id="documento" name="documento" placeholder="Documento"
+                        onkeypress="return validarNumero(event)">
                     </div>
                 </div>
             </div>
@@ -103,18 +105,20 @@
                     <label for="email" class="text-white">Ingrese un correo</label>
                     <div class="input-group">
                         <div class="input-group-prepend">
-                          <span class="input-group-text" style="background-color: #e5c850"><i class="far fa-envelope"></i></span>
+                            <span class="input-group-text" style="background-color: #e5c850"><i class="far fa-envelope"></i></span>
                         </div>
-                        <input type="email" class="form-control" id="email" name="email" placeholder="Email">            
-                    </div>   
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Email"
+                        onkeypress="return validarEmail(event)">
+                    </div>
                 </div>
                 <div class="form-group col-md-4">
                     <label for="telefono" class="text-white">Ingrese un telefono</label>
                     <div class="input-group">
                         <div class="input-group-prepend">
-                          <span class="input-group-text" style="background-color: #e5c850"><i class="fas fa-phone"></i></span>
+                            <span class="input-group-text" style="background-color: #e5c850"><i class="fas fa-phone"></i></span>
                         </div>
-                        <input type="tel" class="form-control" id="telefono" name="telefono" placeholder="Teléfono de colaborador">
+                        <input type="tel" class="form-control" id="telefono" name="telefono" placeholder="Teléfono de colaborador"
+                        onkeypress="return validarNumero(event)">
                     </div>
                 </div>
             </div>

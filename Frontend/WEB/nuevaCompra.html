@@ -89,13 +89,8 @@
                                 </svg>
                             </span>
                         </div>
-                        <select id="" name="estadoUsua" class="form-control">
-
-                            <option value="">Pilsen</option>
-                            <option value="">Aguila</option>
-                            <option value="">Old Par</option>
-                            <option value="">Smirnoff</option>
-
+                        <select id="idExistencia" name="idExistencia" class="form-control" onclick="listExistenciaProductos()">
+                          seleccione ..
                         </select>
                     </div>
                 </div>
@@ -110,7 +105,7 @@
                             <span class="input-group-text" style="background-color: #e5c850"><i class="fa fa-list-ul"
                                     aria-hidden="true"></i></span>
                         </div>
-                        <input type="email" class="form-control" id="Cantidad" name="Cantidad" placeholder="Cantidad">
+                        <input type="text" class="form-control" id="Cantidad" name="Cantidad" placeholder="Cantidad" onkeypress="return validarNumero(event)">
 
                     </div>
                 </div>
@@ -130,7 +125,7 @@
                                 </svg>
                             </span>
                         </div>
-                        <input type="email" class="form-control" id="Precio" name="Precio" placeholder="Precio">
+                        <input type="text" class="form-control" id="Precio" name="Precio" placeholder="Precio"onkeypress="return validarNumero(event)">
 
                     </div>
                 </div>
@@ -139,11 +134,10 @@
 
             <div class="form-group text-center mb-2">
                 <input type="hidden" name="operacion" value="login">
-                <button type="button" onclick="crearUsuario()"
+                <button type="button" onclick="crearDetalleCliente()"
                     class="col-md-2 form-control btn"><strong>Guardar</strong></button>
                 <button type="button" onclick="recuperar()"
                     class="col-md-2 form-control btn"><strong>Cancelar</strong></button>
-                <!-- <p class="mt-4">¿Sin cuenta? <a id="login" href="v_registro.php">Registrate</a></p> -->
             </div>
 
         </form>
