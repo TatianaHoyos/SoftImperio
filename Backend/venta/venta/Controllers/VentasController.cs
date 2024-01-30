@@ -223,6 +223,7 @@ namespace venta.Controllers
             var response = await ProcesarPedido(pedidoRequest, "vendido", "Barra");
             if (response.status == "Error")
             {
+
                 return StatusCode(424, new JsonResult(response));
             }
             return new JsonResult(response);
@@ -230,16 +231,51 @@ namespace venta.Controllers
 
         [HttpPost]
         [Route("Barra/{idVenta}")]
-        public async Task<ActionResult<Venta>> PostVentaBarra(Venta venta)
+        public async Task<ActionResult<Pedido>> PostVentaNotificacion(int idVenta, [FromBody] ConfirmarPedidoRequestDto pedidoRequest)
         {
-            if (_context.Venta == null)
-            {
-                return Problem("Entity set 'ApplicationDbContext.Ventas'  is null.");
-            }
-            _context.Venta.Add(venta);
-            await _context.SaveChangesAsync();
+            Response response = new Response();
+            try {
+                if (idVenta != pedidoRequest.idPedido)
+                {
 
-            return CreatedAtAction("GetVenta", new { id = venta.idVenta }, venta);
+                    response.status = "Error";
+                    response.message = "Los IDs proporcionados no coinciden.";
+                    return BadRequest(response);
+
+                }
+                //se guarda la info que consulto de la db.
+                var ventaExistente = await _context.Venta.FindAsync(idVenta);
+
+                if (ventaExistente == null)
+                {
+
+                    response.status = "Error";
+                    response.message = $"No se encontró la venta con ID {idVenta}";
+                    return StatusCode(404, new JsonResult(response));
+
+                }
+                if (ventaExistente.estado == "pendiente")
+                {
+                    ventaExistente.estado = "vendido";
+                }
+                //agrego a la base de datos el estado de la venta
+                _context.Venta.Update(ventaExistente);
+                await _context.SaveChangesAsync();
+                response = new Response
+                {
+                    message = $"Se pudo completar la venta con éxito: {ventaExistente.totalVenta}",
+                    status = "Exito"
+                };
+                return Ok(response);
+
+            }
+            catch (Exception e){
+                response.status = "Error";
+                response.message = "ocurrio un error inesperado";
+                return StatusCode(500, new JsonResult(response));
+            }
+
+
         }
 
         private async Task<Response> ProcesarPedido(Pedido pedidoRequest, string estadoVenta, string origenVenta)

@@ -7,12 +7,13 @@ $(document).ready(function () {
     consultarCategorias();
     selectCategoria();
     contadorCantidad();
-    preventCloseLoading();
+    // preventCloseLoading();
 });
 
 
 
 function consultarCategorias() {
+    $("#textCargando").text("Cargando Categorias");
     $.ajax({
         type: "GET",
         url: "https://localhost:7084/api/Categorias",
@@ -42,6 +43,7 @@ function onErrorCategorias(error) {
 
 
 function consultarProductos(categorias) {
+    $("#textCargando").text("Cargando Productos");
     $.ajax({
         type: "GET",
         url: "https://localhost:7084/api/Productos/Agrupados",
@@ -356,9 +358,7 @@ function confirmarVentaNotificacion(idPedido){
         "headers": {
             "Content-Type": "application/json"
           },
-          "data": {
-            "idPedido": idPedido
-          },
+          data: JSON.stringify({ idPedido: idPedido }), // Convertir a JSON
           success: onExitoPedido,
           error: onErrorPedido
         });
@@ -376,6 +376,7 @@ function onExitoPedido(data){
         confirmButtonColor: ' #d5c429 ',
         confirmButtonText: 'Confirmar',
     }).then((result) => {
+        consultarApiVentasPendientes();
         var venta= 0;
             $("#totalVenta").text( venta);
          $('#tabla > tbody').empty();
@@ -399,15 +400,15 @@ function onErrorPedido(error){
 }
 
 
-function preventCloseLoading() {
-    document.addEventListener('keydown', function(event) {
-        // Obtener el modal
-        var modal = document.getElementById('cargando');
+// function preventCloseLoading() {
+//     document.addEventListener('keydown', function(event) {
+//         // Obtener el modal
+//         var modal = document.getElementById('cargando');
     
-        // Verificar si la tecla presionada es "Esc" y si el modal está abierto
-        if (event.key === 'Escape' && modal.classList.contains('show')) {
-          event.preventDefault(); // Evitar el comportamiento por defecto (cerrar el modal)
-          event.stopPropagation(); // Detener la propagación del evento
-        }
-      });
-}
+//         // Verificar si la tecla presionada es "Esc" y si el modal está abierto
+//         if (event.key === 'Escape' && modal.classList.contains('show')) {
+//           event.preventDefault(); // Evitar el comportamiento por defecto (cerrar el modal)
+//           event.stopPropagation(); // Detener la propagación del evento
+//         }
+//       });
+// }
