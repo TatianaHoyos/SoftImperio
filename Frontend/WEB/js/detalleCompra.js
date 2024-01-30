@@ -9,11 +9,7 @@ function asignarValor(data) {
 $(document).ready(function() {
     var miTabla = $('#miTabla').DataTable();
     const idCompra = urlParams.get('idCompra');
-<<<<<<< HEAD:Frontend/js/detalleCompra.js
-    const apiUrl = 'http://localhost:5175/Compras/listDetail';
-=======
     const apiUrl = 'https://localhost:7084/Compras/listDetail';
->>>>>>> 19cec88a86d7dd7b7a9ac04ee147c18abc63444a:Frontend/WEB/js/detalleCompra.js
     console.log("funciona esto "+idCompra);
     if (idCompra != null) {
         $.ajax({
@@ -46,11 +42,7 @@ $(document).ready(function() {
         }
         });
     }else{
-<<<<<<< HEAD:Frontend/js/detalleCompra.js
-        const destinationURL = `http://127.0.0.1:5500/Frontend/compras.html`;
-=======
         const destinationURL = `http://127.0.0.1:5500/Frontend/WEB/compras.html`;
->>>>>>> 19cec88a86d7dd7b7a9ac04ee147c18abc63444a:Frontend/WEB/js/detalleCompra.js
         window.location.href = destinationURL;
     }    
   });
@@ -71,11 +63,7 @@ $(document).ready(function() {
         var idCompra = urlParams.get('idCompra');
         $.ajax({
           type: 'POST',
-<<<<<<< HEAD:Frontend/js/detalleCompra.js
-          url: 'http://localhost:5175/Compras/deleteDetail',
-=======
           url: 'https://localhost:7084/Compras/deleteDetail',
->>>>>>> 19cec88a86d7dd7b7a9ac04ee147c18abc63444a:Frontend/WEB/js/detalleCompra.js
           data: JSON.stringify({ id: id,
         idCompra }),
           contentType: 'application/json',
@@ -130,10 +118,7 @@ $(document).ready(function() {
     $('#Precio').val(empty);
     $('#accion').val("add");
     $('#idDetalleCompra').val(empty);
-<<<<<<< HEAD:Frontend/js/detalleCompra.js
-=======
     
->>>>>>> 19cec88a86d7dd7b7a9ac04ee147c18abc63444a:Frontend/WEB/js/detalleCompra.js
   }
 function nuevoDetalleCompra(){
 
@@ -143,11 +128,7 @@ function nuevoDetalleCompra(){
         const destinationURL = `http://127.0.0.1:5500/Frontend/nuevaCompra.html?idCompra=${idCompra}`;
         window.location.href = destinationURL;
     }else{
-<<<<<<< HEAD:Frontend/js/detalleCompra.js
-      const destinationURL = `http://127.0.0.1:5500/Frontend/compras.html`;
-=======
       const destinationURL = `http://127.0.0.1:5500/Frontend/WEB/compras.html`;
->>>>>>> 19cec88a86d7dd7b7a9ac04ee147c18abc63444a:Frontend/WEB/js/detalleCompra.js
       window.location.href = destinationURL;
     }
 
@@ -156,11 +137,7 @@ function nuevoDetalleCompra(){
 function listExistenciaProductos(){
     const selectElement = document.getElementById("idExistencia");
 
-<<<<<<< HEAD:Frontend/js/detalleCompra.js
-    fetch("http://localhost:5175/Compras/listProducts")
-=======
     fetch("https://localhost:7084/Compras/listProducts")
->>>>>>> 19cec88a86d7dd7b7a9ac04ee147c18abc63444a:Frontend/WEB/js/detalleCompra.js
     .then((response) => response.json())
     .then((data) => {
         // Iterate over the data and create <option> elements
@@ -196,11 +173,7 @@ function crearDetalleCliente(){
     if (idCompra != null) {
         $.ajax({
         type: "POST",
-<<<<<<< HEAD:Frontend/js/detalleCompra.js
-        url: "http://localhost:5175/Compras/addOrEditDetail",
-=======
         url: "https://localhost:7084/Compras/addOrEditDetail",
->>>>>>> 19cec88a86d7dd7b7a9ac04ee147c18abc63444a:Frontend/WEB/js/detalleCompra.js
         data: request,
         contentType: "application/json",
         success: function(response) {
@@ -215,14 +188,7 @@ function crearDetalleCliente(){
         }
         });
     }else{
-<<<<<<< HEAD:Frontend/js/detalleCompra.js
-        const destinationURL = `http://127.0.0.1:5500/Frontend/compras.html`;
-        window.location.href = destinationURL;
-    }    
-}
-=======
         const destinationURL = `http://127.0.0.1:5500/Frontend/WEB/compras.html`;
         window.location.href = destinationURL;
     }    
 }
->>>>>>> 19cec88a86d7dd7b7a9ac04ee147c18abc63444a:Frontend/WEB/js/detalleCompra.js
