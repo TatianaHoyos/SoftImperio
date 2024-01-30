@@ -20,6 +20,11 @@ public class UsuariosService {
         return usuariosRepository.findAll();
     }
 
+    public UsuariosEntity obtenerUsuarioPorId(Integer id) {
+        Optional<UsuariosEntity> usuarioOptional = usuariosRepository.findById(id);
+        return usuarioOptional.orElse(null);
+    }
+
     public UsuariosEntity obtenerUsuarioLogin(String correo, String pass){
         return usuariosRepository.findByEmailAndPassword(correo,pass);
     }
