@@ -9,53 +9,64 @@
           integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/tablas.css">
+   <link rel="stylesheet" href="css/style.css">
+   <link rel="stylesheet" href="css/style_menu.css">
+
+  </style>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+ 
 </head>
 
 <body>
-  <div class="logo-container">
-    <img src="img/logo.png" alt="Logo" class="Logo" height="170">
-  </div>
-  <nav class="navbar navbar-expand-lg navbar-light colornavbar">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse ml-3" id="navbarNav">
-      <ul class="navbar-nav">
+    
+  <header class="superpuesto">
+    <nav class="side-nav">
+      <img src="img/logo.png" alt="Logo" class="logo">
+      <button class="close-menu-btn">
+        <i class="fas fa-times"></i> Cerrar
+      </button>
+      
+        <!-- Contenido del menú -->
+      
         <li class="nav-item menu-item">
           <a class="nav-link " href="Inicio.html"><i class="fas fa-home"></i> Inicio</a>
-        </li>
-        <li class="nav-item menu-item">
+      </li>
+      <li class="nav-item menu-item">
           <a class="nav-link" href="Existencias.html"><i class="fas fa-box-open"></i> Existencias</a>
-        </li>
-        <li class="nav-item menu-item">
+      </li>
+      <li class="nav-item menu-item">
+        <a class="nav-link " href="productos.html"><i class="fas fa-box-open"></i> Productos</a>
+      </li>
+      <li class="nav-item menu-item">
           <a class="nav-link" href="nuestrosUsuarios.html"><i class="fas fa-users"></i> Usuarios</a>
-        </li>
-        <li class="nav-item menu-item">
+      </li>
+      <li class="nav-item menu-item">
           <a class="nav-link" href="ventas.html"><i class="fas fa-chart-bar"></i> Ventas</a>
-        </li>
-        <li class="nav-item menu-item">
-          <a class="nav-link" href="compras.html"><i class="fas fa-shopping-cart"></i> Compras</a>
-        </li>
-        <li class="nav-item menu-item">
+      </li>
+      <li class="nav-item menu-item">
+          <a class="nav-link " href="compras.html"><i class="fas fa-shopping-cart"></i> Compras</a>
+      </li>
+      <li class="nav-item menu-item">
           <a class="nav-link active" href="nuestrosProveedores.html"><i class="fas fa-truck"></i> Proveedores</a>
-        </li>
-        <li class="nav-item menu-item">
-          <a class="nav-link" href="puntomesa.html"><i class="fas fa-cash-register"></i> Punto de venta</a>
-        </li>
-        <li class="nav-item menu-item">
-          <a class="nav-link" href="creditos.html"><i class="fas fa-money-check-alt"></i> Créditos</a>
-        </li>
-        <li class="nav-item menu-item">
+      </li>
+      <li class="nav-item menu-item">
+          <a class="nav-link" href="PuntoVentaBarra.html"><i class="fas fa-cash-register"></i> Punto de venta</a>
+      </li>
+      <li class="nav-item menu-item">
+          <a class="nav-link " href="creditos.html"><i class="fas fa-money-check-alt"></i> Créditos</a>
+      </li>
+      <li class="nav-item menu-item">
           <a class="nav-link" href="Permisos.html"><i class="fas fa-user-lock"></i> Permisos</a>
-        </li>
+      </li>
+        <!-- ... Otras opciones del menú ... -->
+        
       </ul>
-      <a class="nav-link logout-link text-dark" href="iniciosesion.html"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
-    </div>
-  </nav>
+    </nav>
+    <button class="side-nav-toggle">SoftImperio
+      <i class="fas fa-bars"></i>
+    </button>
+  </header>
 
   <br>
   <h3 class="mt-3  text-white  text-center">Nuestros Proveedores</h3>
@@ -317,8 +328,7 @@
 <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-
-<script src="js/consultas.js"></script>
 <script src="js/validaciones.js"></script>
 <script src="js/funciones.js"></script>
-
+<script src="js/consultas.js"></script>
+<script src="js/menuLateral.js"></script>

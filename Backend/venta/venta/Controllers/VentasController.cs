@@ -77,21 +77,50 @@ namespace venta.Controllers
         }
 
         // GET: api/Ventas/5
+        //[HttpGet("{id}")]
+        //public async Task<ActionResult<Venta>> GetVenta(int id)
+        //{
+        //    if (_context.Venta == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    var venta = await _context.Venta.FindAsync(id);
+
+        //    if (venta == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return venta;
+        //}
+
+        //para hacer la consulta de el pedido
         [HttpGet("{id}")]
-        public async Task<ActionResult<Venta>> GetVenta(int id)
+        public async Task<ActionResult<IEnumerable<VentaDetalleResponseDto>>> ObtenerDetalleVenta(int id)
         {
-            if (_context.Venta == null)
-            {
-                return NotFound();
-            }
-            var venta = await _context.Venta.FindAsync(id);
+            var ventaExistente = await _context.Venta.AnyAsync(v => v.idVenta == id);
 
-            if (venta == null)
+            if (!ventaExistente)
             {
-                return NotFound();
+                return NotFound($"No se encontró la venta con ID {id}");
             }
 
-            return venta;
+            var resultado = await _context.Venta
+                .Where(v => v.idVenta == id)
+                .Join(_context.DetalleVenta, v => v.idVenta, dv => dv.IdVenta, (v, dv) => new { v, dv })
+                .Join(_context.Existencia, vd => vd.dv.IdExistencias, e => e.IdExistencias, (vd, e) => new { vd, e })
+                .Join(_context.Productos, vde => vde.e.IdProductos, p => p.IdProductos, (vde, p) => new VentaDetalleResponseDto
+                {
+                    NombreProducto = p.NombreProducto,
+                    ReferenciaProducto = p.ReferenciaProducto,
+                    SubTotalAPagar = vde.vd.dv.SubTotalAPagar,
+                    IdProductos = p.IdProductos,
+                    CantidadProducto = vde.vd.dv.CantidadProducto,
+                    TotalVenta = vde.vd.v.totalVenta
+                })
+                .ToListAsync();
+
+            return Ok(resultado);
         }
 
         // PUT: api/Ventas/5
@@ -194,9 +223,59 @@ namespace venta.Controllers
             var response = await ProcesarPedido(pedidoRequest, "vendido", "Barra");
             if (response.status == "Error")
             {
+
                 return StatusCode(424, new JsonResult(response));
             }
             return new JsonResult(response);
+        }
+
+        [HttpPost]
+        [Route("Barra/{idVenta}")]
+        public async Task<ActionResult<Pedido>> PostVentaNotificacion(int idVenta, [FromBody] ConfirmarPedidoRequestDto pedidoRequest)
+        {
+            Response response = new Response();
+            try {
+                if (idVenta != pedidoRequest.idPedido)
+                {
+
+                    response.status = "Error";
+                    response.message = "Los IDs proporcionados no coinciden.";
+                    return BadRequest(response);
+
+                }
+                //se guarda la info que consulto de la db.
+                var ventaExistente = await _context.Venta.FindAsync(idVenta);
+
+                if (ventaExistente == null)
+                {
+
+                    response.status = "Error";
+                    response.message = $"No se encontró la venta con ID {idVenta}";
+                    return StatusCode(404, new JsonResult(response));
+
+                }
+                if (ventaExistente.estado == "pendiente")
+                {
+                    ventaExistente.estado = "vendido";
+                }
+                //agrego a la base de datos el estado de la venta
+                _context.Venta.Update(ventaExistente);
+                await _context.SaveChangesAsync();
+                response = new Response
+                {
+                    message = $"Se pudo completar la venta con éxito: {ventaExistente.totalVenta}",
+                    status = "Exito"
+                };
+                return Ok(response);
+
+            }
+            catch (Exception e){
+                response.status = "Error";
+                response.message = "ocurrio un error inesperado";
+                return StatusCode(500, new JsonResult(response));
+            }
+
+
         }
 
         private async Task<Response> ProcesarPedido(Pedido pedidoRequest, string estadoVenta, string origenVenta)

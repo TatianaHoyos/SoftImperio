@@ -7,63 +7,65 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
-
-
+    <link rel="stylesheet" href="css/style_menu.css">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-
-    <script>
-        $(document).ready(function () {
-            $(".nav-link").click(function () {
-                $(".nav-link").removeClass("active");
-                $(this).addClass("active");
-            });
-        });
-    </script>
-
+   
 </head>
 
 <body>
-    <div class="logo-container">
-        <img src="img/logo.png" alt="Logo" class="Logo" height="170">
-    </div>
-    <nav class="navbar navbar-expand-lg navbar-light colornavbar">
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item menu-item">
-                    <a class="nav-link" href="Inicio.html"><i class="fas fa-home"></i> Inicio</a>
-                </li>
-                <li class="nav-item menu-item">
-                    <a class="nav-link" href="Existencias.html"><i class="fas fa-box-open"></i> Existencias</a>
-                </li>
-                <li class="nav-item menu-item">
-                    <a class="nav-link" href="nuestrosUsuarios.html"><i class="fas fa-users"></i> Usuarios</a>
-                </li>
-                <li class="nav-item menu-item">
-                    <a class="nav-link" href="ventas.html"><i class="fas fa-chart-bar"></i> Ventas</a>
-                </li>
-                <li class="nav-item menu-item">
-                    <a class="nav-link active" href="compras.html"><i class="fas fa-shopping-cart"></i> Compras</a>
-                </li>
-                <li class="nav-item menu-item">
-                    <a class="nav-link" href="nuestrosProveedores.html"><i class="fas fa-truck"></i> Proveedores</a>
-                </li>
-                <li class="nav-item menu-item">
-                    <a class="nav-link" href="PuntoVentaBarra.html"><i class="fas fa-cash-register"></i> Punto de venta</a>
-                </li>
-                <li class="nav-item menu-item">
-                    <a class="nav-link" href="creditos.html"><i class="fas fa-money-check-alt"></i> Créditos</a>
-                </li>
-                <li class="nav-item menu-item">
-                    <a class="nav-link" href="Permisos.html"><i class="fas fa-user-lock"></i> Permisos</a>
-                </li>
-            </ul>
-            <a class="nav-link logout-link text-dark" href="iniciosesion.html"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
-        </div>
+    
+  <header class="superpuesto">
+    <nav class="side-nav">
+      <img src="img/logo.png" alt="Logo" class="logo">
+      <button class="close-menu-btn">
+        <i class="fas fa-times"></i> Cerrar
+      </button>
+      
+        <!-- Contenido del menú -->
+      
+        <li class="nav-item menu-item">
+          <a class="nav-link " href="Inicio.html"><i class="fas fa-home"></i> Inicio</a>
+      </li>
+      <li class="nav-item menu-item">
+          <a class="nav-link" href="Existencias.html"><i class="fas fa-box-open"></i> Existencias</a>
+      </li>
+      <li class="nav-item menu-item">
+        <a class="nav-link " href="productos.html"><i class="fas fa-box-open"></i> Productos</a>
+      </li>
+      <li class="nav-item menu-item">
+          <a class="nav-link" href="nuestrosUsuarios.html"><i class="fas fa-users"></i> Usuarios</a>
+      </li>
+      <li class="nav-item menu-item">
+          <a class="nav-link" href="ventas.html"><i class="fas fa-chart-bar"></i> Ventas</a>
+      </li>
+      <li class="nav-item menu-item">
+          <a class="nav-link active" href="compras.html"><i class="fas fa-shopping-cart"></i> Compras</a>
+      </li>
+      <li class="nav-item menu-item">
+          <a class="nav-link" href="nuevoProveedor.html"><i class="fas fa-truck"></i> Proveedores</a>
+      </li>
+      <li class="nav-item menu-item">
+          <a class="nav-link" href="PuntoVentaBarra.html"><i class="fas fa-cash-register"></i> Punto de venta</a>
+      </li>
+      <li class="nav-item menu-item">
+          <a class="nav-link" href="creditos.html"><i class="fas fa-money-check-alt"></i> Créditos</a>
+      </li>
+      <li class="nav-item menu-item">
+          <a class="nav-link" href="Permisos.html"><i class="fas fa-user-lock"></i> Permisos</a>
+      </li>
+        <!-- ... Otras opciones del menú ... -->
+        
+      </ul>
     </nav>
-    <div class="form-row-group col-m-3" >
+    <button class="side-nav-toggle">SoftImperio
+      <i class="fas fa-bars"></i>
+    </button>
+  </header>
+
+    <div class="form-row-group col-m-3 contenido-principal">
         <h4 class="mt-3  text-white  text-center">Nuestras Compras</h4>
-    <!-- <div class="container  p-2 g-col-6 col-md-4">
+        <!-- <div class="container  p-2 g-col-6 col-md-4">
         <div class="input-group">
           <div class="input-group-prepend">
             <span class="input-group-text" style="background-color: #e5c850">
@@ -78,33 +80,34 @@
         </div>
     </div> -->
 
-    <div class="form-group" id="tab_compra">
+        <div class="form-group" id="tab_compra">
 
-                <button style="margin-left: 120px;" type="button" class="col-md-1 btn mt-5 mb-2" onclick="addCompra()">
-                  <strong>Agregar</strong>
-                </button>
-            </div>
-                <div class="form-group col-12 ">
+            <button style="margin-left: 120px;" type="button" class="col-md-1 btn mt-5 mb-2" onclick="addCompra()">
+                <strong>Agregar</strong>
+            </button>
+        </div>
+        <div class="form-group col-12 ">
 
-                    <table id="tablaCompra" class="table table-dark table-striped table-striped w-100 offset-1 col-10 offset-1">
-                        <thead class="text-center">
-                            <tr>
-                                <th>Id de Compra </th>
-                                <th>Fecha de Compra</th>
-                                <th>Total de Compra </th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
+            <table class="table table-dark table-striped table-striped w-100 offset-1 col-10 offset-1">
+                <thead class="text-center">
+                    <tr>
+                        <th>Id de Compra </th>
+                        <th>Fecha de Compra</th>
+                        <th>Total de Compra </th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
 
-                        <tbody class="text-center">
-                        <!--tbody se llena con la funcion listCompras()-->
-                        </tbody>
+                <tbody class="text-center" id="tbody_compras">
+                    <!--tbody se llena con la funcion listCompras()-->
+                </tbody>
 
-                    </table>
-            </div>
-            
+            </table>
+        </div>
+
     </div>
-    <script  src="js/compras.js"></script>
+
+    
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"
         integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous">
@@ -115,7 +118,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
         </script>
-    
+ <script src="js/compra.js"></script>
+
+ <script src="js/menuLateral.js"></script>
 </body>
 
 </html>
