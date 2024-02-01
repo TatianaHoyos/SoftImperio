@@ -94,6 +94,20 @@
   color: #e5c850;
 }
 
+ul {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+}
+
+#contenidoIconosEsquinaDerecha li {
+  list-style-type: none;
+  position: relative;
+  padding: 0.625rem 0 0.5rem;
+}
+
 #containerProfile {
   list-style-type: none;
   position: relative; /* Añadido para posicionar el contenido relativo a este elemento */
@@ -119,8 +133,16 @@
 
 .profile {
   height: 3rem;
-  width: auto;
+  width: 3rem;
   cursor: pointer;
+  border-radius: 50%; /* Hace que la imagen sea redonda */
+  object-fit: cover; /* Ajusta el tamaño de la imagen manteniendo su relación de aspecto y recortándola según sea necesario */
+  border: 2px solid #fff; /* Añade un borde blanco opcional */
+
+}
+#imgUsuario {
+  display: flex;
+  align-items: center;
 }
 
 
