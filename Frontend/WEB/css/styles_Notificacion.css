@@ -4,12 +4,14 @@
   ----------------------------------------- */
   .dropdown-menu{
       padding:0 0 0 0;
+      
   }
+
   p.dropdown-menu-header {
-      background: #f7f9fe;
+      
       font-weight: bold;
       margin-top: 10px;
-      border-bottom: 1px solid #e3e3e3;
+     
   }
 
   .dropdown-menu>li>p {
@@ -19,13 +21,21 @@
     clear: both;
     font-weight: 400;
     line-height: 1.42857143;
-    color: #333;
+    color: #000;
     white-space: nowrap;
 }
   .dropdown-menu > li a {
       padding: 10px 20px;
+     
   }
+  .dropdown-menu ul {
   
+   background: #333;
+}
+.dropdown-menu.show{
+  background-color: #333;
+}
+
   /* -----------------------------------------
      Badge
   ----------------------------------------- */
@@ -47,7 +57,7 @@
       border-radius: 10px;
   }
   .badge-danger {
-      background-color: #db5565;
+      background-color: #ffffff;
   }
   /* -----------------------------------------
      Content scrollable
@@ -68,7 +78,7 @@
           &:before {
           content: '';
           width: 4px;
-          background: #d5c429;
+          background: #e5c850;
           left: 0;
           top: 0;
           bottom: 0;
@@ -130,13 +140,14 @@
      Footer
   ----------------------------------------- */
   .menu-title {
-    background: #f7f9fe;
+
     font-weight: bold;
     margin-top: 20px;
     color: #000;
 }
 
 .notification-footer {
+  
     display: block;
     padding: 10px 20px;
     padding-bottom: 10px;
@@ -145,5 +156,5 @@
     line-height: 1.42857143;
     color: #333;
     white-space: nowrap;
-    border-top: 1px solid #e3e3e3;
+   
 }
