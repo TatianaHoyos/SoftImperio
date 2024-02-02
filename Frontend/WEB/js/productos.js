@@ -78,52 +78,43 @@ function consultarProductos() {
 
 function onExitoProductos(data) {
     console.log(data);
-    var productos = data;
-    var productosPorPagina = 5;
-    var paginaActual = 1;
 
-    function mostrarProductosEnPagina(pagina) {
-        $('#tablaProductos > tbody').empty();
+    // Obtén una referencia a la DataTable
+    var dataTable = $('#tablaProductos').DataTable();
 
-        var startIndex = (pagina - 1) * productosPorPagina;
-        var endIndex = startIndex + productosPorPagina;
-        var productosPagina = productos.slice(startIndex, endIndex);
+    // Limpia la tabla
+    dataTable.clear();
 
-        $.each(productosPagina, function (id, producto) {
-            var nombreCategoria = obtenerNombreCategoria(producto.idCategoria);
-
-            var boton1 = "<button onclick='EliminarProducto(" + JSON.stringify(producto) + ")' class='btn btn-delete' data-id='1'><i class='fas fa-trash'></i></button>";
-            var boton2 = "<button onclick='EditarProducto(" + JSON.stringify(producto) + ")' class='btn btn-edit' data-toggle='modal' data-target='#formCrearProductos'><i class='fas fa-edit'></i></button>";
-
-            $('#tablaProductos').append('<tr><td>' + nombreCategoria + '</td><td>' + producto.nombreProducto + '</td><td>' + producto.referenciaProducto + '</td><td>' + producto.cantidad + '</td><td>' + producto.precioProducto +
-                '</td><td>' + boton1 + '</td><td>' + boton2 + '</td></tr>');
-        });
-    }
-
-    function obtenerNombreCategoria(idCategoria) {
+    // Recorre los datos y agrega las filas
+    $.each(data, function (id, productos) {
         var nombreCategoria = "";
-        if (idCategoria == 1) {
+        if (productos.idCategoria == 1) {
             nombreCategoria = "cervezas";
-        } else if (idCategoria == 2) {
+        } else if (productos.idCategoria == 2) {
             nombreCategoria = "aguardientes";
-        } else if (idCategoria == 3) {
+        } else if (productos.idCategoria == 3) {
             nombreCategoria = "wiskey";
         }
-        return nombreCategoria;
-    }
-     // Mostrar la primera página al cargar la página
-     mostrarProductosEnPagina(paginaActual);
 
-     // Evento para ir a la página anterior
-     $('#prev-page').on('click', function (e) {
-         e.preventDefault();
-         if (paginaActual > 1) {
-             paginaActual--;
-             mostrarProductosEnPagina(paginaActual);
-         }
-     });
-  
+        var boton1 = "<button onclick='EliminarProducto(" + JSON.stringify(productos) + ")' class='btn btn-delete' data-id='1'><i class='fas fa-trash'></i></button>";
+        var boton2 = "<button onclick='EditarProducto(" + JSON.stringify(productos) + ")' class='btn btn-edit' data-toggle='modal' data-target='#formCrearProductos'><i class='fas fa-edit'></i></button>";
+
+        // Agrega la fila a la DataTable
+        dataTable.row.add([
+            nombreCategoria,
+            productos.nombreProducto,
+            productos.referenciaProducto,
+            productos.cantidad,
+            productos.precioProducto,
+            boton1,
+            boton2
+        ]).draw();
+
+        console.log(productos.id + ' ' + productos.nombreProducto + ' ' + productos.idCategoria + ' ' +
+            productos.referenciaProducto + ' ' + productos.precioProducto);
+    });
 }
+
 
 function onErrorProductos(error) {
     console.log(error)
