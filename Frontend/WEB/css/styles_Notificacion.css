@@ -1,17 +1,67 @@
   
+#containerNotification {
+  list-style-type: none;
+  position: relative; /* Añadido para posicionar el contenido relativo a este elemento */
+  padding: 0.625rem 0 0.5rem;
+  z-index: 1000; /* Valor alto para que aparezca sobre otros elementos */
+}
+
+#containerNotification ul {
+  flex-direction: column;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.869); /* Ajusta según tus preferencias */
+  align-items: flex-start;
+  transition: all 0.5s ease;
+  width: 20rem;
+  right: 0.5rem;
+  top: 4.5rem;
+  border-radius: 0.325rem;
+  gap: 0;
+  padding: 1rem 0rem;
+  opacity: 0;
+  box-shadow: 0px 0px 100px rgba(20, 18, 18, 0.25);
+  display: none;
+}
+
+
+#containerNotification:hover > ul,
+#containerNotification  ul:hover {
+  visibility: visible;
+  opacity: 1;
+  display: flex;
+}
+
+
+#containerNotificationContent {
+  top: 100% !important; /* Coloca el contenido justo debajo del elemento padre */
+  padding: 0 0 0 0;
+
+}
+
+.principal-element {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.725rem;
+  cursor: pointer;
+  padding: 0.5rem 1.5rem;
+}
+
+.principal-element p {
+  font-size: 0.85rem;
+  color: #888888;
+  font-weight: 500;
+  margin: 0.4rem 0;
+  flex: 1;
+}
   /* -----------------------------------------
      Dropdown
   ----------------------------------------- */
-  .dropdown-menu{
-      padding:0 0 0 0;
-      
-  }
 
   p.dropdown-menu-header {
-      
       font-weight: bold;
       margin-top: 10px;
-     
+      border-bottom: 1px solid #808081;
   }
 
   .dropdown-menu>li>p {
@@ -43,8 +93,8 @@
   .badge{
       padding: 3px 5px 2px;
       position: absolute;
-      top: 8px;
-      right: 5px;
+      top: 3px;
+      left: 10px;
       display: inline-block;
       min-width: 10px;
       font-size: 12px;
@@ -57,7 +107,7 @@
       border-radius: 10px;
   }
   .badge-danger {
-      background-color: #ffffff;
+      background-color: #db5565;
   }
   /* -----------------------------------------
      Content scrollable
@@ -140,14 +190,12 @@
      Footer
   ----------------------------------------- */
   .menu-title {
-
     font-weight: bold;
     margin-top: 20px;
-    color: #000;
+    color: #888888;;
 }
 
 .notification-footer {
-  
     display: block;
     padding: 10px 20px;
     padding-bottom: 10px;
@@ -156,6 +204,6 @@
     line-height: 1.42857143;
     color: #333;
     white-space: nowrap;
-   
+    border-top: 1px solid #808081;
 }
 
