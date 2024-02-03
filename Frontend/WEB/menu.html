@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/style_menu.css">
+  <link rel="stylesheet" href="css/styles_Notificacion.css">
   <script src="https://code.jquery.com/jquery-3.6.1.min.js"
   integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script><script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
@@ -65,31 +66,30 @@
       <ul id="contenidoIconosEsquinaDerecha">
         <li id="contenedorPrincipalNotificacion">
           <!--Notificación-->
-    <div class="dropdown mr-4">
+          <li id="containerNotification" class="pr-4">
+            <a href="#" onclick="return false;" role="button" data-toggle="dropdown" id="dropdownMenu1" data-target="#" aria-expanded="true">
+              <i class="fas fa-bell mr" style="font-size: 20px; color: #ae9243;">
+              </i>
+            </a>
+            <span id="contadorNotificaciones" class="badge badge-danger">100</span>
+            <ul id="containerNotificationContent">
+            
+              <!--header-->
+              <li class="principal-element">
+                <p class="dropdown-menu-header">Notificaciones</p>
+              </li>
+              <!--scrollable-->
+              <div class="btn-group pull-right top-head-dropdown">
+                <div id="contenedorNotificaciones" class="scrollable-content dropdown-menu-right">
+                </div>
+              </div>
+              <!--Footer-->
+              <div  class="notification-footer principal-element">
+                <a class="menu-title" href="#">Ver Todo<i class="fas fa-chevron-right"></i> </a>
+              </div>
+            </ul>
+          </li>
 
-      <a href="#" onclick="return false;" role="button" data-toggle="dropdown" id="dropdownMenu1" data-target="#"
-        style="float: left" aria-expanded="true">
-        <i class="fas fa-bell mr" style="font-size: 20px; float: left; color: #fff;">
-        </i>
-      </a>
-      <span id="contadorNotificaciones" class="badge badge-danger"></span>
-      <ul class="dropdown-menu dropdown-menu-left pull-right" role="menu" aria-labelledby="dropdownMenu1">
-        <!--header-->
-        <li role="presentation">
-          <p class="dropdown-menu-header">Notificaciones</p>
-        </li>
-        <!--scrollable-->
-        <div class="btn-group pull-right top-head-dropdown">
-          <div id="contenedorNotificaciones" class="scrollable-content dropdown-menu-right">
-
-          </div>
-        </div>
-        <!--Footer-->
-        <div class="notification-footer">
-          <a class="menu-title" href="#">Ver Todo<i class="fas fa-chevron-right"></i> </a>
-        </div>
-      </ul>
-    </div>
   </div>
         </li>
         <li id="containerProfile" class="pr-4">
