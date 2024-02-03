@@ -1,38 +1,21 @@
-.superpuesto {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 999; /* Ajusta según sea necesario, asegúrate de que sea mayor que el z-index de otros elementos si hay superposición */
-  /* Otros estilos que desees aplicar al encabezado */
+.d-flex {
+  display: flex;
 }
+
+.justify-content-between {
+  justify-content: space-between;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
 .contenido-principal {
     /* Ajusta el espacio debajo del encabezado según sea necesario */
     margin-top: 100px; /* Usa la altura de tu encabezado */
     /* Otros estilos para el contenido principal */
 }
-.side-nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 250px;
-  height: 150vh;
-  background-color: #211f1f;
-  transition: transform 0.3s ease-in-out; 
-  transform: translateX(-100%);
-  
-}
 
-.side-nav.open {
-  transform: translateX(0);
-}
-
-.side-nav ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  
-}
 .side-nav li {
   display: flex; /* Utilizar flexbox */
   align-items: center; /* Centrar verticalmente */
@@ -44,16 +27,13 @@
   display: block;
   padding: 3%;
   text-decoration: none;
-  color:  #e5c850;
-}
-.side-nav li i {
-  margin-left: 1px; /* Espacio entre el icono y el texto */
+  color:  #ae9243;
 }
 .side-nav-toggle {
   position: absolute;
   top: 20px;
   left: 20px;
-  background-color: #e5c850 ;
+  background-color: #ae9243 ;
   border: none;
   cursor: pointer;
 }
@@ -67,17 +47,208 @@
   height: 150px;
   margin: 0 auto;
   padding-top: 5px;
-   
 }
 
-.close-menu-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 15px;
-  text-decoration: none;
-  color: #e5c850;
+#contenidoIconosEsquinaDerecha li {
+  list-style-type: none;
+  position: relative;
+  padding: 0.625rem 0 0.5rem;
 }
+
+#containerProfile {
+  list-style-type: none;
+  position: relative; /* Añadido para posicionar el contenido relativo a este elemento */
+  padding: 0.625rem 0 0.5rem;
+  z-index: 1000; /* Valor alto para que aparezca sobre otros elementos */
+}
+
+#containerProfile ul {
+  flex-direction: column;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.869); /* Ajusta según tus preferencias */
+  align-items: flex-start;
+  transition: all 0.5s ease;
+  width: 20rem;
+  right: 0.5rem;
+  top: 4.5rem;
+  border-radius: 0.325rem;
+  gap: 0;
+  padding: 1rem 0rem;
+  opacity: 0;
+  box-shadow: 0px 0px 100px rgba(20, 18, 18, 0.25);
+  display: none;
+}
+
+.profile {
+  height: 3rem;
+  width: 3rem;
+  cursor: pointer;
+  border-radius: 50%; /* Hace que la imagen sea redonda */
+  object-fit: cover; /* Ajusta el tamaño de la imagen manteniendo su relación de aspecto y recortándola según sea necesario */
+  border: 2px solid #fff; /* Añade un borde blanco opcional */
+
+}
+#imgUsuario {
+  display: flex;
+  align-items: center;
+}
+
+
+.sub-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.725rem;
+  cursor: pointer;
+  padding: 0.5rem 1.5rem;
+}
+
+.sub-item:hover {
+  background-color:#ae9243;
+}
+
+.sub-item:hover .material-icons-outlined {
+  color: #e2c651;
+  transform: scale(1.08) translateY(-2px);
+  cursor: pointer;
+}
+
+.sub-item:hover p {
+  color: #000;
+  cursor: pointer;
+}
+
+.sub-item p {
+  font-size: 0.85rem;
+  color: #888888;
+  font-weight: 500;
+  margin: 0.4rem 0;
+  flex: 1;
+}
+
+
+#containerProfile:hover > ul,
+#containerProfile  ul:hover {
+  visibility: visible;
+  opacity: 1;
+  display: flex;
+}
+
+
+#containerProfileContent {
+  top: 100% !important; /* Coloca el contenido justo debajo del elemento padre */
+
+}
+
+li ul h3 {
+  width: 100%;
+  text-align: center;
+  font-size: 18px;
+  padding: 20px 0;
+  font-weight: 500;
+  color: #555;
+  line-height: 1.2em;
+}
+
+li ul h3 span{
+  font-size: 14px;
+  font-weight: 400;
+  color: #cecece;
+}
+h3 span {
+  display: block;
+}
+#logo-navbar{
+display: none;
+}
+.sidebar{
+  z-index: 1000;
+}
+
+/* menu */
+
+    body {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      margin: 0;
+      overflow-x: hidden;
+    }
+    /*imagen de menú acomoda*/
+    .sidebar {
+      height: 100%;
+      width: 250px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: #000000;  /*Color de fondo menú*/
+      padding-top: 20px;
+      transition: all 0.3s;
+      box-shadow: 0 14px 10px rgba(174, 146, 67, 0.973); ; /* Sombra en el lado derecho */
+      z-index: 1000; /* Asegura que el menú esté sobre otros elementos */
+    }
+
+    .sidebar img {
+      width: 80%;
+      margin: 0 auto;
+      cursor: pointer;
+      padding: 10px; /* Espaciado interno para el logo */
+      max-width: 80%; /* Ajusta el tamaño del logo */
+    }
+
+    .nav-link {
+      font-size: 16px;
+      color: #959292; /* Color del texto del menú */
+      text-decoration: none;
+      transition: color 0.3s ease;
+      display: flex;
+      align-items: center;
+    }
+
+    .menu-item.active {
+      background-color: #ae9243; /* Color de fondo cuando está activo */
+    }
+
+    /*logo pequeño navbar*/
+    .navbar {
+      margin-left: 250px;
+      transition: margin-left 0.3s;
+    }
+    /*Completa navbar al cerrar menú*/
+    .navbar.menu-hidden {
+      margin-left: 0;
+    }
+    .hidden {
+      width: 0;
+      overflow: hidden;
+    }
+
+    .sidebar nav-item menu-item {
+      margin-left: 1px; /* Espacio entre el icono y el texto */
+    }
+
+    /*extiende nabvar a un lado*/
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 0;
+        overflow: hidden;
+      }
+
+      .navbar-toggler {
+        display: block;
+      }
+
+      /* Cambia el color del botón desplegable al pasar el ratón */
+      .navbar-toggler:hover {
+        background-color: #e5c850;
+      }
+
+      .navbar-collapse {
+        margin-top: 20px;
+        transition: margin-top 0.3s;
+      }
+
+      .navbar.menu-hidden .navbar-collapse {
+        margin-top: 0;
+      }
+    }

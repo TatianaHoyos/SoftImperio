@@ -1,4 +1,3 @@
-
  
 // Consultar y mostrar Ventas
 const apiUrl = "https://localhost:7084/api/Ventas/ByFecha";

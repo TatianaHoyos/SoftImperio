@@ -1,20 +1,25 @@
 body{
-    /* background-image: url("../img/ej.jpg"); */
-    /* background-color: #201f1e; */
+    background-image:url("../img/f5.jpeg");
     font-family:"Baskerville", serif;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
     background-attachment: fixed;
-    }
+    } 
 
+.login{
+  background-image: url("../img/login/f3.jpg");
+}   
+#fondo{
+    background-color: #201f1e;
+}
 .form-input img {
     width:100%;
     display:none;
     margin-bottom:30px;
 }
 .form-group button {
-    background-color: #e5c850;
+    background-color: #ae9243;
 }
 .form-group button:hover {
     background-color: #ae9243;
@@ -28,7 +33,7 @@ body{
     }
 
     .active {
-      background-color: #ae9243 !important;
+      background-color: #e2c651 !important;
       color: #090909 !important;
     }
 
@@ -78,10 +83,13 @@ body{
       transition: background-color 0.3s ease;
       font-family: "Baskerville", serif;
   }
-  .nav-item.menu-item .nav-link.active {
-    background-color: #2c3e50;
-    color: #ffffff;
-}
+  
+  /* Estilo para el estado activo del enlace */
+  .navbar-nav .nav-item.menu-item .nav-link.active {
+    background-color: #090909; /* Color de fondo para el estado activo */
+    color: #fff; /* Color del texto en estado activo */
+  }
+
 .nav-link:hover {
   color: #e2c651 !important;
 
@@ -120,7 +128,7 @@ body{
     }
 
     .btn-warning{
-      background-color: #e5c850;
+      background-color: #ae9243;
       margin-right: 10px;
     }
 
@@ -202,7 +210,7 @@ body{
   color: white !important;
 }
 .swal2-popup .swal2-actions .swal2-confirm {
-  background-color: #e5c850;
+  background-color: #ae9243;
   font-weight: bold;
   color: black;
 
@@ -217,7 +225,7 @@ body{
     }
 
     .btn-warning{
-      background-color: #e5c850;
+      background-color: #ae9243;
       margin-right: 10px;
     }
 
@@ -227,7 +235,7 @@ body{
     }
 
 .swal2-popup .swal2-actions .swal2-cancel {
-  background-color: #e5c850;
+  background-color: #ae9243;
   font-weight: bold;
   color: black;
 }
@@ -251,7 +259,7 @@ vertical-align: top;
 color: white;
 width: 30px;
 height: 30px;
-font: 30px/1 Arial,sans-serif;
+font: 30px/1 Baskerville, serif;
 text-align: center;
 border-radius: 50%;
 }
@@ -262,7 +270,7 @@ vertical-align: top;
 color: white;
 width: 30px;
 height: 30px;
-font: 30px/1 Arial,sans-serif;
+font: 30px/1 Baskerville, serif;
 text-align: center;
 border-radius: 50%;
 background-clip: padding-box;
@@ -316,10 +324,11 @@ background-color:white;
 }
     /* Estilos generales para el modal */
     .modal-content {
-        border-radius: 15px;
-        border: 2px solid #ae9243;
-        box-shadow: 0px 0px 10px 0px #ae9243;
-    }
+      background-color: rgba(0, 0, 0, 0.5); /* Fondo negro con 50% de transparencia */
+      border-radius: 15px;
+      border: 2px solid #ae9243;
+      box-shadow: 0px 0px 10px 0px #ae9243;
+  }
 
     .modal-header {
         background-color: #ae9243;
@@ -357,6 +366,8 @@ background-color:white;
     .btn:hover {
         background-color: #e2c651; /* Cambiar color al pasar el ratón */
     }
+
+
 
 
 

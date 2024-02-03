@@ -1,9 +1,20 @@
 /* Estilo para el wrapper de DataTables */
 #miTabla_wrapper {
-    background-color: grey;
+    background-color: #959292;
     padding-top: 10px;
     padding-left: 10px;
     padding-right: 10px;
+    box-shadow: 0 0 10px rgba(174, 146, 67, 0.973); /* Borde con sombra en todos los lados */
+
+}
+/* Estilo para el texto en DataTables */
+#miTabla {
+    color: #090909;
+}
+
+/* Estilo para las celdas de la tabla */
+#miTabla tbody td {
+    color: #090909;
 }
 
 /* Estilo para las filas impares */
@@ -34,11 +45,11 @@
 
 /* Estilo para los botones de DataTables */
 #miTabla tbody .btn-editar {
-    background-color: #4285f4; /* Color de fondo para el botón Editar */
+    background-color: #090909; /* Color de fondo para el botón Editar */
     color: #fff; /* Color del texto */
     border: none; /* Sin borde */
     padding: 5px 10px; /* Espaciado interno */
-    border-radius: 5px; /* Bordes redondeados */
+    border-radius: 0.75rem; /* Bordes redondeados */
     cursor: pointer;
 }
 
@@ -47,6 +58,6 @@
     color: #fff; /* Color del texto */
     border: none; /* Sin borde */
     padding: 5px 10px; /* Espaciado interno */
-    border-radius: 5px; /* Bordes redondeados */
+    border-radius: 0.75rem; /* Bordes redondeados */
     cursor: pointer;
 }

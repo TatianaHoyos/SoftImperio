@@ -9,7 +9,6 @@ $(document).ready(function () {
 });
 
 
-
 function consultarCategorias() {
     $.ajax({
         type: "GET",

@@ -54,12 +54,18 @@ function login(){
 
 function onExito(data){
     console.log(data)
+    var objetoString = JSON.stringify(data);
+    localStorage.setItem('miObjeto', objetoString);
+   
     //validar si es admin o colaborador para redireccionarlo a cierta interfaz
     if(data.rol==1){
-        window.location="./registrocolaborador.html"
-    }else if(data.rol==2){
-        window.location="./puntomesa.html"
+       
+        window.location="./PuntoVentaBarra.html"
+    }else if(data.rol==8){
+     
+        window.location="./puntoVentaMesa.html"
     }
+   
 }
 
 function onError(error){

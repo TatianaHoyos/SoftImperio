@@ -7,117 +7,115 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
-   
-    </style>
-    <style>
-       .qty .count {
-    color: #000;
-    display: inline-block;
-    vertical-align: top;
-    font-size: 25px;
-    font-weight: 700;
-    line-height: 30px;
-    padding: 0 2px
-    ;min-width: 35px;
-    text-align: center;
-}
-.qty .plus {
-    cursor: pointer;
-    display: inline-block;
-    vertical-align: top;
-    color: white;
-    width: 30px;
-    height: 30px;
-    font: 30px/1 Arial,sans-serif;
-    text-align: center;
-    border-radius: 50%;
-    }
-.qty .minus {
-    cursor: pointer;
-    display: inline-block;
-    vertical-align: top;
-    color: white;
-    width: 30px;
-    height: 30px;
-    font: 30px/1 Arial,sans-serif;
-    text-align: center;
-    border-radius: 50%;
-    background-clip: padding-box;
-}
+    <link rel="stylesheet" href="css/style_menu.css">
 
-.minus:hover{
-    background-color: #717fe0 !important;
-}
-.plus:hover{
-    background-color: #717fe0 !important;
-}
-/*Prevent text selection*/
-span{
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-}
-input{  
-    border: 0;
-    width: 2%;
-}
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-input:disabled{
-    background-color:white;
-}
-         
-    </style>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+   
 </head>
 
 <body>
-    <div class="logo-container">
-        <img src="img/logo.png" alt="Logo" class="Logo" height="170">
-    </div>
-    <nav class="navbar navbar-expand-lg navbar-light colornavbar">
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item menu-item">
-                    <a class="nav-link active" href="#"><i class="fas fa-home"></i> Inicio</a>
-                </li>
-                <li class="nav-item menu-item">
-                    <a class="nav-link" href="Existencias.html"><i class="fas fa-box-open"></i> Existencias</a>
-                </li>
-                <li class="nav-item menu-item">
-                    <a class="nav-link" href="nuestrosUsuarios.html"><i class="fas fa-users"></i> Usuarios</a>
-                </li>
-                <li class="nav-item menu-item">
-                    <a class="nav-link" href="ventas.html"><i class="fas fa-chart-bar"></i> Ventas</a>
-                </li>
-                <li class="nav-item menu-item">
-                    <a class="nav-link" href="compras.html"><i class="fas fa-shopping-cart"></i> Compras</a>
-                </li>
-                <li class="nav-item menu-item">
-                    <a class="nav-link" href="nuestrosProveedores.html"><i class="fas fa-truck"></i> Proveedores</a>
-                </li>
-                <li class="nav-item menu-item">
-                    <a class="nav-link active" href="#"><i class="fas fa-cash-register"></i> Punto de venta</a>
-                </li>
-                <li class="nav-item menu-item">
-                    <a class="nav-link" href="creditos.html"><i class="fas fa-money-check-alt"></i> Créditos</a>
-                </li>
-                <li class="nav-item menu-item">
-                    <a class="nav-link" href="productos.html"><i class="fas fa-box"></i> Productos</a>
-                </li>
-                <li class="nav-item menu-item">
-                    <a class="nav-link" href="Permisos.html"><i class="fas fa-user-lock"></i> Permisos</a>
-                </li>
-            </ul>
-            <a class="nav-link logout-link text-dark" href="#"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
-        </div>
+  <header  class="superpuesto">
+    <nav id="contenedorMenu" class="side-nav">
+      <img src="img/logo.png" alt="Logo" class="logo">
+      <button class="close-menu-btn">
+        <i class="fas fa-times"></i> Cerrar
+      </button>
+
+      <!-- Contenido del menú -->
+
+      <li class="nav-item menu-item">
+        <a class="nav-link " href="Inicio.html"><i class="fas fa-home"></i> Inicio</a>
+      </li>
+      <li class="nav-item menu-item">
+        <a class="nav-link" href="Existencias.html"><i class="fas fa-box-open"></i> Existencias</a>
+      </li>
+      <li class="nav-item menu-item">
+        <a class="nav-link" href="productos.html"><i class="fas fa-box-open"></i> Productos</a>
+      </li>
+      <li class="nav-item menu-item">
+        <a class="nav-link" href="nuestrosUsuarios.html"><i class="fas fa-users"></i> Usuarios</a>
+      </li>
+      <li class="nav-item menu-item">
+        <a class="nav-link " href="ventas.html"><i class="fas fa-chart-bar"></i> Ventas</a>
+      </li>
+      <li class="nav-item menu-item">
+        <a class="nav-link " href="compras.html"><i class="fas fa-shopping-cart"></i> Compras</a>
+      </li>
+      <li class="nav-item menu-item">
+        <a class="nav-link" href="nuevoProveedor.html"><i class="fas fa-truck"></i> Proveedores</a>
+      </li>
+      <li class="nav-item menu-item">
+        <a class="nav-link active" href="PuntoVentaBarra.html"><i class="fas fa-cash-register"></i> Punto de venta</a>
+      </li>
+      <li class="nav-item menu-item">
+        <a class="nav-link" href="creditos.html"><i class="fas fa-money-check-alt"></i> Créditos</a>
+      </li>
+      <li class="nav-item menu-item">
+        <a class="nav-link" href="Permisos.html"><i class="fas fa-user-lock"></i> Permisos</a>
+      </li>
+      <!-- ... Otras opciones del menú ... -->
+
+
+      </ul>
     </nav>
-</body>
-<div>
+
+    <div class="d-flex justify-content-between align-items-center">
+      <button class="side-nav-toggle">SoftImperio
+        <i class="fas fa-bars"></i>
+      </button>
+
+
+
+      <div class="ml-auto" tabindex="0">
+        <ul id="contenidoIconosEsquinaDerecha">
+          <li id="contenedorPrincipalNotificacion">
+            <!--Notificación-->
+      <div class="dropdown mr-4">
+
+        <a href="#" onclick="return false;" role="button" data-toggle="dropdown" id="dropdownMenu1" data-target="#"
+          style="float: left" aria-expanded="true">
+          <i class="fas fa-bell mr" style="font-size: 20px; float: left; color: #d5c429;">
+          </i>
+        </a>
+        <span id="contadorNotificaciones" class="badge badge-danger"></span>
+        <ul class="dropdown-menu dropdown-menu-left pull-right" role="menu" aria-labelledby="dropdownMenu1">
+          <!--header-->
+          <li role="presentation">
+            <p class="dropdown-menu-header">Notificaciones</p>
+          </li>
+          <!--scrollable-->
+          <div class="btn-group pull-right top-head-dropdown">
+            <div id="contenedorNotificaciones" class="scrollable-content dropdown-menu-right">
+
+            </div>
+          </div>
+          <!--Footer-->
+          <div class="notification-footer">
+            <a class="menu-title" href="#">Ver Todo<i class="fas fa-chevron-right"></i> </a>
+          </div>
+        </ul>
+      </div>
+    </div>
+          </li>
+          <li id="containerProfile" class="pr-4">
+            <img id="imgUsuario" src="img/logo.png" class="profile" />
+            <ul id="containerProfileContent">
+              <h3 id="nombreUsuario">¡Hola! <span id="rolUsuario"></span></h3>
+             
+              <li class="sub-item">
+                <i class="fas fa-bars"></i>
+                <p>cerrar sesion</p>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        
+
+      </div>
+     
+
+  </header>
+
+<div class="contenido-principal">
     <div class="container  p-2 g-col-6 ">
         <h4 class="mt-5 text-white  text-center">Punto de Venta en Mesa</h4>
         <div class="form-row justify-content-center">
@@ -167,10 +165,14 @@ input:disabled{
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://code.jquery.com/jquery-3.6.1.min.js"integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"crossorigin="anonymous"></script>
 <script src="js/puntoVentaMesa.js"></script>
+<script src="js/menuLateral.js"></script>
+<script src="js/datosUsuario.js"></script>
 </body>
 </html>

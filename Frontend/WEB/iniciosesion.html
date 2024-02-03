@@ -6,17 +6,18 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-
+  <link rel="stylesheet" href="css/style.css">
+  
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Inicio Sesion</title>
-  <link rel="stylesheet" href="css/style.css">
+  
 </head>
-<body>
+<body class="login">
   <div class="container">
     <div class="modal-dialog mt-5" role="document">
-      <div class="modal-content  border-grey " id="fondo">
+      <div class="modal-content" id="fondo">
         <form id="formLogin" class="col-sm-12 text-center px-5 " method="post">
 
           <div class="form-group text-center">
@@ -30,7 +31,7 @@
           <div class="form-group text-center mb-4">
             <div class="input-group">
               <div class="input-group-prepend">
-                <span class="input-group-text" style="background-color: #e5c850"><i class="fas fa-user"></i></span>
+                <span class="input-group-text" style="background-color: #ae9243"><i class="fas fa-user"></i></span>
               </div>
               <input type="email" class="form-control" id="emailLogin" name="emailLogin"
                 placeholder="Ingresa tu usuario" onkeypress="return validarEmail(event)">
@@ -41,7 +42,7 @@
           <div class="form-group mt-1">
             <div class="input-group">
               <div class="input-group-prepend">
-                <span class="input-group-text" style="background-color: #e5c850"><i class="fas fa-lock"></i></span>
+                <span class="input-group-text" style="background-color: #ae9243"><i class="fas fa-lock"></i></span>
               </div>
               <input type="password" class="form-control" id="passwordLogin" name="passwordLogin"
                 placeholder="Ingresa tu contraseña" onkeypress="return contrasena(event)">
