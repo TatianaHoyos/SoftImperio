@@ -77,23 +77,22 @@ function onError(error){
 }
 //logica para crear proveedor
 function onExitoCrearProveedor(data){
+    Swal.fire({
+        type: 'success',
+        text: 'Registro guardado',
+        icon:"success",
+        showConfirmButton: false,
+        timer: 1500
+    });
 
-   
-        Swal.fire({
-          type: 'success',
-          text: 'Registro guardado',
-          icon:"success",
-          showConfirmButton: false,
-          timer: 2000
-        });
-
-        window.location="./nuestrosProveedores.html"
-
-}
+    setTimeout(() => {
+        window.location.reload();
+       }, 1500);
+    }
 
 function onErrorProv(error){
 
-    console.log(error)   
+    console.log(error)
     var mensaje =error;
     mensaje.show();
     mensaje.text(error.message);

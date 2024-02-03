@@ -32,11 +32,6 @@ function alertaEliminarEditar(action,idProveedor) {
         eliminarProveedor(idProveedor);
     }else if (action=="editar"){
         consultarProveedor(idProveedor);
-       // $("#documentoE").val("New Value");
-        
-        // Create an FormData object 
-        //var formData = new FormData(form);
-        //editarProveedor(idProveedor);
     }
 }    
 
@@ -161,124 +156,65 @@ function editarProveedor() {
 }
 
 // Function to create a table row with the given data
-function createTableRow_(data) {
-    const row = document.createElement("tr");
-  
-    // Iterate over each property in the data object
-    const propertyOrder = ["idProveedores", "documento", "nombre","email","telefono","direccion"];
+function createTableRow(data) {
+  const row = document.createElement("tr");
 
-    for (const property of propertyOrder) {
-      if (data.hasOwnProperty(property)) {
-        const cell = document.createElement("td");
-        cell.textContent = data[property];
-        row.appendChild(cell);
-      }
+  // Iterate over each property in the data object
+  const propertyOrder = ["idProveedores", "documento", "nombre","email","telefono","direccion"];
+
+  for (const property of propertyOrder) {
+    if (data.hasOwnProperty(property)) {
+      const cell = document.createElement("td");
+      cell.textContent = data[property];
+      row.appendChild(cell);
     }
-  
-    // Add the edit button cell
-    const editCell = document.createElement("td");
-    const editButton = document.createElement("button");
-    editButton.type = "button";
-    editButton.setAttribute("data-toggle", "modal");
-    editButton.setAttribute("data-target", "#miModal");
-    editButton.className = "btn btn-warning d-inline";
-    editButton.onclick = function() {
-      alertaEditar('editar', data.idProveedores);
-    };
-    const editIcon = document.createElement("svg");
-    editIcon.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-    editIcon.setAttribute("width", "16");
-    editIcon.setAttribute("height", "16");
-    editIcon.setAttribute("fill", "currentColor");
-    editIcon.setAttribute("class", "fa fa-edit");
-    editIcon.setAttribute("viewBox", "0 0 16 16");
-    const editPath = document.createElement("path");
-    editPath.setAttribute("d", "m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z");
-    editIcon.appendChild(editPath);
-    editButton.appendChild(editIcon);
-    editButton.onclick = function() {
-        alertaEliminarEditar('editar', data.idProveedores);
-      };
-    editCell.appendChild(editButton);
-    row.appendChild(editCell);
-  
-    // Add the delete button cell
-    const deleteCell = document.createElement("td");
-    const deleteButton = document.createElement("button");
-    deleteButton.type = "button";
-    deleteButton.className = "btn btn-warning d-inline";
-    deleteButton.onclick = function() {
-      alertaEliminarEditar('eliminar', data.idProveedores);
-    };
-    const deleteIcon = document.createElement("i");
-    deleteIcon.className = "fa fa-trash";
-    deleteIcon.setAttribute("aria-hidden", "true");
-    deleteButton.appendChild(deleteIcon);
-    deleteCell.appendChild(deleteButton);
-    row.appendChild(deleteCell);
-  
-    return row;
   }
-  
 
-  // AJAX request para consultar proveedores
+  // Add the edit button cell
+  const editCell = document.createElement("td");
+  const editButton = document.createElement("button");
+  editButton.type = "button";
+  editButton.setAttribute("data-toggle", "modal");
+  editButton.setAttribute("data-target", "#miModal");
+  editButton.className = "btn btn-warning d-inline";
+  editButton.onclick = function() {
+    alertaEditar('editar', data.idProveedores);
+  };
+  const editIcon = document.createElement("svg");
+  editIcon.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+  editIcon.setAttribute("width", "16");
+  editIcon.setAttribute("height", "16");
+  editIcon.setAttribute("fill", "currentColor");
+  editIcon.setAttribute("class", "fa fa-edit");
+  editIcon.setAttribute("viewBox", "0 0 16 16");
+  const editPath = document.createElement("path");
+  editPath.setAttribute("d", "m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z");
+  editIcon.appendChild(editPath);
+  editButton.appendChild(editIcon);
+  editButton.onclick = function() {
+      alertaEliminarEditar('editar', data.idProveedores);
+    };
+  editCell.appendChild(editButton);
+  row.appendChild(editCell);
 
+  // Add the delete button cell
+  const deleteCell = document.createElement("td");
+  const deleteButton = document.createElement("button");
+  deleteButton.type = "button";
+  deleteButton.className = "btn btn-warning d-inline";
+  deleteButton.onclick = function() {
+    alertaEliminarEditar('eliminar', data.idProveedores);
+  };
+  const deleteIcon = document.createElement("i");
+  deleteIcon.className = "fa fa-trash";
+  deleteIcon.setAttribute("aria-hidden", "true");
+  deleteButton.appendChild(deleteIcon);
+  deleteCell.appendChild(deleteButton);
+  row.appendChild(deleteCell);
 
+  return row;
+}
 
-
-// // Consultar y mostrar Ventas
-// const apiUrl = "https://localhost:7084/api/Ventas/ByFecha";
-
-// function formatearFechaParaAPI(fecha) {
-//   const partes = fecha.split('-');
-//     if (partes.length === 3) {
-//   const [dia, mes, anio] = partes;
-//     return `${anio}-${mes}-${dia}`;
-// }
-// return fecha; 
-// }
-
-// // Función para mostrar ventas dentro del rango de fechas
-// function mostrarVentas() {
-//  const fechaInicial = document.querySelector('#fecha-inicial').value;
-//  const fechaFinal = document.querySelector('#fecha-final').value;
-
-//  // Validar pa q no estes vacias
-//  if (!fechaInicial || !fechaFinal) {
-//      alert("Debes seleccionar ambas fechas antes de mostrar las ventas.");
-//      return;
-//  }
-
-//  // Aqui es donde se realiza una solicitud a la API con las fechas seleccionadas
-//  fetch(`${apiUrl}?fechaInicio=${fechaInicial}&fechaFin=${fechaFinal}`)
-//      .then((response) => response.json())
-//      .then((data) => {
-//          actualizarTablaVentas(data);
-//      })
-//      .catch((error) => {
-//          console.error("Error al obtener datos de ventas:", error);
-//      });
-// }
-// // Función para actualizar la tabla de ventas.
-// function actualizarTablaVentas(venta) {
-//     const tablaVentas = document.querySelector('#tabla-ventas tbody');
-//     tablaVentas.innerHTML = ''; // Elimina las filas existentes
-
-//     // Itere uno a uno los datos de ventas y agrega filas a la tabla
-//     venta.forEach((ventas) => {
-//         const fila = `
-//             <tr>
-//                 <td>${ventas.IdVenta}</td>
-//                 <td>${ventas.FechaVenta}</td>
-//                 <td>${ventas.TotalVenta}</td>
-                
-//             </tr>
-//         `;
-//         tablaVentas.innerHTML += fila;
-//     });
-// }
-
-/* datatable proveedores*/
 
 console.log("Archivo consultas.js funcionando");
 
@@ -371,3 +307,67 @@ $(document).ready(function() {
     inputSearch.parent().prepend(iconSpan);
   }
 });
+
+
+//datatable.js
+
+// Function to create a table row with the given data
+function createTableRow(data) {
+  const row = document.createElement("tr");
+
+  // Iterate over each property in the data object
+  const propertyOrder = ["idProveedores", "documento", "nombre","email","telefono","direccion"];
+
+  for (const property of propertyOrder) {
+    if (data.hasOwnProperty(property)) {
+      const cell = document.createElement("td");
+      cell.textContent = data[property];
+      row.appendChild(cell);
+    }
+  }
+
+  // Add the edit button cell
+  const editCell = document.createElement("td");
+  const editButton = document.createElement("button");
+  editButton.type = "button";
+  editButton.setAttribute("data-toggle", "modal");
+  editButton.setAttribute("data-target", "#miModal");
+  editButton.className = "btn btn-warning d-inline";
+  editButton.onclick = function() {
+    alertaEditar('editar', data.idProveedores);
+  };
+  const editIcon = document.createElement("svg");
+  editIcon.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+  editIcon.setAttribute("width", "16");
+  editIcon.setAttribute("height", "16");
+  editIcon.setAttribute("fill", "currentColor");
+  editIcon.setAttribute("class", "fa fa-edit");
+  editIcon.setAttribute("viewBox", "0 0 16 16");
+  const editPath = document.createElement("path");
+  editPath.setAttribute("d", "m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z");
+  editIcon.appendChild(editPath);
+  editButton.appendChild(editIcon);
+  editButton.onclick = function() {
+      alertaEliminarEditar('editar', data.idProveedores);
+    };
+  editCell.appendChild(editButton);
+  row.appendChild(editCell);
+
+  // Add the delete button cell
+  const deleteCell = document.createElement("td");
+  const deleteButton = document.createElement("button");
+  deleteButton.type = "button";
+  deleteButton.className = "btn btn-warning d-inline";
+  deleteButton.onclick = function() {
+    alertaEliminarEditar('eliminar', data.idProveedores);
+  };
+  const deleteIcon = document.createElement("i");
+  deleteIcon.className = "fa fa-trash";
+  deleteIcon.setAttribute("aria-hidden", "true");
+  deleteButton.appendChild(deleteIcon);
+  deleteCell.appendChild(deleteButton);
+  row.appendChild(deleteCell);
+
+  return row;
+}
+
