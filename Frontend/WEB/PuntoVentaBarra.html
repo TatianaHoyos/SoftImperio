@@ -7,12 +7,12 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/styles_Notificacion.css">
-  <link rel="stylesheet" href="css/style_menu.css">
+
 
 </head>
 
 <body>
+
   <div class="modal fade" id="cargando" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -36,107 +36,9 @@
       </div>
     </div>
   </div>
-  <header class="superpuesto">
-    <nav class="side-nav">
-      <img src="img/logo.png" alt="Logo" class="logo">
-      <button class="close-menu-btn">
-        <i class="fas fa-times"></i> Cerrar
-      </button>
-
-      <!-- Contenido del menú -->
-
-      <li class="nav-item menu-item">
-        <a class="nav-link " href="Inicio.html"><i class="fas fa-home"></i> Inicio</a>
-      </li>
-      <li class="nav-item menu-item">
-        <a class="nav-link" href="Existencias.html"><i class="fas fa-box-open"></i> Existencias</a>
-      </li>
-      <li class="nav-item menu-item">
-        <a class="nav-link" href="productos.html"><i class="fas fa-box-open"></i> Productos</a>
-      </li>
-      <li class="nav-item menu-item">
-        <a class="nav-link" href="nuestrosUsuarios.html"><i class="fas fa-users"></i> Usuarios</a>
-      </li>
-      <li class="nav-item menu-item">
-        <a class="nav-link " href="ventas.html"><i class="fas fa-chart-bar"></i> Ventas</a>
-      </li>
-      <li class="nav-item menu-item">
-        <a class="nav-link " href="compras.html"><i class="fas fa-shopping-cart"></i> Compras</a>
-      </li>
-      <li class="nav-item menu-item">
-        <a class="nav-link" href="nuevoProveedor.html"><i class="fas fa-truck"></i> Proveedores</a>
-      </li>
-      <li class="nav-item menu-item">
-        <a class="nav-link active" href="PuntoVentaBarra.html"><i class="fas fa-cash-register"></i> Punto de venta</a>
-      </li>
-      <li class="nav-item menu-item">
-        <a class="nav-link" href="creditos.html"><i class="fas fa-money-check-alt"></i> Créditos</a>
-      </li>
-      <li class="nav-item menu-item">
-        <a class="nav-link" href="Permisos.html"><i class="fas fa-user-lock"></i> Permisos</a>
-      </li>
-      <!-- ... Otras opciones del menú ... -->
-
-
-      </ul>
-    </nav>
-
-    <div class="d-flex justify-content-between align-items-center">
-      <button class="side-nav-toggle">SoftImperio
-        <i class="fas fa-bars"></i>
-      </button>
-
-
-
-      <div class="ml-auto" tabindex="0">
-        <ul id="contenidoIconosEsquinaDerecha">
-          <li id="contenedorPrincipalNotificacion">
-            <!--Notificación-->
-      <div class="dropdown mr-4">
-
-        <a href="#" onclick="return false;" role="button" data-toggle="dropdown" id="dropdownMenu1" data-target="#"
-          style="float: left" aria-expanded="true">
-          <i class="fas fa-bell mr" style="font-size: 20px; float: left; color: #d5c429;">
-          </i>
-        </a>
-        <span id="contadorNotificaciones" class="badge badge-danger"></span>
-        <ul class="dropdown-menu dropdown-menu-left pull-right" role="menu" aria-labelledby="dropdownMenu1">
-          <!--header-->
-          <li role="presentation">
-            <p class="dropdown-menu-header">Notificaciones</p>
-          </li>
-          <!--scrollable-->
-          <div class="btn-group pull-right top-head-dropdown">
-            <div id="contenedorNotificaciones" class="scrollable-content dropdown-menu-right">
-
-            </div>
-          </div>
-          <!--Footer-->
-          <div class="notification-footer">
-            <a class="menu-title" href="#">Ver Todo<i class="fas fa-chevron-right"></i> </a>
-          </div>
-        </ul>
-      </div>
-    </div>
-          </li>
-          <li id="containerProfile" class="pr-4">
-            <img id="imgUsuario" src="img/logo.png" class="profile" />
-            <ul id="containerProfileContent">
-              <h3 id="nombreUsuario">¡Hola! <span id="rolUsuario"></span></h3>
-             
-              <li class="sub-item">
-                <i class="fas fa-bars"></i>
-                <p>cerrar sesion</p>
-              </li>
-            </ul>
-          </li>
-        </ul>
-        
-
-      </div>
-     
-
-  </header>
+ <!-- Incluye el menú -->
+ <div id="menu-container"></div>
+ <!-- contenido propio de la pagina -->
 
 
 <div class="contenido-principal">
@@ -206,9 +108,15 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
 <script src="js/puntoVentaBarra.js"></script>
 <script src="js/notificaciones_signalR.js"></script>
-<script src="js/menuLateral.js"></script>
+
 <script src="js/funciones.js"></script>
 <script src="js/datosUsuario.js"></script>
+<script>
+  $(document).ready(function () {
+    $("#menu-container").load("menu.html");
+  });
+</script>
+<script src="js/menuLateral.js"></script>
 </body>
 
 </html>
