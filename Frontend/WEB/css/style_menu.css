@@ -10,11 +10,7 @@
   align-items: center;
 }
 
-.contenido-principal {
-    /* Ajusta el espacio debajo del encabezado según sea necesario */
-    margin-top: 100px; /* Usa la altura de tu encabezado */
-    /* Otros estilos para el contenido principal */
-}
+
 
 .side-nav li {
   display: flex; /* Utilizar flexbox */

@@ -6,6 +6,7 @@
   z-index: 1000; /* Valor alto para que aparezca sobre otros elementos */
 }
 
+
 #containerNotification ul {
   flex-direction: column;
   position: absolute;
