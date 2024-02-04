@@ -15,6 +15,9 @@ public class OAuthService {
     public Optional<OAuthEntity> encontrarToken(String token){
         return oAuthRepository.findByToken(token);
     }
+    public Optional<OAuthEntity> encontrarTokenRefresh(String token){
+        return oAuthRepository.findByTokenRefresh(token);
+    }
 
     public  OAuthEntity guardarToken(OAuthEntity oAuth){
         return  oAuthRepository.save(oAuth);
