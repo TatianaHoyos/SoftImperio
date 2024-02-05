@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -9,11 +10,7 @@
           integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-  <!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css"> -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap4.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap4.min.css">
-
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/tablas.css">
 
@@ -25,7 +22,7 @@
       $("#menu-container").load("menu.html");
     });
   </script>
-
+<script src="js/menuLateral.js"></script>
 
   <!-- Incluye el menú -->
   <div id="menu-container"></div>
@@ -141,15 +138,15 @@
     </div>
 
     <!--Inicia tabla proveedores-->
-    <table id="miTabla" class="tablaImperio table   w-100 ">
+    <table id="miTabla" class="table   w-100 ">
         <thead >
           <tr>
             <th>#</th>
             <th>Documento</th>
             <th>Nombre</th>
             <th>Email</th>
-            <th>Telefono</th>
-            <th>Direccion</th>
+            <th>Teléfono</th>
+            <th>Dirección</th>
             <th colspan="2">Acciones</th>
           </tr>
         </thead>
@@ -272,13 +269,10 @@
 
   <!--scripts cargar menu y dependencias comunes-->
 
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<!-- <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js" crossorigin="anonymous"></script> -->
-
-<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap4.min.js"></script>
-<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
-<script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap4.min.js"></script><script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="./js/externo/popper.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="js/validaciones.js"></script>
 <script src="js/funciones.js"></script>
 <script src="js/proveedores/proveedores.js"></script>
 </body>

@@ -200,10 +200,23 @@ display: none;
       display: flex;
       align-items: center;
     }
+    .nav-link:hover {
+      color: #ae9243; /* Cambia el color al pasar el ratón */
+    }
 
     .menu-item.active {
       background-color: #ae9243; /* Color de fondo cuando está activo */
     }
+
+    .nav-link i {
+      color: #959292; /* Color predeterminado del ícono */
+      transition: color 0.3s ease;
+    }
+    
+    .nav-link:hover i {
+        color: #ae9243; /* Cambia el color del ícono al pasar el ratón */
+    }
+  
 
     /*logo pequeño navbar*/
     .navbar {
@@ -223,28 +236,28 @@ display: none;
       margin-left: 1px; /* Espacio entre el icono y el texto */
     }
 
-    /*extiende nabvar a un lado*/
-    @media (max-width: 768px) {
-      .sidebar {
-        width: 0;
-        overflow: hidden;
-      }
-
-      .navbar-toggler {
-        display: block;
-      }
-
-      /* Cambia el color del botón desplegable al pasar el ratón */
-      .navbar-toggler:hover {
-        background-color: #e5c850;
-      }
-
-      .navbar-collapse {
-        margin-top: 20px;
-        transition: margin-top 0.3s;
-      }
-
-      .navbar.menu-hidden .navbar-collapse {
-        margin-top: 0;
-      }
+  /*extiende nabvar a un lado*/
+  @media (max-width: 768px) {
+    .sidebar {
+      width: 0;
+      overflow: hidden;
     }
+
+    .navbar-toggler {
+      display: block;
+    }
+
+    /* Cambia el color del botón desplegable al pasar el ratón */
+    .navbar-toggler:hover {
+      background-color: #e5c850;
+    }
+
+    .navbar-collapse {
+      margin-top: 20px;
+      transition: margin-top 0.3s;
+    }
+
+    .navbar.menu-hidden .navbar-collapse {
+      margin-top: 0;
+    }
+  }

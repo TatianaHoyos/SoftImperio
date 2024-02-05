@@ -1,47 +1,82 @@
 /* Estilo para el wrapper de DataTables */
 .dataTables_wrapper  {
-    background-color: #343a40da;
-    color: white;
-    padding-top: 10px;
-    padding-left: 10px;
-    padding-right: 10px;
-    box-shadow: 0 0 10px rgba(174, 146, 67, 0.973); /* Borde con sombra en todos los lados */
+    background-color: #0a0a0bda;
+    color: #959292;
+    border-radius: 15px; /* Ajusta el valor según tus preferencias */
+    overflow: hidden; /* Asegura que las esquinas redondeadas se muestren correctamente */
+    padding: 10px; /* Ajusta el espacio interior según tus preferencias */
+    box-shadow: 0 0 30px rgba(174, 146, 67, 0.973); /* Borde con sombra en todos los lados */
 }
 
 /* Estilo para el texto en DataTables */
 .table {
+    color: #959292;
+    border-radius: 10px; /* Ajusta el valor según tus preferencias */
+    overflow: hidden; /* Asegura que las esquinas redondeadas se muestren correctamente */
+}
+
+.table thead th {
+    border: 1px solid #1c1c1c;
+}
+
+/* Cambiar el color de fondo de las cabeceras al pasar el mouse */
+.table thead th:hover {
+    background-color: #333;
+}
+
+/* Estilo para el encabezado al hacer clic */
+.table thead th.sorting_asc,
+.table thead th.sorting_desc {
+    background-color: #555;
     color: #fff;
 }
+
 
 /* Estilo para las celdas de la tabla */
 .table tbody td {
     color: #fff;
+    text-align: left; /* Alineación del texto a la izquierda */
+    border: none;
+    border-bottom: 5px solid #090909; /* Color de las líneas entre las celdas */
+    font-size: 14px; /* Tamaño de letra en las celdas */
+    cursor: pointer;
+    vertical-align: middle; /* Centra verticalmente el contenido */
+    
 }
+
+.sorting, th {
+    color: #959292;
+}
+
 
 /* Estilo para las filas impares */
 .table tbody tr:nth-child(odd) {
-    background-color:#3e444a /* Color de fondo más claro */
+    background-color:#2d2d2d/* Color de fondo más claro */
 }
 
 /* Estilo para las filas pares */
 .table tbody tr:nth-child(even) {
-    background-color:#343a40; /* Color de fondo más oscuro */
+    background-color:#1e1d1d; /* Color de fondo más oscuro */
+}
+
+/* Agregar un sombreado sutil a las filas al pasar el mouse */
+.table tbody tr:hover {
+    background-color: #3d3d3e ;
 }
 
 /* Estilo para el input de búsqueda de DataTables */
-.table_filter label {
-    position: relative;
+.dataTables_filter label {
     display: flex;
     align-items: center;
 }
 
-.table_filter input {
+.dataTables_filter input {
     width: 200px; /* Ancho personalizado */
-    padding: 5px 10px 5px 10px; /* Espaciado interno */
+    padding: 5px 10px; /* Espaciado interno */
     border-radius: 5px; /* Bordes redondeados */
-    border: 1px solid #ccc; /* Borde */
     background-color: #fff; /* Fondo blanco */
     margin-bottom: 10px; /* Espaciado inferior */
+    color: #000; /* Color del texto en el input */
 }
 
 /* Estilo para los botones de DataTables */
@@ -50,7 +85,11 @@
     background-color: #090909; /* Color de fondo para los botones Editar y Eliminar */
     color: #fff; /* Color del texto */
     border: none; /* Sin borde */
-    padding: 5px 10px; /* Espaciado interno */
     border-radius: 0.75rem; /* Bordes redondeados */
     cursor: pointer;
+}
+/* Cambiar el color de fondo de los botones al pasar el mouse*/
+.table tbody .btn-editar:hover,
+.table tbody .btn-eliminar:hover {
+    background-color: #ae9243;
 }

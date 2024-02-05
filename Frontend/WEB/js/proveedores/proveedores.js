@@ -215,9 +215,6 @@ function createTableRow(data) {
   return row;
 }
 
-
-console.log("Archivo consultas.js funcionando");
-
 $(document).ready(function() {
   $.ajax({
     url: 'http://localhost:8080/api/proveedorconsultar',
