@@ -52,6 +52,7 @@ function login(){
     });
 }
 
+
 function onExito(data){
     console.log(data)
     var objetoString = JSON.stringify(data);
@@ -70,11 +71,39 @@ function onExito(data){
 
 function onError(error){
 
-    console.log(error.responseJSON)   
+    console.log(error.responseJSON);  
     var mensaje =$("#resultadoLogin");
     mensaje.show();
     mensaje.text(error.responseJSON.message);
 }
+
+function logout(data){
+    $.ajax({
+        type: "POST",
+        url:"http://localhost:8080/api/logout",
+        "headers": {
+            "Content-Type": "application/json"
+          },
+          "data": JSON.stringify(data),
+          success: onExitoLogout,
+          error: onErrorlogout
+          
+    });
+}
+
+function onExitoLogout(data){
+    console.log(data);
+    
+}
+
+function onErrorlogout(error){
+
+    console.log("Error en el cierre de sesión:", error); 
+  
+}
+
+
+
 //logica para crear proveedor
 function onExitoCrearProveedor(data){
     Swal.fire({
