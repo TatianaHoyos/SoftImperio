@@ -29,23 +29,15 @@ body{
     }
 
     .active {
-      background-color: #e2c651 !important;
+      background-color: rgba(174, 146, 67, 0.5) !important;
       color: #090909 !important;
     }
 
-    .logo {
+    /* .logo {
       height: 50px;
       margin-bottom: 10px;
-    }
-    /* Estilos para el contenedor del logo */
-    .logo-container {
-      display: flex; /* Permite alinear los elementos horizontalmente y verticalmente */
-      justify-content: center; /* Alinea los elementos horizontalmente al centro */
-      align-items: center; /* Alinea los elementos verticalmente al centro */
-      margin-bottom: -30px; /*Margen inferior para crear espacio entre el logo y el menú */
-      background-color: #090909;
-      padding: 1px; /* Espacio interno para el logo */
-    }
+    } */
+  
 
     /* Estilos para el logo */
     .logo {

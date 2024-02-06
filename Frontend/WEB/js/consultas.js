@@ -313,7 +313,7 @@ $(document).ready(function() {
 
   // Inicializar DataTables directamente después de la carga de la página
   function iniciarDataTables(data) {
-    $('#miTabla').DataTable({
+    $('#miTablaCompras').DataTable({
       data: data,
       columns: [
         { data: 'idProveedores' },

@@ -205,7 +205,7 @@ display: none;
     }
 
     .menu-item.active {
-      background-color: #ae9243; /* Color de fondo cuando está activo */
+      background-color: #ae4343; /* Color de fondo cuando está activo */
     }
 
     .nav-link i {

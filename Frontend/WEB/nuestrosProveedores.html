@@ -6,26 +6,43 @@
   <meta charset="UTF-8">
   <title>Nuestros Proveedores</title>
   <!-- estilos propios de la pagina  -->
-  <script src="https://code.jquery.com/jquery-3.6.1.min.js"
-          integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+  <!-- estilos generales-->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style_menu.css">
+  <link rel="stylesheet" href="css/styles_Notificacion.css">
+  <!--estilos especificos-->
   <link rel="stylesheet" href="css/tablas.css">
 
+  <!--js comunes-->
+  <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+  integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
-  <script>
-    $(document).ready(function () {
-      $("#menu-container").load("menu.html");
-    });
-  </script>
-<script src="js/menuLateral.js"></script>
-
-  <!-- Incluye el menú -->
-  <div id="menu-container"></div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          fetch('menucontainer.html')
+            .then(response => response.text())
+            .then(html => {
+              document.getElementById('importedContent').innerHTML = html;
+              // Optionally, you can execute scripts from the imported content if needed
+              const scripts = document.getElementById('importedContent').getElementsByTagName('script');
+              for (let script of scripts) {
+                eval(script.innerText);
+              }
+            });
+        });
+      </script>
+    
+      <!-- Container for the imported content -->
+      <div id="importedContent"></div>
+      
   <!-- contenido propio de la pagina -->
 
   <h3 class="mt-3  text-white  text-center">Proveedores</h3>
@@ -269,9 +286,7 @@
 
   <!--scripts cargar menu y dependencias comunes-->
 
-<script src="./js/externo/popper.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script src="js/validaciones.js"></script>
 <script src="js/funciones.js"></script>
 <script src="js/proveedores/proveedores.js"></script>

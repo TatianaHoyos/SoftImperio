@@ -2,6 +2,7 @@ $(document).ready(function () {
   $("#resultadoCrear").hide();
   consultarcompra();
   consultarProductos();
+  console.log("consultando productos");
 });
 
 function consultarcompra() {

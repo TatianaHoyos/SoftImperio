@@ -11,6 +11,7 @@ $(document).ready(function() {
     const idCompra = urlParams.get('idCompra');
     const apiUrl = 'https://localhost:7084/Compras/listDetail';
     console.log("funciona esto "+idCompra);
+    consultarProductos();
     if (idCompra != null) {
         $.ajax({
         url: apiUrl,
@@ -191,4 +192,41 @@ function crearDetalleCliente(){
         const destinationURL = `http://127.0.0.1:5500/Frontend/WEB/compras.html`;
         window.location.href = destinationURL;
     }    
+}
+
+
+//consultar productos
+
+function consultarProductos() {
+  $.ajax({
+      type: "GET",
+      url: "https://localhost:7084/api/Productos",
+      "headers": {
+          "Content-Type": "application/json"
+        },
+      success: onExitoProductosList,
+      error: onErrorProductosList
+  });
+}
+
+function onExitoProductosList(data) {
+  console.log(data);
+  var $dropdown = $("#idProductos");
+
+  // Limpiar las opciones existentes
+  $dropdown.empty();
+
+  // Agregar las opciones de roles desde la respuesta del servidor
+  $.each(data, function () {
+      $dropdown.append($("<option />").val(this.idProductos).text(this.nombreProducto));
+  });
+
+  // Seleccionar automáticamente el primer rol si hay roles disponibles
+  if (data.length > 0) {
+      $("#idProductos").val(data[0].idProductos);
+  }
+}
+
+function onErrorProductosList(error) {
+  console.log(error)
 }

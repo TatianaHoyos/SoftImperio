@@ -93,3 +93,7 @@
 .table tbody .btn-eliminar:hover {
     background-color: #ae9243;
 }
+
+#miTabla_length, #miTabla_filter{
+    display: flex;
+}

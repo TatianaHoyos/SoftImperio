@@ -9,12 +9,7 @@
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/style_menu.css">
   <link rel="stylesheet" href="css/styles_Notificacion.css">
-  <script src="https://code.jquery.com/jquery-3.6.1.min.js"
-  integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script><script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <script src="js/menuLateral.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  
 </head>
 
 <body>
@@ -29,6 +24,9 @@
         <a class="nav-link mb-2" href="Existencias.html"><i class="fas fa-box-open"></i> Existencias</a>
       </li>
       <li class="nav-item menu-item">
+        <a class="nav-link mb-2" href="productos.html"><i class="fas fa-box-open"></i> Productos</a>
+      </li>
+      <li class="nav-item menu-item">
         <a class="nav-link mb-2" href="nuestrosUsuarios.html"><i class="fas fa-users"></i> Usuarios</a>
       </li>
       <li class="nav-item menu-item">
@@ -41,7 +39,7 @@
         <a class="nav-link mb-2" href="nuestrosProveedores.html"><i class="fas fa-truck"></i> Proveedores</a>
       </li>
       <li class="nav-item menu-item">
-        <a class="nav-link mb-2" href="puntomesa.html"><i class="fas fa-cash-register"></i> Punto de venta</a>
+        <a class="nav-link mb-2" href="PuntoVentaBarra.html"><i class="fas fa-cash-register"></i> Punto de venta</a>
       </li>
       <li class="nav-item menu-item">
         <a class="nav-link mb-2" href="creditos.html"><i class="fas fa-money-check-alt"></i> Créditos</a>
@@ -93,14 +91,16 @@
   </div>
         </li>
         <li id="containerProfile" class="pr-4">
-          <img id="imgUsuario" src="img/logo.png" class="profile" />
+          <img id="imgUsuario" referrerpolicy="noreferrer" src="img/logo.png" class="profile" />
           <ul id="containerProfileContent">
             <h3 id="nombreUsuario">¡Hola! <span id="rolUsuario"></span></h3>
            
-            <li class="sub-item">
+          
+            <li class="sub-item" onclick="logout()" style="cursor: pointer;">
               <i class="fas fa-bars"></i>
-              <p>cerrar sesion</p>
-            </li>
+              <p>Cerrar sesión</p>
+          </li>
+      
           </ul>
         </li>
       </ul>
@@ -109,27 +109,36 @@
     </div>
 
   </div>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="js/menuLateral.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-</body>
+<script src="js/funciones.js"></script>
+<script src="js/datosUsuario.js"></script>
+
+<script src="js/notificaciones_signalR.js"></script>
 <script>
 
-    console.log("aplicando cambios de test.. hp");
-    $(".sidebar").toggleClass("hidden");
-    $(".navbar").toggleClass("menu-hidden");
-    $("#logo-navbar").toggleClass("hidden");
-    $("#logo-navbar").toggleClass("hidden", !$(".sidebar").hasClass("hidden"));
-  
-      // Obtener el elemento con el ID 'logo-navbar'
-      var logoNavbar = $("#logo-navbar");
-      // Verificar si tiene la clase 'd-block'
-      if (logoNavbar.hasClass("d-block")) {
-        // Si la tiene, aplicar la clase 'd-none' y quitar 'd-block'
-        logoNavbar.removeClass("d-block").addClass("d-none");
-      } else {
-        // Si no la tiene, aplicar la clase 'd-block' y quitar 'd-none'
-        logoNavbar.removeClass("d-none").addClass("d-block");
-      }
+  $(".sidebar").toggleClass("hidden");
+  $(".navbar").toggleClass("menu-hidden");
+  $("#logo-navbar").toggleClass("hidden");
+  $("#logo-navbar").toggleClass("hidden", !$(".sidebar").hasClass("hidden"));
+
+    // Obtener el elemento con el ID 'logo-navbar'
+    var logoNavbar = $("#logo-navbar");
+    // Verificar si tiene la clase 'd-block'
+    if (logoNavbar.hasClass("d-block")) {
+      // Si la tiene, aplicar la clase 'd-none' y quitar 'd-block'
+      logoNavbar.removeClass("d-block").addClass("d-none");
+    } else {
+      // Si no la tiene, aplicar la clase 'd-block' y quitar 'd-none'
+      logoNavbar.removeClass("d-none").addClass("d-block");
+    }
 
 
 </script>
+
+</body>
+
 </html>

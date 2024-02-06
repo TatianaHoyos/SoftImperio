@@ -234,8 +234,10 @@ $(document).ready(function() {
 
         // Inicializar DataTables después de agregar los datos
         iniciarDataTables();
+
       } else {
         console.log('No hay datos en la respuesta.');
+        iniciarDataTables();
       }
     },
     error: function(xhr, error, thrown) {
@@ -295,13 +297,18 @@ $(document).ready(function() {
       }
     });
 
-    var inputSearch = $('#miTabla_filter ');
-    inputSearch.addClass('form-control'); // Asegurarse de que el input tenga la clase form-control
-    inputSearch.attr('placeholder', 'Buscar'); // Cambiar el placeholder si es necesario
+// Seleccionar el elemento de búsqueda
+var inputSearch = $('#miTabla_filter input');
 
-    // Crear el span con el ícono y agregarlo al input de búsqueda
-    var iconSpan = $('<span class="input-group-text" style="background-color: #e5c850;"><i class="fas fa-search"></i></span>');
-    inputSearch.parent().prepend(iconSpan);
+// Asegurarse de que el input tenga la clase form-control
+inputSearch.addClass('form-control');
+
+// Quitar el atributo placeholder si existe
+inputSearch.removeAttr('placeholder');
+
+// Crear el span con el ícono y agregarlo al input de búsqueda
+var iconSpan = $('<span class="input-group-text" style="background-color: #e5c850;"><i class="fas fa-search"></i></span>');
+inputSearch.parent().prepend(iconSpan);
   }
 });
 
