@@ -23,6 +23,9 @@ public class OAuthEntity {
     @Column(nullable = false, unique = true,name = "token")
     private String token ;
 
+    @Column(nullable = false, unique = true,name = "tokenRefresh")
+    private String tokenRefresh ;
+
     @Column(nullable = false, name = "expiryDate")
     private Instant expiryDate ;
 

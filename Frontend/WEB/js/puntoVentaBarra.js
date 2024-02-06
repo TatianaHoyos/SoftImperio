@@ -4,12 +4,13 @@ var productos;
 
 $(document).ready(function () {
     $("#cargando").modal("show");
+
     consultarCategorias();
     selectCategoria();
     contadorCantidad();
+
     // preventCloseLoading();
 });
-
 
 
 function consultarCategorias() {

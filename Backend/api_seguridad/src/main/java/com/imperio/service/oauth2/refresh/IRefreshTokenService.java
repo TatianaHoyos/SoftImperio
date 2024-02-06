@@ -6,11 +6,11 @@ import com.imperio.service.model.entity.UsuariosEntity;
 import java.util.Optional;
 
 public interface IRefreshTokenService {
-    OAuthEntity crearRefreshToken(int idUser );
+    OAuthEntity crearRefreshToken(int idUser, String token );
 
-    OAuthEntity crearRefreshToken(UsuariosEntity usuarios);
+    OAuthEntity crearRefreshToken(UsuariosEntity usuarios, String token);
 
-    Optional<OAuthEntity> encontrarToken(String token);
+    Optional<OAuthEntity> encontrarTokenRefresh(String token);
 
     OAuthEntity verificarVigenciaToken(OAuthEntity oAuth);
     int eliminarToken(int idUser);

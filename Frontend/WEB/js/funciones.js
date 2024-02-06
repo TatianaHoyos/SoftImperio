@@ -52,42 +52,76 @@ function login(){
     });
 }
 
+
 function onExito(data){
     console.log(data)
+    var objetoString = JSON.stringify(data);
+    localStorage.setItem('miObjeto', objetoString);
+   
     //validar si es admin o colaborador para redireccionarlo a cierta interfaz
     if(data.rol==1){
-        window.location="./registrocolaborador.html"
-    }else if(data.rol==2){
-        window.location="./puntomesa.html"
+       
+        window.location="./PuntoVentaBarra.html"
+    }else if(data.rol==8){
+     
+        window.location="./puntoVentaMesa.html"
     }
+   
 }
 
 function onError(error){
 
-    console.log(error.responseJSON)   
+    console.log(error.responseJSON);  
     var mensaje =$("#resultadoLogin");
     mensaje.show();
     mensaje.text(error.responseJSON.message);
 }
+
+function logout(data){
+    $.ajax({
+        type: "POST",
+        url:"http://localhost:8080/api/logout",
+        "headers": {
+            "Content-Type": "application/json"
+          },
+          "data": JSON.stringify(data),
+          success: onExitoLogout,
+          error: onErrorlogout
+          
+    });
+}
+
+function onExitoLogout(data){
+    console.log(data);
+    
+}
+
+function onErrorlogout(error){
+
+    console.log("Error en el cierre de sesión:", error); 
+  
+}
+
+
+
 //logica para crear proveedor
 function onExitoCrearProveedor(data){
+    Swal.fire({
+        type: 'success',
+        text: 'Registro guardado',
+        icon:"success",
+        showConfirmButton: false,
+        timer: 1500
+    });
 
-   
-        Swal.fire({
-          type: 'success',
-          text: 'Registro guardado',
-          icon:"success",
-          showConfirmButton: false,
-          timer: 2000
-        });
-
-        window.location="./nuestrosProveedores.html"
-
-}
+    setTimeout(() => {
+        window.location.reload();
+       }, 1500);
+    }
 
 function onErrorProv(error){
 
-    console.log(error)   
+    console.log(error)
     var mensaje =error;
     mensaje.show();
     mensaje.text(error.message);

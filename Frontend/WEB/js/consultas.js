@@ -108,7 +108,7 @@ function eliminarProveedor(idProveedor) {
               }
             };
             
-            xhr.send();                   
+            xhr.send();
         }
     });
 
@@ -161,7 +161,7 @@ function editarProveedor() {
 }
 
 // Function to create a table row with the given data
-function createTableRow(data) {
+function createTableRow_(data) {
     const row = document.createElement("tr");
   
     // Iterate over each property in the data object
@@ -222,81 +222,152 @@ function createTableRow(data) {
   
 
   // AJAX request para consultar proveedores
-  console.log("archivo consultas.js working");
-  const xhr = new XMLHttpRequest();
-  xhr.open("GET", "http://localhost:8080/api/proveedorconsultar", true);
-  
-  xhr.onload = function () {
-    if (xhr.status === 200) {
-
-      const responseData = JSON.parse(xhr.responseText);
-      const tableBody = document.getElementById("tbodyProveedores");
-  
-      // Iterate over each object in the response data array
-      responseData.forEach(function (item) {
-        const row = createTableRow(item);
-        tableBody.appendChild(row);
-
-
-      });
-    } else {
-      console.error("Error: " + xhr.status);
-    }
-  };
-  
-  xhr.send();
 
 
 
-// Consultar y mostrar Ventas
-const apiUrl = "https://localhost:7084/api/Ventas/ByFecha";
 
-function formatearFechaParaAPI(fecha) {
-  const partes = fecha.split('-');
-    if (partes.length === 3) {
-  const [dia, mes, anio] = partes;
-    return `${anio}-${mes}-${dia}`;
-}
-return fecha; 
-}
+// // Consultar y mostrar Ventas
+// const apiUrl = "https://localhost:7084/api/Ventas/ByFecha";
 
-// Función para mostrar ventas dentro del rango de fechas
-function mostrarVentas() {
- const fechaInicial = document.querySelector('#fecha-inicial').value;
- const fechaFinal = document.querySelector('#fecha-final').value;
+// function formatearFechaParaAPI(fecha) {
+//   const partes = fecha.split('-');
+//     if (partes.length === 3) {
+//   const [dia, mes, anio] = partes;
+//     return `${anio}-${mes}-${dia}`;
+// }
+// return fecha; 
+// }
 
- // Validar pa q no estes vacias
- if (!fechaInicial || !fechaFinal) {
-     alert("Debes seleccionar ambas fechas antes de mostrar las ventas.");
-     return;
- }
+// // Función para mostrar ventas dentro del rango de fechas
+// function mostrarVentas() {
+//  const fechaInicial = document.querySelector('#fecha-inicial').value;
+//  const fechaFinal = document.querySelector('#fecha-final').value;
 
- // Aqui es donde se realiza una solicitud a la API con las fechas seleccionadas
- fetch(`${apiUrl}?fechaInicio=${fechaInicial}&fechaFin=${fechaFinal}`)
-     .then((response) => response.json())
-     .then((data) => {
-         actualizarTablaVentas(data);
-     })
-     .catch((error) => {
-         console.error("Error al obtener datos de ventas:", error);
-     });
-}
-// Función para actualizar la tabla de ventas.
-function actualizarTablaVentas(venta) {
-    const tablaVentas = document.querySelector('#tabla-ventas tbody');
-    tablaVentas.innerHTML = ''; // Elimina las filas existentes
+//  // Validar pa q no estes vacias
+//  if (!fechaInicial || !fechaFinal) {
+//      alert("Debes seleccionar ambas fechas antes de mostrar las ventas.");
+//      return;
+//  }
 
-    // Itere uno a uno los datos de ventas y agrega filas a la tabla
-    venta.forEach((ventas) => {
-        const fila = `
-            <tr>
-                <td>${ventas.IdVenta}</td>
-                <td>${ventas.FechaVenta}</td>
-                <td>${ventas.TotalVenta}</td>
+//  // Aqui es donde se realiza una solicitud a la API con las fechas seleccionadas
+//  fetch(`${apiUrl}?fechaInicio=${fechaInicial}&fechaFin=${fechaFinal}`)
+//      .then((response) => response.json())
+//      .then((data) => {
+//          actualizarTablaVentas(data);
+//      })
+//      .catch((error) => {
+//          console.error("Error al obtener datos de ventas:", error);
+//      });
+// }
+// // Función para actualizar la tabla de ventas.
+// function actualizarTablaVentas(venta) {
+//     const tablaVentas = document.querySelector('#tabla-ventas tbody');
+//     tablaVentas.innerHTML = ''; // Elimina las filas existentes
+
+//     // Itere uno a uno los datos de ventas y agrega filas a la tabla
+//     venta.forEach((ventas) => {
+//         const fila = `
+//             <tr>
+//                 <td>${ventas.IdVenta}</td>
+//                 <td>${ventas.FechaVenta}</td>
+//                 <td>${ventas.TotalVenta}</td>
                 
-            </tr>
-        `;
-        tablaVentas.innerHTML += fila;
-    });
-}
+//             </tr>
+//         `;
+//         tablaVentas.innerHTML += fila;
+//     });
+// }
 
+/* datatable proveedores*/
+
+console.log("Archivo consultas.js funcionando");
+
+$(document).ready(function() {
+  $.ajax({
+    url: 'http://localhost:8080/api/proveedorconsultar',
+    success: function(data) {
+      console.log('Datos consultados:', data);
+
+      // Verificar si hay datos en la respuesta
+      if (data && data.length > 0) {
+        console.log('Primer dato:', data[0]);
+
+        // Agregar los datos directamente al tbody
+        const tableBody = $('#tbodyProveedores');
+        data.forEach(function(item) {
+          const row = createTableRow(item);
+          tableBody.append(row);
+        });
+
+        // Inicializar DataTables después de agregar los datos
+        iniciarDataTables();
+      } else {
+        console.log('No hay datos en la respuesta.');
+      }
+    },
+    error: function(xhr, error, thrown) {
+      console.log('Error al obtener datos:', error);
+      console.log('Respuesta de la API:', xhr.responseText);
+    }
+  });
+
+  // Inicializar DataTables directamente después de la carga de la página
+  function iniciarDataTables(data) {
+    $('#miTabla').DataTable({
+      data: data,
+      columns: [
+        { data: 'idProveedores' },
+        { data: 'documento' },
+        { data: 'nombre' },
+        { data: 'email' },
+        { data: 'telefono' },
+        { data: 'direccion' },
+        {
+          data: null,
+          render: function(data, type, row) {
+            return '<button class="btn btn-editar" data-toggle="modal" data-target="#miModal" onclick="alertaEliminarEditar(\'editar\', ' + row.idProveedores + ')"><i class="fa fa-edit"></i></button>';
+          }
+        },
+        {
+          data: null,
+          render: function(data, type, row) {
+            return '<button onclick="alertaEliminarEditar(\'eliminar\', ' + row.idProveedores + ')" class="btn btn-eliminar" > <i class="fa fa-trash"></i></button>';
+          }
+        }
+      ],
+      rowId: 'idProveedores',
+      language: { /*language, parametro adicional para cambiar los texto del datatable */
+        "sProcessing": "Procesando...",
+        "sLengthMenu": "Mostrar _MENU_ registros",
+        "sZeroRecords": "No se encontraron resultados",
+        "sEmptyTable": "Ningún dato disponible en esta tabla",
+        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+        "sInfoPostFix": "",
+        "sSearch": "Buscar:",
+        "sUrl": "",
+        "sInfoThousands": ",",
+        "sLoadingRecords": "Cargando...",
+        "oPaginate": {
+          "sFirst": "Primero",
+          "sLast": "Último",
+          "sNext": "Siguiente",
+          "sPrevious": "Anterior"
+        },
+        "oAria": {
+          "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+          "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+        }
+      }
+    });
+
+    var inputSearch = $('#miTabla_filter ');
+    inputSearch.addClass('form-control'); // Asegurarse de que el input tenga la clase form-control
+    inputSearch.attr('placeholder', 'Buscar'); // Cambiar el placeholder si es necesario
+
+    // Crear el span con el ícono y agregarlo al input de búsqueda
+    var iconSpan = $('<span class="input-group-text" style="background-color: #e5c850;"><i class="fas fa-search"></i></span>');
+    inputSearch.parent().prepend(iconSpan);
+  }
+});

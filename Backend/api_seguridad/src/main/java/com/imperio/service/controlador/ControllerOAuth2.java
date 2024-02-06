@@ -4,6 +4,7 @@ import com.imperio.service.model.dto.oauth2.Authoritation;
 import com.imperio.service.model.dto.login.LoginRequest;
 import com.imperio.service.model.dto.comun.Response;
 import com.imperio.service.model.dto.login.LoginResponse;
+import com.imperio.service.model.dto.oauth2.TokenRequest;
 import com.imperio.service.model.dto.oauth2.TokenRefreshRequest;
 import com.imperio.service.model.dto.oauth2.TokenRefreshResponse;
 import com.imperio.service.model.entity.OAuthEntity;
@@ -67,11 +68,11 @@ public class ControllerOAuth2 {
                     response.setRol(usuariodb.getIdRol());
 
                     String jwt = jwtService.generarToken(usuariodb);
-                    OAuthEntity refreshJwt = refreshTokenService.crearRefreshToken(usuariodb);
+                    OAuthEntity refreshJwt = refreshTokenService.crearRefreshToken(usuariodb,jwt);
 
                     response.setAuthoritation(Authoritation.builder()
                                     .accessToken(jwt)
-                                    .refreshToken(refreshJwt.getToken())
+                                    .refreshToken(refreshJwt.getTokenRefresh())
                             .build());
 
                     return ResponseEntity.ok(response);
@@ -106,18 +107,24 @@ public class ControllerOAuth2 {
     public ResponseEntity<?> refreshToken(@Valid @RequestBody TokenRefreshRequest refresh) {
         String refreshToken = refresh.getRefreshToken();
         try {
-            var token = refreshTokenService.encontrarToken(refreshToken)
+            var tokenRefreshResponseJwt = refreshTokenService.encontrarTokenRefresh(refreshToken)
                     .map(refreshTokenService::verificarVigenciaToken)
                     .map(OAuthEntity::getUsuariosEntity)
-                    .map(usuarios -> jwtService.generarToken(usuarios));
+                    .map(usuarios -> {
+                        String tokenJwt = jwtService.generarToken(usuarios);
+                        OAuthEntity refreshJwt = refreshTokenService.crearRefreshToken(usuarios,tokenJwt);
 
-            //TODO: crear nuevo refreshToken en cada petición
+                        var tokenRefreshResponse = new TokenRefreshResponse();
+                        tokenRefreshResponse.setAccessToken(tokenJwt);
+                        tokenRefreshResponse.setRefreshToken(refreshJwt.getTokenRefresh());
+                        return tokenRefreshResponse;
+            });
 
-            if (token.isPresent()) {
-                var tokenRefreshResponse = new TokenRefreshResponse();
-                tokenRefreshResponse.setAccessToken(token.get());
-                tokenRefreshResponse.setRefreshToken(refreshToken);
-                return ResponseEntity.ok(tokenRefreshResponse);
+
+            if (tokenRefreshResponseJwt.isPresent() &&
+                    tokenRefreshResponseJwt.get().getAccessToken()!= null &&
+                    tokenRefreshResponseJwt.get().getRefreshToken() != null ) {
+                return ResponseEntity.ok(tokenRefreshResponseJwt.get());
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                         .body(new Response("error", "no fue posible refrescar el token"));
@@ -126,6 +133,66 @@ public class ControllerOAuth2 {
             log.error("Refresh Token", ex);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(new Response("error", "no fue posible refrescar el token"));
+        }
+
+    }
+
+    @Operation(summary = "Introspect del token jwt", responses = {
+            @ApiResponse(description = "introspect del token exitosa", responseCode = "200",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = TokenRefreshResponse.class))),
+            @ApiResponse(responseCode = "401", description = "Authentication Failure",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Response.class))) })
+
+    @PostMapping(value = "api/introspectToken", produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> introspectToken(@Valid @RequestBody TokenRequest accessToken) {
+        String token = accessToken.getAccessToken();
+        try {
+            var tokenDb = jwtService.encontrarToken(token);
+           if (tokenDb.isPresent() && jwtService.isTokenValido(token)){
+
+               return ResponseEntity.ok(new Response("exito", "Autorizado"));
+           }else {
+               return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                       .body(new Response("error", "no Autorizado"));
+           }
+
+        } catch (Exception ex) {
+            log.error("introspect Token", ex);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new Response("error", "no fue posible validar el token"));
+        }
+
+    }
+
+    @Operation(summary = "logout del token jwt", responses = {
+            @ApiResponse(description = "logout exitosa", responseCode = "200",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = TokenRefreshResponse.class))),
+            @ApiResponse(responseCode = "401", description = "Authentication Failure",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Response.class))) })
+
+    @PostMapping(value = "api/logout", produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> logout(@Valid @RequestBody TokenRequest  logout) {
+        String token = logout.getAccessToken();
+        try {
+            var tokenDb = jwtService.encontrarToken(token);
+            if (tokenDb.isPresent() && jwtService.isTokenValido(token)){
+                jwtService.eliminarToken(tokenDb.get());
+                return ResponseEntity.ok(new Response("exito", "Sesion cerrada"));
+            }else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(new Response("error", "no Autorizado"));
+            }
+
+        } catch (Exception ex) {
+            log.error("introspect Token", ex);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new Response("error", "no fue posible validar el token"));
         }
 
     }
