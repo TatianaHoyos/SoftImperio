@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 
 <head>
   <meta charset="UTF-8">
@@ -7,58 +7,138 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <link rel="stylesheet" href="css/style.css">
-
-  </style>
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-  <script>
-    $(document).ready(function () {
-      $(".nav-link").click(function () {
-        $(".nav-link").removeClass("active");
-        $(this).addClass("active");
-      });
-    });
-  </script>
+  <link rel="stylesheet" href="css/style_menu.css">
+  <link rel="stylesheet" href="css/styles_Notificacion.css">
+  
 </head>
 
 <body>
-  <div class="logo-container">
-    <img src="img/logo.png" alt="Logo" class="Logo" height="170">
+
+  <div class="sidebar pl-3" >
+    <img src="img/logo.png" alt="Logo" class="Logo" height="170" id="logo"> <!-- organizar tamaño y margin del logo-->
+    <ul class="navbar-nav">
+      <li class="nav-item menu-item">
+        <a class="nav-link mb-2" href="Inicio.html"><i class="fas fa-home"></i> Inicio</a>
+      </li>
+      <li class="nav-item menu-item">
+        <a class="nav-link mb-2" href="Existencias.html"><i class="fas fa-box-open"></i> Existencias</a>
+      </li>
+      <li class="nav-item menu-item">
+        <a class="nav-link mb-2" href="productos.html"><i class="fas fa-box-open"></i> Productos</a>
+      </li>
+      <li class="nav-item menu-item">
+        <a class="nav-link mb-2" href="nuestrosUsuarios.html"><i class="fas fa-users"></i> Usuarios</a>
+      </li>
+      <li class="nav-item menu-item">
+        <a class="nav-link mb-2" href="ventas.html"><i class="fas fa-chart-bar"></i> Ventas</a>
+      </li>
+      <li class="nav-item menu-item">
+        <a class="nav-link mb-2" href="compras.html"><i class="fas fa-shopping-cart"></i> Compras</a>
+      </li>
+      <li class="nav-item menu-item">
+        <a class="nav-link mb-2" href="nuestrosProveedores.html"><i class="fas fa-truck"></i> Proveedores</a>
+      </li>
+      <li class="nav-item menu-item">
+        <a class="nav-link mb-2" href="PuntoVentaBarra.html"><i class="fas fa-cash-register"></i> Punto de venta</a>
+      </li>
+      <li class="nav-item menu-item">
+        <a class="nav-link mb-2" href="creditos.html"><i class="fas fa-money-check-alt"></i> Créditos</a>
+      </li>
+      <li class="nav-item menu-item">
+        <a class="nav-link mb-2" href="Permisos.html"><i class="fas fa-user-lock"></i> Permisos</a>
+      </li>
+    </ul>
   </div>
-  <nav class="navbar navbar-expand-lg navbar-light colornavbar">
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item menu-item">
-          <a class="nav-link active" href="#"><i class="fas fa-home"></i> Inicio</a>
+
+  <div class="navbar navbar-expand-lg navbar-light colornavbar">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse ml-3 ">
+      <img src="img/menub.png" alt="Logo" class="Logo " height="50" id="logo-navbar">
+    </div>
+
+
+    <div class="ml-auto" tabindex="0">
+      <ul id="contenidoIconosEsquinaDerecha">
+        <li id="contenedorPrincipalNotificacion">
+          <!--Notificación-->
+          <li id="containerNotification" class="pr-4">
+            <a href="#" onclick="return false;" role="button" data-toggle="dropdown" id="dropdownMenu1" data-target="#" aria-expanded="true">
+              <i class="fas fa-bell mr" style="font-size: 20px; color: #ae9243;">
+              </i>
+            </a>
+            <span id="contadorNotificaciones" class="badge badge-danger">100</span>
+            <ul id="containerNotificationContent">
+            
+              <!--header-->
+              <li class="principal-element">
+                <p class="dropdown-menu-header">Notificaciones</p>
+              </li>
+              <!--scrollable-->
+              <div class="btn-group pull-right top-head-dropdown">
+                <div id="contenedorNotificaciones" class="scrollable-content dropdown-menu-right">
+                </div>
+              </div>
+              <!--Footer-->
+              <div  class="notification-footer principal-element">
+                <a class="menu-title" href="#">Ver Todo<i class="fas fa-chevron-right"></i> </a>
+              </div>
+            </ul>
+          </li>
+
+  </div>
         </li>
-        <li class="nav-item menu-item">
-          <a class="nav-link" href="#"><i class="fas fa-box-open"></i> Existencias</a>
-        </li>
-        <li class="nav-item menu-item">
-          <a class="nav-link" href="#"><i class="fas fa-users"></i> Usuarios</a>
-        </li>
-        <li class="nav-item menu-item">
-          <a class="nav-link" href="#"><i class="fas fa-chart-bar"></i> Ventas</a>
-        </li>
-        <li class="nav-item menu-item">
-          <a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i> Compras</a>
-        </li>
-        <li class="nav-item menu-item">
-          <a class="nav-link" href="#"><i class="fas fa-truck"></i> Proveedores</a>
-        </li>
-        <li class="nav-item menu-item">
-          <a class="nav-link" href="#"><i class="fas fa-cash-register"></i> Punto de venta</a>
-        </li>
-        <li class="nav-item menu-item">
-          <a class="nav-link" href="#"><i class="fas fa-money-check-alt"></i> Créditos</a>
-        </li>
-        <li class="nav-item menu-item">
-          <a class="nav-link" href="#"><i class="fas fa-user-lock"></i> Permisos</a>
+        <li id="containerProfile" class="pr-4">
+          <img id="imgUsuario" referrerpolicy="noreferrer" src="img/logo.png" class="profile" />
+          <ul id="containerProfileContent">
+            <h3 id="nombreUsuario">¡Hola! <span id="rolUsuario"></span></h3>
+           
+          
+            <li class="sub-item" onclick="logout()" style="cursor: pointer;">
+              <i class="fas fa-bars"></i>
+              <p>Cerrar sesión</p>
+          </li>
+      
+          </ul>
         </li>
       </ul>
-      <a class="nav-link logout-link text-dark" href="#"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
+      
+
     </div>
-  </nav>
+
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="js/menuLateral.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script src="js/funciones.js"></script>
+<script src="js/datosUsuario.js"></script>
+
+<script src="js/notificaciones_signalR.js"></script>
+<script>
+
+  $(".sidebar").toggleClass("hidden");
+  $(".navbar").toggleClass("menu-hidden");
+  $("#logo-navbar").toggleClass("hidden");
+  $("#logo-navbar").toggleClass("hidden", !$(".sidebar").hasClass("hidden"));
+
+    // Obtener el elemento con el ID 'logo-navbar'
+    var logoNavbar = $("#logo-navbar");
+    // Verificar si tiene la clase 'd-block'
+    if (logoNavbar.hasClass("d-block")) {
+      // Si la tiene, aplicar la clase 'd-none' y quitar 'd-block'
+      logoNavbar.removeClass("d-block").addClass("d-none");
+    } else {
+      // Si no la tiene, aplicar la clase 'd-block' y quitar 'd-none'
+      logoNavbar.removeClass("d-none").addClass("d-block");
+    }
+
+
+</script>
+
 </body>
 
 </html>

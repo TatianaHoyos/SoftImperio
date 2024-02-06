@@ -114,12 +114,6 @@ function onErrorRoles(error) {
     console.log(error)
 }
 
-
-
-
-
-
-
 function EditarUsuario(usuarios){
     mostrarFormularioActualizar();
     $("#roles option[value="+ usuarios.idRol +"]").attr("selected", true);

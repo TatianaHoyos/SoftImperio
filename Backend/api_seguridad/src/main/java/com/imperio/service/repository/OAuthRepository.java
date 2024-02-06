@@ -11,6 +11,7 @@ import java.util.Optional;
 @Repository
 public interface OAuthRepository extends JpaRepository<OAuthEntity,Integer> {
     Optional<OAuthEntity> findByToken(String token);
+    Optional<OAuthEntity> findByTokenRefresh(String token);
 
     @Modifying
     int deleteByUsuariosEntity(UsuariosEntity usuario);

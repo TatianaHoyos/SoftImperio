@@ -1,48 +1,49 @@
 $(document).ready(function () {
-  $("#resultadoCrear").hide();
+    $("#resultadoCrear").hide();
     consultarProductos();
     buscarProductosTabla();
-
+   
 });
 
-function mostrarFormularioCrear(){
+
+function mostrarFormularioCrear() {
     var titulo = $("#tituloFomularioProducto");
     titulo.text("Crear un nuevo productos");
     var btnform = $("#btn-form");
     btnform.text("Guardar");
     btnform.click(crearProducto);
 }
-function mostrarFormularioActualizar(){
+function mostrarFormularioActualizar() {
     var titulo = $("#tituloFomularioProducto");
     titulo.text("Actualizar un producto");
     var btnform = $("#btn-form");
     btnform.text("Actualizar");
-   
+
 }
 
 
-function crearProducto(){
+function crearProducto() {
     var form = $('#formCrearProducto')[0];
 
-	// Create an FormData object 
+    // Create an FormData object 
     var formData = new FormData(form);
 
-   console.log(formData);
+    console.log(formData);
 
-   $.ajax({
-    type: "POST",
-    enctype: 'multipart/form-data',
-    url:"http://localhost:8080/api/producto/crear",
-    data: formData,
-    processData: false,
-    contentType: false,
-    success: onExitoCrearProducto,
-    error: onErrorCrearProducto
-});
+    $.ajax({
+        type: "POST",
+        enctype: 'multipart/form-data',
+        url: "http://localhost:8080/api/producto/crear",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: onExitoCrearProducto,
+        error: onErrorCrearProducto
+    });
 
 }
 
-function onExitoCrearProducto(data){
+function onExitoCrearProducto(data) {
     console.log(data);
     var mensaje = $("#resultadoCrear");
     mensaje.addClass("alert-success");
@@ -53,7 +54,7 @@ function onExitoCrearProducto(data){
     $("#foto-preview").attr('src', '');
     consultarProductos();
 }
-function onErrorCrearProducto(error){
+function onErrorCrearProducto(error) {
     console.log(error);
     var mensaje = $("#resultadoCrear");
     mensaje.addClass("alert-danger");
@@ -69,7 +70,7 @@ function consultarProductos() {
         url: "http://localhost:8080/api/producto/consultar",
         "headers": {
             "Content-Type": "application/json"
-          },
+        },
         success: onExitoProductos,
         error: onErrorProductos
     });
@@ -77,39 +78,73 @@ function consultarProductos() {
 
 function onExitoProductos(data) {
     console.log(data);
-   
-$('#tablaProductos > tbody').empty();
-$.each(data, function(id, productos) {
-    //alert('Estoy recorriendo el registro numero: ' + idx);
-    var nombreCategoria="";
-    if(productos.idCategoria==1){
-        nombreCategoria="cervezas";
-    } else if(productos.idCategoria==2){
-        nombreCategoria="aguardientes";
-    }else if(productos.idCategoria==3){
-        nombreCategoria="wiskey";
-    }
 
-    var boton1 = "<button onclick='EliminarProducto("+ JSON.stringify(productos) +")' class='btn btn-delete' data-id='1'><i class='fas fa-trash'></i></button>";
-    var boton2 = "<button onclick='EditarProducto("+ JSON.stringify(productos) +")' class='btn btn-edit' data-toggle='modal' data-target='#formCrearProductos'><i class='fas fa-edit'></i></button>";
-
-    $('#tablaProductos').append('<tr><td>' + nombreCategoria + '</td><td>' + productos.nombreProducto + '</td><td>'+ productos.referenciaProducto + '</td><td>' + productos.cantidad + '</td><td>' + productos.precioProducto + 
-    '</td><td>' + boton1 + '</td><td>' + boton2 + '</td></tr>');
-    console.log(productos.id + ' ' + productos.nombreProducto + ' ' + productos.idCategoria + ' ' +
-     productos.referenciaProducto + ' ' + productos.precioProducto);
-     
-});
+    // Obtén una referencia a la DataTable
+    var dataTable = $('#tablaProductos').DataTable({
+        language: {
+            "sProcessing": "Procesando...",
+            "sLengthMenu": "Mostrar _MENU_ registros",
+            "sZeroRecords": "No se encontraron resultados",
+            "sEmptyTable": "Ningún dato disponible en esta tabla",
+            "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+            "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+            "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+            "sInfoPostFix": "",
+            "sSearch": "Buscar:",
+            "sUrl": "",
+            "sInfoThousands": ",",
+            "sLoadingRecords": "Cargando...",
+            "oPaginate": {
+                "sFirst": "Primero",
+                "sLast": "Último",
+                "sNext": "Siguiente",
+                "sPrevious": "Anterior"
+            }
+        }
+    });
     
+    // Limpia la tabla
+    dataTable.clear();
 
+    // Recorre los datos y agrega las filas
+    $.each(data, function (id, productos) {
+        var nombreCategoria = "";
+        if (productos.idCategoria == 1) {
+            nombreCategoria = "cervezas";
+        } else if (productos.idCategoria == 2) {
+            nombreCategoria = "aguardientes";
+        } else if (productos.idCategoria == 3) {
+            nombreCategoria = "wiskey";
+        }
+
+        var boton1 = "<button onclick='EliminarProducto(" + JSON.stringify(productos) + ")' class='btn btn-delete' data-id='1'><i class='fas fa-trash'></i></button>";
+        var boton2 = "<button onclick='EditarProducto(" + JSON.stringify(productos) + ")' class='btn btn-edit' data-toggle='modal' data-target='#formCrearProductos'><i class='fas fa-edit'></i></button>";
+
+        // Agrega la fila a la DataTable
+        dataTable.row.add([
+            nombreCategoria,
+            productos.nombreProducto,
+            productos.referenciaProducto,
+            productos.cantidad,
+            productos.precioProducto,
+            boton1 +
+            boton2
+        ]).draw();
+
+        console.log(productos.id + ' ' + productos.nombreProducto + ' ' + productos.idCategoria + ' ' +
+            productos.referenciaProducto + ' ' + productos.precioProducto);
+    });
 }
+
+
 function onErrorProductos(error) {
     console.log(error)
 }
 
-function EliminarProducto(Producto){
+function EliminarProducto(Producto) {
     Swal.fire({
         title: '¿Estás seguro?',
-        text: 'Esta seguro de eliminar el producto '+ Producto.nombreProducto,
+        text: 'Esta seguro de eliminar el producto ' + Producto.nombreProducto,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#d33',
@@ -120,15 +155,15 @@ function EliminarProducto(Producto){
         if (result.isConfirmed) {
             // Realizar la solicitud de eliminación AJAX
             $.ajax({
-                url: 'http://localhost:8080/api/producto/eliminar/'+Producto.idProductos,
+                url: 'http://localhost:8080/api/producto/eliminar/' + Producto.idProductos,
                 type: 'Delete',
-                success: function(response) {
+                success: function (response) {
                     // Manejar la respuesta de eliminación exitosa
-                    Swal.fire('Eliminado',response.message, 'success');
+                    Swal.fire('Eliminado', response.message, 'success');
                     // Actualizar la tabla o realizar cualquier otra acción necesaria
                     consultarProductos();
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     // Manejar los errores de la solicitud AJAX
                     Swal.fire('Error', error.message, 'error');
                 }
@@ -137,49 +172,49 @@ function EliminarProducto(Producto){
     });
 }
 
-function EditarProducto(producto){
+function EditarProducto(producto) {
     mostrarFormularioActualizar();
-    $("#categoria option[value="+ producto.idProductos +"]").attr("selected", true);
-    $("#proveedor option[value="+ producto.idProveedores +"]").attr("selected", true);
+    $("#categoria option[value=" + producto.idProductos + "]").attr("selected", true);
+    $("#proveedor option[value=" + producto.idProveedores + "]").attr("selected", true);
     $("#nombre").val(producto.nombreProducto);
     $("#referencia").val(producto.referenciaProducto);
     $("#precio").val(producto.precioProducto);
     var preview = document.getElementById("foto-preview");
-    preview.src = "http://localhost:8080/"+producto.fotoProducto;
+    preview.src = "http://localhost:8080/" + producto.fotoProducto;
     preview.style.display = "block";
     var btnform = $("#btn-form");
-    btnform.click(function(){ actualizarProducto(producto.idProductos); });
-   
+    btnform.click(function () { actualizarProducto(producto.idProductos); });
+
 }
 
-function actualizarProducto(idProductos){
+function actualizarProducto(idProductos) {
     var form = $('#formCrearProducto')[0];
 
-	// Create an FormData object 
+    // Create an FormData object 
     var formData = new FormData(form);
 
-   console.log(formData);
+    console.log(formData);
 
-   $.ajax({
-    type: "Put",
-    enctype: 'multipart/form-data',
-    url:"http://localhost:8080/api/producto/actualizar/"+idProductos,
-    data: formData,
-    processData: false,
-    contentType: false,
-    success: onExitoCrearProducto,
-    error: onErrorCrearProducto
-});
+    $.ajax({
+        type: "Put",
+        enctype: 'multipart/form-data',
+        url: "http://localhost:8080/api/producto/actualizar/" + idProductos,
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: onExitoCrearProducto,
+        error: onErrorCrearProducto
+    });
 }
-function buscarProductosTabla(){
-    $("#consultarTabla").keyup(function(){
+function buscarProductosTabla() {
+    $("#consultarTabla").keyup(function () {
         _this = this;
         // Show only matching TR, hide rest of them
-        $.each($("#tablaProductos tbody tr"), function() {
-        if($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) === -1)
-        $(this).hide();
-        else
-        $(this).show();
+        $.each($("#tablaProductos tbody tr"), function () {
+            if ($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) === -1)
+                $(this).hide();
+            else
+                $(this).show();
         });
-        });
+    });
 }

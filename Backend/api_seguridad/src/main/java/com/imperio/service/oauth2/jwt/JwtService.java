@@ -1,22 +1,23 @@
 package com.imperio.service.oauth2.jwt;
 
+import com.imperio.service.model.entity.OAuthEntity;
 import com.imperio.service.model.entity.UsuariosEntity;
+import com.imperio.service.repository.OAuthService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 
 @Slf4j
@@ -30,8 +31,12 @@ public class JwtService implements IJwtService{
     @Value("${jwt.expiration.ms}")
     private int jwtExpirationMs;
 
+    @Autowired
+    private OAuthService oAuthService;
+
     @Override
     public String extraerDatosUsuarios(String token) {
+        //todo:verificar porque el getsubject esta llegando null
         return extractClaim(token, Claims::getSubject);
     }
 
@@ -46,6 +51,22 @@ public class JwtService implements IJwtService{
         return (userName.equals(user.getNombre())) && !isTokenExpired(token);
     }
 
+    @Override
+    public boolean isTokenValido(String token) {
+        final String userName = extraerDatosUsuarios(token);
+        return (userName != null && !isTokenExpired(token));
+
+    }
+
+    @Override
+    public Optional<OAuthEntity> encontrarToken(String token) {
+        return oAuthService.encontrarToken(token);
+    }
+    @Transactional
+    @Override
+    public void eliminarToken(OAuthEntity oAuth) {
+        oAuthService.eliminarToken(oAuth);
+    }
 
     private String generateToken(UsuariosEntity user) {
         Map<String, Object> extraClaims = new HashMap<>();

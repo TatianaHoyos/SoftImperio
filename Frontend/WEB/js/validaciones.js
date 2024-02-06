@@ -134,7 +134,10 @@ function validarCampoVacio(longitudCampo,mensaje) {
     }
 }
 
+<<<<<<< HEAD
 
 
 
 
+=======
+>>>>>>> 8b28652855b026d0ebe132209d7f452fba6ee322
