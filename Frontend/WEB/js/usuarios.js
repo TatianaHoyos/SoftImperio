@@ -70,14 +70,6 @@ function mostrarTablaUsuarios(data) {
 }
 
 
-function mostrarFormularioActualizar(){
-    var titulo = $("#tituloFormularioUsuarios");
-    titulo.text("Actualizar un usuario");
-    var btnform = $("#btn-form");
-    btnform.text("Actualizar");
-   
-}
-
 
 
 function consultarRoles() {

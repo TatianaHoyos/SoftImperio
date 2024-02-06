@@ -1,10 +1,28 @@
-body{
+/* body{
     background-image: url("../img/fondo.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
     background-attachment: fixed;
-    } 
+    }  */
+  .tamanio-custom {
+    width: 380px;
+    height: 280px;
+  }
+    body {
+      background-image: url("../img/fondo.jpg");
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-attachment: fixed;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh; /* Utiliza 100vh en lugar de 100% para asegurar el 100% del viewport height */
+  }
+
+  main {
+      flex-grow: 1;
+  }
 #fondo{
     background-color: #201f1e;
 }

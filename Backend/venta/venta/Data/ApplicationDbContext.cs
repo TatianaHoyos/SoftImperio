@@ -33,5 +33,7 @@ namespace venta.Data
             base.OnModelCreating(modelBuilder);
         }
 
+        public DbSet<venta.Models.Usuarios>? Usuarios { get; set; }
+
     }
 }
