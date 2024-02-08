@@ -78,17 +78,20 @@ function onError(error){
 }
 
 function logout(data){
-    $.ajax({
-        type: "POST",
-        url:"http://localhost:8080/api/logout",
-        "headers": {
-            "Content-Type": "application/json"
-          },
-          "data": JSON.stringify(data),
-          success: onExitoLogout,
-          error: onErrorlogout
+    // Para borrar el objeto almacenado en localStorage
+localStorage.removeItem('miObjeto');
+window.location="./iniciosesion.html"
+    // $.ajax({
+    //     type: "POST",
+    //     url:"http://localhost:8080/api/logout",
+    //     "headers": {
+    //         "Content-Type": "application/json"
+    //       },
+    //       "data": JSON.stringify(data),
+    //       success: onExitoLogout,
+    //       error: onErrorlogout
           
-    });
+    // });
 }
 
 function onExitoLogout(data){

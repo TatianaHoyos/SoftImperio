@@ -19,4 +19,7 @@ public class IntrospectUserResponse implements Serializable {
     private String scope;
     private Boolean active;
     private String exp;
+    private String message;
+    private String status;
+
 }
