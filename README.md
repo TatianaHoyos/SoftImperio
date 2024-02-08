@@ -13,3 +13,7 @@
 ### Punto de venta en Barra
 
 ![p.v.Barra](./Documentation/Diagrama_de_secuencia_p.v.Barra.png "p.v.Barra")
+
+### Api GateWay
+
+![Flow](./Documentation/api-gateway.png "Flow")
