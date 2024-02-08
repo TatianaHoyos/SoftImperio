@@ -51,7 +51,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
 
             return authorizationByIntrospection.isValidTokenByIntrospection(exchange)
                     .flatMap(introspectUserResponse -> {
-                        if (!introspectUserResponse.getActive()) {
+                        if (!introspectUserResponse.getStatus().equals("exito")) {
                             return this.onError(exchange, Constants.MSG_ERROR_TOKEN_INVALID);
                         }
 
