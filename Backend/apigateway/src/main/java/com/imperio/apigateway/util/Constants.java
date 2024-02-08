@@ -4,6 +4,7 @@ public class Constants {
     public static final String HTTP_AUTHORIZATION = "authorization";
     public static final String BODY_TOKEN = "accessToken";
     public static final String ENCODE_BEARER = "Bearer";
+    public static final String ENCODE_BASIC = "Basic";
     public static final String MSG_ERROR_GENERIC =
             "Lo sentimos, tenemos inconvenientes con nuestros sistemas, " +
                     "nuestro equipo se encuentra trabajando para brindarte" +
