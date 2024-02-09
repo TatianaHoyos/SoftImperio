@@ -1,6 +1,6 @@
 $(document).ready(function () {
     $("#resultadoCrear").hide();
-    consultarProductos();
+    handleAjaxRequest(consultarProductos);
     buscarProductosTabla();
    
 });
@@ -52,7 +52,7 @@ function onExitoCrearProducto(data) {
     mensaje.text(data.message);
     $("#formCrearProducto").trigger("reset");
     $("#foto-preview").attr('src', '');
-    consultarProductos();
+    handleAjaxRequest(consultarProductos);
 }
 function onErrorCrearProducto(error) {
     console.log(error);
@@ -64,12 +64,13 @@ function onErrorCrearProducto(error) {
 }
 
 
-function consultarProductos() {
+function consultarProductos(token) {
     $.ajax({
         type: "GET",
-        url: "http://localhost:8080/api/producto/consultar",
+        url: "http://localhost:8081/edge-service/v1/service/productos/consultar",
         "headers": {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`
         },
         success: onExitoProductos,
         error: onErrorProductos
@@ -161,7 +162,7 @@ function EliminarProducto(Producto) {
                     // Manejar la respuesta de eliminación exitosa
                     Swal.fire('Eliminado', response.message, 'success');
                     // Actualizar la tabla o realizar cualquier otra acción necesaria
-                    consultarProductos();
+                    handleAjaxRequest(consultarProductos);
                 },
                 error: function (xhr, status, error) {
                     // Manejar los errores de la solicitud AJAX
