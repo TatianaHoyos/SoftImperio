@@ -12,7 +12,7 @@ $(document).ready(function () {
 function consultarCategorias() {
     $.ajax({
         type: "GET",
-        url: "https://localhost:7084/api/Categorias",
+        url: "http://localhost:8081/edge-service/v1/service/categorias/consultar",
         "headers": {
             "Content-Type": "application/json"
         },
@@ -40,7 +40,7 @@ function onErrorCategorias(error) {
 function consultarProductos(categorias) {
     $.ajax({
         type: "GET",
-        url: "https://localhost:7084/api/Productos/Agrupados",
+        url: "http://localhost:8081/edge-service/v1/service/productos/consultar/agrupados",
         "headers": {
             "Content-Type": "application/json"
         },
