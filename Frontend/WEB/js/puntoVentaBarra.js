@@ -387,17 +387,24 @@ function onExitoPedido(data){
     console.log(data)
     Swal.fire({
         title: 'Exito',
-        text: 'El pedido fue enviado con exito',
+        text: 'La Venta fue realizada con exito',
         type: 'success',
         icon:"success",
-        showCancelButton: false,
-        confirmButtonColor: ' #d5c429 ',
-        confirmButtonText: 'Confirmar',
-    }).then((result) => {
+       showCancelButton: true,
+            confirmButtonColor: ' #d5c429 ',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Aceptar',
+            cancelButtonText: 'Enviar a credito'
+        }).then((result) => {
+            if (result.isConfirmed) {
         consultarApiVentasPendientes();
         var venta= 0;
             $("#totalVenta").text( venta);
          $('#tabla > tbody').empty();
+            }else{
+                //aca de
+                window.location = "./usuariocreditos.html"
+            }
     });
 }
 
