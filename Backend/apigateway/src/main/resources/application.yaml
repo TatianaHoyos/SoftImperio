@@ -107,30 +107,6 @@ spring:
             - name: AuthenticationFilter
             - RewritePath=/edge-service/v1/service/productos/consultar/agrupados, /api/Productos/Agrupados
 
-        - id: services-productos-crear
-          uri: https://localhost:7084
-          predicates:
-            - Path=/edge-service/v1/service/productos/crear
-          filters:
-            - name: AuthenticationFilter
-            - RewritePath=/edge-service/v1/service/productos/crear, /api/producto/crear
-
-        - id: services-productos-actualizar
-          uri: https://localhost:7084
-          predicates:
-            - Path=/edge-service/v1/service/productos/actualizar
-          filters:
-            - name: AuthenticationFilter
-            - RewritePath=/edge-service/v1/service/productos/actualizar, /api/producto/actualizar
-
-        - id: services-productos-eliminar
-          uri: https://localhost:7084
-          predicates:
-            - Path=/edge-service/v1/service/productos/eliminar
-          filters:
-            - name: AuthenticationFilter
-            - RewritePath=/edge-service/v1/service/productos/eliminar, /api/producto/eliminar
-
 
         ##CATEGORIAS##
         - id: services-categoria-consultar
@@ -149,6 +125,15 @@ spring:
           filters:
             - name: AuthenticationFilter
             - RewritePath=/edge-service/v1/service/venta/barra/crear, /api/Ventas/Barra
+
+        - id: services-venta-barra-notificacion
+          uri: https://localhost:7084
+          predicates:
+            - Path=/edge-service/v1/service/venta/barra/crear/**
+          filters:
+            - name: AuthenticationFilter
+            - RewritePath=/edge-service/v1/service/venta/barra/crear/(?<idventa>.*), /api/Ventas/Barra/$\{idventa}
+
 
         - id: services-venta-mesa-crear
           uri: https://localhost:7084

@@ -314,7 +314,10 @@ function confirmarVenta(){
             if (result.isConfirmed) {
                 var estadoNotificacion = $("#estadoPedidoVenta").val();
                 if(estadoNotificacion != ""){
-                    confirmarVentaNotificacion(estadoNotificacion);
+                    handleAjaxRequest(function (token) {
+                        confirmarVentaNotificacion(estadoNotificacion, token);
+                    });
+                  
                 }else{
                     var venta= 0;
                     $("#totalVenta").text( venta);
@@ -365,12 +368,13 @@ function callApiVentaBarra(pedidoTotal,token){
           error: onErrorPedido
         });
 }
-function confirmarVentaNotificacion(idPedido){
+function confirmarVentaNotificacion(idPedido,token){
     $.ajax({
         type: "POST",
-        url:"https://localhost:7084/api/Ventas/Barra/"+idPedido,
+        url:"http://localhost:8081/edge-service/v1/service/venta/barra/crear/"+idPedido,
         "headers": {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`
           },
           data: JSON.stringify({ idPedido: idPedido }), // Convertir a JSON
           success: onExitoPedido,
