@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using venta.Data;
+using venta.DTO;
 using venta.Model;
 
 namespace venta.Controllers
@@ -25,10 +26,10 @@ namespace venta.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Compra>>> GetCompras()
         {
-          if (_context.Compras == null)
-          {
-              return NotFound();
-          }
+            if (_context.Compras == null)
+            {
+                return NotFound();
+            }
             return await _context.Compras.ToListAsync();
         }
 
@@ -36,10 +37,10 @@ namespace venta.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Compra>> GetCompra(int id)
         {
-          if (_context.Compras == null)
-          {
-              return NotFound();
-          }
+            if (_context.Compras == null)
+            {
+                return NotFound();
+            }
             var compra = await _context.Compras.FindAsync(id);
 
             if (compra == null)
@@ -49,6 +50,74 @@ namespace venta.Controllers
 
             return compra;
         }
+
+        //GET: api/compras/ultimo-mes
+        [HttpGet("compras-ultimo-mes")]
+        public ActionResult<IEnumerable<ComprasPorMesDTO>> ObtenerComprasUltimoMes()
+        {
+            try
+            {
+                // Obtener fecha de inicio del mes actual
+                var fechaInicio = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+                // Obtener fecha de inicio del mes siguiente
+                var fechaFin = fechaInicio.AddMonths(1);
+
+                var comprasUltimoMes = _context.Compras
+                    .Where(c => c.FechaCompra.HasValue && c.FechaCompra >= fechaInicio && c.FechaCompra < fechaFin)
+                    .GroupBy(c => new { Año = c.FechaCompra.Value.Year, Mes = c.FechaCompra.Value.Month })
+                    .Select(g => new ComprasPorMesDTO
+                    {
+                        Año = g.Key.Año,
+                        Mes = g.Key.Mes,
+                        TotalCompra = g.Sum(c => c.TotalCompra)
+                    })
+                    .ToList();
+
+                return Ok(comprasUltimoMes);
+            }
+            catch (Exception ex)
+            {
+               
+                return BadRequest("Error al obtener las compras del último mes");
+            }
+        }
+
+
+
+        [HttpGet("compras-por-mes")]
+        public ActionResult<IEnumerable<ComprasPorMesDTO>> ObtenerComprasUltimos12Meses()
+        {
+            try
+            {
+                var fechaInicio = DateTime.Now.AddMonths(-12);
+
+                var comprasUltimos12Meses = _context.Compras
+                    .Where(c => c.FechaCompra.HasValue && c.FechaCompra.Value >= fechaInicio)
+                    .GroupBy(c => new { Año = c.FechaCompra.Value.Year, Mes = c.FechaCompra.Value.Month })
+                    .Select(g => new ComprasPorMesDTO
+                    {
+                        Año = g.Key.Año,
+                        Mes = g.Key.Mes,
+                        TotalCompra = g.Sum(c => c.TotalCompra)
+                    })
+                    .OrderBy(g => g.Año)
+                    .ThenBy(g => g.Mes)
+                    .ToList();
+
+                return Ok(comprasUltimos12Meses);
+            }
+            catch (Exception ex)
+            {
+                // Manejar el error según tus necesidades
+                return BadRequest("Error al obtener las compras por mes");
+            }
+        }
+
+
+
+
+
+
 
         // PUT: api/Compras/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
