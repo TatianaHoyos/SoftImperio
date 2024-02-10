@@ -28,7 +28,6 @@ $(document).ready(function () {
   
   // Ocultar/mostrar menú al hacer clic en el logo
   $("#logo, #logo-navbar").click(function () {
-  console.log("clickeando2");
 
     $(".sidebar").toggleClass("hidden");
     $(".navbar").toggleClass("menu-hidden");

@@ -1,18 +1,17 @@
-console.log("cargando scripts");
-listCompras();
+console.log("cargando scripts compras");
 
 function addCompra() {
     console.log(new Date().getTime() + ' fecha' );
+    //window.location.href = 'comprasDetail.html';
+
     $.ajax({
-      type: "POST",
-      url: "https://localhost:7084/Compras/add",
-  
-      data:JSON.stringify( { fechaCompra: new Date(), totalCompra: 0} ),
+      type: "GET",
+      url: "https://localhost:7084/api/Compra/1090208030",
       contentType: "application/json",
       success: function(response) {
         // Procesar la respuesta exitosa
-        console.log(response);
-        habilitarVistaDetalle(response.idCompra);
+        console.log("getLast ",response);
+        habilitarVistaDetalle(response.idCompra+1);
         //window.location.reload();
       },
       error: function(error) {
@@ -23,6 +22,7 @@ function addCompra() {
   }
 
   function deleteCompra(idCompra) {
+    console.log("deleteCompra ",idCompra);
     // Display a confirmation dialog using SweetAlert
     Swal.fire({
       title: 'Confirma Eliminación',
@@ -31,117 +31,223 @@ function addCompra() {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
+      cancelButtonText: 'Cancelar',
       confirmButtonText: 'Sí, eliminar!'
     }).then((result) => {
       if (result.isConfirmed) {
         // User clicked "Yes," proceed with the API call
         $.ajax({
-          type: 'POST',
-          url: 'https://localhost:7084/Compras/delete',
-          data: JSON.stringify({ id: idCompra }),
+          type: 'DELETE',
+          url: `https://localhost:7084/api/Compra/${idCompra}`,
           contentType: 'application/json',
           success: function (response) {
-            // Process the successful response
+            // Procesar la respuesta exitosa
             console.log(response);
             window.location.reload();
           },
           error: function (error) {
-            // Handle the error
+            // Manejar el error
             console.log(error);
           }
         });
       } else {
         // User clicked "Cancel" or closed the dialog, do nothing
       }
-    });
-  }
-  
+   });
+}
+
   function habilitarVistaDetalle(idCompra){
     const destinationURL = `http://127.0.0.1:5500/Frontend/WEB/comprasDetail.html?idCompra=${idCompra}`;
     window.location.href = destinationURL;
   }
 
-    function listCompras() {
-        const apiUrl = 'https://localhost:7084/Compras/list';
-        fetch(apiUrl)
-        .then((response) => {
-            if (!response.ok) {
-            throw new Error('Network response was not ok');
-            }
-            return response.json(); 
-        })
-        .then((responseData) => {
-            console.log(responseData);
-            
-            const tableBody = document.getElementById("tbody_compras");
-  
-            // Iterate over each object in the response data array
-            responseData.forEach(function (item) {
-              const row = createTableRow(item);
-              tableBody.appendChild(row);
-            });
-            
-        })
-        .catch((error) => {
-            // Handle errors here
-            console.error('There was a problem with the fetch operation:', error);
-        });
-    }
-
-
-    // Function to create a table row with the given data
+// Function to create a table row with the given data
 function createTableRow(data) {
-    const row = document.createElement("tr");
-  
-    // Iterate over each property in the data object
-    const propertyOrder = [ "idCompra",  "fechaCompra",  "totalCompra"];
+  // Crear una fila
+  const row = document.createElement("tr");
 
-    for (const property of propertyOrder) {
-      if (data.hasOwnProperty(property)) {
-        const cell = document.createElement("td");
-        cell.textContent = data[property];
-        row.appendChild(cell);
-      }
+  // Orden de las propiedades que se mostrarán en las columnas
+  const propertyOrder = ["idCompra", "fechaCompra", "totalCompra"];
+
+  // Iterar sobre cada propiedad en el objeto de datos
+  for (const property of propertyOrder) {
+    if (data.hasOwnProperty(property)) {
+      // Crear una celda para cada propiedad
+      const cell = document.createElement("td");
+      cell.textContent = data[property];
+      row.appendChild(cell);
     }
-  
-    // Add the edit button cell
-    const editCell = document.createElement("td");
-    const editButton = document.createElement("button");
-    editButton.type = "button";
-    editButton.setAttribute("data-toggle", "modal");
-    editButton.setAttribute("data-target", "#miModal");
-    editButton.className = "btn btn-warning d-inline";
-    const editIcon = document.createElement("svg");
-    editIcon.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-    editIcon.setAttribute("width", "16");
-    editIcon.setAttribute("height", "16");
-    editIcon.setAttribute("fill", "currentColor");
-    editIcon.setAttribute("class", "fa fa-edit");
-    editIcon.setAttribute("viewBox", "0 0 16 16");
-    const editPath = document.createElement("path");
-    editPath.setAttribute("d", "m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z");
-    editIcon.appendChild(editPath);
-    editButton.appendChild(editIcon);
-    editButton.onclick = function() {
-        habilitarVistaDetalle(data["idCompra"]);
-      };
-    editCell.appendChild(editButton);
-    row.appendChild(editCell);
-  
-    // Add the delete button cell
-    const deleteCell = document.createElement("td");
-    const deleteButton = document.createElement("button");
-    deleteButton.type = "button";
-    deleteButton.className = "btn btn-warning d-inline";
-    deleteButton.onclick =  function() {
-        deleteCompra(data["idCompra"]);
-    };
-    const deleteIcon = document.createElement("i");
-    deleteIcon.className = "fa fa-trash";
-    deleteIcon.setAttribute("aria-hidden", "true");
-    deleteButton.appendChild(deleteIcon);
-    deleteCell.appendChild(deleteButton);
-    row.appendChild(deleteCell);
-  
-    return row;
   }
+
+  // Añadir la celda del botón de edición
+  const editCell = createButtonCell("edit", "Editar", "btn-warning", function() {
+    habilitarVistaDetalle(data["idCompra"]);
+  });
+  row.appendChild(editCell);
+
+  // Añadir la celda del botón de eliminación
+  const deleteCell = createButtonCell("delete", "Eliminar", "btn-danger", function() {
+    deleteCompra(data["idCompra"]);
+  });
+  row.appendChild(deleteCell);
+
+  return row;
+}
+
+// Función para crear una celda de botón
+function createButtonCell(action, buttonText, buttonClass, onClickHandler) {
+  const buttonCell = document.createElement("td");
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = `btn ${buttonClass} d-inline`;
+  button.textContent = buttonText;
+
+  // Asignar el manejador de clic al botón
+  button.onclick = onClickHandler;
+
+  buttonCell.appendChild(button);
+  return buttonCell;
+}
+
+
+
+//función para eliminar o editar proveedor
+function alertaEliminarEditar(action,idProveedor) {
+    console.log("id "+idProveedor   +" la acción que usd eligió es "+action);
+    if (action=="eliminar"){
+        eliminarProveedor(idProveedor);
+    }else if (action=="editar"){
+        consultarProveedor(idProveedor);
+    }
+}
+
+
+//Ajax para editar Proveedor
+function editarProveedor() {
+
+    var data = {
+        nombre: $("#nombreE").val(),
+        documento: $("#documentoE").val(),
+        telefono: $("#telefonoE").val(),
+        direccion: $("#direccionE").val(),
+        email: $("#emailE").val()
+      };
+    console.log(data);
+
+
+  $.ajax({
+    type: "PUT",
+    url: "http://localhost:8080/api/proveedor/actualizar/" + $("#idProveedorE").val(),
+    data: JSON.stringify(data),
+    contentType: "application/json",
+    success: function(response) {
+      console.log(response);
+      Swal.fire({
+        type: 'success',
+        text: 'Registro actualizado',
+        icon:"success",
+        showConfirmButton: false,
+        timer: 1500
+      })
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
+    },
+    error: function(error) {
+      console.log(error);
+      Swal.fire({
+        type: 'error',
+        text: "No se pudo actualizar registro",
+        icon: 'error',
+        showConfirmButton: false,
+        timer: 1500
+      })
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
+    }
+  });
+}
+
+
+$(document).ready(function() {
+  $.ajax({
+    url: 'https://localhost:7084/api/Compra',
+    success: function(data) {
+      console.log('Datos consultados:', data);
+
+      // Verificar si hay datos en la respuesta
+      if (data && data.length > 0) {
+        console.log('consulta de servicio');
+
+        // Agregar los datos directamente al tbody
+        const tableBody = $('#tbody_compras');
+        data.forEach(function(item) {
+          const row = createTableRow(item);
+          tableBody.append(row);
+        });
+
+        // Inicializar DataTables después de agregar los datos
+        iniciarDataTables();
+      } else {
+        console.log('No hay datos en la respuesta.');
+        //iniciarDataTables();
+      }
+    },
+    error: function(xhr, error, thrown) {
+      console.log('Error al obtener datos:', error);
+      console.log('Respuesta de la API:', xhr.responseText);
+    }
+  });
+
+  // Inicializar DataTables directamente después de la carga de la página
+  function iniciarDataTables(data) {
+    console.log("Iniciar DataTables");
+    $('#miTabla').DataTable({
+      dom: '<"row"<"col-md-6"l><"col-md-6"f>>tip',
+      data: data,
+      columns: [
+        { data: 'idCompra' },
+        { data: 'fechaCompra' },
+        { data: 'totalCompra' },
+        {
+          data: null,
+          render: function(data, type, row) {
+            return '<button class="btn btn-editar" data-toggle="modal" data-target="#miModal" onclick="habilitarVistaDetalle( ' + row.idCompra + ')"><i class="fa fa-edit"></i></button>';
+          }
+        },
+        {
+          data: null,
+          render: function(data, type, row) {
+            return '<button onclick="deleteCompra(' + row.idCompra + ')" class="btn btn-eliminar" > <i class="fa fa-trash"></i></button>';
+          }
+        }
+      ],
+      rowId: 'idCompra',
+      language: { /*language, parametro adicional para cambiar los texto del datatable */
+        "sProcessing": "Procesando...",
+        "sLengthMenu": "Mostrar _MENU_ registros",
+        "sZeroRecords": "No se encontraron resultados",
+        "sEmptyTable": "Ningún dato disponible en esta tabla",
+        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+        "sInfoPostFix": "",
+        "sSearch": "Buscar:",
+        "sUrl": "",
+        "sInfoThousands": ",",
+        "sLoadingRecords": "Cargando...",
+        "oPaginate": {
+          "sFirst": "Primero",
+          "sLast": "Último",
+          "sNext": "Siguiente",
+          "sPrevious": "Anterior"
+        },
+        "oAria": {
+          "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+          "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+        }
+      }
+    });
+  }
+});
