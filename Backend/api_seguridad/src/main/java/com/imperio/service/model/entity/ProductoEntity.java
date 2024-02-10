@@ -21,9 +21,6 @@ public class ProductoEntity {
     private Integer idProveedores  ;
 
 
-    @Column(nullable = false, name = "Cantidad")
-    private Integer cantidad;
-
     @Column(nullable = false, name = "NombreProducto")
     private String nombreProducto;
 

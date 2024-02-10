@@ -4,31 +4,40 @@ import com.imperio.service.model.dto.oauth2.Authoritation;
 import com.imperio.service.model.dto.login.LoginRequest;
 import com.imperio.service.model.dto.comun.Response;
 import com.imperio.service.model.dto.login.LoginResponse;
-import com.imperio.service.model.dto.oauth2.TokenRequest;
 import com.imperio.service.model.dto.oauth2.TokenRefreshRequest;
 import com.imperio.service.model.dto.oauth2.TokenRefreshResponse;
+import com.imperio.service.model.dto.oauth2.TokenRequest;
 import com.imperio.service.model.entity.OAuthEntity;
 import com.imperio.service.oauth2.jwt.JwtService;
 import com.imperio.service.oauth2.refresh.RefreshTokenService;
 import com.imperio.service.repository.UsuariosService;
 import com.imperio.service.services.EncryptService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
+import java.util.Map;
 
+import org.springframework.web.bind.annotation.RequestParam;
 @Slf4j
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
+
 public class ControllerOAuth2 {
 
     @Autowired
@@ -43,7 +52,13 @@ public class ControllerOAuth2 {
     @Autowired
     private RefreshTokenService refreshTokenService;
 
-    private String urlServer = "http:localhost:8080/";
+    @Value("${security.clientId}")
+    private String clientId;
+
+    @Value("${security.clientSecret}")
+    private String clientSecret;
+
+    private String urlServer = "http://localhost:8080/";
 
     @Operation(summary = "Autenticación de usuario", responses = {
             @ApiResponse(description = "Autenticación exitosa", responseCode = "200",
@@ -93,7 +108,7 @@ public class ControllerOAuth2 {
                     .body(new Response("error", "no esta autorizado"));
         }
     }
-
+    @SecurityRequirement(name = "basicAuth")
     @Operation(summary = "Refresh del token jwt", responses = {
             @ApiResponse(description = "Refresh del token exitosa", responseCode = "200",
                     content = @Content(mediaType = "application/json",
@@ -102,12 +117,18 @@ public class ControllerOAuth2 {
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = Response.class))) })
 
-    @PostMapping(value = "api/refreshToken", produces = MediaType.APPLICATION_JSON_VALUE,
-            consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> refreshToken(@Valid @RequestBody TokenRefreshRequest refresh) {
-        String refreshToken = refresh.getRefreshToken();
+    @PostMapping(value = "api/refreshToken",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public ResponseEntity<?> refreshToken(@RequestHeader("authorization") String authorizationHeader,
+                                          @ModelAttribute TokenRefreshRequest token) {
+        ResponseEntity<?> responseEntity = validarCabeceraYContenido(authorizationHeader);
+        if (responseEntity != null) {
+            return responseEntity; // Devolver la respuesta de error si hay algún problema
+        }
+
         try {
-            var tokenRefreshResponseJwt = refreshTokenService.encontrarTokenRefresh(refreshToken)
+            var tokenRefreshResponseJwt = refreshTokenService.encontrarTokenRefresh(token.getRefreshToken())
                     .map(refreshTokenService::verificarVigenciaToken)
                     .map(OAuthEntity::getUsuariosEntity)
                     .map(usuarios -> {
@@ -136,8 +157,13 @@ public class ControllerOAuth2 {
         }
 
     }
-
-    @Operation(summary = "Introspect del token jwt", responses = {
+    @SecurityRequirement(name = "basicAuth")
+    @Operation(summary = "Introspect del token jwt",
+            parameters = {
+                    @Parameter(in = ParameterIn.HEADER, name = "authorization", description = "clientId clientSecret en base64",
+                            schema = @Schema(implementation = String.class), required = true),
+                    },
+            responses = {
             @ApiResponse(description = "introspect del token exitosa", responseCode = "200",
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = TokenRefreshResponse.class))),
@@ -145,28 +171,32 @@ public class ControllerOAuth2 {
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = Response.class))) })
 
-    @PostMapping(value = "api/introspectToken", produces = MediaType.APPLICATION_JSON_VALUE,
-            consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> introspectToken(@Valid @RequestBody TokenRequest accessToken) {
-        String token = accessToken.getAccessToken();
+    @PostMapping(value = "api/introspectToken",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public ResponseEntity<?> introspectToken(@RequestHeader Map<String,String> headers,
+                                         @ModelAttribute TokenRequest token) {
+        ResponseEntity<?> responseEntity = validarCabeceraYContenido(headers.get("authorization"));
+        if (responseEntity != null) {
+            return responseEntity; // Devolver la respuesta de error si hay algún problema
+        }
+
         try {
-            var tokenDb = jwtService.encontrarToken(token);
-           if (tokenDb.isPresent() && jwtService.isTokenValido(token)){
-
-               return ResponseEntity.ok(new Response("exito", "Autorizado"));
-           }else {
-               return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                       .body(new Response("error", "no Autorizado"));
-           }
-
+            var tokenDb = jwtService.encontrarToken(token.getAccessToken());
+            if (tokenDb.isPresent() && jwtService.isTokenValido(token.getAccessToken())) {
+                return ResponseEntity.ok(new Response("exito", "Autorizado"));
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(new Response("error", "no Autorizado"));
+            }
         } catch (Exception ex) {
             log.error("introspect Token", ex);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(new Response("error", "no fue posible validar el token"));
         }
-
     }
 
+    @SecurityRequirement(name = "basicAuth")
     @Operation(summary = "logout del token jwt", responses = {
             @ApiResponse(description = "logout exitosa", responseCode = "200",
                     content = @Content(mediaType = "application/json",
@@ -175,13 +205,18 @@ public class ControllerOAuth2 {
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = Response.class))) })
 
-    @PostMapping(value = "api/logout", produces = MediaType.APPLICATION_JSON_VALUE,
-            consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> logout(@Valid @RequestBody TokenRequest  logout) {
-        String token = logout.getAccessToken();
+    @PostMapping(value = "api/logout",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public ResponseEntity<?> logout(@RequestHeader("authorization") String authorizationHeader,
+                                           @ModelAttribute TokenRequest token) {
+        ResponseEntity<?> responseEntity = validarCabeceraYContenido( authorizationHeader);
+        if (responseEntity != null) {
+            return responseEntity; // Devolver la respuesta de error si hay algún problema
+        }
         try {
-            var tokenDb = jwtService.encontrarToken(token);
-            if (tokenDb.isPresent() && jwtService.isTokenValido(token)){
+            var tokenDb = jwtService.encontrarToken(token.getAccessToken());
+            if (tokenDb.isPresent() && jwtService.isTokenValido(token.getAccessToken())){
                 jwtService.eliminarToken(tokenDb.get());
                 return ResponseEntity.ok(new Response("exito", "Sesion cerrada"));
             }else {
@@ -196,5 +231,32 @@ public class ControllerOAuth2 {
         }
 
     }
+
+    private ResponseEntity<?> validarCabeceraYContenido(String authorizationHeader) {
+        // Validar la cabecera Authorization con el esquema Basic
+        if (!authorizationHeader.startsWith("Basic ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new Response("error", "Esquema de autenticación no compatible. Utilice Basic Authentication"));
+        }
+
+        // Decodificar las credenciales de cliente desde la cabecera Authorization
+        String base64Credentials = authorizationHeader.substring("Basic ".length()).trim();
+        String credentials = new String(Base64.getDecoder().decode(base64Credentials), StandardCharsets.UTF_8);
+
+        // Separar las credenciales en clientId y clientSecret
+        String[] values = credentials.split(":", 2);
+        String clientId = values[0];
+        String clientSecret = values[1];
+
+        // Validar las credenciales del cliente
+        if (!clientId.equals(this.clientId) || !clientSecret.equals(this.clientSecret)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new Response("error", "Credenciales de cliente no válidas"));
+        }
+
+        return null; // Todo está correcto
+    }
+
+
 
 }
