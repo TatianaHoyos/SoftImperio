@@ -14,5 +14,6 @@ namespace venta.Models
         public float totalVenta { get; set; }
         public string estado { get; set; }
         public string origen { get; set; }
+
     }
 }

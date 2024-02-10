@@ -1,0 +1,113 @@
+
+
+server:
+  port: 8081
+
+paths.auth:
+  basePath: http://localhost:8080
+  introspect: /api/introspectToken
+
+security.clientId: 562ed6c2-86f8-4846-96b7-1dc1faf73fb6
+security.clientSecret: ACiMy4L8gp/enQziGYb82rHrjHXtD0a+hLFazm5tpcY=
+
+spring:
+  main:
+    web-application-type: REACTIVE
+  application:
+    name: spring-cloud-gateway
+  cloud:
+    gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin
+        - DedupeResponseHeader=Access-Control-Allow-Methods
+        - DedupeResponseHeader=Access-Control-Allow-Headers
+        - DedupeResponseHeader=Access-Control-Expose-Headers
+        - DedupeResponseHeader=Access-Control-Allow-Credentials
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOriginPatterns: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+            maxAge: 3600
+      httpclient:
+        connect-timeout: 20000    # socket connection timeout
+        pool:
+          max-connections: 1500   # max allowed active connections
+          type: FIXED             # fixed pool of max connections
+          metrics: true           # routing httpclient metrics
+      routes:
+        - id: oauth-introspect
+          uri: http://httpbin.org
+          predicates:
+            - Path=/edge-service/v1/httpbin
+            - Header=scope, httpbin
+          filters:
+            - name: AuthenticationFilter
+            - RewritePath=/edge-service/v1/httpbin, /get
+        #########################################
+        #             OAUTH                     #
+        #########################################
+        - id: oauth-login
+          uri: http://localhost:8080
+          predicates:
+            - Path=/edge-service/v1/authorization/login
+          filters:
+            - RewritePath=/edge-service/v1/authorization/login, /api/login
+
+        - id: oauth-refresh
+          uri: http://localhost:8080
+          predicates:
+            - Path=/edge-service/v1/authorization/refreshToken
+          filters:
+            - name: CustomHeaderFilter
+              args:
+                headerName: authorization
+                headerValue: "Basic ${security.clientId}:${security.clientSecret}"
+            - RewritePath=/edge-service/v1/authorization/refreshToken, /api/refreshToken
+
+        - id: oauth-logout
+          uri: http://localhost:8080
+          predicates:
+            - Path=/edge-service/v1/authorization/logout
+          filters:
+            - name: CustomHeaderFilter
+              args:
+                headerName: authorization
+                headerValue: "Basic ${security.clientId}:${security.clientSecret}"
+            - RewritePath=/edge-service/v1/authorization/logout, /api/logout
+
+        #########################################
+        #         REQUIEREN FILTRO              #
+        #########################################
+        - id: services-productos-consultar
+          uri: http://localhost:8080
+          predicates:
+            - Path=/edge-service/v1/service/productos/consultar
+            # - Header=scope, httpbin
+          filters:
+            - name: AuthenticationFilter
+            - RewritePath=/edge-service/v1/service/productos/consultar, /api/producto/consultar
+
+
+
+management:
+  endpoint:
+    gateway:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: 'gateway'
+
+
+logging:
+  level:
+    web: DEBUG
+    org.springframework.cloud.gateway.route.RouteDefinitionRouteLocator: DEBUG

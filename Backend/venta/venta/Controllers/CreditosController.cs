@@ -26,10 +26,10 @@ namespace venta.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Creditos>>> GetCreditos()
         {
-          if (_context.Creditos == null)
-          {
-              return NotFound();
-          }
+            if (_context.Creditos == null)
+            {
+                return NotFound();
+            }
             return await _context.Creditos.ToListAsync();
         }
 
@@ -39,10 +39,10 @@ namespace venta.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Creditos>> GetCreditos(int id)
         {
-          if (_context.Creditos == null)
-          {
-              return NotFound();
-          }
+            if (_context.Creditos == null)
+            {
+                return NotFound();
+            }
             var creditos = await _context.Creditos.FindAsync(id);
 
             if (creditos == null)
@@ -52,6 +52,37 @@ namespace venta.Controllers
 
             return creditos;
         }
+
+        //GET: api/Creditos/creditos-ultimo-mes
+        [HttpGet("creditos-ultimo-mes")]
+        public ActionResult<IEnumerable<CreditosPorMesDTO>> ObtenerCreditosUltimoMes()
+        {
+            try
+            {
+                var fechaInicio = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+                var fechaFin = fechaInicio.AddMonths(1);
+
+                var creditosUltimoMes = _context.Creditos
+                    .Where(cr => cr.Fecha != null && cr.Fecha >= fechaInicio && cr.Fecha < fechaFin)
+                    .GroupBy(cr => new { Año = cr.Fecha.Year, Mes = cr.Fecha.Month })
+                    .Select(g => new CreditosPorMesDTO
+                    {
+                        Año = g.Key.Año,
+                        Mes = g.Key.Mes,
+                        TotalCredito = g.Sum(cr => cr.PrecioCredito)
+                    })
+                    .ToList();
+
+                return Ok(creditosUltimoMes);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error al obtener los créditos del último mes");
+            }
+        }
+
+
+
 
         // PUT: api/Creditos/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

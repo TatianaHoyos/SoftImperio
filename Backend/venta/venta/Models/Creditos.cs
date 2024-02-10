@@ -10,7 +10,7 @@ namespace venta.Models
         public int? IdUsuarioCredito { get; set; }
         public int? IdVenta { get; set; }
         public double PrecioCredito { get; set; }
-        public DateTime FechaCredito { get; set; }
+        public DateTime Fecha { get; set; }
          
     }
 }
