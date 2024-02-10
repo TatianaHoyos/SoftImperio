@@ -150,6 +150,15 @@ spring:
             - name: AuthenticationFilter
             - RewritePath=/edge-service/v1/service/venta/barra/crear, /api/Ventas/Barra
 
+        - id: services-venta-mesa-crear
+          uri: https://localhost:7084
+          predicates:
+            - Path=/edge-service/v1/service/venta/mesa/crear
+          filters:
+            - name: AuthenticationFilter
+            - RewritePath=/edge-service/v1/service/venta/mesa/crear, /api/Ventas/Mesa
+
+
         ##COMPRAS##
         - id: services-compras-consultar
           uri: https://localhost:7084
