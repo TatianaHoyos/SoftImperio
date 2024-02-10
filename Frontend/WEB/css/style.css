@@ -1,25 +1,37 @@
 body{
   background-image: linear-gradient(to top, #051937, #2a1429, #30171b, #2b1e16, #25231c);
-  
+  font-family:"Baskerville", serif;
 } 
 
 .login{
   background-image: url("../img/login/f3.jpg");
 }   
 #fondo{
-    background-color: #201f1e;
+    background-color: #1e2020;
 }
 .form-input img {
     width:100%;
     display:none;
     margin-bottom:30px;
 }
+
 .form-group button {
-    background-color: #ae9243;
+  background-color: #000000;
+  color: #ffffff; /* Letra blanca */
+  border: 1px solid #ae9243; /* Borde amarillo */
+  transition: background-color 0.3s, color 0.3s, border 0.3s; /* Transición suave */
 }
+
 .form-group button:hover {
-    background-color: #ae9243;
+  background-color: #ae9243;
+  color: #090909; /* Letra al pasar el mouse */
+  border: 1px solid #ae9243; /* Borde amarillo */
 }
+
+.form-group button:active {
+  box-shadow: 0 0 10px rgba(255, 193, 7, 0.5); /* Efecto de sombra al hacer clic */
+}
+
 
 .border-grey{
     box-shadow: 3px 3px 3px 3px rgba(5, 5, 5, 0.434);
@@ -29,22 +41,8 @@ body{
     }
 
     .active {
-      background-color: #e2c651 !important;
+      background-color: rgba(174, 146, 67, 0.5) !important;
       color: #090909 !important;
-    }
-
-    .logo {
-      height: 50px;
-      margin-bottom: 10px;
-    }
-    /* Estilos para el contenedor del logo */
-    .logo-container {
-      display: flex; /* Permite alinear los elementos horizontalmente y verticalmente */
-      justify-content: center; /* Alinea los elementos horizontalmente al centro */
-      align-items: center; /* Alinea los elementos verticalmente al centro */
-      margin-bottom: -30px; /*Margen inferior para crear espacio entre el logo y el menú */
-      background-color: #090909;
-      padding: 1px; /* Espacio interno para el logo */
     }
 
     /* Estilos para el logo */
@@ -212,23 +210,15 @@ body{
 
 }
 
+.btn-warning{
+  background-color: #ae9243;
+  margin-right: 10px;
+}
 
-    .table {
-      text-align: center;
-      width: 62% ;
-      height: 90% ;
-      
-    }
-
-    .btn-warning{
-      background-color: #ae9243;
-      margin-right: 10px;
-    }
-
-    .bott{
-      display: flex;
-      justify-content: center ;
-    }
+.bott{
+  display: flex;
+  justify-content: center ;
+}
 
 .swal2-popup .swal2-actions .swal2-cancel {
   background-color: #ae9243;
@@ -363,6 +353,9 @@ background-color:white;
         background-color: #e2c651; /* Cambiar color al pasar el ratón */
     }
 
+    .input-group-prepend {
+      width: 40px; /* Puedes ajustar el valor según sea necesario */
+  }
 
 
 
