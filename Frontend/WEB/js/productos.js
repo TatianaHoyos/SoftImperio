@@ -2,7 +2,6 @@ $(document).ready(function () {
     $("#resultadoCrear").hide();
     consultarProductos();
     buscarProductosTabla();
-   
 });
 
 
@@ -80,7 +79,7 @@ function onExitoProductos(data) {
     console.log(data);
 
     // Obtén una referencia a la DataTable
-    var dataTable = $('#tablaProductos').DataTable({
+    var dataTable = $('#miTabla').DataTable({
         language: {
             "sProcessing": "Procesando...",
             "sLengthMenu": "Mostrar _MENU_ registros",
@@ -99,6 +98,10 @@ function onExitoProductos(data) {
                 "sLast": "Último",
                 "sNext": "Siguiente",
                 "sPrevious": "Anterior"
+            },
+            "oAria": {
+                "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
             }
         }
     });
@@ -117,8 +120,8 @@ function onExitoProductos(data) {
             nombreCategoria = "wiskey";
         }
 
-        var boton1 = "<button onclick='EliminarProducto(" + JSON.stringify(productos) + ")' class='btn btn-delete' data-id='1'><i class='fas fa-trash'></i></button>";
-        var boton2 = "<button onclick='EditarProducto(" + JSON.stringify(productos) + ")' class='btn btn-edit' data-toggle='modal' data-target='#formCrearProductos'><i class='fas fa-edit'></i></button>";
+        var boton1 = "<button onclick='EliminarProducto(" + JSON.stringify(productos) + ")' class='btn btn-eliminar' data-id='1'><i class='fas fa-trash'></i></button>";
+        var boton2 = "<button onclick='EditarProducto(" + JSON.stringify(productos) + ")' class='btn btn-editar' data-toggle='modal' data-target='#formCrearProductos'><i class='fas fa-edit'></i></button>";
 
         // Agrega la fila a la DataTable
         dataTable.row.add([
@@ -190,7 +193,7 @@ function EditarProducto(producto) {
 function actualizarProducto(idProductos) {
     var form = $('#formCrearProducto')[0];
 
-    // Create an FormData object 
+    // Create an FormData object
     var formData = new FormData(form);
 
     console.log(formData);
@@ -210,7 +213,7 @@ function buscarProductosTabla() {
     $("#consultarTabla").keyup(function () {
         _this = this;
         // Show only matching TR, hide rest of them
-        $.each($("#tablaProductos tbody tr"), function () {
+        $.each($("#miTabla tbody tr"), function () {
             if ($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) === -1)
                 $(this).hide();
             else

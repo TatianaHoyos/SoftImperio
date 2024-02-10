@@ -4,19 +4,23 @@
     color: #959292;
     border-radius: 15px; /* Ajusta el valor según tus preferencias */
     overflow: hidden; /* Asegura que las esquinas redondeadas se muestren correctamente */
-    padding: 10px; /* Ajusta el espacio interior según tus preferencias */
+    padding: 20px; /* Ajusta el espacio interior según tus preferencias */
     box-shadow: 0 0 30px rgba(174, 146, 67, 0.973); /* Borde con sombra en todos los lados */
+    position: relative;
+
 }
 
 /* Estilo para el texto en DataTables */
 .table {
     color: #959292;
-    border-radius: 10px; /* Ajusta el valor según tus preferencias */
+    border-radius: 15px; /* Ajusta el valor según tus preferencias */
     overflow: hidden; /* Asegura que las esquinas redondeadas se muestren correctamente */
 }
 
 .table thead th {
     border: 1px solid #1c1c1c;
+    padding: 10px; /* Ajusta según tus preferencias */
+    font-weight: bold;
 }
 
 /* Cambiar el color de fondo de las cabeceras al pasar el mouse */
@@ -31,23 +35,16 @@
     color: #fff;
 }
 
-
 /* Estilo para las celdas de la tabla */
 .table tbody td {
     color: #fff;
     text-align: left; /* Alineación del texto a la izquierda */
     border: none;
     border-bottom: 5px solid #090909; /* Color de las líneas entre las celdas */
-    font-size: 14px; /* Tamaño de letra en las celdas */
+    font-size: 16px; /* Tamaño de letra en las celdas */
     cursor: pointer;
     vertical-align: middle; /* Centra verticalmente el contenido */
-    
 }
-
-.sorting, th {
-    color: #959292;
-}
-
 
 /* Estilo para las filas impares */
 .table tbody tr:nth-child(odd) {
@@ -64,21 +61,6 @@
     background-color: #3d3d3e ;
 }
 
-/* Estilo para el input de búsqueda de DataTables */
-.dataTables_filter label {
-    display: flex;
-    align-items: center;
-}
-
-.dataTables_filter input {
-    width: 200px; /* Ancho personalizado */
-    padding: 5px 10px; /* Espaciado interno */
-    border-radius: 5px; /* Bordes redondeados */
-    background-color: #fff; /* Fondo blanco */
-    margin-bottom: 10px; /* Espaciado inferior */
-    color: #000; /* Color del texto en el input */
-}
-
 /* Estilo para los botones de DataTables */
 .table tbody .btn-editar,
 .table tbody .btn-eliminar {
@@ -93,7 +75,107 @@
 .table tbody .btn-eliminar:hover {
     background-color: #ae9243;
 }
-
-#miTabla_length, #miTabla_filter{
-    display: flex;
+/* Estilos para los botones en el pie de página de DataTables */
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    box-sizing: border-box;
+    display: inline-block;
+    min-width: 1.5em;
+    padding: 0.25em 0.5em;  /* Reducir el tamaño del padding para hacer más pequeños los botones */
+    margin: 0 2px;  /* Añadir un pequeño margen entre los botones */
+    text-align: center;
+    text-decoration: none !important;
+    cursor: pointer;
+    border: 1px solid #ae9243;  /* Cambiar el color del borde a un tono más oscuro */
+    border-radius: 4px;
+    color: #fff;  /* Cambiar el color del texto a blanco */
 }
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background-color: #090909;  /* Cambiar el color de fondo al pasar el ratón a un azul más claro */
+    color: #e2c651;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background-color: #ae9243;
+    color: #000;
+}
+
+/* Estilos para el botón de "Mostrar X registros" */
+.dataTables_wrapper .dataTables_length select {
+    border: 1px solid #ae9243;
+    border-radius: 4px;
+    padding: 0.25em 0.5em;
+    height: 100%;
+    background-color: #0a0a0bda;
+    color: #fff;
+}
+/* Cambiar el color del borde al pasar el mouse */
+.dataTables_wrapper .dataTables_length select:hover {
+    border-color: #e2c651;
+}
+.dataTables_wrapper .dataTables_length select:hover {
+    background-color: #000000;
+}
+
+/* Centra los botones en el pie de página */
+.dataTables_wrapper .dataTables_paginate {
+    text-align: center;
+    margin-top: 10px;  /* Ajusta el margen superior para separar de la tabla */
+}
+
+/* Añade las flechas sin fondo */
+.dataTables_wrapper .dataTables_paginate .paginate_button.previous:before,
+.dataTables_wrapper .dataTables_paginate .paginate_button.next:before {
+    content: '\2039';  /* Unicode para el símbolo de flecha izquierda "<" */
+    background-color: transparent;  /* Fondo transparente */
+    border: none;  /* Sin borde */
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.next:before {
+    content: '\203A';  /* Unicode para el símbolo de flecha derecha ">" */
+    background-color: transparent;  /* Fondo transparente */
+    border: none;  /* Sin borde */
+}
+
+/* Estilo para el input de búsqueda de DataTables */
+.dataTables_filter {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Alinea al final del contenedor (derecha) */
+}
+
+.dataTables_filter input {
+    width: 200px; /* Ancho personalizado */
+    padding: 3px; /* Espaciado interno */
+    border: 1px solid #ae9243; /* Borde gris claro */
+    border-radius: 20px; /* Bordes redondeados */
+    background-color: #0a0a0bda;
+    color: #959292; /* Color del texto en el input */
+    margin-left: 10px; /* Margen a la izquierda */
+    font-size: 14px; /* Tamaño de fuente */
+    outline: none; /* Eliminar el contorno al hacer clic */
+}
+
+/* Cambia el color de fondo al seleccionar el cuadro de búsqueda */
+.dataTables_filter input:active,
+.dataTables_filter input:focus {
+    background-color: #000000; /* cuando el cuadro está activo o enfocado */
+}
+/* Cambia el color de fondo al pasar el mouse por el cuadro de búsqueda */
+.dataTables_filter input:hover {
+    background-color: #090909; /* Amarillo al pasar el mouse */
+}
+
+.dataTables_filter label::before {
+    font-family: 'Font Awesome 5 Free';
+    content: '\f002'; /* Código del icono de búsqueda en Font Awesome */
+    color: #ae9243; /* Color del icono */
+    margin-right: 5px; /* Espacio entre el ícono y el texto (si lo hay) */
+}
+
+/* Cambiar el color del ícono de búsqueda al pasar el ratón */
+.dataTables_filter label:hover::before {
+    color: #e2c651; /* cuando se pasa el ratón */
+}
+
