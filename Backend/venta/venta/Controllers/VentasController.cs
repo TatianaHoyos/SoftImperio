@@ -52,6 +52,68 @@ namespace venta.Controllers
             return ventas;
 
         }
+
+        // GET: api/Ventas
+        [HttpGet("ventas-ultimo-mes")]
+        public ActionResult<IEnumerable<VentasPorMesDTO>> ObtenerVentasUltimoMes()
+        {
+            try
+            {
+                var fechaInicio = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+                var fechaFin = fechaInicio.AddMonths(1);
+
+                var ventasUltimoMes = _context.Venta
+                    .Where(v => v.fechaVenta >= fechaInicio && v.fechaVenta < fechaFin)
+                    .GroupBy(v => new { v.fechaVenta.Year, v.fechaVenta.Month })
+                    .Select(g => new VentasPorMesDTO
+                    {
+                        Año = g.Key.Year,
+                        Mes = g.Key.Month,
+                        TotalVenta = g.Sum(v => v.totalVenta)
+                    })
+                    .ToList();
+
+                return Ok(ventasUltimoMes);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error al obtener las ventas del último mes");
+            }
+        }
+
+
+        [HttpGet("ventas-por-mes")]
+        public ActionResult<IEnumerable<VentasPorMesDTO>> ObtenerVentasPorMes()
+        {
+            try
+            {
+                // Obtener fecha de hace un año
+                var fechaInicio = DateTime.Now.AddMonths(-12);
+
+                var ventasPorMes = _context.Venta
+                    .Where(v => v.fechaVenta >= fechaInicio && v.fechaVenta <= DateTime.Now)
+                    .GroupBy(v => new { v.fechaVenta.Year, v.fechaVenta.Month })
+                    .Select(g => new VentasPorMesDTO
+                    {
+                        Año = g.Key.Year,
+                        Mes = g.Key.Month,
+                        TotalVenta = g.Sum(v => v.totalVenta)
+                    })
+                    .OrderBy(g => g.Año)
+                    .ThenBy(g => g.Mes)
+                    .ToList();
+
+                return Ok(ventasPorMes);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error al obtener las ventas por mes");
+            }
+        }
+
+
+
+
         // GET: api/Ventas
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Venta>>> GetVentas()
