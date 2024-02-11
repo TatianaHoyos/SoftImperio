@@ -1,16 +1,18 @@
 $(document).ready(function () {
     $("#resultadoCrear").hide();
     $("#resultadoCrearConfig").hide();
-    consultarRoles();
-    consultarPermiso();
+    handleAjaxRequest(consultarRoles);
+    handleAjaxRequest(consultarPermiso);
+ 
 });
 
-function consultarRoles() {
+function consultarRoles(token) {
     $.ajax({
         type: "GET",
-        url: "http://localhost:8080/api/roles",
+        url: "http://localhost:8081/edge-service/v1/service/roles/consultar",
         "headers": {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`
           },
         success: onExitoRoles,
         error: onErrorRoles
@@ -26,16 +28,60 @@ function onExitoRoles(data) {
 }
 
 function mostrarTablaRoles(data) {
-    $('#tablaRol > tbody').empty();
+    // Destruir la DataTable existente si ya ha sido inicializada
+if ($.fn.DataTable.isDataTable('#tablaRol')) {
+    $('#tablaRol').DataTable().destroy();
+}
+    // Obtén una referencia a la DataTable
+    var dataTable = $('#tablaRol').DataTable({
+        language: {
+            "sProcessing": "Procesando...",
+            "sLengthMenu": "Mostrar _MENU_ registros",
+            "sZeroRecords": "No se encontraron resultados",
+            "sEmptyTable": "Ningún dato disponible en esta tabla",
+            "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+            "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+            "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+            "sInfoPostFix": "",
+            "sSearch": "Buscar:",
+            "sUrl": "",
+            "sInfoThousands": ",",
+            "sLoadingRecords": "Cargando...",
+            "oPaginate": {
+                "sFirst": "Primero",
+                "sLast": "Último",
+                "sNext": "Siguiente",
+                "sPrevious": "Anterior"
+            },
+            "oAria": {
+                "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+            }
+        }
+    });
+    
+    // Limpia la tabla
+    dataTable.clear();
+
+   // $('#tablaRol > tbody').empty();
     $.each(data, function(id, rol) {
 
         var boton1 = "<button onclick='EliminarRol("+ JSON.stringify(rol) +")' class='btn btn-delete' data-id='1'><i class='fas fa-trash'></i></button>";
         var boton2 = "<button onclick='EditarRol("+ JSON.stringify(rol) +")' class='btn btn-edit' data-toggle='modal' data-target='#modalRoles'><i class='fas fa-edit'></i></button>";
-        var boton3 = "<button onclick='mostrarListaRolyPermisos("+ JSON.stringify(rol) +")' class='btn btn-edit' data-toggle='modal' data-target='#modalRolesYPermisos'><i class='fa-regular fa-key'></i></button>";
+        var boton3 = "<button onclick='mostrarListaRolyPermisos("+ JSON.stringify(rol) +")' class='btn btn-edit' data-toggle='modal' data-target='#modalRolesYPermisos'><i class='fas fa-wrench'></i></button>";
 
-        $('#tablaRol').append('<tr><td>' + rol.nombreRol + '</td><td>' + rol.estado+
-        '</td><td>' + boton3 + '</td><td>' + boton2 + '</td><td>' + boton1 + '</td></tr>');
-        console.log(rol.id + ' ' + rol.nombreRol);
+        // $('#tablaRol').append('<tr><td>' + rol.nombreRol + '</td><td>' + rol.estado+
+        // '</td><td>' + boton3 + '</td><td>' + boton2 + '</td><td>' + boton1 + '</td></tr>');
+        // //console.log(rol.id + ' ' + rol.nombreRol);
+
+         // Agrega la fila a la DataTable
+         dataTable.row.add([
+            rol.nombreRol,
+            rol.estado,
+            boton3 +
+            boton2 +
+            boton1
+        ]).draw();
 
     });
 }
@@ -166,17 +212,25 @@ function crearRol(){
        estado:$("#estado").val(),
     };
     console.log(JSON.stringify(formData))
+    handleAjaxRequest(function (token) {
+        callApiCrearRol(formData, token);
+    });
+
+}
+
+function callApiCrearRol(formData,token){
 
     $.ajax({
-     type: "POST",
-     url:"http://localhost:8080/api/rol/crear",
-     "headers": {
-       "Content-Type": "application/json"
-     },
-     data: JSON.stringify(formData),
-     success: onExitoCrearRol,
-     error: onErrorCrearRol
-});
+        type: "POST",
+        url:"http://localhost:8081/edge-service/v1/service/roles/crear",
+        "headers": {
+          "Content-Type": "application/json",
+          'Authorization': `Bearer ${token}`
+        },
+        data: JSON.stringify(formData),
+        success: onExitoCrearRol,
+        error: onErrorCrearRol
+   });
 }
 
 function actualizarRol(idRol){
@@ -187,16 +241,24 @@ function actualizarRol(idRol){
     };
     console.log(JSON.stringify(formData))
 
+    handleAjaxRequest(function (token) {
+        callApiActualizarRol(idRol, formData, token);
+    });
+
+}
+
+function callApiActualizarRol(idRol, formData, token){
     $.ajax({
-     type: "PUT",
-     url:"http://localhost:8080/api/rol/actualizar/"+idRol,
-     "headers": {
-       "Content-Type": "application/json"
-     },
-     data: JSON.stringify(formData),
-     success: onExitoCrearRol,
-     error: onErrorCrearRol
-});
+        type: "PUT",
+        url:"http://localhost:8081/edge-service/v1/service/roles/actualizar/"+idRol,
+        "headers": {
+          "Content-Type": "application/json",
+          'Authorization': `Bearer ${token}`
+        },
+        data: JSON.stringify(formData),
+        success: onExitoCrearRol,
+        error: onErrorCrearRol
+   });
 }
 
 
@@ -208,7 +270,7 @@ function onExitoCrearRol(data){
     mensaje.show();
     mensaje.text(data.message);
     $("#formCrearRol").trigger("reset");
-    consultarRoles();
+   handleAjaxRequest(consultarRoles);
 }
 function onErrorCrearRol(error){
     console.log(error);
@@ -233,23 +295,33 @@ Swal.fire({
     }).then((result) => {
         if (result.isConfirmed) {
             // Realizar la solicitud de eliminación AJAX
-            $.ajax({
-                url: 'http://localhost:8080/api/rol/eliminar/'+rol.idRol,
-                type: 'Delete',
-                success: function(response) {
-                    // Manejar la respuesta de eliminación exitosa
-                    Swal.fire('Eliminado',response.message, 'success');
-                    // Actualizar la tabla o realizar cualquier otra acción necesaria
-                    consultarRoles();
-                },
-                error: function(xhr, status, error) {
-                    // Manejar los errores de la solicitud AJAX
-                    Swal.fire('Error', error.message, 'error');
-                }
+            handleAjaxRequest(function (token) {
+                callApiEliminar(rol.idRol, token);
             });
         }
     });
 }
+
+function callApiEliminar(idRol,token){
+    $.ajax({
+        url: 'http://localhost:8081/edge-service/v1/service/roles/eliminar/'+ idRol,
+        type: 'Delete',
+        "headers": {
+            'Authorization': `Bearer ${token}`
+          },
+        success: function(response) {
+            // Manejar la respuesta de eliminación exitosa
+            Swal.fire('Eliminado',response.message, 'success');
+            // Actualizar la tabla o realizar cualquier otra acción necesaria
+            handleAjaxRequest(consultarRoles);
+        },
+        error: function(xhr, status, error) {
+            // Manejar los errores de la solicitud AJAX
+            Swal.fire('Error', error.message, 'error');
+        }
+    });
+}
+
 function EditarRol(rol){
     mostrarFormularioActualizar();
     $("#estado option[value="+ rol.estado +"]").attr("selected", true);
@@ -278,17 +350,23 @@ function guardarConfiguracion() {
          };
 
     console.log(JSON.stringify(data));
-
-    $.ajax({
-         type: "Post",
-         url:"http://localhost:8080/api/configuracion/guardar",
-         "headers": {
-           "Content-Type": "application/json"
-         },
-         data: JSON.stringify(data),
-         success: onExitoCrearConfiguracion,
-         error: onErrorCrearConfiguracion
+    handleAjaxRequest(function (token) {
+        callApiGuardarConfiguracion(data, token);
     });
+   
+}
+function callApiGuardarConfiguracion(data,token){
+    $.ajax({
+        type: "POST",
+        url:"http://localhost:8081/edge-service/v1/service/roles/configuracion/crear",
+        "headers": {
+          "Content-Type": "application/json",
+          'Authorization': `Bearer ${token}`
+        },
+        data: JSON.stringify(data),
+        success: onExitoCrearConfiguracion,
+        error: onErrorCrearConfiguracion
+   });
 }
 
 function onExitoCrearConfiguracion(data){
@@ -298,7 +376,7 @@ function onExitoCrearConfiguracion(data){
     mensaje.removeClass("alert-danger");
     mensaje.show();
     mensaje.text(data.message);
-    consultarRoles();
+   handleAjaxRequest(consultarRoles);
 }
 function onErrorCrearConfiguracion(error){
     console.log(error);
@@ -308,17 +386,20 @@ function onErrorCrearConfiguracion(error){
     mensaje.show();
     mensaje.text(error.message);
 }
-function consultarPermiso() {
+
+function consultarPermiso(token) {
     $.ajax({
         type: "GET",
-        url: "http://localhost:8080/api/permisos",
+        url: "http://localhost:8081/edge-service/v1/service/permisos/consultar",
         "headers": {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`
           },
         success: onExitoPermisos,
         error: onErrorPermisos
     });
 }
+
 var permisosCache = {};
 function onExitoPermisos(data) {
     console.log("consulta de permisos");
@@ -326,6 +407,7 @@ function onExitoPermisos(data) {
     permisosCache = agruparPorModulo(data);
 
 }
+
 function onErrorPermisos(error) {
     console.log("consulta de permisos");
     console.log(error);
