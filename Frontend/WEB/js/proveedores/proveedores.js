@@ -62,6 +62,7 @@ function consultarProveedor(idProveedor) {
     });
 }
 
+
 //Ajax para eliminar proveedor
 function eliminarProveedor(idProveedor) {
     Swal.fire({
