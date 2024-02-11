@@ -145,7 +145,8 @@ $("#nombreRolTitulo").text(data.nombreRol);
        var ver = "<input name='permiso' class='form-check-input' type='checkbox' id='"+nombreModulo+"-ver' >";
        var eliminar = "<input name='permiso' class='form-check-input' type='checkbox' id='"+nombreModulo+"-eliminar' >";
 
-        fila=fila + "<td>" + crear+ "</td>"+"<td>" + modificar+ "</td>"+"<td>" + ver+ "</td>"+"<td>" + eliminar+ "</td>";
+
+        fila=fila + "<td  style='text-align: center;'>" + crear+ "</td>"+"<td style='text-align: center;' >" + modificar+ "</td>"+"<td style='text-align: center;'>" + ver+ "</td>"+"<td style='text-align: center;'>" + eliminar+ "</td>";
         $('#'+nombreModulo+'-tr').append(fila);
 
         $.each(permiso.permisos, function(id, permiso) {
