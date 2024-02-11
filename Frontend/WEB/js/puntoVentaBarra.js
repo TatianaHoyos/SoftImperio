@@ -4,8 +4,7 @@ var productos;
 
 $(document).ready(function () {
     $("#cargando").modal("show");
-
-    consultarCategorias();
+    handleAjaxRequest(consultarCategorias)
     selectCategoria();
     contadorCantidad();
 
@@ -13,13 +12,14 @@ $(document).ready(function () {
 });
 
 
-function consultarCategorias() {
+function consultarCategorias(token) {
     $("#textCargando").text("Cargando Categorias");
     $.ajax({
         type: "GET",
-        url: "https://localhost:7084/api/Categorias",
+        url: "http://localhost:8081/edge-service/v1/service/categorias/consultar",
         "headers": {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`
         },
         success: onExitoCategorias,
         error: onErrorCategorias
@@ -29,7 +29,9 @@ function consultarCategorias() {
 function onExitoCategorias(data) {
     categorias = data;
     console.log(data);
-    consultarProductos(data);
+    handleAjaxRequest(function (token) {
+        consultarProductosAgrupados(data, token);
+    });
     var $dropdown = $("#idCategoria");
     $dropdown.append($("<option />").val("-1").text("Todos"));
     $.each(data, function () {
@@ -43,20 +45,24 @@ function onErrorCategorias(error) {
 }
 
 
-function consultarProductos(categorias) {
+
+function consultarProductosAgrupados(categorias,token) {
     $("#textCargando").text("Cargando Productos");
-    $.ajax({
+      $.ajax({
         type: "GET",
-        url: "https://localhost:7084/api/Productos/Agrupados",
+        url: "http://localhost:8081/edge-service/v1/service/productos/consultar/agrupados",
         "headers": {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`
         },
         success: function (data) {
             onExitoProductos(data, categorias);
         },
         error: onErrorProductos
+
     });
 }
+
 function onExitoProductos(data, categorias) {
     productos = data;
     console.log(data);
@@ -295,69 +301,80 @@ function despacharCredito(){
 function confirmarVenta(){
     var tbody = $("#tabla tbody");
     if (tbody.find("tr").length != 0){
-    Swal.fire({
-        title: '¿Esta seguro de registrar esta venta?',
-        // text: 'Su venta se registro con éxito ',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: ' #d5c429 ',
-        cancelButtonColor: '#3085d6',
-        confirmButtonText: 'Confirmar',
-        cancelButtonText: 'Cancelar'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            var estadoNotificacion = $("#estadoPedidoVenta").val();
-            if(estadoNotificacion != ""){
-                confirmarVentaNotificacion(estadoNotificacion);
-            }else{
-                var venta= 0;
-                $("#totalVenta").text( venta);
-                var pedido=[];
-                $('#tabla tbody tr').each(function() {
-                    // Obtiene el ID de la fila, que parece estar en el formato 'tr-N'
-                    var id = $(this).attr('id');
-                    var partes = id.split('-');
-                    id = partes[1];
-                    // Obtiene los datos de cada columna en la fila
-                    var producto = $(this).find('th:eq(0)').text();
-                    var precio = $(this).find('th:eq(1)').text();
-                    var cantidad = $(this).find('.count').val(); // Aquí se usa la clase 'count' del input
-                    var total = $(this).find('.total').text();
-                
-                    // Hacer lo que desees con los datos, por ejemplo, imprimirlos en la consola
-                    console.log('ID: ' + id);
-                    // console.log('Producto: ' + producto);
-                    // console.log('Precio: ' + precio);
-                    console.log('Cantidad: ' + cantidad);
-                    // console.log('Total: ' + total);
-                    pedido.push({"idProducto": Number(id), "cantidad": Number(cantidad)});
-                  });
-                  var pedidoTotal={"pedido":pedido};
-                  console.log(pedidoTotal);
-                  $("#cargando").modal("show");
-                  $.ajax({
-                    type: "POST",
-                    url:"https://localhost:7084/api/Ventas/Barra",
-                    "headers": {
-                        "Content-Type": "application/json"
-                      },
-                      "data": JSON.stringify(pedidoTotal),
-                      success: onExitoPedido,
-                      error: onErrorPedido
+        Swal.fire({
+            title: '¿Esta seguro de registrar esta venta?',
+            // text: 'Su venta se registro con éxito ',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: ' #d5c429 ',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Confirmar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var estadoNotificacion = $("#estadoPedidoVenta").val();
+                if(estadoNotificacion != ""){
+                    handleAjaxRequest(function (token) {
+                        confirmarVentaNotificacion(estadoNotificacion, token);
                     });
-     
-            }
-                    }
-    });
-}
+                  
+                }else{
+                    var venta= 0;
+                    $("#totalVenta").text( venta);
+                    var pedido=[];
+                    $('#tabla tbody tr').each(function() {
+                        // Obtiene el ID de la fila, que parece estar en el formato 'tr-N'
+                        var id = $(this).attr('id');
+                        var partes = id.split('-');
+                        id = partes[1];
+                        // Obtiene los datos de cada columna en la fila
+                        var producto = $(this).find('th:eq(0)').text();
+                        var precio = $(this).find('th:eq(1)').text();
+                        var cantidad = $(this).find('.count').val(); // Aquí se usa la clase 'count' del input
+                        var total = $(this).find('.total').text();
+                    
+                        // Hacer lo que desees con los datos, por ejemplo, imprimirlos en la consola
+                        console.log('ID: ' + id);
+                        // console.log('Producto: ' + producto);
+                        // console.log('Precio: ' + precio);
+                        console.log('Cantidad: ' + cantidad);
+                        // console.log('Total: ' + total);
+                        pedido.push({"idProducto": Number(id), "cantidad": Number(cantidad)});
+                    });
+                    var pedidoTotal={"pedido":pedido};
+                    console.log(pedidoTotal);
+                    $("#cargando").modal("show");
+                    handleAjaxRequest(function (token) {
+                        callApiVentaBarra(pedidoTotal, token);
+                    });
+        
+                }
+             }
+        });
+    }
 
 }
-function confirmarVentaNotificacion(idPedido){
+
+function callApiVentaBarra(pedidoTotal,token){
     $.ajax({
         type: "POST",
-        url:"https://localhost:7084/api/Ventas/Barra/"+idPedido,
+        url:"http://localhost:8081/edge-service/v1/service/venta/barra/crear",
         "headers": {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`
+          },
+          "data": JSON.stringify(pedidoTotal),
+          success: onExitoPedido,
+          error: onErrorPedido
+        });
+}
+function confirmarVentaNotificacion(idPedido,token){
+    $.ajax({
+        type: "POST",
+        url:"http://localhost:8081/edge-service/v1/service/venta/barra/crear/"+idPedido,
+        "headers": {
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`
           },
           data: JSON.stringify({ idPedido: idPedido }), // Convertir a JSON
           success: onExitoPedido,
@@ -370,17 +387,24 @@ function onExitoPedido(data){
     console.log(data)
     Swal.fire({
         title: 'Exito',
-        text: 'El pedido fue enviado con exito',
+        text: 'La Venta fue realizada con exito',
         type: 'success',
         icon:"success",
-        showCancelButton: false,
-        confirmButtonColor: ' #d5c429 ',
-        confirmButtonText: 'Confirmar',
-    }).then((result) => {
+       showCancelButton: true,
+            confirmButtonColor: ' #d5c429 ',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Aceptar',
+            cancelButtonText: 'Enviar a credito'
+        }).then((result) => {
+            if (result.isConfirmed) {
         consultarApiVentasPendientes();
         var venta= 0;
             $("#totalVenta").text( venta);
          $('#tabla > tbody').empty();
+            }else{
+                //aca de
+                window.location = "./usuariocreditos.html"
+            }
     });
 }
 

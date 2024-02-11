@@ -134,13 +134,17 @@ function onExitoCrearProveedor(data) {
     }, 1500);
 }
 
-function onErrorProv(error) {
-
-    console.log(error)
-    var mensaje = error;
-    mensaje.show();
-    mensaje.text(error.message);
-}
+    function onErrorProv(error) {
+        console.log(error);
+    
+        // Display the error using SweetAlert2
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: error.message || 'An unexpected error occurred.',
+        });
+    }
+    
 
 function crearUsuario() {
     var formData = {

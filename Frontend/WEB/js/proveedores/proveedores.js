@@ -24,19 +24,18 @@ function buscarDatos(idProveedor) {
   });
 }
 
-
 //función para eliminar o editar proveedor
 function alertaEliminarEditar(action,idProveedor) {
-    console.log("id "+idProveedor   +" la acción que usd eligió es "+action);
+    console.log("id "+idProveedor   +" la acción que usted eligió es "+action);
     if (action=="eliminar"){
         eliminarProveedor(idProveedor);
     }else if (action=="editar"){
         consultarProveedor(idProveedor);
     }
-}    
+}
 
-function consultarProveedor(idProveedor) { 
-    console.log("prueba"+idProveedor); 
+function consultarProveedor(idProveedor) {
+    console.log("prueba"+idProveedor);
 
     $.ajax({
         type: "GET",
@@ -45,24 +44,23 @@ function consultarProveedor(idProveedor) {
             "Content-Type": "application/json"
           },
         success: function (data){
-           $("#documentoE").val(data.documento);
-           $("#nombreE").val(data.nombre);
-           $("#emailE").val(data.email);
-           $("#telefonoE").val(data.telefono);
-           $("#direccionE").val(data.direccion);
-           $("#idProveedorE").val(idProveedor);
+          $("#documentoE").val(data.documento);
+          $("#nombreE").val(data.nombre);
+          $("#emailE").val(data.email);
+          $("#telefonoE").val(data.telefono);
+          $("#direccionE").val(data.direccion);
+          $("#idProveedorE").val(idProveedor);
         },
         error: function (error){
-            console.log(error);
-          /*  var mensaje = $("#resultadoCrear");
-            mensaje.addClass("alert-danger");
-            mensaje.removeClass("alert-success");
-            mensaje.show();
-            mensaje.text(error.message);*/
+            console.log(error);//Revisar
+            var mensaje = $("#resultadoCrear");
+              mensaje.addClass("alert-danger");
+              mensaje.removeClass("alert-success");
+              mensaje.show();
+              mensaje.text(error.message);
         }
     });
 }
-
 
 //Ajax para eliminar proveedor
 function eliminarProveedor(idProveedor) {
@@ -81,11 +79,10 @@ function eliminarProveedor(idProveedor) {
             const xhr = new XMLHttpRequest();
             const pathDelete = "http://localhost:8080/api/proveedor/eliminar/"+idProveedor;
             xhr.open("DELETE", pathDelete, true);
-            
             xhr.onload = function () {
               if (xhr.status === 200) {
-               console.log("Se eliminó proveedor con id"+idProveedor);
-               Swal.fire({
+              console.log("Se eliminó proveedor con id"+idProveedor);
+              Swal.fire({
                 type: 'success',
                 icon:"success",
                 text: 'Eliminado ',
@@ -94,23 +91,18 @@ function eliminarProveedor(idProveedor) {
               })
               setTimeout(() => {
                 window.location.reload();
-               }, 1500);
-               
-        
+              }, 1500);
+
               } else {
                 Swal.fire('Error', error.message, 'error');
-
               }
             };
-            
             xhr.send();
         }
     });
-
 }
 //Ajax para editar Proveedor
 function editarProveedor() {
-  
     var data = {
         nombre: $("#nombreE").val(),
         documento: $("#documentoE").val(),
@@ -118,10 +110,9 @@ function editarProveedor() {
         direccion: $("#direccionE").val(),
         email: $("#emailE").val()
       };
-   console.log(data);
+  console.log(data);
 
-
-   $.ajax({
+  $.ajax({
     type: "PUT",
     url: "http://localhost:8080/api/proveedor/actualizar/" + $("#idProveedorE").val(),
     data: JSON.stringify(data),
@@ -137,20 +128,20 @@ function editarProveedor() {
       })
       setTimeout(() => {
         window.location.reload();
-       }, 1500);
+      }, 1500);
     },
     error: function(error) {
       console.log(error);
       Swal.fire({
         type: 'error',
-        text: "No se pudo actualizar registro",
+        text: "No se actualizó el registro",
         icon: 'error',
         showConfirmButton: false,
         timer: 1500
       })
       setTimeout(() => {
         window.location.reload();
-       }, 1500);
+      }, 1500);
     }
   });
 }
@@ -159,9 +150,8 @@ function editarProveedor() {
 function createTableRow(data) {
   const row = document.createElement("tr");
 
-  // Iterate over each property in the data object
   const propertyOrder = ["idProveedores", "documento", "nombre","email","telefono","direccion"];
-
+  // Crear celdas para propiedades
   for (const property of propertyOrder) {
     if (data.hasOwnProperty(property)) {
       const cell = document.createElement("td");
@@ -170,7 +160,7 @@ function createTableRow(data) {
     }
   }
 
-  // Add the edit button cell
+  // Agregar botón de edición
   const editCell = document.createElement("td");
   const editButton = document.createElement("button");
   editButton.type = "button";
@@ -215,9 +205,6 @@ function createTableRow(data) {
   return row;
 }
 
-
-console.log("Archivo consultas.js funcionando");
-
 $(document).ready(function() {
   $.ajax({
     url: 'http://localhost:8080/api/proveedorconsultar',
@@ -237,8 +224,10 @@ $(document).ready(function() {
 
         // Inicializar DataTables después de agregar los datos
         iniciarDataTables();
+
       } else {
         console.log('No hay datos en la respuesta.');
+        iniciarDataTables();
       }
     },
     error: function(xhr, error, thrown) {
@@ -250,6 +239,7 @@ $(document).ready(function() {
   // Inicializar DataTables directamente después de la carga de la página
   function iniciarDataTables(data) {
     $('#miTabla').DataTable({
+      dom: '<"row"<"col-md-6"l><"col-md-6"f>>tip',
       data: data,
       columns: [
         { data: 'idProveedores' },
@@ -298,18 +288,16 @@ $(document).ready(function() {
       }
     });
 
-    var inputSearch = $('#miTabla_filter ');
-    inputSearch.addClass('form-control'); // Asegurarse de que el input tenga la clase form-control
-    inputSearch.attr('placeholder', 'Buscar'); // Cambiar el placeholder si es necesario
+// Seleccionar el elemento de búsqueda
+var inputSearch = $('#miTabla_filter input');
+inputSearch.addClass('form-control'); // Asegurarse de que el input tenga la clase form-control
+inputSearch.removeAttr('placeholder'); // Quitar el atributo placeholder si existe
 
-    // Crear el span con el ícono y agregarlo al input de búsqueda
-    var iconSpan = $('<span class="input-group-text" style="background-color: #e5c850;"><i class="fas fa-search"></i></span>');
-    inputSearch.parent().prepend(iconSpan);
+// Crear el span con el ícono y agregarlo al input de búsqueda
+var iconSpan = $('<span class="input-group-text" style="background-color: #e5c850; color: red;"><i class="fas fa-search"></i></span>');
+inputSearch.parent().prepend(iconSpan);
   }
 });
-
-
-//datatable.js
 
 // Function to create a table row with the given data
 function createTableRow(data) {

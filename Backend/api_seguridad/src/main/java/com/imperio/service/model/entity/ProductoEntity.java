@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @Entity
@@ -17,10 +19,6 @@ public class ProductoEntity {
     @Column(nullable = false, name = "IdCategoria")
     private Integer idCategoria ;
 
-    @Column(nullable = false, name = "IdProveedores")
-    private Integer idProveedores  ;
-
-
     @Column(nullable = false, name = "NombreProducto")
     private String nombreProducto;
 
@@ -32,5 +30,6 @@ public class ProductoEntity {
 
     @Column(nullable = false, name="ReferenciaProducto")
     private String referenciaProducto;
+
 
 }

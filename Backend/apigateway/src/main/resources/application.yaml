@@ -37,6 +37,8 @@ spring:
             allowCredentials: true
             maxAge: 3600
       httpclient:
+        ssl:
+          useInsecureTrustManager: true
         connect-timeout: 20000    # socket connection timeout
         pool:
           max-connections: 1500   # max allowed active connections
@@ -86,6 +88,8 @@ spring:
         #########################################
         #         REQUIEREN FILTRO              #
         #########################################
+
+        ##PRODUCTOS##
         - id: services-productos-consultar
           uri: http://localhost:8080
           predicates:
@@ -95,7 +99,59 @@ spring:
             - name: AuthenticationFilter
             - RewritePath=/edge-service/v1/service/productos/consultar, /api/producto/consultar
 
+        - id: services-productos-agrupados-consultar
+          uri: https://localhost:7084
+          predicates:
+            - Path=/edge-service/v1/service/productos/consultar/agrupados
+          filters:
+            - name: AuthenticationFilter
+            - RewritePath=/edge-service/v1/service/productos/consultar/agrupados, /api/Productos/Agrupados
 
+
+        ##CATEGORIAS##
+        - id: services-categoria-consultar
+          uri: https://localhost:7084
+          predicates:
+            - Path=/edge-service/v1/service/categorias/consultar
+          filters:
+            - name: AuthenticationFilter
+            - RewritePath=/edge-service/v1/service/categorias/consultar, /api/Categorias
+
+        ##VENTAS##
+        - id: services-venta-barra-crear
+          uri: https://localhost:7084
+          predicates:
+            - Path=/edge-service/v1/service/venta/barra/crear
+          filters:
+            - name: AuthenticationFilter
+            - RewritePath=/edge-service/v1/service/venta/barra/crear, /api/Ventas/Barra
+
+        - id: services-venta-barra-notificacion
+          uri: https://localhost:7084
+          predicates:
+            - Path=/edge-service/v1/service/venta/barra/crear/**
+          filters:
+            - name: AuthenticationFilter
+            - RewritePath=/edge-service/v1/service/venta/barra/crear/(?<idventa>.*), /api/Ventas/Barra/$\{idventa}
+
+
+        - id: services-venta-mesa-crear
+          uri: https://localhost:7084
+          predicates:
+            - Path=/edge-service/v1/service/venta/mesa/crear
+          filters:
+            - name: AuthenticationFilter
+            - RewritePath=/edge-service/v1/service/venta/mesa/crear, /api/Ventas/Mesa
+
+
+        ##COMPRAS##
+        - id: services-compras-consultar
+          uri: https://localhost:7084
+          predicates:
+            - Path=/edge-service/v1/service/compras/consultar
+          filters:
+            #  - name: AuthenticationFilter
+            - RewritePath=/edge-service/v1/service/compras/consultar, /api/Compras
 
 management:
   endpoint:
