@@ -3,18 +3,20 @@ var productos;
 
 
 $(document).ready(function () {
-    consultarCategorias();
+    $("#cargando").modal("show");
+     handleAjaxRequest(consultarCategorias)
     selectCategoria();
     contadorCantidad();
 });
 
 
-function consultarCategorias() {
+function consultarCategorias(token) {
     $.ajax({
         type: "GET",
         url: "http://localhost:8081/edge-service/v1/service/categorias/consultar",
         "headers": {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`
         },
         success: onExitoCategorias,
         error: onErrorCategorias
@@ -24,7 +26,9 @@ function consultarCategorias() {
 function onExitoCategorias(data) {
     categorias = data;
     console.log(data);
-    consultarProductos(data);
+    handleAjaxRequest(function (token) {
+        consultarProductosAgrupados(data, token);
+    });
     var $dropdown = $("#idCategoria");
     $dropdown.append($("<option />").val("-1").text("Todos"));
     $.each(data, function () {
@@ -34,15 +38,17 @@ function onExitoCategorias(data) {
 }
 function onErrorCategorias(error) {
     console.log(error)
+    $("#cargando").modal("hide");
 }
 
 
-function consultarProductos(categorias) {
+function consultarProductosAgrupados(categorias,token) {
     $.ajax({
         type: "GET",
         url: "http://localhost:8081/edge-service/v1/service/productos/consultar/agrupados",
         "headers": {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`
         },
         success: function (data) {
             onExitoProductos(data, categorias);
@@ -54,6 +60,7 @@ function onExitoProductos(data, categorias) {
     productos = data;
     console.log(data);
     mostrarProductos(data, categorias);
+    $("#cargando").modal("hide");
 }
 
 function mostrarProductos(data, categorias) {
@@ -120,6 +127,7 @@ function mostrarProductos(data, categorias) {
 
 function onErrorProductos(error) {
     console.log(error)
+    $("#cargando").modal("hide");
 }
 
 function selectCategoria() {
@@ -266,20 +274,22 @@ function eliminarRegistroPedido(button) {
       // Encuentra la fila (tr) a la que pertenece el botón y elimínala
     $(button).closest('tr').remove();
 }
-function despacharCredito(){
-    Swal.fire({
-        title: 'Lo sentimos!',
-        text: 'Esta funcionalidad se encuentra en construcción ',
-        icon: 'warning',
-        showCancelButton: false,
-        confirmButtonColor: ' #d5c429 ',
-        confirmButtonText: 'Confirmar',
-      
-    }).then((result) => {
-       
-    });
 
-}
+// function despacharCredito(){
+//     Swal.fire({
+//         title: 'Lo sentimos!',
+//         text: 'Esta funcionalidad se encuentra en construcción ',
+//         icon: 'warning',
+//         showCancelButton: false,
+//         confirmButtonColor: ' #d5c429 ',
+//         confirmButtonText: 'Confirmar',
+      
+//     }).then((result) => {
+       
+//     });
+
+// 
+
 function confirmarVenta(){
     
     var tbody = $("#tabla tbody");
