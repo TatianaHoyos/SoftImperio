@@ -45,14 +45,6 @@ spring:
           type: FIXED             # fixed pool of max connections
           metrics: true           # routing httpclient metrics
       routes:
-        - id: oauth-introspect
-          uri: http://httpbin.org
-          predicates:
-            - Path=/edge-service/v1/httpbin
-            - Header=scope, httpbin
-          filters:
-            - name: AuthenticationFilter
-            - RewritePath=/edge-service/v1/httpbin, /get
         #########################################
         #             OAUTH                     #
         #########################################

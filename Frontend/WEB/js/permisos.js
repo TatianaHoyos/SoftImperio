@@ -86,21 +86,46 @@ if ($.fn.DataTable.isDataTable('#tablaRol')) {
     });
 }
 
- function mostrarListaRolesyPermisos(roles) {
-      //clear the existing list
-     $("#contentRoles .lista-Roles .card-header").remove();
-     $("#contentRoles .lista-Roles .lista-permisos").remove();
+function mostrarListaRolesyPermisos(roles) {
+    var tablaPrincipal = '<table id="tablaPrincipal" class="table w-100"><thead><tr><th>ID Rol</th><th>Nombre Rol</th><th>Módulo</th><th>Permisos</th></tr></thead><tbody>';
 
-     $.each(roles, function(index,rol) {
+    roles.forEach(function (rol) {
+        tablaPrincipal += '<tr><td>' + rol.idRol + '</td><td>' + rol.nombreRol + '</td>';
 
-       $('#contentRoles .lista-Roles').append('<div class="card-header">'+rol.nombreRol +'</div>')
-       $('#contentRoles .lista-Roles').append('<div class="card-body lista-permisos"><ul></ul></div>')
+        // Agrupar por módulo
+        var permisosPorModulo = {};
+        rol.permisos.forEach(function (permiso) {
+            if (!permisosPorModulo[permiso.modulo]) {
+                permisosPorModulo[permiso.modulo] = [];
+            }
+            permisosPorModulo[permiso.modulo].push(permiso.nombrePermiso);
+        });
 
-       $.each(rol.permisos, function(index,permiso) {
-         $('#contentRoles .lista-Roles .lista-permisos ul').append('<li>'+permiso.nombrePermiso +' - '+permiso.modulo+'</li>')
-     });
-     });
+        // Generar celdas para módulo y permisos
+        var modulos = Object.keys(permisosPorModulo);
+        if (modulos.length > 0) {
+            tablaPrincipal += '<td>' + modulos.join('<br>') + '</td>';
+            tablaPrincipal += '<td>';
+            modulos.forEach(function (modulo) {
+                tablaPrincipal += '<p><strong>' + modulo + ':</strong> ' + permisosPorModulo[modulo].join(', ') + '</p>';
+            });
+            tablaPrincipal += '</td>';
+        } else {
+            // Agregar celdas vacías si no hay módulos o permisos
+            tablaPrincipal += '<td></td><td></td>';
+        }
+
+        tablaPrincipal += '</tr>';
+    });
+
+    tablaPrincipal += '</tbody></table>';
+    $('#tabla').html(tablaPrincipal);
+
+    // Inicializar DataTables después de agregar la tabla
+    $('#tablaPrincipal').DataTable();
 }
+
+
 
 function mostrarListaRolyPermisos(data) {
     $("#resultadoCrearConfig").hide();

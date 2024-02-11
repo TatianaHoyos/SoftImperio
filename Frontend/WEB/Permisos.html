@@ -12,7 +12,17 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap4.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/tablas.css">
-    
+    <style>
+        h5 {
+    text-align: center;
+    color: white;
+}
+p{
+    text-align: center;
+    color: white;
+}
+
+    </style>
 
 </head>
 
@@ -171,18 +181,16 @@
         <!--Roles y sus permisos-->
         <h1 class="Titulo">Roles y sus permisos</h1>
         <div class="row justify-content-md-center">
-            <div id="contentRoles">
-                <div class="card lista-Roles">
-                    <div class="card-header">
-                        rol
-                    </div>
-                    <div class="card-body lista-permisos">
-                        <ul>
-                            <li>permiso</li>
-                        </ul>
-                    </div>
-                </div>
+            <!-- Elemento para la tabla principal -->
+
+            <div class="container">
+               
+                <div id="tabla"></div>
+                <div id="subtablas"></div>
             </div>
+            
+            
+
         </div>
 
         <button type="submit" class="btn btn-primary">Agregar Rol</button>

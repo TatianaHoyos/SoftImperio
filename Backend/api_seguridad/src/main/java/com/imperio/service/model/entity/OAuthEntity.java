@@ -12,7 +12,7 @@ import java.time.Instant;
 @Table(name="oauth")
 public class OAuthEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "IdOAuth")
     private Integer idOAuth;
 
