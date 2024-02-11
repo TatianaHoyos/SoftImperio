@@ -45,13 +45,20 @@ namespace venta.Controllers
                 return NotFound();
             }
 
-            var ventas = await _context.Venta
-                .Where(venta => venta.fechaVenta >= fechaInicio && venta.fechaVenta <= fechaFin)
-                .ToListAsync();
+            try
+            {
+                var ventas = await _context.Venta
+                    .Where(venta => venta.fechaVenta >= fechaInicio && venta.fechaVenta <= fechaFin)
+                    .ToListAsync();
 
-            return ventas;
-
+                return Ok(ventas);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+            }
         }
+
 
         // GET: api/Ventas
         [HttpGet("ventas-ultimo-mes")]

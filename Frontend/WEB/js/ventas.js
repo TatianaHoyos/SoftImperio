@@ -44,12 +44,34 @@ function actualizarTablaVentas(venta) {
                 <td>${ventas.idVenta}</td>
                 <td>${ventas.fechaVenta}</td>
                 <td>${ventas.totalVenta}</td>
-                
+                <td>
+                <button class="btn btn-info" onclick="verDetalles(${ventas.idVenta})">Detalles</button>
+                </td>
             </tr>
         `;
         tablaVentas.innerHTML += fila;
     });
 }
+function verDetalles(idVenta) {
+    fetch(`https://localhost:7084/api/DetalleVentas/ByVenta/${idVenta}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Error de red: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((detallesVenta) => {
+        // Aquí deberías tener un array de detalles de venta correspondientes al IdVenta
+        console.log('Detalles de la venta:', detallesVenta);
+  
+        // Puedes mostrar los detalles como desees, por ejemplo, en un cuadro de diálogo
+        alert(`Detalles de la venta ${idVenta}:\n${JSON.stringify(detallesVenta, null, 2)}`);
+      })
+      .catch((error) => {
+        console.error("Error al obtener detalles de la venta:", error);
+      });
+  }
+  
 
 
 
