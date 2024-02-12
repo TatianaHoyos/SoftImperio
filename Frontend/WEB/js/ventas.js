@@ -52,6 +52,8 @@ function actualizarTablaVentas(venta) {
         tablaVentas.innerHTML += fila;
     });
 }
+
+
 function verDetalles(idVenta) {
     fetch(`https://localhost:7084/api/DetalleVentas/ByVenta/${idVenta}`)
       .then((response) => {
@@ -65,7 +67,7 @@ function verDetalles(idVenta) {
         console.log('Detalles de la venta:', detallesVenta);
   
         // Puedes mostrar los detalles como desees, por ejemplo, en un cuadro de diálogo
-        alert(`Detalles de la venta ${idVenta}:\n${JSON.stringify(detallesVenta, null, 2)}`);
+        alert(`Detalles de la venta con ID: ${idVenta}\n${JSON.stringify(detallesVenta, null, 2)}`);
       })
       .catch((error) => {
         console.error("Error al obtener detalles de la venta:", error);
