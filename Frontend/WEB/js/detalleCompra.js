@@ -121,6 +121,13 @@ function createButton(action, id) {
           error: function (error) {
             // Handle the error
             console.log(error);
+            Swal.fire({
+              title: 'Error',
+              text: 'No es posible eliminar después de 24 horas.',
+              icon: 'error',
+              showConfirmButton: false,
+              timer: 1500
+            });
           }
         });
       } else {
@@ -242,21 +249,19 @@ function crearDetalleCompra(){
             // Procesar la respuesta exitosa
             console.log(response);
 
-            // Mostrar ventana de confirmación después de guardar
-            Swal.fire({
-              title: 'Guardado exitoso',
-              text: 'Los cambios se han guardado correctamente.',
-              icon: 'success',
-              showConfirmButton: false,
-              timer: 1500
-            });
-
             limpiarFormulario();
             window.location.reload();
         },
         error: function(error) {
             // Manejar el error
             console.log(error);
+              Swal.fire({
+                title: 'Error',
+                text: 'No es posible editar después de 24 horas.',
+                icon: 'error',
+                showConfirmButton: false,
+                timer: 1500
+              });
         }
         });
     }else{
@@ -299,7 +304,8 @@ function updateDetalleCompra(){
             Swal.fire({
               title: 'Guardado exitoso',
               text: 'Los cambios se han guardado correctamente.',
-              icon: 'success'
+              icon: 'success',
+              timer: 1500
             });
 
             limpiarFormulario();
@@ -329,10 +335,23 @@ function confirmarYGuardarDetalleCliente() {
   }).then((result) => {
     if (result.isConfirmed) {
       crearDetalleCompra();
+        // Mostrar ventana de confirmación después de guardar
+        Swal.fire({
+          title: 'Guardado exitoso',
+          text: 'Los cambios se han guardado correctamente.',
+          icon: 'success',
+          showConfirmButton: false,
+          timer: 1500
+        });
+    }else if(result.dismiss === Swal.DismissReason.cancel){
+      Swal.fire({
+        title: "Cancelado",
+        text: "Su compra ha sido cancelada :)",
+        icon: "error"
+      });
     }
   });
 }
-
 
 //consultar productos
 

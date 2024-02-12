@@ -80,7 +80,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" style="background-color: #ae9243; color: #212529;"><i class="fas fa-user"></i></span>
                                     </div>
-                                    <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Proveedor" onkeypress="return sololetras(event)">
+                                    <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Proveedor" onkeypress="return sololetrasnombre(event)">
                                 </div>
                             </div>
                         </div>
@@ -91,7 +91,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" style="background-color: #ae9243; color: #212529;"><i class="far fa-id-card"></i></span>
                                     </div>
-                                    <input type="text" class="form-control" id="documento" name="documento" placeholder="Documento" onkeypress="return validarNumero(event)">
+                                    <input type="text" class="form-control" id="documento" name="documento" placeholder="Documento" onkeypress="return validarDocumento(event)">
                                 </div>
                             </div>
                         </div>
@@ -104,6 +104,7 @@
                                     </div>
                                     <input type="email" class="form-control" id="email" name="email" placeholder="Email" onkeypress="return validarEmail(event)">
                                 </div>
+                                <div id="emailMensaje"></div>
                             </div>
                         </div>
                         <div class="form-row justify-content-center">
@@ -113,7 +114,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" style="background-color: #ae9243; color: #212529;"><i class="fas fa-phone"></i></span>
                                     </div>
-                                    <input type="tel" class="form-control" id="telefono" name="telefono" placeholder="Teléfono" onkeypress="return validarNumero(event)">
+                                    <input type="tel" class="form-control" id="telefono" name="telefono" placeholder="Teléfono" onkeypress="return validarCelular(event)">
                                 </div>
                             </div>
                         </div>
@@ -124,8 +125,9 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" style="background-color: #ae9243; color: #212529;"><i class="fas fa-map-marker-alt"></i></span>
                                     </div>
-                                    <input type="text" class="form-control" id="direccion" name="direccion" placeholder="Dirección">
+                                    <input type="text" class="form-control" id="direccion" name="direccion" placeholder="Dirección" onkeypress="return validarDireccion(event)">
                                 </div>
+                                <div id="direccionMensaje"></div>
                             </div>
                         </div>
 
@@ -190,7 +192,7 @@
                                             <i class="fas fa-user"></i>
                                         </span>
                                     </div>
-                                    <input type="text" class="form-control" id="nombreE" name="nombreE">
+                                    <input type="text" class="form-control" id="nombreE" name="nombreE" onkeypress="return sololetrasnombre(event)">
                                 </div>
                             </div>
                         </div>
@@ -206,7 +208,7 @@
                                             <i class="far fa-id-card"></i>
                                         </span>
                                     </div>
-                                    <input type="text" class="form-control" id="documentoE" name="documentoE">
+                                    <input type="text" class="form-control" id="documentoE" name="documentoE" onkeypress="return validarDocumento(event)">
                                 </div>
                             </div>
                         </div>
@@ -222,7 +224,7 @@
                                             <i class="far fa-envelope"></i>
                                         </span>
                                     </div>
-                                    <input type="text" class="form-control" id="emailE" name="emailE">
+                                    <input type="text" class="form-control" id="emailE" name="emailE" onkeypress="return validarEmail(event)">
                                 </div>
                             </div>
                         </div>
@@ -238,7 +240,7 @@
                                             <i class="fas fa-phone"></i>
                                         </span>
                                     </div>
-                                    <input type="number" class="form-control" id="telefonoE" name="telefonoE">
+                                    <input type="number" class="form-control" id="telefonoE" name="telefonoE" onkeypress="return validarCelular(event)">
                                 </div>
                             </div>
                         </div>
@@ -254,7 +256,7 @@
                                             <i class="fas fa-map-marker-alt"></i>
                                         </span>
                                     </div>
-                                    <input type="text" class="form-control" id="direccionE" name="direccionE">
+                                    <input type="text" class="form-control" id="direccionE" name="direccionE" onkeypress="return validarDireccion(event)">
                                 </div>
                             </div>
                         </div>
