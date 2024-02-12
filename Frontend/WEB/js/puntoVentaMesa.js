@@ -329,22 +329,29 @@ function confirmarVenta(){
               });
               var pedidoTotal={"pedido":pedido};
               console.log(pedidoTotal);
-              $.ajax({
-                type: "POST",
-                url:"https://localhost:7084/api/Ventas/Mesa",
-                "headers": {
-                    "Content-Type": "application/json"
-                  },
-                  "data": JSON.stringify(pedidoTotal),
-                  success: onExitoPedido,
-                  error: onErrorPedido
-                  
+              handleAjaxRequest(function (token) {
+                callApiVentaMesa(pedidoTotal, token);
             });
-        
+             
               } else {
               }
     });
 }
+}
+function callApiVentaMesa(pedidoTotal,token){
+    $.ajax({
+        type: "POST",
+        url:"http://localhost:8081/edge-service/v1/service/venta/mesa/crear",
+        "headers": {
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`
+          },
+          "data": JSON.stringify(pedidoTotal),
+          success: onExitoPedido,
+          error: onErrorPedido
+          
+    });
+
 }
 
 function onExitoPedido(data){

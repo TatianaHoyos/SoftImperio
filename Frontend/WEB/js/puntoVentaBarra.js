@@ -242,7 +242,7 @@ function contadorCantidad() {
             total.text(parseInt(total.text()) - parseInt(precio.text()));
              //agregar valor de primer registro
         var venta=  parseInt($("#totalVenta").text());
-        $("#totalVenta").text( venta- parseInt( precio.text()));
+        $("#totalVenta").text( venta - parseInt( precio.text()));
         }
 
 
@@ -400,7 +400,7 @@ function onExitoPedido(data){
             cancelButtonText: 'Enviar a credito'
         }).then((result) => {
             if (result.isConfirmed) {
-        consultarApiVentasPendientes();
+      handleAjaxRequest(consultarApiVentasPendientes);
         var venta= 0;
             $("#totalVenta").text( venta);
          $('#tabla > tbody').empty();

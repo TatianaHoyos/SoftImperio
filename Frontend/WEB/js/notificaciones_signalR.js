@@ -37,19 +37,20 @@ const receiveMessage = async () => {
 
 const startApp = async () => {
     // Start the connection.
-    consultarApiVentasPendientes();
+    handleAjaxRequest(consultarApiVentasPendientes);
     await start();
     await receiveMessage();
 }
 
 startApp();
 
-function consultarApiVentasPendientes(){
+function consultarApiVentasPendientes(token){
     $.ajax({
         type: "GET",
-        url: "https://localhost:7084/api/Ventas/Pendientes",
+        url: "http://localhost:8081/edge-service/v1/service/venta/pendiente/consultar",
         "headers": {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`
         },
         success: function (data) {
             onExitoVentasPendientes(data);
@@ -103,19 +104,22 @@ function onExitoVentasPendientes(data){
             //se selecciona la notificacion por medio de los id de los li
             $("#contenedorNotificaciones li").on("click", function() {
                 // Muestra una alerta con el ID de la etiqueta li clicada
-              
-               consultarApiVentasPorNotificacion( $(this).attr("id"));
+                var idVenta = $(this).attr("id");
+                handleAjaxRequest(function (token) {
+                    consultarApiVentasPorNotificacion(idVenta, token);
+                });
                
 
               });
 
 }
-function consultarApiVentasPorNotificacion(idVenta){
+function consultarApiVentasPorNotificacion(idVenta, token){
     $.ajax({
         type: "GET",
-        url: "https://localhost:7084/api/Ventas/" + idVenta,
+        url: "http://localhost:8081/edge-service/v1/service/venta/consultar/" + idVenta,
         "headers": {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`
         },
         success: function (data) {
             onExitoVentasPorNotificacion(data,idVenta);

@@ -50,12 +50,14 @@ function onExitoCrearProducto(data) {
     // mensaje.show();
     // mensaje.text(data.message);
     Swal.fire({
-        icon: 'success',
         title: 'Exito',
-        text: 'se ha creado el Producto correctamente',
-        showCancelButton: false,
-        confirmButtonColor: ' #d5c429 ',
-        confirmButtonText: 'Confirmar',
+        text: 'Producto creado Satisfactoriamente ',
+        icon: 'succes',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Eliminar',
+        cancelButtonText: 'Cancelar'
     }).then((result) => {
     
     $("#formCrearProducto").trigger("reset");
@@ -71,13 +73,15 @@ function onErrorCrearProducto(error) {
     // mensaje.removeClass("alert-success");
     // mensaje.show();
     // mensaje.text(error.message);
-        Swal.fire({
+    Swal.fire({
+        title: '¿Estás seguro de eliminar el producto?',
+        text: 'Producto Eliminado ',
         icon: 'warning',
-        title: 'Oops',
-        text: 'El producto no pudo ser creado.',
-        showCancelButton: false,
-        confirmButtonColor: ' #d5c429 ',
-        confirmButtonText: 'Confirmar',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Eliminar',
+        cancelButtonText: 'Cancelar'
     })
 
 }
@@ -103,7 +107,7 @@ if ($.fn.DataTable.isDataTable('#tablaProductos')) {
     $('#tablaProductos').DataTable().destroy();
 }
     // Obtén una referencia a la DataTable
-    var dataTable = $('#miTabla').DataTable({
+    var dataTable = $('#tablaProductos').DataTable({
         language: {
             "sProcessing": "Procesando...",
             "sLengthMenu": "Mostrar _MENU_ registros",
