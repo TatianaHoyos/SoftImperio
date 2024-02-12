@@ -21,7 +21,7 @@ public class ControllerProducto {
 
     @Autowired
     private ProductoService productoService;
-    private String urlServer = "http:localhost:8080/";
+    private String urlServer = "http://localhost:8080/";
 
     @PostMapping(value = "api/producto/crear", produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

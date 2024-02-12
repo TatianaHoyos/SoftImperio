@@ -48,6 +48,13 @@ function addCompra() {
           error: function (error) {
             // Manejar el error
             console.log(error);
+            Swal.fire({
+              title: 'Error',
+              text: 'No es posible eliminar después de 24 horas.',
+              icon: 'error',
+              showConfirmButton: false,
+              timer: 1500
+            });
           }
         });
       } else {
