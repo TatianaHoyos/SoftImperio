@@ -115,8 +115,6 @@ function callApiLogout(token){
         });
 }
 
-
-
 //logica para crear proveedor
 function onExitoCrearProveedor(data) {
     Swal.fire({
