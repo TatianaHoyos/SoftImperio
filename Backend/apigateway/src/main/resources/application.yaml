@@ -37,20 +37,14 @@ spring:
             allowCredentials: true
             maxAge: 3600
       httpclient:
+        ssl:
+          useInsecureTrustManager: true
         connect-timeout: 20000    # socket connection timeout
         pool:
           max-connections: 1500   # max allowed active connections
           type: FIXED             # fixed pool of max connections
           metrics: true           # routing httpclient metrics
       routes:
-        - id: oauth-introspect
-          uri: http://httpbin.org
-          predicates:
-            - Path=/edge-service/v1/httpbin
-            - Header=scope, httpbin
-          filters:
-            - name: AuthenticationFilter
-            - RewritePath=/edge-service/v1/httpbin, /get
         #########################################
         #             OAUTH                     #
         #########################################
@@ -86,6 +80,8 @@ spring:
         #########################################
         #         REQUIEREN FILTRO              #
         #########################################
+
+        ##PRODUCTOS##
         - id: services-productos-consultar
           uri: http://localhost:8080
           predicates:
@@ -93,9 +89,175 @@ spring:
             # - Header=scope, httpbin
           filters:
             - name: AuthenticationFilter
+              args:
+                modulo: Producto
+                accion: Consultar
             - RewritePath=/edge-service/v1/service/productos/consultar, /api/producto/consultar
 
+        - id: services-productos-agrupados-consultar
+          uri: https://localhost:7084
+          predicates:
+            - Path=/edge-service/v1/service/productos/consultar/agrupados
+          filters:
+            - name: AuthenticationFilter
+              args:
+                modulo: Producto
+                accion: Consultar
+            - RewritePath=/edge-service/v1/service/productos/consultar/agrupados, /api/Productos/Agrupados
 
+
+        ##CATEGORIAS##
+        - id: services-categoria-consultar
+          uri: https://localhost:7084
+          predicates:
+            - Path=/edge-service/v1/service/categorias/consultar
+          filters:
+            - name: AuthenticationFilter
+              args:
+                modulo: Producto
+                accion: Consultar
+            - RewritePath=/edge-service/v1/service/categorias/consultar, /api/Categorias
+
+        ##VENTAS##
+        - id: services-venta-barra-crear
+          uri: https://localhost:7084
+          predicates:
+            - Path=/edge-service/v1/service/venta/barra/crear
+          filters:
+            - name: AuthenticationFilter
+              args:
+                modulo: Venta
+                accion: Crear
+            - RewritePath=/edge-service/v1/service/venta/barra/crear, /api/Ventas/Barra
+
+        - id: services-venta-barra-notificacion
+          uri: https://localhost:7084
+          predicates:
+            - Path=/edge-service/v1/service/venta/barra/crear/**
+          filters:
+            - name: AuthenticationFilter
+              args:
+                modulo: Venta
+                accion: Crear
+            - RewritePath=/edge-service/v1/service/venta/barra/crear/(?<idventa>.*), /api/Ventas/Barra/$\{idventa}
+
+        - id: services-venta-consultar
+          uri: https://localhost:7084
+          predicates:
+            - Path=/edge-service/v1/service/venta/consultar/**
+          filters:
+            - name: AuthenticationFilter
+              args:
+                modulo: Venta
+                accion: Consultar
+            - RewritePath=/edge-service/v1/service/venta/consultar/(?<idventa>.*), /api/Ventas/$\{idventa}
+
+
+        - id: services-venta-mesa-crear
+          uri: https://localhost:7084
+          predicates:
+            - Path=/edge-service/v1/service/venta/mesa/crear
+          filters:
+            - name: AuthenticationFilter
+              args:
+                modulo: Venta
+                accion: Crear
+            - RewritePath=/edge-service/v1/service/venta/mesa/crear, /api/Ventas/Mesa
+
+        - id: services-venta-pendientes-consultar
+          uri: https://localhost:7084
+          predicates:
+            - Path=/edge-service/v1/service/venta/pendiente/consultar
+          filters:
+            - name: AuthenticationFilter
+              args:
+                modulo: Venta
+                accion: Consultar
+            - RewritePath=/edge-service/v1/service/venta/pendiente/consultar, /api/Ventas/Pendientes
+
+
+        ##COMPRAS##
+        - id: services-compras-consultar
+          uri: https://localhost:7084
+          predicates:
+            - Path=/edge-service/v1/service/compras/consultar
+          filters:
+            - name: AuthenticationFilter
+              args:
+                modulo: Compras
+                accion: Consultar
+            - RewritePath=/edge-service/v1/service/compras/consultar, /api/Compras
+
+        ##ROLES Y PERMISOS##
+        - id: services-roles-consultar
+          uri: http://localhost:8080
+          predicates:
+            - Path=/edge-service/v1/service/roles/consultar
+            # - Header=scope, httpbin
+          filters:
+            - name: AuthenticationFilter
+              args:
+                modulo: Configuracion
+                accion: Consultar
+            - RewritePath=/edge-service/v1/service/roles/consultar, /api/roles
+
+        - id: services-roles-crear
+          uri: http://localhost:8080
+          predicates:
+            - Path=/edge-service/v1/service/roles/crear
+            # - Header=scope, httpbin
+          filters:
+            - name: AuthenticationFilter
+              args:
+                modulo: Configuracion
+                accion: Crear
+            - RewritePath=/edge-service/v1/service/roles/crear, /api/rol/crear
+
+        - id: services-roles-actualizar
+          uri: http://localhost:8080
+          predicates:
+            - Path=/edge-service/v1/service/roles/actualizar/**
+          filters:
+            - name: AuthenticationFilter
+              args:
+                modulo: Configuracion
+                accion: Editar
+            - RewritePath=/edge-service/v1/service/roles/actualizar/(?<idrol>.*), /api/rol/actualizar/$\{idrol}
+
+        - id: services-roles-eliminar
+          uri: http://localhost:8080
+          predicates:
+            - Path=/edge-service/v1/service/roles/eliminar/**
+          filters:
+            - name: AuthenticationFilter
+              args:
+                modulo: Configuracion
+                accion: Eliminar
+            - RewritePath=/edge-service/v1/service/roles/eliminar/(?<idrol>.*), /api/rol/eliminar/$\{idrol}
+
+        - id: services-roles-configuracion
+          uri: http://localhost:8080
+          predicates:
+            - Path=/edge-service/v1/service/roles/configuracion/crear
+            # - Header=scope, httpbin
+          filters:
+            - name: AuthenticationFilter
+              args:
+                modulo: Configuracion
+                accion: Crear
+            - RewritePath=/edge-service/v1/service/roles/configuracion/crear, /api/configuracion/guardar
+
+        - id: services-permisos-consultar
+          uri: http://localhost:8080
+          predicates:
+            - Path=/edge-service/v1/service/permisos/consultar
+            # - Header=scope, httpbin
+          filters:
+            - name: AuthenticationFilter
+              args:
+                modulo: Configuracion
+                accion: Consultar
+            - RewritePath=/edge-service/v1/service/permisos/consultar, /api/permisos
 
 management:
   endpoint:

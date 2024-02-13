@@ -23,16 +23,24 @@ namespace venta.Controllers
         }
 
         // GET: api/Productos
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<object>>> GetProductos()
-        {
-          if (_context.Productos == null)
-          {
-              return NotFound();
-          }
-            return await _context.Productos.ToListAsync();
-            
-        }
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<object>>> GetProductos()
+        //{
+        //  if (_context.Productos == null)
+        //  {
+        //      return NotFound();
+        //  }
+        //    var listaProductosConExistencia = _context.Productos
+        //         .Include(p => p.Categoria)  // Si quieres incluir la categoría en la consulta
+        //         .Join(
+        //             _context.Existencia,
+        //             producto => producto.IdProductos,
+        //             existencia => existencia.IdProductos,
+        //             (producto, existencia) => new { Producto = producto, Existencia = existencia }
+        //         )
+        //         .ToList();
+        //    return listaProductosConExistencia;
+        //}
 
         [HttpGet]
         [Route("Agrupados")]
@@ -42,119 +50,57 @@ namespace venta.Controllers
             {
                 return NotFound();
             }
+            var listaExistencias = await _context.Existencia.ToListAsync();
             var listaProductos = await _context.Productos.ToListAsync();
             // Usamos LINQ para agrupar por NombreProducto y crear una lista de ReferenciaProducto para cada grupo.
+
             var productosTransformados = listaProductos
-               .GroupBy(producto => producto.IdCategoria)
-               .Select(grupoCategoria => new CategoriaProducto
-               {
-                   IdCategoria = grupoCategoria.Key.ToString(),
-                   Productos = grupoCategoria
-                       .GroupBy(producto => producto.NombreProducto)
-                       .Select(grupoProducto => new ProductoTransformado
-                       {
-                           NombreProducto = grupoProducto.Key,
-                           Foto = grupoProducto.Select(producto => producto.FotoProducto).First(),
-                           Referencias = grupoProducto.Select(producto => new Referencia
-                           {
-                               IdProducto = producto.IdProductos,
-                               NombreReferencia = producto.ReferenciaProducto,
-                               Precio = producto.PrecioProducto,
-                             //  Cantidad = producto.Cantidad
-                           }).ToList()
-                       }).ToList()
-               }).ToList();
+    .GroupBy(producto => producto.IdCategoria)
+    .Select(grupoCategoria => new
+    {
+        IdCategoria = grupoCategoria.Key.ToString(),
+        Productos = grupoCategoria
+            .GroupBy(producto => producto.NombreProducto)
+            .Select(grupoProducto => new
+            {
+                NombreProducto = grupoProducto.Key,
+                Foto = grupoProducto.Select(producto => producto.FotoProducto).First(),
+                Referencias = grupoProducto
+                    .Select(producto =>
+                    {
+                        var existencia = listaExistencias.FirstOrDefault(e => e.IdProductos == producto.IdProductos);
+
+                        return new Referencia
+                        {
+                            IdProducto = producto.IdProductos,
+                            NombreReferencia = producto.ReferenciaProducto,
+                            Precio = producto.PrecioProducto,
+                            Existencia = existencia != null && existencia.Cantidad > 0
+                                ? new ExistenciaDto
+                                {
+                                    IdExistencias = existencia.IdExistencias,
+                                    IdProductos = existencia.IdProductos,
+                                    Stock = existencia.Stock,
+                                    Cantidad = existencia.Cantidad,
+                                    Estado = existencia.Estado
+                                }
+                                : null
+                        };
+                    })
+                    .Where(referencia => referencia.Existencia != null && referencia.Existencia.Cantidad > 0)
+                    .ToList()
+            })
+            .Where(producto => producto.Referencias.Any()) // Elimina productos sin referencias o con existencia cantidad cero
+            .ToList()
+    })
+    .Where(categoria => categoria.Productos.Any()) // Elimina categorías sin productos
+    .ToList();
 
             return Ok(productosTransformados);
         }
 
-        // GET: api/Productos/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Productos>> GetProductos(int id)
-        {
-          if (_context.Productos == null)
-          {
-              return NotFound();
-          }
-            var productos = await _context.Productos.FindAsync(id);
-
-            if (productos == null)
-            {
-                return NotFound();
-            }
-
-            return productos;
-        }
-
-        // PUT: api/Productos/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutProductos(int id, Productos productos)
-        {
-            if (id != productos.IdProductos)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(productos).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProductosExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Productos
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Productos>> PostProductos(Productos productos)
-        {
-          if (_context.Productos == null)
-          {
-              return Problem("Entity set 'ApplicationDbContext.Productos'  is null.");
-          }
-            _context.Productos.Add(productos);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetProductos", new { id = productos.IdProductos }, productos);
-        }
-
-        // DELETE: api/Productos/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProductos(int id)
-        {
-            if (_context.Productos == null)
-            {
-                return NotFound();
-            }
-            var productos = await _context.Productos.FindAsync(id);
-            if (productos == null)
-            {
-                return NotFound();
-            }
-
-            _context.Productos.Remove(productos);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool ProductosExists(int id)
-        {
-            return (_context.Productos?.Any(e => e.IdProductos == id)).GetValueOrDefault();
-        }
+        
+      
+    
     }
 }

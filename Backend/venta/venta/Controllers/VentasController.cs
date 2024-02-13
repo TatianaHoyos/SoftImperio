@@ -45,13 +45,20 @@ namespace venta.Controllers
                 return NotFound();
             }
 
-            var ventas = await _context.Venta
-                .Where(venta => venta.fechaVenta >= fechaInicio && venta.fechaVenta <= fechaFin)
-                .ToListAsync();
+            try
+            {
+                var ventas = await _context.Venta
+                    .Where(venta => venta.fechaVenta >= fechaInicio && venta.fechaVenta <= fechaFin)
+                    .ToListAsync();
 
-            return ventas;
-
+                return Ok(ventas);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+            }
         }
+
 
         // GET: api/Ventas
         [HttpGet("ventas-ultimo-mes")]
@@ -113,18 +120,6 @@ namespace venta.Controllers
 
 
 
-
-        // GET: api/Ventas
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Venta>>> GetVentas()
-        {
-            if (_context.Venta == null)
-            {
-                return NotFound();
-            }
-            return await _context.Venta.ToListAsync();
-        }
-
         // GET: api/Ventas
         [HttpGet]
         [Route("Pendientes")]
@@ -138,23 +133,6 @@ namespace venta.Controllers
 ;
         }
 
-        // GET: api/Ventas/5
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<Venta>> GetVenta(int id)
-        //{
-        //    if (_context.Venta == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    var venta = await _context.Venta.FindAsync(id);
-
-        //    if (venta == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return venta;
-        //}
 
         //para hacer la consulta de el pedido
         [HttpGet("{id}")]
@@ -185,76 +163,7 @@ namespace venta.Controllers
             return Ok(resultado);
         }
 
-        // PUT: api/Ventas/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutVenta(int id, Venta venta)
-        {
-            if (id != venta.idVenta)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(venta).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!VentaExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Ventas
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Venta>> PostVenta(Venta venta)
-        {
-            if (_context.Venta == null)
-            {
-                return Problem("Entity set 'ApplicationDbContext.Ventas'  is null.");
-            }
-            _context.Venta.Add(venta);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetVenta", new { id = venta.idVenta }, venta);
-        }
-
-        // DELETE: api/Ventas/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteVenta(int id)
-        {
-            if (_context.Venta == null)
-            {
-                return NotFound();
-            }
-            var venta = await _context.Venta.FindAsync(id);
-            if (venta == null)
-            {
-                return NotFound();
-            }
-
-            _context.Venta.Remove(venta);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool VentaExists(int id)
-        {
-            return (_context.Venta?.Any(e => e.idVenta == id)).GetValueOrDefault();
-        }
+      
 
         // POST: api/Ventas
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

@@ -37,6 +37,7 @@ function parseJwt(token) {
         return null;
     }
 }
+
 function handleAjaxRequest(ajaxRequestFunction) {
     var objetoRecuperado = JSON.parse(localStorage.getItem('miObjeto'));
     if (isTokenExpired(objetoRecuperado.authoritation.accessToken)) {
@@ -74,7 +75,14 @@ function refreshAccessToken() {
     return new Promise((resolve, reject) => {
 
         fetch(apiUrl, requestOptions)
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                   // console.log('error al recuperar el refresh token', error);
+                    // Si el código de estado no está en el rango de 200, lanza un error
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
                 console.log(data);
                 objetoRecuperado.authoritation = data;
@@ -82,11 +90,37 @@ function refreshAccessToken() {
                 // Almacenar el objeto actualizado en el localStorage
                 localStorage.setItem('miObjeto', JSON.stringify(objetoRecuperado));
 
-                resolve(data.newToken);
+                resolve(objetoRecuperado.authoritation.accessToken);
             })
             .catch(error => {
                 console.log('error al recuperar el refresh token', error);
-                reject(error);
+                $("#cargando").modal("hide");
+                if (error.message.includes('401')) {
+
+                    // Aquí puedes manejar el código 401, por ejemplo, redirigir a la página de inicio de sesión
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Oops',
+                        text: 'La sesión ha expirado. Por favor, vuelve a iniciar sesión.',
+                        showCancelButton: false,
+                        confirmButtonColor: ' #d5c429 ',
+                        confirmButtonText: 'Confirmar',
+                    }).then((result) => {
+                        localStorage.removeItem('miObjeto');
+                        window.location.href = "./iniciosesion.html";
+                       
+                    });
+                   
+
+                } else {
+                    // Otras acciones para manejar errores distintos a 401
+                    reject(error);
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Oops',
+                        text: 'ha ocurrido un error inesperado.'
+                    });
+                }
             });
 
     });

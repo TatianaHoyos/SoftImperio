@@ -44,22 +44,46 @@ function crearProducto() {
 
 function onExitoCrearProducto(data) {
     console.log(data);
-    var mensaje = $("#resultadoCrear");
-    mensaje.addClass("alert-success");
-    mensaje.removeClass("alert-danger");
-    mensaje.show();
-    mensaje.text(data.message);
+    // var mensaje = $("#resultadoCrear");
+    // mensaje.addClass("alert-success");
+    // mensaje.removeClass("alert-danger");
+    // mensaje.show();
+    // mensaje.text(data.message);
+    Swal.fire({
+        title: 'Exito',
+        text: 'Producto creado Satisfactoriamente ',
+        icon: 'succes',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Eliminar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+    
     $("#formCrearProducto").trigger("reset");
     $("#foto-preview").attr('src', '');
     handleAjaxRequest(consultarProductos);
+    });
+   
 }
 function onErrorCrearProducto(error) {
     console.log(error);
-    var mensaje = $("#resultadoCrear");
-    mensaje.addClass("alert-danger");
-    mensaje.removeClass("alert-success");
-    mensaje.show();
-    mensaje.text(error.message);
+    // var mensaje = $("#resultadoCrear");
+    // mensaje.addClass("alert-danger");
+    // mensaje.removeClass("alert-success");
+    // mensaje.show();
+    // mensaje.text(error.message);
+    Swal.fire({
+        title: '¿Estás seguro de eliminar el producto?',
+        text: 'Producto Eliminado ',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Eliminar',
+        cancelButtonText: 'Cancelar'
+    })
+
 }
 
 
@@ -78,9 +102,12 @@ function consultarProductos(token) {
 
 function onExitoProductos(data) {
     console.log(data);
-
+// Destruir la DataTable existente si ya ha sido inicializada
+if ($.fn.DataTable.isDataTable('#tablaProductos')) {
+    $('#tablaProductos').DataTable().destroy();
+}
     // Obtén una referencia a la DataTable
-    var dataTable = $('#miTabla').DataTable({
+    var dataTable = $('#tablaProductos').DataTable({
         language: {
             "sProcessing": "Procesando...",
             "sLengthMenu": "Mostrar _MENU_ registros",
@@ -116,9 +143,9 @@ function onExitoProductos(data) {
         if (productos.idCategoria == 1) {
             nombreCategoria = "cervezas";
         } else if (productos.idCategoria == 2) {
-            nombreCategoria = "aguardientes";
-        } else if (productos.idCategoria == 3) {
             nombreCategoria = "wiskey";
+        } else if (productos.idCategoria == 3) {
+            nombreCategoria = "aguardiente";
         }
 
         var boton1 = "<button onclick='EliminarProducto(" + JSON.stringify(productos) + ")' class='btn btn-eliminar' data-id='1'><i class='fas fa-trash'></i></button>";
@@ -129,14 +156,14 @@ function onExitoProductos(data) {
             nombreCategoria,
             productos.nombreProducto,
             productos.referenciaProducto,
-            productos.cantidad,
+            productos.existencia.cantidad,
             productos.precioProducto,
             boton1 +
             boton2
         ]).draw();
 
-        console.log(productos.id + ' ' + productos.nombreProducto + ' ' + productos.idCategoria + ' ' +
-            productos.referenciaProducto + ' ' + productos.precioProducto);
+        // console.log(productos.id + ' ' + productos.nombreProducto + ' ' + productos.idCategoria + ' ' +
+        //     productos.referenciaProducto + ' ' + productos.precioProducto);
     });
 }
 
@@ -206,8 +233,32 @@ function actualizarProducto(idProductos) {
         data: formData,
         processData: false,
         contentType: false,
-        success: onExitoCrearProducto,
-        error: onErrorCrearProducto
+        success: function(response) {
+            console.log(response);
+            Swal.fire({
+              type: 'success',
+              text: 'Registro actualizado',
+              icon:"success",
+              showConfirmButton: true,
+            })
+            setTimeout(() => {
+              window.location.reload();
+             }, 1500);
+          },
+          error: function(error) {
+            console.log(error);
+            Swal.fire({
+              type: 'error',
+              text: "No se pudo actualizar registro",
+              icon: 'error',
+              showConfirmButton: true,
+            })
+            setTimeout(() => {
+              window.location.reload();
+             }, 1500);
+          }
+        // success: onExitoCrearProducto,
+        // error: onErrorCrearProducto
     });
 }
 function buscarProductosTabla() {

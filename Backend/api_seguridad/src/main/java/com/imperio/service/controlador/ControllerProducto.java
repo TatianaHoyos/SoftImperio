@@ -21,7 +21,7 @@ public class ControllerProducto {
 
     @Autowired
     private ProductoService productoService;
-    private String urlServer = "http:localhost:8080/";
+    private String urlServer = "http://localhost:8080/";
 
     @PostMapping(value = "api/producto/crear", produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -35,7 +35,7 @@ public class ControllerProducto {
 
             var productoEntity = new ProductoEntity();
             productoEntity.setIdCategoria (producto.getIdCategoria());
-            productoEntity.setIdProveedores(producto.getIdProveedores());
+            //productoEntity.setIdProveedores(producto.getIdProveedores());
             productoEntity.setNombreProducto(producto.getNombreProducto());
             productoEntity.setPrecioProducto(producto.getPrecioProducto());
             productoEntity.setFotoProducto(uploadDir + fileName);
@@ -60,7 +60,7 @@ public class ControllerProducto {
 
     @GetMapping(value = "api/producto/consultar", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> obtenerProductos(){
-        return ResponseEntity.ok(productoService.obtenerProductos());
+        return ResponseEntity.ok(productoService.obtenerProductosCantidades());
     }
 
     @DeleteMapping("api/producto/eliminar/{id}")
@@ -90,7 +90,7 @@ public class ControllerProducto {
             var productoEntity = new ProductoEntity();
             productoEntity.setIdProductos(id);
             productoEntity.setIdCategoria (producto.getIdCategoria());
-            productoEntity.setIdProveedores(producto.getIdProveedores());
+           //productoEntity.setIdProveedores(producto.getIdProveedores());
             productoEntity.setNombreProducto(producto.getNombreProducto());
             productoEntity.setPrecioProducto(producto.getPrecioProducto());
             productoEntity.setFotoProducto(uploadDir + fileName);
