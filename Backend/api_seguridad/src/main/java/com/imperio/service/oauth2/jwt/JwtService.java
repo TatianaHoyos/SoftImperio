@@ -35,10 +35,12 @@ public class JwtService implements IJwtService{
     private OAuthService oAuthService;
 
     @Override
-    public String extraerDatosUsuarios(String token) {
-        //todo:verificar porque el getsubject esta llegando null
-        return extractClaim(token, Claims::getSubject);
+    public Map<String,Object> extraerDatosUsuarios(String token) {
+        // Obtén los claims adicionales
+        return new HashMap<>(extractClaim(token));
     }
+
+
 
     @Override
     public String generarToken(UsuariosEntity user) {
@@ -47,13 +49,13 @@ public class JwtService implements IJwtService{
 
     @Override
     public boolean isTokenValido(String token,UsuariosEntity user) {
-        final String userName = extraerDatosUsuarios(token);
+        final String userName = extractClaim(token, Claims::getSubject);
         return (userName.equals(user.getNombre())) && !isTokenExpired(token);
     }
 
     @Override
     public boolean isTokenValido(String token) {
-        final String userName = extraerDatosUsuarios(token);
+        final String userName = extractClaim(token, Claims::getSubject);
         return (userName != null && !isTokenExpired(token));
 
     }
@@ -70,7 +72,8 @@ public class JwtService implements IJwtService{
 
     private String generateToken(UsuariosEntity user) {
         Map<String, Object> extraClaims = new HashMap<>();
-        extraClaims.put("Prueba", "Popis");
+        extraClaims.put("Rol", user.getRol().getNombreRol());
+        extraClaims.put("IdRol", user.getRol().getIdRol());
         return Jwts.builder()
                 .claims(extraClaims)
                 .subject(user.getNombre())
@@ -107,6 +110,12 @@ public class JwtService implements IJwtService{
         final Claims claims = extractAllClaims(token);
         return claimsResolvers.apply(claims);
     }
+
+    private Claims extractClaim(String token) {
+        final Claims claims = extractAllClaims(token);
+        return claims;
+    }
+
 
     private Claims extractAllClaims(String token) {
         try {

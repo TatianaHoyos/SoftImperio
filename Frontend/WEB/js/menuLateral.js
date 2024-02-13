@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
+
 $(document).ready(function () {
 
   $(".nav-link").click(function () {
@@ -45,4 +46,27 @@ $(document).ready(function () {
         logoNavbar.removeClass("d-none").addClass("d-block");
       }
   });
+  habilitarOpciones();
 });
+
+function habilitarOpciones(){
+  var usuario = JSON.parse(localStorage.getItem('miObjeto'));
+  if (!usuario.rol.permisos.hasOwnProperty('Configuracion')){
+    $("#configuracion").remove();
+    $("#ventaPuntos").remove();
+    $("#configuracionInicio").remove();
+}if(!usuario.rol.permisos.hasOwnProperty('Venta')){
+  $("#venta").remove();
+  $("#ventaPuntos").remove();
+  $("#ventaPuntosMesa").remove();
+}if(!usuario.rol.permisos.hasOwnProperty('Producto')){
+  $("#productos").remove();
+  $("#productosExistencias").remove();
+}if(!usuario.rol.permisos.hasOwnProperty('Compra')){
+  $("#compras").remove();
+}if(!usuario.rol.permisos.hasOwnProperty('Proveedor')){
+  $("#proveedores").remove();
+}if(!usuario.rol.permisos.hasOwnProperty('Usuario')){
+  $("#usuarios").remove();
+}
+}

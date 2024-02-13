@@ -49,7 +49,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                 return this.onError(exchange, Constants.MSG_ERROR_GET_AUTHORIZATION);
             }
 
-            return authorizationByIntrospection.isValidTokenByIntrospection(exchange)
+            return authorizationByIntrospection.isValidTokenByIntrospection(exchange, config)
                     .flatMap(introspectUserResponse -> {
                         if (!introspectUserResponse.getStatus().equals("exito")) {
                             return this.onError(exchange, Constants.MSG_ERROR_TOKEN_INVALID);
@@ -107,7 +107,8 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
     @AllArgsConstructor
     @Data
     public static class Config {
-        private TransactionData transactionData;
-        private JsonNode jsonNodeRequest;
+      private String modulo;
+      private String accion;
+
     }
 }

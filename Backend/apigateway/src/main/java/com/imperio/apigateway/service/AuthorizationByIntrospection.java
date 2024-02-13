@@ -1,5 +1,7 @@
 package com.imperio.apigateway.service;
 
+import com.imperio.apigateway.filter.AuthenticationFilter;
+import com.imperio.apigateway.model.IntrospectErrorResponse;
 import com.imperio.apigateway.model.IntrospectUserResponse;
 import com.imperio.apigateway.util.BussinessException;
 import com.imperio.apigateway.util.Constants;
@@ -45,10 +47,12 @@ public class AuthorizationByIntrospection implements IAuthorizationByIntrospecti
 
     }
     @Override
-    public Mono<IntrospectUserResponse> isValidTokenByIntrospection(ServerWebExchange exchange) {
-        return getOauth2Introspect(exchange);
+    public Mono<IntrospectUserResponse> isValidTokenByIntrospection(ServerWebExchange exchange,
+                                                                    AuthenticationFilter.Config config) {
+        return getOauth2Introspect(exchange, config);
     }
-    private Mono<IntrospectUserResponse> getOauth2Introspect(ServerWebExchange exchange) {
+    private Mono<IntrospectUserResponse> getOauth2Introspect(ServerWebExchange exchange,
+                                                             AuthenticationFilter.Config config) {
         try {
             return webClient
                     .post()
@@ -56,14 +60,16 @@ public class AuthorizationByIntrospection implements IAuthorizationByIntrospecti
                     .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                     .header(Constants.HTTP_AUTHORIZATION,"Basic " + credencial)
                     .body(BodyInserters
-                    .fromFormData(Constants.BODY_TOKEN, getToken(exchange.getRequest())))
+                    .fromFormData(Constants.BODY_TOKEN, getToken(exchange.getRequest()))
+                            .with("accion",config.getAccion())
+                            .with("modulo",config.getModulo()))
                     .exchange()
                     .flatMap(clientResponse -> {
                         if (clientResponse.statusCode().is2xxSuccessful()) {
                             return clientResponse.bodyToMono(IntrospectUserResponse.class)
                                     .flatMap(this::getTokenStatusValidation);
                         } else {
-                            return clientResponse.bodyToMono(String.class)
+                            return clientResponse.bodyToMono(IntrospectErrorResponse.class)
                                     .flatMap(this::processIntrospectUserError);
                         }
                     }).onErrorResume(Mono::error);
@@ -81,9 +87,9 @@ public class AuthorizationByIntrospection implements IAuthorizationByIntrospecti
         return Mono.error(new BussinessException(Constants.MSG_ERROR_TOKEN_INVALID));
     }
 
-    private Mono<IntrospectUserResponse> processIntrospectUserError(String responseError) {
-        log.error("Error en la respuesta del servicio de introspect: {}", responseError);
-        return Mono.error(new BussinessException(Constants.MSG_ERROR_TOKEN_INVALID));
+    private Mono<IntrospectUserResponse> processIntrospectUserError(IntrospectErrorResponse responseError) {
+        log.error("Error en la respuesta del servicio de introspect: {}", responseError.getMessage());
+        return Mono.error(new BussinessException(responseError.getMessage()));
     }
 
     private String getToken(ServerHttpRequest request) {

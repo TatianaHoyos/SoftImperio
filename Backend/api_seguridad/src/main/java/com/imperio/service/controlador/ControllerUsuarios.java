@@ -3,6 +3,7 @@ package com.imperio.service.controlador;
 import com.imperio.service.model.dto.comun.Response;
 import com.imperio.service.model.dto.usuarios.UsuariosRequest;
 import com.imperio.service.model.entity.UsuariosEntity;
+import com.imperio.service.repository.RolService;
 import com.imperio.service.repository.UsuariosService;
 import com.imperio.service.services.EncryptService;
 import com.imperio.service.util.FileUploadUtil;
@@ -24,6 +25,9 @@ public class ControllerUsuarios {
     private UsuariosService usuariosService;
 
     @Autowired
+    private RolService rolService;
+
+    @Autowired
     private EncryptService encryptService;
 
     private String urlServer = "http:localhost:8080/";
@@ -33,6 +37,7 @@ public class ControllerUsuarios {
     public ResponseEntity<?> crearUsuario( UsuariosRequest usuario,
                                             @RequestParam("foto") MultipartFile multipartFile){
         try {
+            var rol= rolService.obtenerRolesPorId(usuario.getIdRol());
             String uploadDir = "usuarios-photos/";
             String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
             fileName = usuario.getNombre()  +"-"+ fileName;
@@ -43,7 +48,7 @@ public class ControllerUsuarios {
 
 
             var usuariosEntity = new UsuariosEntity();
-            usuariosEntity.setIdRol(usuario.getIdRol());
+            usuariosEntity.setRol(rol);
             usuariosEntity.setNombre(usuario.getNombre());
             usuariosEntity.setDocumento(usuario.getDocumento());
             usuariosEntity.setEmail(usuario.getEmail());
@@ -105,13 +110,14 @@ public class ControllerUsuarios {
                                               @RequestParam("foto") MultipartFile multipartFile) throws Exception {
 
         try {
-            String uploadDir = "producto-photos/";
+            var rol= rolService.obtenerRolesPorId(usuario.getIdRol());
+            String uploadDir = "usuarios-photos/";
             String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
             fileName = usuario.getNombre()  +"-"+ fileName;
 
             var usuariosEntity = new UsuariosEntity();
             usuariosEntity.setIdUsuarios(id);
-            usuariosEntity.setIdRol(usuario.getIdRol());
+            usuariosEntity.setRol(rol);
             usuariosEntity.setNombre(usuario.getNombre());
             usuariosEntity.setDocumento(usuario.getDocumento());
             usuariosEntity.setEmail(usuario.getEmail());
