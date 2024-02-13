@@ -16,13 +16,11 @@ $("#nombreUsuario").html("¡Hola! " + objetoRecuperado.nombre +" <span id='rolUs
      $("#imgUsuario").attr("src", objetoRecuperado.foto);
     
      $("#rolUsuario").text(objetoRecuperado.rol.nombreRol);
-          
-    if(objetoRecuperado.rol.idRol == 1){
-       
-    }else if(objetoRecuperado.rol.idRol == 8){
-        // $("#rolUsuario").text("Mesero");
+     if (!objetoRecuperado.rol.permisos.hasOwnProperty('Configuracion')){
         $("#contenedorPrincipalNotificacion").remove();
-       
-        
-    }
+      
+        // Eliminar el elemento con ID "containerNotification"
+        $("#containerNotification").remove();
+     }     
+   
 }
