@@ -7,9 +7,12 @@ import com.imperio.service.model.dto.login.LoginResponse;
 import com.imperio.service.model.dto.oauth2.TokenRefreshRequest;
 import com.imperio.service.model.dto.oauth2.TokenRefreshResponse;
 import com.imperio.service.model.dto.oauth2.TokenRequest;
+import com.imperio.service.model.dto.rol.RolResponse;
 import com.imperio.service.model.entity.OAuthEntity;
+import com.imperio.service.model.entity.PermisosEntity;
 import com.imperio.service.oauth2.jwt.JwtService;
 import com.imperio.service.oauth2.refresh.RefreshTokenService;
+import com.imperio.service.repository.RolService;
 import com.imperio.service.repository.UsuariosService;
 import com.imperio.service.services.EncryptService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -43,6 +46,7 @@ public class ControllerOAuth2 {
     @Autowired
     private UsuariosService usuariosService;
 
+
     @Autowired
     private EncryptService encryptService;
 
@@ -51,6 +55,8 @@ public class ControllerOAuth2 {
 
     @Autowired
     private RefreshTokenService refreshTokenService;
+    @Autowired
+    private RolService rolService;
 
     @Value("${security.clientId}")
     private String clientId;
@@ -80,7 +86,8 @@ public class ControllerOAuth2 {
                     response.setDocumento(usuariodb.getDocumento());
                     response.setNombre(usuariodb.getNombre());
                     response.setFoto(urlServer + usuariodb.getFoto());
-                    response.setRol(usuariodb.getIdRol());
+                    response.setRol(usuariodb.getRol());
+                   // response.setRol(usuariodb.getIdRol());
 
                     String jwt = jwtService.generarToken(usuariodb);
                     OAuthEntity refreshJwt = refreshTokenService.crearRefreshToken(usuariodb,jwt);
@@ -184,6 +191,16 @@ public class ControllerOAuth2 {
         try {
             var tokenDb = jwtService.encontrarToken(token.getAccessToken());
             if (tokenDb.isPresent() && jwtService.isTokenValido(token.getAccessToken())) {
+                 // todo: aca debo validar si el rol tiene permisos necesarios para la operacion
+                Map<String,Object> extraClaims = jwtService.extraerDatosUsuarios(token.getAccessToken());
+                var rolFromJwt =  (String) extraClaims.get("Rol");
+                var idRolFromJwt =  (Integer) extraClaims.get("IdRol");
+
+                if (!hasPermission(token, idRolFromJwt)){
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                            .body(new Response("error", "Su rol no permite esta operación"));
+                }
+
                 return ResponseEntity.ok(new Response("exito", "Autorizado"));
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
@@ -195,6 +212,22 @@ public class ControllerOAuth2 {
                     .body(new Response("error", "no fue posible validar el token"));
         }
     }
+
+    private boolean hasPermission(TokenRequest token, Integer idRolFromJwt) {
+        var rol= rolService.obtenerRolesPorId(idRolFromJwt);
+        var tienePermisos = false;
+        for (PermisosEntity permisos : rol.getPermisos()){
+           if (permisos.getAcciones().getNombre().equals(token.getAccion()) &&
+                    permisos.getModulo().getNombre().equals(token.getModulo())){
+                tienePermisos = true;
+                break;
+           }
+
+
+        }
+        return tienePermisos;
+    }
+
 
     @SecurityRequirement(name = "basicAuth")
     @Operation(summary = "logout del token jwt", responses = {

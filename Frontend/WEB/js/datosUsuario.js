@@ -15,12 +15,12 @@ $("#nombreUsuario").html("¡Hola! " + objetoRecuperado.nombre +" <span id='rolUs
     // $("#imgUsuario").attr("src", "http://localhost:8080" + img[1]);
      $("#imgUsuario").attr("src", objetoRecuperado.foto);
     
-   
-    if(objetoRecuperado.rol==1){
-        $("#rolUsuario").text("Administrador");
+     $("#rolUsuario").text(objetoRecuperado.rol.nombreRol);
           
-    }else if(objetoRecuperado.rol==8){
-        $("#rolUsuario").text("Mesero");
+    if(objetoRecuperado.rol.idRol == 1){
+       
+    }else if(objetoRecuperado.rol.idRol == 8){
+        // $("#rolUsuario").text("Mesero");
         $("#contenedorPrincipalNotificacion").remove();
        
         

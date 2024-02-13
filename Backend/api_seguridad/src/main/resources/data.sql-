@@ -1,0 +1,101 @@
+-- data.sql
+INSERT INTO rol (NombreRol, Estado)
+VALUES ('Administrador', 'Activo');
+
+
+INSERT INTO acciones (Nombre) VALUES
+('Consultar'),
+('Editar'),
+('Eliminar'),
+('Crear');
+
+INSERT INTO modulo (Nombre) VALUES
+('Usuario'),
+('Producto'),
+('Proveedor'),
+('Venta'),
+('Compra'),
+('Configuracion');
+
+-- Insertar combinaciones de permisos
+INSERT INTO permisos (IdAcciones, IdModulo) VALUES
+-- Combinaciones para Usuario
+(1, 1), -- Consultar
+(2, 1), -- Editar
+(3, 1), -- Eliminar
+(4, 1), -- Crear
+
+-- Combinaciones para Producto
+(1, 2), -- Consultar
+(2, 2), -- Editar
+(3, 2), -- Eliminar
+(4, 2), -- Crear
+
+-- Combinaciones para Proveedor
+(1, 3), -- Consultar
+(2, 3), -- Editar
+(3, 3), -- Eliminar
+(4, 3), -- Crear
+
+-- Combinaciones para Venta
+(1, 4), -- Consultar
+(2, 4), -- Editar
+(3, 4), -- Eliminar
+(4, 4), -- Crear
+
+-- Combinaciones para Compra
+(1, 5), -- Consultar
+(2, 5), -- Editar
+(3, 5), -- Eliminar
+(4, 5), -- Crear
+
+-- Combinaciones para Configuracion
+(1, 6), -- Consultar
+(2, 6), -- Editar
+(3, 6), -- Eliminar
+(4, 6); -- Crear
+
+
+-- Otras sentencias INSERT aquí...
+INSERT INTO configuracion (IdPermisos, idRol, Estado) VALUES
+-- Acciones para Usuario
+(1, 1, 'Activo'), -- Consultar
+(2, 1, 'Activo'), -- Editar
+(3, 1, 'Activo'), -- Eliminar
+(4, 1, 'Activo'), -- Crear
+
+-- Acciones para Producto
+(5, 1, 'Activo'), -- Consultar
+(6, 1, 'Activo'), -- Editar
+(7, 1, 'Activo'), -- Eliminar
+(8, 1, 'Activo'), -- Crear
+
+-- Acciones para Proveedor
+(9, 1, 'Activo'), -- Consultar
+(10, 1, 'Activo'), -- Editar
+(11, 1, 'Activo'), -- Eliminar
+(12, 1, 'Activo'), -- Crear
+
+-- Acciones para Venta
+(13, 1, 'Activo'), -- Consultar
+(14, 1, 'Activo'), -- Editar
+(15, 1, 'Activo'), -- Eliminar
+(16, 1, 'Activo'), -- Crear
+
+-- Acciones para Compra
+(17, 1, 'Activo'), -- Consultar
+(18, 1, 'Activo'), -- Editar
+(19, 1, 'Activo'), -- Eliminar
+(20, 1, 'Activo'), -- Crear
+
+-- Acciones para Configuracion
+(21, 1, 'Activo'), -- Consultar
+(22, 1, 'Activo'), -- Editar
+(23, 1, 'Activo'), -- Eliminar
+(24, 1, 'Activo'); -- Crear
+
+
+
+INSERT INTO Usuarios (Nombre, Documento, Email, Telefono, Foto, Password, Estado, IdRol)
+VALUES ('Administrador', '123456789', 'admin@example.com', '123456789', 'usuarios-photos/admin.jpg', 'e5445009ac9aad8da26639b8f7860815e32d0d1daad3fe975697a60838749eb5', 'Activo', 1);
+

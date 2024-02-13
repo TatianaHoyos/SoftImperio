@@ -9,5 +9,9 @@ import lombok.NoArgsConstructor;
 public class TokenRequest {
     @NotBlank
     private String accessToken;
+    @NotBlank
+    private String modulo;
+    @NotBlank
+    private String accion;
 
 }

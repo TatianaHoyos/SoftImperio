@@ -90,7 +90,7 @@ function refreshAccessToken() {
                 // Almacenar el objeto actualizado en el localStorage
                 localStorage.setItem('miObjeto', JSON.stringify(objetoRecuperado));
 
-                resolve(data.newToken);
+                resolve(objetoRecuperado.authoritation.accessToken);
             })
             .catch(error => {
                 console.log('error al recuperar el refresh token', error);
