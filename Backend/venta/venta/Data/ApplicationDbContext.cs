@@ -11,7 +11,6 @@ namespace venta.Data
         {
         }
         public DbSet<DetalleCreditos> DetalleCreditos { get; set; }
-        public DbSet<Creditos> Creditos { get; set; }
         public DbSet<UsuarioCredito> UsuarioCredito { get; set; }
         public DbSet<Venta> Venta { get; set; }
         public DbSet<Compra> Compras { get; set; }
@@ -20,6 +19,8 @@ namespace venta.Data
         public DbSet<Categoria> Categoria { get; set; }
         public DbSet<Productos> Productos { get; set; }
         public DbSet<DetalleVenta> DetalleVenta { get; set; }
+        public DbSet<Creditos> creditos { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -28,6 +29,9 @@ namespace venta.Data
                 .Property(e => e.fechaVenta)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
+            modelBuilder.Entity<Creditos>()
+                .Property(e => e.Fecha)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
             // Otros ajustes de configuración si los tienes
 
             base.OnModelCreating(modelBuilder);

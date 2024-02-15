@@ -105,22 +105,20 @@ namespace venta.Controllers
             }
         }
 
-
         // POST: api/UsuarioCreditos
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<IActionResult> PostUsuarioCredito(UsuarioCredito usuarioCredito)
+        public async Task<ActionResult<UsuarioCredito>> PostUsuarioCredito(UsuarioCredito usuarioCredito)
         {
-            if (_context.UsuarioCredito == null)
-            {
+          if (_context.UsuarioCredito == null)
+          {
                 var errorResponse = new Response
                 {
                     message = "Entity set 'ApplicationDbContext.UsuarioCredito' is null.",
                     status = "Error"
                 };
                 return new JsonResult(errorResponse) { StatusCode = 500 }; // Usar un código de estado adecuado, como 500 Internal Server Error
-            }
-
+          }
             _context.UsuarioCredito.Add(usuarioCredito);
             await _context.SaveChangesAsync();
 
