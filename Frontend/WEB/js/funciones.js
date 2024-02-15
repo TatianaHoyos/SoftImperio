@@ -150,20 +150,16 @@ function callApiLogout(token){
             Swal.fire({
                 icon: 'warning',
                 title:'Oops',
-                text: 'Ocurrio un error inesperado'
-              });
+                text: 'Ocurrió un error inesperado'
+            });
         });
-    
-
 }
-
-
 
 //logica para crear proveedor
 function onExitoCrearProveedor(data) {
     Swal.fire({
         type: 'success',
-        text: 'Registro guardado',
+        text: 'Registro guardado.',
         icon: "success",
         showConfirmButton: false,
         timer: 1500
@@ -181,10 +177,9 @@ function onExitoCrearProveedor(data) {
         Swal.fire({
             icon: 'error',
             title: 'Oops...',
-            text: error.message || 'An unexpected error occurred.',
+            text: error.message || 'Ocurrió un error inesperado.',
         });
     }
-    
 
 function crearUsuario() {
     var formData = {
