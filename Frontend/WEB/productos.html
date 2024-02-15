@@ -76,6 +76,7 @@
                                     Nombre del Producto
                                 </label>
                                 <div class="input-group">
+                                   
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" style="background-color: #e5c850"><i
                                                 class="far fa-envelope"></i></span>
@@ -83,6 +84,8 @@
                                     <input type="text" class="form-control" id="nombre" name="nombreProducto"
                                         placeholder="Nombre Producto" onkeypress="return sololetras(event)">
                                 </div>
+                                <span id="mensajeLetras"></span>
+
                             </div>
 
                         </div>
@@ -92,16 +95,20 @@
                                 <label for="nombre" class="text-white">
                                     Referencia del Producto
                                 </label>
+                              
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" style="background-color: #e5c850"><i
                                                 class="far fa-envelope"></i></span>
                                     </div>
                                     <input type="text" class="form-control" id="referencia" name="referenciaProducto"
-                                        placeholder="Referencia Producto" onkeypress="return validarNumero(event)">
-                                </div>
-                            </div>
+                                        placeholder="Referencia Producto" onkeypress="return soloNumeros(event)">  
+                                    </div>
+                                    <span id="mensajeNumeros"></span>
+                                    
 
+                            </div>
+                           
                         </div>
 
                         <div class="form-row justify-content-center">
@@ -115,8 +122,10 @@
                                                 class="far fa-envelope"></i></span>
                                     </div>
                                     <input type="text" class="form-control" id="precio" name="precioProducto"
-                                        placeholder="Precio Producto" onkeypress="return validarNumero(event)">
+                                        placeholder="Precio Producto" onkeypress="return soloNumeros(event)">
                                 </div>
+                                <span id="mensajeNumerosPrecio"></span>
+                                
                             </div>
 
                         </div>
