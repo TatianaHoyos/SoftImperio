@@ -30,7 +30,7 @@ public class ControllerUsuarios {
     @Autowired
     private EncryptService encryptService;
 
-    private String urlServer = "http:localhost:8080/";
+    private String urlServer = "http://localhost:8080/";
 
     @PostMapping(value = "api/usuarios/crear", produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -98,7 +98,7 @@ public class ControllerUsuarios {
             return ResponseEntity.ok(new Response("exito", "se elimino el usuario con exito"));
         }catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new Response("error", "Ha ocurrido un error al intentar eliminar el producto"));
+                    .body(new Response("error", "Ha ocurrido un error al intentar eliminar el usuario"));
         }
 
     }

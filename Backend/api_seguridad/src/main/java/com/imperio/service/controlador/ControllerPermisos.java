@@ -29,6 +29,17 @@ public class ControllerPermisos {
     public ResponseEntity<?> obtenerRoles(){
         return ResponseEntity.ok(rolService.obtenerRoles());
     }
+
+    @GetMapping(value = "api/roles/{id}")
+    public ResponseEntity<?> obtenerRolPorId(@PathVariable Integer id) {
+        RolEntity rol = rolService.obtenerRolesPorId(id);
+
+        if (rol != null) {
+            return ResponseEntity.ok(rol);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
     @PostMapping(value = "api/rol/crear", produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> crearRol(@RequestBody RolRequest rol) {
