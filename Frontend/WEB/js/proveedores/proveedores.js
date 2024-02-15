@@ -102,6 +102,7 @@ function eliminarProveedor(idProveedor) {
         }
     });
 }
+
 //Ajax para editar Proveedor
 function editarProveedor() {
     var data = {
