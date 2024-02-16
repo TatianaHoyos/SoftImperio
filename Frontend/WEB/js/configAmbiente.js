@@ -10,7 +10,7 @@ var modulo = {
     },
     "usuario" : {
         "usuario" : "./nuestrosUsuarios.html",
-        "colaboorador" : "registrocolaborador"
+        "colaboorador" : "registrocolaborador.html"
     },
     "proveedor" : {
         "proveedor" : "./nuestrosProveedores.html"
