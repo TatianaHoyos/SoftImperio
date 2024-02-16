@@ -133,7 +133,52 @@ function onExitousuariocredito(data) {
     });
 }
     function DetalleCredito(usuariocredito){
-        
+        $.ajax({
+            type: "GET",
+            url: "https://localhost:7084/api/creditos/" + usuariocredito.idUsuarioCredito,
+            "headers": {
+                "Content-Type": "application/json",
+        //        'Authorization': `Bearer ${token}`
+            },
+            success: function (data) {
+
+                if (data.length === 0) {
+                $('#detalleCredito').modal('show');
+                $('#tablaDetalleCredito > tbody').empty();
+                $.each(data, function (id, credito) {
+                    //var boton0 = "<button onclick='DetalleCredito(" + JSON.stringify(usuariocredito) + ")' class='btn btn-delete' data-id='1'><i class='fas fa-money-bill-wave'></i></button>";
+    
+                    $('#tablaDetalleCredito').append('<tr><td>' + credito.idVenta +'</td><td>' + credito.precioCredito +
+                        '</td><td>' + credito.fecha + '</td></tr>');
+            
+                });
+                } else {
+                    Swal.fire({
+                        title: 'Exito',
+                        text: 'El usuario no tiene creditos asociados',
+                        icon: 'success',
+                        showCancelButton: false,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Aceptar'
+                    }).then((result) => {
+                    });
+                }
+            },
+            error:  function (error) {
+                console.log(error)
+                Swal.fire({
+        title: 'Error',
+        text: error.message,
+        icon: 'error',
+        showCancelButton: false,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Aceptar'
+    }).then((result) => {
+    });
+            }            
+        });
     }
 
 

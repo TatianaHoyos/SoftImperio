@@ -34,20 +34,18 @@ namespace venta.Controllers
 
         // GET: api/Creditos/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Creditos>> GetCreditos(int id)
+        public async Task<ActionResult<IEnumerable<Creditos>>> GetCreditos(int id)
         {
-          if (_context.creditos == null)
-          {
-              return NotFound();
-          }
-            var creditos = await _context.creditos.FindAsync(id);
+            var creditos = await _context.creditos.ToListAsync();
 
-            if (creditos == null)
+            var creditosList = creditos.Where(e => e.IdUsuarioCredito ==id).ToList();
+
+            if (creditosList == null)
             {
                 return NotFound();
             }
 
-            return creditos;
+            return creditosList;
         }
 
         // PUT: api/Creditos/5
