@@ -356,6 +356,11 @@ background-color:white;
     .input-group-prepend {
       width: 40px; /* Puedes ajustar el valor según sea necesario */
   }
+  .btn-detalles {
+    background-color: #e2c651; /* Cambia esto al color que desees */
+    color: black; /* Cambia esto al color de texto que desees */
+  }
+
 
 
 

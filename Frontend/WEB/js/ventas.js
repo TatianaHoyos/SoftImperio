@@ -45,13 +45,15 @@ function actualizarTablaVentas(venta) {
                 <td>${ventas.fechaVenta}</td>
                 <td>${ventas.totalVenta}</td>
                 <td>
-                <button class="btn btn-info" onclick="verDetalles(${ventas.idVenta})">Detalles</button>
+                <button class="btn btn-detalles" onclick="verDetalles(${ventas.idVenta})">Detalles</button>
                 </td>
             </tr>
         `;
         tablaVentas.innerHTML += fila;
     });
 }
+
+
 
 
 function verDetalles(idVenta) {
