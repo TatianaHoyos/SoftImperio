@@ -3,6 +3,7 @@ package com.imperio.service.controlador;
 import com.imperio.service.model.dto.comun.Response;
 import com.imperio.service.model.dto.usuarios.UsuariosRequest;
 import com.imperio.service.model.entity.UsuariosEntity;
+import com.imperio.service.repository.RolService;
 import com.imperio.service.repository.UsuariosService;
 import com.imperio.service.services.EncryptService;
 import com.imperio.service.util.FileUploadUtil;
@@ -24,15 +25,19 @@ public class ControllerUsuarios {
     private UsuariosService usuariosService;
 
     @Autowired
+    private RolService rolService;
+
+    @Autowired
     private EncryptService encryptService;
 
-    private String urlServer = "http:localhost:8080/";
+    private String urlServer = "http://localhost:8080/";
 
     @PostMapping(value = "api/usuarios/crear", produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> crearUsuario( UsuariosRequest usuario,
                                             @RequestParam("foto") MultipartFile multipartFile){
         try {
+            var rol= rolService.obtenerRolesPorId(usuario.getIdRol());
             String uploadDir = "usuarios-photos/";
             String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
             fileName = usuario.getNombre()  +"-"+ fileName;
@@ -43,7 +48,7 @@ public class ControllerUsuarios {
 
 
             var usuariosEntity = new UsuariosEntity();
-            usuariosEntity.setIdRol(usuario.getIdRol());
+            usuariosEntity.setRol(rol);
             usuariosEntity.setNombre(usuario.getNombre());
             usuariosEntity.setDocumento(usuario.getDocumento());
             usuariosEntity.setEmail(usuario.getEmail());
@@ -93,7 +98,7 @@ public class ControllerUsuarios {
             return ResponseEntity.ok(new Response("exito", "se elimino el usuario con exito"));
         }catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new Response("error", "Ha ocurrido un error al intentar eliminar el producto"));
+                    .body(new Response("error", "Ha ocurrido un error al intentar eliminar el usuario"));
         }
 
     }
@@ -105,13 +110,14 @@ public class ControllerUsuarios {
                                               @RequestParam("foto") MultipartFile multipartFile) throws Exception {
 
         try {
-            String uploadDir = "producto-photos/";
+            var rol= rolService.obtenerRolesPorId(usuario.getIdRol());
+            String uploadDir = "usuarios-photos/";
             String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
             fileName = usuario.getNombre()  +"-"+ fileName;
 
             var usuariosEntity = new UsuariosEntity();
             usuariosEntity.setIdUsuarios(id);
-            usuariosEntity.setIdRol(usuario.getIdRol());
+            usuariosEntity.setRol(rol);
             usuariosEntity.setNombre(usuario.getNombre());
             usuariosEntity.setDocumento(usuario.getDocumento());
             usuariosEntity.setEmail(usuario.getEmail());

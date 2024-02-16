@@ -1,3 +1,5 @@
+//import { modulo } from "./configAmbiente";
+
 $(document).ready(function () {
     $("#resultadoLogin").hide();
 });
@@ -38,10 +40,14 @@ function login() {
     if (validarCampoVacio($("#passwordLogin").val().length, 'Por favor ingrese una contraseña')) {
         return false;
     }
+    callApiLogin(formData);
+   
+}
 
+function callApiLogin(formData){
     $.ajax({
         type: "POST",
-        url: "http://localhost:8080/api/login",
+        url: "http://localhost:8081/edge-service/v1/authorization/login",
         "headers": {
             "Content-Type": "application/json"
         },
@@ -55,20 +61,54 @@ function login() {
 
 function onExito(data) {
     console.log(data)
+   
+    var permisosModulos = agruparPorModulo(data.rol.permisos);
+    data.rol.permisos = permisosModulos;
     var objetoString = JSON.stringify(data);
     localStorage.setItem('miObjeto', objetoString);
-
     //validar si es admin o colaborador para redireccionarlo a cierta interfaz
-    if (data.rol == 1) {
-
-        window.location = "./PuntoVentaBarra.html"
-    } else if (data.rol == 8) {
-
-        window.location = "./puntoVentaMesa.html"
+    if (permisosModulos.hasOwnProperty('Configuracion')){
+        window.location = modulo.configuracion.inicio;
+    }else if(permisosModulos.hasOwnProperty('Venta')){
+        window.location = modulo.venta.p_mesa;
+    }else if(permisosModulos.hasOwnProperty('Producto')){
+        window.location = modulo.producto.producto;
+    }else if(permisosModulos.hasOwnProperty('Compra')){
+        window.location = modulo.compra.compra;
+    }else if(permisosModulos.hasOwnProperty('Proveedor')){
+        window.location = modulo.proveedor.proveedor;
+    }else{
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Eres un Usuario sin privilegio',
+        });
     }
 
 }
 
+function agruparPorModulo(permisos) {
+    var resultado = {};
+    
+    permisos.forEach(function(permiso) {
+      var modulo = permiso.modulo.nombre;
+      
+      if (!resultado.hasOwnProperty(modulo)) {
+        resultado[modulo] = {
+          nombreModulo: modulo,
+          permisos: []
+        };
+      }
+      
+      resultado[modulo].permisos.push({
+        idPermisos: permiso.idPermisos,
+        nombrePermiso: permiso.acciones.nombre
+      });
+    });
+    
+    // return Object.values(resultado);
+    return resultado;
+  }
 function onError(error) {
 
     console.log(error.responseJSON);
@@ -114,8 +154,6 @@ function callApiLogout(token){
             });
         });
 }
-
-
 
 //logica para crear proveedor
 function onExitoCrearProveedor(data) {

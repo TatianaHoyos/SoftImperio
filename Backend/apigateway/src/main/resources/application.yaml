@@ -89,6 +89,9 @@ spring:
             # - Header=scope, httpbin
           filters:
             - name: AuthenticationFilter
+              args:
+                modulo: Producto
+                accion: Consultar
             - RewritePath=/edge-service/v1/service/productos/consultar, /api/producto/consultar
 
         - id: services-productos-agrupados-consultar
@@ -97,6 +100,9 @@ spring:
             - Path=/edge-service/v1/service/productos/consultar/agrupados
           filters:
             - name: AuthenticationFilter
+              args:
+                modulo: Producto
+                accion: Consultar
             - RewritePath=/edge-service/v1/service/productos/consultar/agrupados, /api/Productos/Agrupados
 
 
@@ -107,6 +113,9 @@ spring:
             - Path=/edge-service/v1/service/categorias/consultar
           filters:
             - name: AuthenticationFilter
+              args:
+                modulo: Producto
+                accion: Consultar
             - RewritePath=/edge-service/v1/service/categorias/consultar, /api/Categorias
 
         ##VENTAS##
@@ -116,6 +125,9 @@ spring:
             - Path=/edge-service/v1/service/venta/barra/crear
           filters:
             - name: AuthenticationFilter
+              args:
+                modulo: Venta
+                accion: Crear
             - RewritePath=/edge-service/v1/service/venta/barra/crear, /api/Ventas/Barra
 
         - id: services-venta-barra-notificacion
@@ -124,6 +136,9 @@ spring:
             - Path=/edge-service/v1/service/venta/barra/crear/**
           filters:
             - name: AuthenticationFilter
+              args:
+                modulo: Venta
+                accion: Crear
             - RewritePath=/edge-service/v1/service/venta/barra/crear/(?<idventa>.*), /api/Ventas/Barra/$\{idventa}
 
         - id: services-venta-consultar
@@ -132,6 +147,9 @@ spring:
             - Path=/edge-service/v1/service/venta/consultar/**
           filters:
             - name: AuthenticationFilter
+              args:
+                modulo: Venta
+                accion: Consultar
             - RewritePath=/edge-service/v1/service/venta/consultar/(?<idventa>.*), /api/Ventas/$\{idventa}
 
 
@@ -141,6 +159,9 @@ spring:
             - Path=/edge-service/v1/service/venta/mesa/crear
           filters:
             - name: AuthenticationFilter
+              args:
+                modulo: Venta
+                accion: Crear
             - RewritePath=/edge-service/v1/service/venta/mesa/crear, /api/Ventas/Mesa
 
         - id: services-venta-pendientes-consultar
@@ -149,6 +170,9 @@ spring:
             - Path=/edge-service/v1/service/venta/pendiente/consultar
           filters:
             - name: AuthenticationFilter
+              args:
+                modulo: Venta
+                accion: Consultar
             - RewritePath=/edge-service/v1/service/venta/pendiente/consultar, /api/Ventas/Pendientes
 
 
@@ -158,7 +182,10 @@ spring:
           predicates:
             - Path=/edge-service/v1/service/compras/consultar
           filters:
-            #  - name: AuthenticationFilter
+            - name: AuthenticationFilter
+              args:
+                modulo: Compras
+                accion: Consultar
             - RewritePath=/edge-service/v1/service/compras/consultar, /api/Compras
 
         ##ROLES Y PERMISOS##
@@ -169,6 +196,9 @@ spring:
             # - Header=scope, httpbin
           filters:
             - name: AuthenticationFilter
+              args:
+                modulo: Configuracion
+                accion: Consultar
             - RewritePath=/edge-service/v1/service/roles/consultar, /api/roles
 
         - id: services-roles-crear
@@ -178,6 +208,9 @@ spring:
             # - Header=scope, httpbin
           filters:
             - name: AuthenticationFilter
+              args:
+                modulo: Configuracion
+                accion: Crear
             - RewritePath=/edge-service/v1/service/roles/crear, /api/rol/crear
 
         - id: services-roles-actualizar
@@ -186,6 +219,9 @@ spring:
             - Path=/edge-service/v1/service/roles/actualizar/**
           filters:
             - name: AuthenticationFilter
+              args:
+                modulo: Configuracion
+                accion: Editar
             - RewritePath=/edge-service/v1/service/roles/actualizar/(?<idrol>.*), /api/rol/actualizar/$\{idrol}
 
         - id: services-roles-eliminar
@@ -194,6 +230,9 @@ spring:
             - Path=/edge-service/v1/service/roles/eliminar/**
           filters:
             - name: AuthenticationFilter
+              args:
+                modulo: Configuracion
+                accion: Eliminar
             - RewritePath=/edge-service/v1/service/roles/eliminar/(?<idrol>.*), /api/rol/eliminar/$\{idrol}
 
         - id: services-roles-configuracion
@@ -203,6 +242,9 @@ spring:
             # - Header=scope, httpbin
           filters:
             - name: AuthenticationFilter
+              args:
+                modulo: Configuracion
+                accion: Crear
             - RewritePath=/edge-service/v1/service/roles/configuracion/crear, /api/configuracion/guardar
 
         - id: services-permisos-consultar
@@ -212,6 +254,9 @@ spring:
             # - Header=scope, httpbin
           filters:
             - name: AuthenticationFilter
+              args:
+                modulo: Configuracion
+                accion: Consultar
             - RewritePath=/edge-service/v1/service/permisos/consultar, /api/permisos
 
 management:

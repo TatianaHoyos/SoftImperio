@@ -6,3 +6,4 @@ function showPreview(event){
       preview.style.display = "block";
     }
   }
+

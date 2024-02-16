@@ -95,10 +95,10 @@ function mostrarListaRolesyPermisos(roles) {
         // Agrupar por módulo
         var permisosPorModulo = {};
         rol.permisos.forEach(function (permiso) {
-            if (!permisosPorModulo[permiso.modulo]) {
-                permisosPorModulo[permiso.modulo] = [];
+            if (!permisosPorModulo[permiso.modulo.nombre]) {
+                permisosPorModulo[permiso.modulo.nombre] = [];
             }
-            permisosPorModulo[permiso.modulo].push(permiso.nombrePermiso);
+            permisosPorModulo[permiso.modulo.nombre].push(permiso.acciones.nombre);
         });
 
         // Generar celdas para módulo y permisos
@@ -142,7 +142,7 @@ $("#nombreRolTitulo").text(data.nombreRol);
        var fila= "<td>" + permiso.nombreModulo + "</td>";
        var crear = "<input name='permiso' class='form-check-input' type='checkbox' id='"+nombreModulo+"-crear'>";
        var modificar = "<input name='permiso' class='form-check-input' type='checkbox' id='"+nombreModulo+"-editar' >";
-       var ver = "<input name='permiso' class='form-check-input' type='checkbox' id='"+nombreModulo+"-ver' >";
+       var ver = "<input name='permiso' class='form-check-input' type='checkbox' id='"+nombreModulo+"-consultar' >";
        var eliminar = "<input name='permiso' class='form-check-input' type='checkbox' id='"+nombreModulo+"-eliminar' >";
 
 
@@ -177,7 +177,7 @@ $("#nombreRolTitulo").text(data.nombreRol);
     var resultado = {};
     
     permisos.forEach(function(permiso) {
-      var modulo = permiso.modulo;
+      var modulo = permiso.modulo.nombre;
       
       if (!resultado.hasOwnProperty(modulo)) {
         resultado[modulo] = {
@@ -188,7 +188,7 @@ $("#nombreRolTitulo").text(data.nombreRol);
       
       resultado[modulo].permisos.push({
         idPermisos: permiso.idPermisos,
-        nombrePermiso: permiso.nombrePermiso
+        nombrePermiso: permiso.acciones.nombre
       });
     });
     

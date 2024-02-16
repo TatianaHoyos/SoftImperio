@@ -27,14 +27,28 @@ function mostrarFormularioCrearUsuarioCreditos() {
 
 function crearUsuarioCredito() {
     var form = $('#formUsuarioCredito')[0];
-    var formData =  JSON.stringify({
-        "nombre": $("#nombre").val(),
-        "documento": $("#documento").val(),
-        "telefono":  $("#telefono").val()
-      });
+    var nombre= $("#nombre").val();
+    var documento= $("#documento").val();
+    var telefono=  $("#telefono").val();
 
-      
-     console.log(formData);
+    if (validarCampoVacio(nombre.length, 'Por favor ingrese un nombre')) {
+        return false;
+    }
+    if (validarCampoVacio(documento.length, 'Por favor ingrese documento')) {
+        return false;
+    }
+    if (validarCampoVacio(telefono.length, 'Por favor ingrese telefono')) {
+        return false;
+    }
+
+    var formData = JSON.stringify({
+        "nombre": nombre,
+        "documento": documento,
+        "telefono": telefono,
+        "totalCredito": 0
+
+    });
+    console.log(formData);
 
     $.ajax({
         type: "POST",
@@ -58,8 +72,21 @@ function onExitoCrearUsuariocredito(data) {
     mensaje.removeClass("alert-danger");
     mensaje.show();
     mensaje.text(data.message);
+    Swal.fire({
+        icon: 'success',
+        title: 'Usuario credito se guardado exitosamente',
+        showConfirmButton: false,
+        timer: 1700,
+        customClass: {
+            popup: 'tamanio-custom'
+        }
+    });
     $("#formUsuarioCredito").trigger("reset");
-    consultarusuariocredito();
+    setTimeout(function () {
+        $('#formUsuarioCredito').modal('hide');// Utiliza el selector correcto
+        consultarusuariocredito();
+    }, 1700);
+    
 }
 
 function onErrorusuariocreditocrear(error) {
@@ -93,17 +120,68 @@ function onExitousuariocredito(data) {
 
     $('#tablaUsuarioCredito > tbody').empty();
     $.each(data, function (id, usuariocredito) {
-
+        var boton0 = "<button onclick='DetalleCredito(" + JSON.stringify(usuariocredito) + ")' class='btn btn-delete' data-id='1'><i class='fas fa-money-bill-wave'></i></button>";
         var boton1 = "<button onclick='EliminarUsuarioCredito(" + JSON.stringify(usuariocredito) + ")' class='btn btn-delete' data-id='1'><i class='fas fa-trash'></i></button>";
         var boton2 = "<button onclick='EditarUsuarioCredito(" + JSON.stringify(usuariocredito) + ")' class='btn btn-edit' data-toggle='modal' data-target='#formCrearUsuarioCredito'><i class='fas fa-edit'></i></button>";
 
-        $('#tablaUsuarioCredito').append('<tr><td>' + usuariocredito.nombre +
-            '</td><td>' + usuariocredito.documento + '</td><td>' + usuariocredito.telefono + '</td><td>' + boton2 + '</td><td>' + boton1 + '</td></tr>');
-        console.log(usuariocredito.nombre + ' ' + usuariocredito.documento
-            + ' ' + usuariocredito.telefono);
+        $('#tablaUsuarioCredito').append('<tr><td>' + usuariocredito.idUsuarioCredito +'</td><td>' + usuariocredito.nombre +
+            '</td><td>' + usuariocredito.documento + '</td><td>' + usuariocredito.telefono + '</td><td>' + usuariocredito.totalCredito +
+            '</td><td>'+ boton0+ ' ' + boton2 +' '+ boton1 + '</td></tr>');
+        console.log(usuariocredito.idUsuarioCredito + ' '+ usuariocredito.nombre + ' ' + usuariocredito.documento
+            + ' ' + usuariocredito.telefono + ' ' + usuariocredito.totalCredito );
 
     });
 }
+    function DetalleCredito(usuariocredito){
+        $.ajax({
+            type: "GET",
+            url: "https://localhost:7084/api/creditos/" + usuariocredito.idUsuarioCredito,
+            "headers": {
+                "Content-Type": "application/json",
+        //        'Authorization': `Bearer ${token}`
+            },
+            success: function (data) {
+
+                if (data.length === 0) {
+                $('#detalleCredito').modal('show');
+                $('#tablaDetalleCredito > tbody').empty();
+                $.each(data, function (id, credito) {
+                    //var boton0 = "<button onclick='DetalleCredito(" + JSON.stringify(usuariocredito) + ")' class='btn btn-delete' data-id='1'><i class='fas fa-money-bill-wave'></i></button>";
+    
+                    $('#tablaDetalleCredito').append('<tr><td>' + credito.idVenta +'</td><td>' + credito.precioCredito +
+                        '</td><td>' + credito.fecha + '</td></tr>');
+            
+                });
+                } else {
+                    Swal.fire({
+                        title: 'Exito',
+                        text: 'El usuario no tiene creditos asociados',
+                        icon: 'success',
+                        showCancelButton: false,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Aceptar'
+                    }).then((result) => {
+                    });
+                }
+            },
+            error:  function (error) {
+                console.log(error)
+                Swal.fire({
+        title: 'Error',
+        text: error.message,
+        icon: 'error',
+        showCancelButton: false,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Aceptar'
+    }).then((result) => {
+    });
+            }            
+        });
+    }
+
+
 
 function EditarUsuarioCredito(usuariocredito) {
     mostrarFormularioActualizarCrearUsuarioCreditos();

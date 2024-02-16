@@ -14,11 +14,12 @@ public class PermisosEntity {
     @Column(name = "IdPermisos")
     private Integer idPermisos;
 
-    @Column(nullable = false, name = "NombrePermisos")
-    private String nombrePermiso;
-    @Column(nullable = false, name = "Modulo")
-    private String modulo;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "IdAcciones")
+    private AccionesEntity acciones;
 
-    // @ManyToMany(mappedBy = "permisos", fetch = FetchType.LAZY)
-    // private Set<RolEntity> roles;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "IdModulo")
+    private ModuloEntity modulo;
+
 }
