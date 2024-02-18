@@ -364,4 +364,25 @@ background-color:white;
 
 
 
+  /*Estilos Modulos Ventas*/
+
+  .detalle-venta-table {
+    color: #ffffff; /* Color para el texto en la tabla */
+  }
+
+  #detallesModalBody p {
+    color: #ffffff; /* Color solo para el texto "ID Venta" */
+  }
+
+  #detallesModal .modal-content {
+    background-color: #000; /* Color para el fondo de la modal */
+  }
+  .fecha-label {
+    color: #ffffff; /* Color para el texto de las fechas */
+  }
+
+
+
+
+
 

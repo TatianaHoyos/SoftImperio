@@ -56,26 +56,47 @@ function actualizarTablaVentas(venta) {
 
 
 
-function verDetalles(idVenta) {
-    fetch(`https://localhost:7084/api/DetalleVentas/ByVenta/${idVenta}`)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Error de red: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((detallesVenta) => {
-        // Aquí deberías tener un array de detalles de venta correspondientes al IdVenta
-        console.log('Detalles de la venta:', detallesVenta);
-  
-        // Puedes mostrar los detalles como desees, por ejemplo, en un cuadro de diálogo
-        alert(`Detalles de la venta con ID: ${idVenta}\n${JSON.stringify(detallesVenta, null, 2)}`);
-      })
-      .catch((error) => {
-        console.error("Error al obtener detalles de la venta:", error);
-      });
+async function verDetalles(idVenta) {
+  try {
+    const response = await fetch(`https://localhost:7084/api/DetalleVentas/ByVenta/${idVenta}`);
+
+    if (!response.ok) {
+      throw new Error(`Error de red: ${response.status}`);
+    }
+
+    const detallesVenta = await response.json();
+
+    console.log('Detalles de la venta:', detallesVenta);
+
+    // Llamamos a la función para mostrar detalles en una modal
+    mostrarDetallesEnModal(idVenta, detallesVenta);
+
+  } catch (error) {
+    console.error("Error al obtener detalles de la venta:", error);
   }
-  
+}
+
+// Función para mostrar detalles en una modal con una tabla
+function mostrarDetallesEnModal(idVenta, detallesVenta) {
+  // Modificamos el contenido de la modal con una tabla de detalles
+  const modalBody = document.getElementById('detallesModalBody');
+
+  // Construimos la tabla con la clase de estilo
+  let tableHtml = '<table class="table table-bordered detalle-venta-table"><thead><tr><th>Producto</th><th>Cantidad </th><th>Subtotal </th></tr></thead><tbody>';
+
+  detallesVenta.forEach((detalle) => {
+    tableHtml += `<tr><td>${detalle.nombreProducto}</td><td>${detalle.cantidadProducto}</td><td>${detalle.subTotalAPagar}</td></tr>`;
+  });
+
+  tableHtml += '</tbody></table>';
+
+  modalBody.innerHTML = `<p>ID Venta: ${idVenta}</p>${tableHtml}`;
+
+  // Mostramos la modal
+  $('#detallesModal').modal('show');
+}
+
+
 
 
 
