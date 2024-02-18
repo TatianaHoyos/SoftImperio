@@ -381,6 +381,10 @@ background-color:white;
     color: #ffffff; /* Color para el texto de las fechas */
   }
 
+  .pagina-actual {
+    color: #ffffff; /* Cambia #ff0000 al color que desees */
+  }
+
 
 
 
