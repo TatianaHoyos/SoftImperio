@@ -35,6 +35,16 @@ namespace venta.Controllers
             _productoService = productoService;
 
         }
+        // GET: api/Ventas
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Venta>>> Getcreditos()
+        {
+            if (_context.Venta == null)
+            {
+                return NotFound();
+            }
+            return await _context.Venta.ToListAsync();
+        }
 
         // GET: api/Ventas/ByFecha
         [HttpGet("ByFecha")]

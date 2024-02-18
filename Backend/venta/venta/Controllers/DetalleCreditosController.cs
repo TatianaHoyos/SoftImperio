@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using venta.Data;
+using venta.DTO;
 using venta.Models;
 
 namespace venta.Controllers
@@ -119,6 +120,34 @@ namespace venta.Controllers
         private bool DetalleCreditosExists(int id)
         {
             return (_context.DetalleCreditos?.Any(e => e.IdDetalleCreditos == id)).GetValueOrDefault();
+        }
+
+        //GET: api/Creditos/creditos-ultimo-mes
+        [HttpGet("creditos-ultimo-mes")]
+        public ActionResult<IEnumerable<CreditosPorMesDTO>> ObtenerCreditosUltimoMes()
+        {
+            try
+            {
+                var fechaInicio = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+                var fechaFin = fechaInicio.AddMonths(1);
+
+                var creditosUltimoMes = _context.creditos
+                    .Where(cr => cr.Fecha != null && cr.Fecha >= fechaInicio && cr.Fecha < fechaFin)
+                    .GroupBy(cr => new { Año = cr.Fecha.Year, Mes = cr.Fecha.Month })
+                    .Select(g => new CreditosPorMesDTO
+                    {
+                        Año = g.Key.Año,
+                        Mes = g.Key.Mes,
+                        TotalCredito = g.Sum(cr => cr.PrecioCredito)
+                    })
+                    .ToList();
+
+                return Ok(creditosUltimoMes);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error al obtener los créditos del último mes");
+            }
         }
     }
 }

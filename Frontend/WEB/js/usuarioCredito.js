@@ -121,12 +121,13 @@ function onExitousuariocredito(data) {
     $('#tablaUsuarioCredito > tbody').empty();
     $.each(data, function (id, usuariocredito) {
         var boton0 = "<button onclick='DetalleCredito(" + JSON.stringify(usuariocredito) + ")' class='btn btn-delete' data-id='1'><i class='fas fa-money-bill-wave'></i></button>";
-        var boton1 = "<button onclick='EliminarUsuarioCredito(" + JSON.stringify(usuariocredito) + ")' class='btn btn-delete' data-id='1'><i class='fas fa-trash'></i></button>";
-        var boton2 = "<button onclick='EditarUsuarioCredito(" + JSON.stringify(usuariocredito) + ")' class='btn btn-edit' data-toggle='modal' data-target='#formCrearUsuarioCredito'><i class='fas fa-edit'></i></button>";
+        var boton1 = "<button onclick='AsociarCredito(" + JSON.stringify(usuariocredito) + ")' class='btn btn-delete' data-id='1'><i class='fas fa-plus'></i></button>";
+        var boton2 = "<button onclick='EliminarUsuarioCredito(" + JSON.stringify(usuariocredito) + ")' class='btn btn-delete' data-id='1'><i class='fas fa-trash'></i></button>";
+        var boton3 = "<button onclick='EditarUsuarioCredito(" + JSON.stringify(usuariocredito) + ")' class='btn btn-edit' data-toggle='modal' data-target='#formCrearUsuarioCredito'><i class='fas fa-edit'></i></button>";
 
         $('#tablaUsuarioCredito').append('<tr><td>' + usuariocredito.idUsuarioCredito +'</td><td>' + usuariocredito.nombre +
             '</td><td>' + usuariocredito.documento + '</td><td>' + usuariocredito.telefono + '</td><td>' + usuariocredito.totalCredito +
-            '</td><td>'+ boton0+ ' ' + boton2 +' '+ boton1 + '</td></tr>');
+            '</td><td>'+boton1+' '+boton0+ '</td><td>'+ boton3 +' '+ boton2 + '</td></tr>');
         console.log(usuariocredito.idUsuarioCredito + ' '+ usuariocredito.nombre + ' ' + usuariocredito.documento
             + ' ' + usuariocredito.telefono + ' ' + usuariocredito.totalCredito );
 
@@ -142,7 +143,7 @@ function onExitousuariocredito(data) {
             },
             success: function (data) {
 
-                if (data.length === 0) {
+                if (data.length > 0) {
                 $('#detalleCredito').modal('show');
                 $('#tablaDetalleCredito > tbody').empty();
                 $.each(data, function (id, credito) {
@@ -260,3 +261,91 @@ function buscarUsuarioCreditoTabla() {
         });
     });
 }
+
+var ultimoRegistroId;
+var totalVenta;
+var idUsuarioCredito;
+
+function AsociarCredito(usuariocredito) {
+    // Realiza una solicitud adicional para obtener el último registro de la tabla Venta
+    $.ajax({
+        type: "GET",
+        url: "https://localhost:7084/api/Ventas",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        success: function(data) {
+            // Ordenar los datos en forma descendente por el campo idVenta
+            data.sort((a, b) => b.idVenta - a.idVenta);
+
+            console.log("Respuesta AJAX (ordenada descendentemente):", data); // Agregar este console.log para depurar
+            if (data.length > 0) {
+                var ultimoRegistro = data[0];
+
+                ultimoRegistroId = ultimoRegistro.idVenta;
+                totalVenta = ultimoRegistro.totalVenta;
+                idUsuarioCredito = usuariocredito.idUsuarioCredito;
+
+                // Mostrar los detalles en la modal
+                $("#idUltimoRegistro").text("ID Venta: " + ultimoRegistro.idVenta);
+                $("#totalVenta").text("Total Venta: " + ultimoRegistro.totalVenta+"$");
+                $("#NombreUsuarioCredito").text("Nombre: " + usuariocredito.nombre);
+
+
+
+                // Mostrar la modal
+                $("#tuModal").modal("show");
+
+                // Resto de la lógica para asociar el crédito...
+            } else {
+                console.log("No se encontraron registros en la tabla Venta.");
+            }
+        },
+        error: function(error) {
+            console.log("Error al obtener el último registro de la tabla Venta: " + error.statusText);
+        }
+    });
+}
+
+
+function CrearCredito() {
+    // Validar que se tengan los valores necesarios
+    if (!ultimoRegistroId || !totalVenta || !idUsuarioCredito) {
+        console.error("No se tienen todos los valores necesarios para crear el crédito.");
+        return;
+    }
+
+    // Crear objeto con los valores necesarios
+    var creditoData = {
+        "IdVenta": ultimoRegistroId,
+        "PrecioCredito": totalVenta,
+        "IdUsuarioCredito": idUsuarioCredito
+    };
+
+    // Convertir a formato JSON
+    var formDataCredito = JSON.stringify(creditoData);
+    console.log(formDataCredito);
+
+    // Realizar la solicitud para crear el crédito
+    $.ajax({
+        type: "POST",
+        url: "https://localhost:7084/api/Creditos",
+        data: formDataCredito,
+        contentType: "application/json", // Configura el tipo de medio adecuado
+        success: function(data) {
+            // Lógica de éxito para la creación del crédito
+            console.log("Crédito creado con éxito:", data);
+        },
+        error: function(error) {
+            // Lógica para manejar errores en la creación del crédito
+            console.error("Error al crear el crédito:", error);
+
+            // Imprimir detalles de la respuesta del servidor en caso de error
+            if (error.responseText) {
+                console.error("Detalles del error:", error.responseText);
+            }
+        }
+    });
+}
+
+

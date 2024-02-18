@@ -166,6 +166,37 @@
         </div>
     </div>
 
+
+    <!-- Modal -->
+<!-- Modal -->
+<!-- Modal -->
+<div class="modal fade" id="tuModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content" style="background-color: black; color: white;">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Asociar Pedido</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" style="background-color: rgba(0, 0, 0, 0.869); color: white;">
+          <p><span id="idUltimoRegistro"></span></p>
+          <p><span id="totalVenta"></span></p>
+          <p><span id="NombreUsuarioCredito"></span></p>
+
+          <!-- Otros detalles del registro si es necesario -->
+        </div>
+        <div class="form-group text-center mt-3">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-success" onclick="CrearCredito()">Crear Crédito</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  
+
     <div>
         <div class="container p-2 g-col-6">
 
@@ -215,6 +246,7 @@
                     <th>Documento</th>
                     <th>Teléfono</th>
                     <th>TotalCredito</th>
+                    <th>AccionesCreditos</th>
                     <th>Acciones</th>
 
                     </tr>
