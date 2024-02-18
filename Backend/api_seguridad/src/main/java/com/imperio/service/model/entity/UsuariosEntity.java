@@ -14,9 +14,6 @@ public class UsuariosEntity {
     @Column(name = "IdUsuarios")
     private Integer idUsuarios ;
 
-   // @Column(nullable = false, name = "IdRol")
-   // private Integer idRol ;
-
     @Column(nullable = false, name = "Nombre")
     private String nombre  ;
 
@@ -39,8 +36,8 @@ public class UsuariosEntity {
     @Column(nullable = false, name="Estado")
     private String estado;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "IdRol")
+    @ManyToOne()
+    @JoinColumn(name = "IdRol", nullable = false)
     private RolEntity rol;
 
 }

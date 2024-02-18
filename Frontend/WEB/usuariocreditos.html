@@ -17,84 +17,84 @@
   <div id="menu-container"></div>
   <!-- contenido propio de la pagina -->
     
-    <div class="modal fade" id="formCrearUsuarioCredito" tabindex="-1" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-content">
-            <div style="background-color: rgba(0, 0, 0, 0.869);">
-                <form id="formUsuarioCredito">
-                    <input type="hidden" id="idUsuarioCredito">
-                    <h4 id="tituloFormularioUsuarioCredito" class="mt-3 text-white text-center"></h4>
-                    <div class="form-row justify-content-center">
-                        <div class="form-group col-md-6">
-                            <!--<div id="resultadoCrear" class="alert alert-danger" role="alert">Error</div>-->
+    <div class="modal fade" id="formCrearUsuarioCredito" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div style="background-color: rgba(0, 0, 0, 0.869);">
+                    <form id="formUsuarioCredito">
+                        <input type="hidden" id="idUsuarioCredito">
+                        <h4 id="tituloFormularioUsuarioCredito" class="mt-3 text-white text-center"></h4>
+                        <div class="form-row justify-content-center">
+                            <div class="form-group col-md-6">
+                                <!--<div id="resultadoCrear" class="alert alert-danger" role="alert">Error</div>-->
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-row justify-content-center">
-                        <div class="form-group col-md-6">
-                            <label for="nombre" class="text-white">Ingrese el nombre</label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" style="background-color: #e5c850"><i
-                                            class="fas fa-user"></i></span>
+                        <div class="form-row justify-content-center">
+                            <div class="form-group col-md-6">
+                                <label for="nombre" class="text-white">Ingrese el nombre</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" style="background-color: #e5c850"><i
+                                                class="fas fa-user"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre"
+                                        onkeypress="return sololetrasnombre(event)">
                                 </div>
-                                <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre"
-                                    onkeypress="return sololetrasnombre(event)">
                             </div>
                         </div>
-                    </div>
 
-                    <div class="form-row justify-content-center">
-                        <div class="form-group col-md-6">
-                            <label for="documento" class="text-white">Ingrese el documento</label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" style="background-color: #e5c850"><i
-                                            class="far fa-id-card"></i></span>
+                        <div class="form-row justify-content-center">
+                            <div class="form-group col-md-6">
+                                <label for="documento" class="text-white">Ingrese el documento</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" style="background-color: #e5c850"><i
+                                                class="far fa-id-card"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control" id="documento" name="documento"
+                                        placeholder="Documento" onkeypress="return validarNumeroUC(event)">
                                 </div>
-                                <input type="text" class="form-control" id="documento" name="documento"
-                                    placeholder="Documento" onkeypress="return validarNumeroUC(event)">
                             </div>
                         </div>
-                    </div>
 
-                    <div class="form-row justify-content-center">
-                        <div class="form-group col-md-6">
-                            <label for="telefono" class="text-white">Ingrese un teléfono</label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" style="background-color: #e5c850"><i
-                                            class="fas fa-phone"></i></span>
+                        <div class="form-row justify-content-center">
+                            <div class="form-group col-md-6">
+                                <label for="telefono" class="text-white">Ingrese un teléfono</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" style="background-color: #e5c850"><i
+                                                class="fas fa-phone"></i></span>
+                                    </div>
+                                    <input type="tel" class="form-control" id="telefono" name="telefono"
+                                        placeholder="Teléfono de colaborador" onkeypress="return validarNumeroUC(event)">
                                 </div>
-                                <input type="tel" class="form-control" id="telefono" name="telefono"
-                                    placeholder="Teléfono de colaborador" onkeypress="return validarNumeroUC(event)">
                             </div>
                         </div>
-                    </div>
 
-                    <div class="form-row justify-content-center">
-                        <div class="form-group col-md-4">
-                            <div class="preview mt-3">
-                                <img id="foto-preview" width="400px">
+                        <div class="form-row justify-content-center">
+                            <div class="form-group col-md-4">
+                                <div class="preview mt-3">
+                                    <img id="foto-preview" width="400px">
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="form-group text-center mt-3">
-                        <input type="hidden" name="operacion" value="login">
-                        <button id="btn-form" type="button"
-                            class="col-md-2 form-control btn"><strong>Guardar</strong></button>
-                        <button type="button" data-dismiss="modal"
-                            class="col-md-2 form-control btn"><strong>Cancelar</strong></button>
-                    </div>
-                </form>
+                        <div class="form-group text-center mt-3">
+                            <input type="hidden" name="operacion" value="login">
+                            <button id="btn-form" type="button"
+                                class="col-md-2 form-control btn"><strong>Guardar</strong></button>
+                            <button type="button" data-dismiss="modal"
+                                class="col-md-2 form-control btn"><strong>Cancelar</strong></button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-    </div>
 
 
-    <div class="contenido-principal">
+    <!-- <div class="contenido-principal">
         <div class="container p-2 g-col-6">
             <h4 class="mt-3  text-white  text-center">Nuestros usuarios Créditos</h4>
 
@@ -140,7 +140,97 @@
                 </div>
             </div>
         </div>
+    </div> -->
+
+    <!--Modal para detalle creditos-->
+    <div class="modal fade" id="detalleCredito" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div style="background-color: rgba(0, 0, 0, 0.869);">
+                    <button type="button" class="btn btn-primary col-md-2 form-control btn mt-1 m-2">
+                                    <strong>Abonar</strong>
+                                </button>
+                    <table id="tablaDetalleCredito" class="table table-dark table-striped mb-0 w-100">
+                        <thead class="text-center">
+                            <tr>
+                            <th># Venta</th>
+                            <th>Valor Credito</th>
+                            <th>Fecha</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-center">
+                        </tbody>
+                        </table>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <div>
+        <div class="container p-2 g-col-6">
+
+            <h3 class="mt-3  text-white  text-center">Nuestros usuarios Créditos</h4>
+                <div class="container p-2">
+                    <div class="row">
+                        <div class="col-md-2 offset-md-1">
+                            <div class="bott">
+                                <button type="button" class="btn btn-primary col-md-12 form-control btn mt-1 mb-2"
+                                    onclick="mostrarFormularioCrearUsuarioCreditos()" data-toggle="modal" data-target="#formCrearUsuarioCredito">
+                                    <strong>Crear</strong>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" style="background-color: #e5c850">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                            class="bi bi-search" viewBox="0 0 16 16">
+                                            <path
+                                                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                                        </svg>
+                                    </span>
+                                </div>
+                                <input type="text" class="form-control" id="consultarTablaUsuarioCredito" name="nombre" placeholder="buscar">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="bott">
+                                <a href="#" class="btn btn-warning col-md-12 form-control btn mt-1 mb-2">
+                                    <strong>Generar Reporte</strong>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            <div class="row justify-content-md-center">
+                <table id="tablaUsuarioCredito" class="table table-dark table-striped table w-100 mx-5">
+                <thead class="text-center">
+                    <tr>
+
+                    <th>#</th>
+                    <th>Nombre</th>
+                    <th>Documento</th>
+                    <th>Teléfono</th>
+                    <th>TotalCredito</th>
+                    <th>Acciones</th>
+
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>

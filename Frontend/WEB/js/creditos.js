@@ -91,7 +91,65 @@ function onExitocreditos(data) {
     console.log("Consulta de Créditos");
     console.log(data);
 
-    $('#tablaCreditos > tbody').empty();
+    // $('#tablaCreditos > tbody').empty();
+
+    if ($.fn.DataTable.isDataTable('#tablaCreditos')) {
+        $('#tablaCreditos').DataTable().destroy();
+    }
+        // Obtén una referencia a la DataTable
+        var dataTable = $('#tablaCreditos').DataTable({
+            language: {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "Ningún dato disponible en esta tabla",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero",
+                    "sLast": "Último",
+                    "sNext": "Siguiente",
+                    "sPrevious": "Anterior"
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            }
+        });
+        
+        // Limpia la tabla
+        dataTable.clear();
+    
+        // Recorre los datos y agrega las filas
+        $.each(data, function (id, credito) {
+            
+    
+            var boton1 = "<button onclick='EliminarProducto(" + JSON.stringify(productos) + ")' class='btn btn-eliminar' data-id='1'><i class='fas fa-trash'></i></button>";
+            var boton2 = "<button onclick='EditarProducto(" + JSON.stringify(productos) + ")' class='btn btn-editar' data-toggle='modal' data-target='#formCrearProductos'><i class='fas fa-edit'></i></button>";
+    
+            // Agrega la fila a la DataTable
+            dataTable.row.add([
+                nombreCategoria,
+                productos.nombreProducto,
+                productos.referenciaProducto,
+                productos.existencia.cantidad,
+                productos.precioProducto,
+                boton1 +
+                boton2
+            ]).draw();
+    
+            // console.log(productos.id + ' ' + productos.nombreProducto + ' ' + productos.idCategoria + ' ' +
+            //     productos.referenciaProducto + ' ' + productos.precioProducto);
+        });
+
+
 
     $.each(data, function (id, creditos) {
         if (creditos.idUsuarioCredito ===null) {
