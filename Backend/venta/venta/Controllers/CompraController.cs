@@ -12,16 +12,16 @@ namespace venta.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ComprasController : ControllerBase
+    public class CompraController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
 
-        public ComprasController(ApplicationDbContext context)
+        public CompraController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Compras
+        // GET: api/Compra
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Compra>>> GetCompras()
         {
@@ -32,7 +32,7 @@ namespace venta.Controllers
             return await _context.Compras.ToListAsync();
         }
 
-        // GET: api/Compras/5
+        // GET: api/Compra/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Compra>> GetCompra(int id)
         {
@@ -40,17 +40,36 @@ namespace venta.Controllers
           {
               return NotFound();
           }
-            var compra = await _context.Compras.FindAsync(id);
+            if(id==1090208030){
+                Console.WriteLine("if last");
+                var compra = await _context.Compras
+                .OrderBy(x => x.IdCompra)
+              .LastOrDefaultAsync();
 
-            if (compra == null)
+                if (compra == null)
+                {
+                    // If there is no element, return a default object with IdCompra equal to 0
+                    return new Compra { IdCompra = 0 };
+                }
+
+                return compra;
+            } else
             {
-                return NotFound();
-            }
+                var compra = await _context.Compras.FindAsync(id);
 
-            return compra;
+                if (compra == null)
+                {
+                    return NotFound();
+                }
+
+                return compra;
+            }
+           
         }
 
-        // PUT: api/Compras/5
+     
+
+        // PUT: api/Compra/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCompra(int id, Compra compra)
@@ -81,7 +100,7 @@ namespace venta.Controllers
             return NoContent();
         }
 
-        // POST: api/Compras
+        // POST: api/Compra
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Compra>> PostCompra(Compra compra)
@@ -96,7 +115,7 @@ namespace venta.Controllers
             return CreatedAtAction("GetCompra", new { id = compra.IdCompra }, compra);
         }
 
-        // DELETE: api/Compras/5
+        // DELETE: api/Compra/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCompra(int id)
         {
@@ -109,16 +128,53 @@ namespace venta.Controllers
             {
                 return NotFound();
             }
+            //consulta detalles asociados a la compra
+            Console.WriteLine("------------------------------"+id);
 
-            _context.Compras.Remove(compra);
-            await _context.SaveChangesAsync();
+            //validar fecha de compra
+            bool isCompraIsNotEditable = validarFechaCompra(compra.FechaCompra);
 
-            return NoContent();
+            if (isCompraIsNotEditable)
+            {
+                return BadRequest("No puedes editar o eliminar una compra después de 24 horas.");
+
+            }
+            else {
+
+                 var detallesCompra = _context.DetalleCompra
+                .Where(dc => dc.IdCompra == id)
+                .ToList();
+         
+                //Eliminar cada detalle de compra encontrado
+                foreach (var detalleCompra in detallesCompra)
+                {
+                    _context.DetalleCompra.Remove(detalleCompra);
+
+                }
+                await _context.SaveChangesAsync();
+
+                _context.Compras.Remove(compra);
+                await _context.SaveChangesAsync();
+
+                return NoContent();
+            }
         }
 
         private bool CompraExists(int id)
         {
             return (_context.Compras?.Any(e => e.IdCompra == id)).GetValueOrDefault();
         }
+
+              private bool validarFechaCompra(DateTime fechaCompra)
+        {
+            // Agregar la validación de tiempo aquí
+            var tiempoLimiteEliminar = TimeSpan.FromHours(24);
+            var tiempoTranscurridoEliminar = DateTime.Now - fechaCompra;
+
+            return tiempoTranscurridoEliminar > tiempoLimiteEliminar;
+            
+        }
+
+
     }
 }
