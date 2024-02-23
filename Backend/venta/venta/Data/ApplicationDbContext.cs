@@ -1,6 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using venta.Models;
 using venta.Model;
+using venta.DTO.DetalleCompra;
+using venta.DTO.Productos;
+
 namespace venta.Data
 {
     public class ApplicationDbContext : DbContext
@@ -20,6 +23,8 @@ namespace venta.Data
         public DbSet<Productos> Productos { get; set; }
         public DbSet<DetalleVenta> DetalleVenta { get; set; }
         public DbSet<Creditos> creditos { get; set; }
+        public DbSet<DetalleCompraResults> DetalleCompraResult { get; set; }
+        public DbSet<ProductosExistenciaSPResult> ProductosExistenciaSPResult { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
