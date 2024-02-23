@@ -163,6 +163,10 @@ function sololetrasnombre(e) {
 //         return false;
 //     }
 // }
+
+
+
+//esto so
 function sololetras(e) {
     key = e.keyCode || e.which;
     tecla = String.fromCharCode(key).toLowerCase();

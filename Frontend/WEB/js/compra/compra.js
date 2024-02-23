@@ -63,6 +63,45 @@ function addCompra() {
    });
 }
 
+function generarPDF(){
+  console.log("esto funciona¡");
+  $.ajax({
+    type: "GET",
+    url: "https://localhost:7084/api/Compra/GenerarPDF",
+    xhrFields: {
+      responseType: 'arraybuffer' // Indica que esperamos un array de bytes como respuesta
+    },
+    success: function (response, status, xhr) {
+      if (xhr.status === 200) {
+        // Crea un objeto Blob con la respuesta y tipo de contenido PDF
+        const blob = new Blob([response], { type: 'application/pdf' });
+
+        // Crea una URL de objeto para el blob
+        const blobURL = URL.createObjectURL(blob);
+
+        // Crea un enlace invisible para descargar el PDF
+        const link = document.createElement('a');
+        link.href = blobURL;
+        link.download = 'Compras.pdf'; // Puedes cambiar el nombre del archivo si es necesario
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        // Libera la URL de objeto después de unos segundos (puedes ajustar el tiempo)
+        setTimeout(() => {
+          URL.revokeObjectURL(blobURL);
+        }, 5000); // 5000 milisegundos (5 segundos) como ejemplo
+      } else {
+        console.error(`Error en la respuesta del servidor. Código de estado: ${xhr.status}`);
+      }
+    },
+    error: function (error) {
+      // Manejar el error
+      console.error("Error en la solicitud:", error);
+    }
+  });
+}
+
   function habilitarVistaDetalle(idCompra){
     const destinationURL = `http://127.0.0.1:5500/Frontend/WEB/comprasDetail.html?idCompra=${idCompra}`;
     window.location.href = destinationURL;
@@ -214,7 +253,8 @@ $(document).ready(function() {
       dom: '<"row"<"col-md-6"l><"col-md-6"f>>tip',
       data: data,
       columns: [
-        { data: 'idCompra' },
+      
+         { data: 'idCompra' },
         { data: 'fechaCompra' },
         { data: 'totalCompra' },
         {
@@ -228,6 +268,12 @@ $(document).ready(function() {
           render: function(data, type, row) {
             return '<button onclick="deleteCompra(' + row.idCompra + ')" class="btn btn-eliminar" > <i class="fa fa-trash"></i></button>';
           }
+        }
+      ],
+      columnDefs: [
+        {
+          targets: 0,
+          visible: false
         }
       ],
       rowId: 'idCompra',
