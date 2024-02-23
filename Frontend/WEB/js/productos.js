@@ -13,7 +13,12 @@ function mostrarFormularioCrear() {
     titulo.text("Crear un nuevo productos");
     var btnform = $("#btn-form");
     // btnform.text("Guardar");
-    var product=  btnform.click(crearProducto);
+    // var product=  btnform.click(crearProducto);
+    handleAjaxRequest(function (token) {
+        btnform.click(function () {
+            crearProducto(token);
+        });
+    });
    
     
 }
@@ -54,7 +59,7 @@ function onErrorCategorias(error) {
     $("#cargando").modal("hide");
 }
 
-function crearProducto(token, formData) {
+function crearProducto(token) {
     var form = $('#formCrearProducto')[0];
 
     // Create an FormData object 
@@ -67,8 +72,7 @@ function crearProducto(token, formData) {
         enctype: 'multipart/form-data',
         url: "http://localhost:8081/edge-service/v1/service/productos/crear",
         'headers': {
-       
-            'Authorization': `Bearer ${token}`
+           'Authorization': `Bearer ${token}`
         },
         data: formData,
         processData: false,
@@ -208,20 +212,30 @@ function EliminarProducto(Producto) {
     }).then((result) => {
         if (result.isConfirmed) {
             // Realizar la solicitud de eliminación AJAX
-            $.ajax({
-                url: 'http://localhost:8080/api/producto/eliminar/' + Producto.idProductos,
-                type: 'Delete',
-                success: function (response) {
-                    // Manejar la respuesta de eliminación exitosa
-                    Swal.fire('Eliminado', response.message, 'success');
-                    // Actualizar la tabla o realizar cualquier otra acción necesaria
-                    handleAjaxRequest(consultarProductos);
-                },
-                error: function (xhr, status, error) {
-                    // Manejar los errores de la solicitud AJAX
-                    Swal.fire('Error', error.message, 'error');
-                }
+            handleAjaxRequest(function (token) {
+                callApiEliminarProducto(Producto,token);
             });
+        }
+    });
+}
+
+function callApiEliminarProducto(Producto,token){
+    $.ajax({
+        url: "http://localhost:8081/edge-service/v1/service/productos/eliminar/" + Producto.idProductos,
+        type: 'DELETE',
+        "headers": {
+            
+           'Authorization': `Bearer ${token}`
+        },
+        success: function (response) {
+            // Manejar la respuesta de eliminación exitosa
+            Swal.fire('Eliminado', response.message, 'success');
+            // Actualizar la tabla o realizar cualquier otra acción necesaria
+            handleAjaxRequest(consultarProductos);
+        },
+        error: function (xhr, status, error) {
+            // Manejar los errores de la solicitud AJAX
+            Swal.fire('Error', error.message, 'error');
         }
     });
 }
@@ -237,11 +251,16 @@ function EditarProducto(producto) {
     preview.src = "http://localhost:8080/" + producto.fotoProducto;
     preview.style.display = "block";
     var btnform = $("#btn-form");
-    btnform.click(function () { actualizarProducto(producto.idProductos); });
+    handleAjaxRequest(function (token) {
+        btnform.click(function () {
+            actualizarProducto(producto.idProductos,token);
+        });
+    });
+    // btnform.click(function () { actualizarProducto(producto.idProductos); });
 
 }
 
-function actualizarProducto(idProductos) {
+function actualizarProducto(idProductos,token) {
     var form = $('#formCrearProducto')[0];
 
     // Create an FormData object
@@ -252,7 +271,11 @@ function actualizarProducto(idProductos) {
     $.ajax({
         type: "Put",
         enctype: 'multipart/form-data',
-        url: "http://localhost:8080/api/producto/actualizar/" + idProductos,
+        url: "http://localhost:8081/edge-service/v1/service/productos/actualizar/" + idProductos,
+          "headers": {
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`
+        },
         data: formData,
         processData: false,
         contentType: false,

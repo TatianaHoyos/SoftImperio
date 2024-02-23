@@ -7,10 +7,48 @@ $(document).ready(function () {
     handleAjaxRequest(consultarCategorias)
     selectCategoria();
     contadorCantidad();
-
+    mostrarVentaNotificacionPorRedireccion();
     // preventCloseLoading();
 });
 
+function mostrarVentaNotificacionPorRedireccion(){
+            // Si ya estás en la URL de redirección, verifica el indicador en localStorage
+            var redireccionPendiente = localStorage.getItem('redireccionPorNotificacion');
+
+    if (redireccionPendiente === 'true') {
+        var data = JSON.parse(localStorage.getItem('notificacion'));
+        var idVenta = localStorage.getItem('idVenta');
+
+        // Tu código aquí
+        data.forEach(function (detalleVenta) {
+            console.log(detalleVenta);
+            mostrarProductosTablaNotificacion(detalleVenta.nombreProducto + ' ' + detalleVenta.referenciaProducto,
+                detalleVenta.subTotalAPagar, detalleVenta.idProductos, detalleVenta.cantidadProducto)
+            $("#totalVenta").text(detalleVenta.totalVenta);
+            $("#estadoPedidoVenta").val(idVenta);
+        });
+
+        localStorage.removeItem('redireccionPorNotificacion');
+        localStorage.removeItem('idVenta');
+        localStorage.removeItem('notificacion');
+    }
+}
+
+function mostrarProductosTablaNotificacion(nombre, precio, idProducto,cantidad) {
+    var botonEliminar = ' <th><button class="btn btn-danger"  onclick="eliminarRegistroPedido(this)"><i class="fas fa-trash-alt"></i></button></th>';
+    var nombreProducto = ' <th>' + nombre + '</th>';
+    var precioProducto = ' <th class="precio">' + precio + '</th>';
+    var cantidadBoton = '<th><div class="quantity">'
+        + '<div class="qty">'
+        + ' <span class="minus bg-dark">-</span>'
+        + '<input type="number" class="count" name="qty" value="'+cantidad+'">'
+        + ' <span class="plus bg-dark">+</span>'
+        + '</div>' +
+        '</div></th>';
+
+    var totalProductos = ' <th class="total">' + precio + '</th>';
+    $('#tabla').append('<tr id="tr-' + idProducto + '" >' + nombreProducto + precioProducto + cantidadBoton + totalProductos + botonEliminar + '</tr>');
+}
 
 function consultarCategorias(token) {
     $("#textCargando").text("Cargando Categorias");
@@ -40,8 +78,19 @@ function onExitoCategorias(data) {
 
 }
 function onErrorCategorias(error) {
-    console.log(error)
-    $("#cargando").modal("hide");
+    console.log(error);
+    console.log(error.responseJSON.value)   
+    Swal.fire({
+        title: 'Error',
+        text: error.responseJSON.value.message,
+        icon:"warning",
+        showCancelButton: false,
+        confirmButtonColor: ' #d5c429 ',
+        confirmButtonText: 'Confirmar',
+    }).then((result) => {
+       
+    });
+    ocultarCargando();
 }
 
 
@@ -67,7 +116,14 @@ function onExitoProductos(data, categorias) {
     productos = data;
     console.log(data);
     mostrarProductos(data, categorias);
-    $("#cargando").modal("hide");
+    ocultarCargando();
+}
+
+function ocultarCargando(){
+    setTimeout(function() {
+        var elemento = $('#cargando');
+        elemento.modal("hide");
+      }, 600);
 }
 
 function mostrarProductos(data, categorias) {
@@ -134,7 +190,7 @@ function mostrarProductos(data, categorias) {
 
 function onErrorProductos(error) {
     console.log(error)
-    $("#cargando").modal("hide");
+    ocultarCargando();
 }
 
 function selectCategoria() {
@@ -257,8 +313,8 @@ function cancelarPedido() {
         text: 'Esta seguro de cancelar el Pedido ',
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
+        confirmButtonColor: '#ae9243',
+        cancelButtonColor: '#d33',
         confirmButtonText: 'Confirmar',
         cancelButtonText: 'Cancelar'
     }).then((result) => {
@@ -285,21 +341,6 @@ function eliminarRegistroPedido(button) {
     $(button).closest('tr').remove();
     
 }
-
-//     function despacharCredito(){
-//         Swal.fire({
-//             title: 'Lo sentimos!',
-//             text: 'Esta funcionalidad se encuentra en construcción ',
-//             icon: 'warning',
-//             showCancelButton: false,
-//             confirmButtonColor: ' #d5c429 ',
-//             confirmButtonText: 'Confirmar',
-        
-//         }).then((result) => {
-        
-//         });
-
-// }
 
 function confirmarVenta(){
     var tbody = $("#tabla tbody");
@@ -386,7 +427,7 @@ function confirmarVentaNotificacion(idPedido,token){
 }
 
 function onExitoPedido(data){
-    $("#cargando").modal("hide");
+    ocultarCargando();
     console.log(data)
     Swal.fire({
         title: 'Exito',
@@ -412,7 +453,7 @@ function onExitoPedido(data){
 }
 
 function onErrorPedido(error){
-    $("#cargando").modal("hide");
+    ocultarCargando();
     console.log(error.responseJSON.value)   
     Swal.fire({
         title: 'Error',
