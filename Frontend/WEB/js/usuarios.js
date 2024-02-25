@@ -24,11 +24,18 @@ function consultarUsuarios() {
 }
 
 function onErrorUsuarios(error) {
-    console.log(error)
+    Swal.fire({
+        title: 'Error',
+        text: error.responseJSON.value.message,
+        icon:"warning",
+        showCancelButton: false,
+        confirmButtonColor: ' #d5c429 ',
+        confirmButtonText: 'Confirmar',
+    }).then((result) => {
+       
+    });
 }
 function onExitoUsuarios(data) {
-    console.log("consulta de Usuarios");
-    console.log(data);
     mostrarTablaUsuarios(data);
 }
 
@@ -44,11 +51,20 @@ function consultarRoles() {
     });
 }
 function onExitoRoles(data) {
-    console.log(data);
+    
 }
 
 function onErrorRoles(error) {
-    console.log(error)
+    Swal.fire({
+        title: 'Error',
+        text: error.responseJSON.value.message,
+        icon:"warning",
+        showCancelButton: false,
+        confirmButtonColor: ' #d5c429 ',
+        confirmButtonText: 'Confirmar',
+    }).then((result) => {
+       
+    });
 }
 
 
@@ -136,7 +152,16 @@ function buscarUsuarioTabla(){
 //   }
 
 function onErrorRolesL(error) {
-    console.log(error)
+    Swal.fire({
+        title: 'Error',
+        text: error.responseJSON.value.message,
+        icon:"warning",
+        showCancelButton: false,
+        confirmButtonColor: ' #d5c429 ',
+        confirmButtonText: 'Confirmar',
+    }).then((result) => {
+       
+    });
 }
 
 
@@ -221,8 +246,6 @@ function crearUsuarios() {
 
 	// Create an FormData object
     var formData = new FormData(form);
-
-    console.log(formData)
     $.ajax({
         type: "POST",
         enctype: 'multipart/form-data',
@@ -240,7 +263,7 @@ function crearUsuarios() {
 
 
 function onExitoCrearUsuario(data) {
-    console.log(data);
+   
     var mensaje = $("#resultadoCrear");
     mensaje.addClass("alert-success");
     mensaje.removeClass("alert-danger");
@@ -289,7 +312,7 @@ function obtenerPrimerRolId() {
 
 
 function onErrorCrearUsuario(error) {
-    console.log(error);
+
     var mensaje = $("#resultadoCrear");
     mensaje.addClass("alert-danger");
     mensaje.removeClass("alert-success");
@@ -319,7 +342,7 @@ function consultarRolesA() {
 }
 
 function onExitoRolesA(data) {
-    console.log(data);
+   
     var $dropdown = $("#idRolActualizar");
     $.each(data, function () {
         $dropdown.append($("<option />").val(this.idRol).text(this.nombreRol));
@@ -345,7 +368,16 @@ function onExitoRolesA(data) {
 //   }
 
 function onErrorRolesA(error) {
-    console.log(error)
+    Swal.fire({
+        title: 'Error',
+        text: error.responseJSON.value.message,
+        icon:"warning",
+        showCancelButton: false,
+        confirmButtonColor: ' #d5c429 ',
+        confirmButtonText: 'Confirmar',
+    }).then((result) => {
+       
+    });
 }
 
 
@@ -380,7 +412,7 @@ function actualizarUsuarios(idUsuarios){
 	// Create an FormData object 
     var formData = new FormData(form);
 
-   console.log(formData);
+   
 
    $.ajax({
     type: "Put",
@@ -397,7 +429,7 @@ function actualizarUsuarios(idUsuarios){
 
 
 function onExitoActualizarUsuario(data){
-    console.log(data);
+   
     var mensaje = $("#resultadoCrear");
     mensaje.addClass("alert-success");
     mensaje.removeClass("alert-danger");
@@ -407,7 +439,7 @@ function onExitoActualizarUsuario(data){
     $("#foto-previewActualizar").attr('src', '');
 }
 function onErrorActualizarUsuario(error){
-    console.log(error);
+   
     var mensaje = $("#resultadoCrear");
     mensaje.addClass("alert-danger");
     mensaje.removeClass("alert-success");
