@@ -210,11 +210,11 @@ namespace venta.Controllers
                         page.Header().ShowOnce().Row(row =>
                         {
                             Console.WriteLine("linea --------- "+ _webHostEnvironment.WebRootPath);
-                            var rutaImagen = Path.Combine(_webHostEnvironment.WebRootPath, "img/LogoImperio.jpg");
+                            var rutaImagen = Path.Combine(_webHostEnvironment.WebRootPath, "img/logo.png");
                             byte[] imagenData = System.IO.File.ReadAllBytes(rutaImagen);
 
                             // Agregar el logo al encabezado
-                            row.ConstantItem(95).Background(Colors.Grey.Medium).Image(imagenData);
+                            row.ConstantItem(95).Image(imagenData);
 
 
                             row.RelativeItem()

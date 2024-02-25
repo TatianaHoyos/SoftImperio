@@ -1,5 +1,7 @@
 body{
-  background-image: linear-gradient(to top, #051937, #2a1429, #30171b, #2b1e16, #25231c);
+  background-image: linear-gradient(to top, #051937, #2a1429, #30171b, #2b1e16, #25231c); 
+  /* background: rgb(174,146,67);
+  background: radial-gradient(circle, rgba(174,146,67,1) 0%, rgba(9,9,9,1) 100%); */
   font-family:"Baskerville", serif;
 } 
 
@@ -16,16 +18,15 @@ body{
 }
 
 .form-group button {
-  background-color: #000000;
-  color: #ffffff; /* Letra blanca */
-  border: 1px solid #ae9243; /* Borde amarillo */
+  background-color: #ae9243;
+  color: #090909; /* Letra blanca */
+  border: 1px solid #090909; /* Borde amarillo */
   transition: background-color 0.3s, color 0.3s, border 0.3s; /* Transición suave */
 }
 
 .form-group button:hover {
-  background-color: #ae9243;
-  color: #090909; /* Letra al pasar el mouse */
-  border: 1px solid #ae9243; /* Borde amarillo */
+  background-color: rgba(174, 146, 67, 0.5) ;
+  color: #ffffff; /* Letra al pasar el mouse */
 }
 
 .form-group button:active {
@@ -310,7 +311,7 @@ background-color:white;
 }
     /* Estilos generales para el modal */
     .modal-content {
-      background-color: rgba(0, 0, 0, 0.5); /* Fondo negro con 50% de transparencia */
+      background-color: #090909;
       border-radius: 15px;
       border: 2px solid #ae9243;
       box-shadow: 0px 0px 10px 0px #ae9243;
@@ -322,13 +323,48 @@ background-color:white;
         border-top-right-radius: 15px;
     }
 
-    /* Estilos para el formulario dentro del modal */
-    #formUsuarioCredito {
-        padding: 20px;
+    label {
+      color: #4f4f4b; /* Color de los labels */
+      font-weight: bold;
     }
 
-    label {
-        font-weight: bold;
+    .form-control:focus {
+        border-color: #ae9243; /* Color del borde cuando el campo está enfocado */
+        box-shadow: 0 0 10px rgba(174, 146, 67, 0.5); /* Sombra cuando el campo está enfocado */
+    }
+    /* Estilos para los íconos */
+    .input-group-text {
+        background-color: transparent; /* Fondo transparente del ícono */
+        color: #6a7179; /* Color del ícono */
+        border: transparent; /* Borde del ícono */
+    }
+
+    /* Posiciona el ícono dentro del campo */
+    .input-group-prepend {
+      position: absolute;
+      z-index: 2;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 40px; /* Puedes ajustar el valor según sea necesario */
+    }
+
+    .form-control {
+      border: 1px solid #ae9243; /* Borde del campo de entrada */
+      background-color: transparent; /* Fondo transparente del campo */
+      padding-left: 2.5rem; /* Ajusta el espacio para el ícono */
+      height: 40px; /* Ajusta la altura del campo según sea necesario */
+      width: 100%;
+      color: #959292; /* Cambia al color de texto deseado */
+
+    /* Estilo para el estado :focus */
+      &:focus {
+        background-color: transparent; /* Cambia al color deseado cuando el campo está enfocado */
+      }
+    }
+
+    /* Estilos para el formulario dentro del modal */
+    #formUsuarioCredito {
+        padding: 10px;
     }
 
     /* Estilos para los botones del formulario */
@@ -336,31 +372,10 @@ background-color:white;
         margin-right: 10px;
     }
 
-    .form-control {
-        border-radius: 0.75rem; /* Bordes redondeados para los campos de formulario */
-    }
-
-    .input-group-text {
-        border-radius: 0.75rem 0 0 0.75rem; /* Bordes redondeados para el área de texto de entrada en el grupo de entrada */
-    }
-
     .btn {
-        border-radius: 0.75rem; /* Bordes redondeados para los botones */
+        border-radius: 10px; /* Bordes redondeados para los botones */
         transition: background-color 0.3s; /* Transición suave del color de fondo al pasar el ratón */
     }
-
-    .btn:hover {
-        background-color: #e2c651; /* Cambiar color al pasar el ratón */
-    }
-
-    .input-group-prepend {
-      width: 40px; /* Puedes ajustar el valor según sea necesario */
-  }
-  .btn-detalles {
-    background-color: #e2c651; /* Cambia esto al color que desees */
-    color: black; /* Cambia esto al color de texto que desees */
-  }
-
 
 
 
