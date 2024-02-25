@@ -15,18 +15,25 @@ function buscarDatos(idProveedor) {
     dataType: "json",
     success: function(response) {
       // Procesar la respuesta exitosa
-      console.log(response);
     },
     error: function(error) {
       // Manejar el error
-      console.log(error);
+      Swal.fire({
+        title: 'Error',
+        text: error.responseJSON.message,
+        icon:"warning",
+        showCancelButton: false,
+        confirmButtonColor: ' #d5c429 ',
+        confirmButtonText: 'Confirmar',
+    }).then((result) => {
+       
+    });
     }
   });
 }
 
 //función para eliminar o editar proveedor
 function alertaEliminarEditar(action,idProveedor) {
-    console.log("id "+idProveedor   +" la acción que usted eligió es "+action);
     if (action=="eliminar"){
         eliminarProveedor(idProveedor);
     }else if (action=="editar"){
@@ -35,7 +42,6 @@ function alertaEliminarEditar(action,idProveedor) {
 }
 
 function consultarProveedor(idProveedor) {
-    console.log("prueba"+idProveedor);
 
     $.ajax({
         type: "GET",
@@ -52,7 +58,6 @@ function consultarProveedor(idProveedor) {
           $("#idProveedorE").val(idProveedor);
         },
         error: function (error){
-            console.log(error);//Revisar
             var mensaje = $("#resultadoCrear");
               mensaje.addClass("alert-danger");
               mensaje.removeClass("alert-success");
@@ -82,7 +87,6 @@ function eliminarProveedor(idProveedor) {
             xhr.open("DELETE", pathDelete, true);
             xhr.onload = function () {
               if (xhr.status === 200) {
-              console.log("Se eliminó proveedor con id"+idProveedor);
               Swal.fire({
                 type: 'success',
                 icon:"success",
@@ -112,7 +116,6 @@ function editarProveedor() {
         direccion: $("#direccionE").val(),
         email: $("#emailE").val()
       };
-  console.log(data);
 
   $.ajax({
     type: "PUT",
@@ -120,7 +123,6 @@ function editarProveedor() {
     data: JSON.stringify(data),
     contentType: "application/json",
     success: function(response) {
-      console.log(response);
       Swal.fire({
         type: 'success',
         text: 'Registro actualizado',
@@ -133,7 +135,6 @@ function editarProveedor() {
       }, 1500);
     },
     error: function(error) {
-      console.log(error);
       Swal.fire({
         type: 'error',
         text: "No se actualizó el registro",
@@ -211,11 +212,9 @@ $(document).ready(function() {
   $.ajax({
     url: 'http://localhost:8080/api/proveedorconsultar',
     success: function(data) {
-      console.log('Datos consultados:', data);
 
       // Verificar si hay datos en la respuesta
       if (data && data.length > 0) {
-        console.log('Primer dato:', data[0]);
 
         // Agregar los datos directamente al tbody
        /* const tableBody = $('#tbodyProveedores');
@@ -228,13 +227,20 @@ $(document).ready(function() {
         iniciarDataTables(data);
 
       } else {
-        console.log('No hay datos en la respuesta.');
         iniciarDataTables();
       }
     },
     error: function(xhr, error, thrown) {
-      console.log('Error al obtener datos:', error);
-      console.log('Respuesta de la API:', xhr.responseText);
+      Swal.fire({
+        title: 'Error',
+        text: xhr.responseText,
+        icon:"warning",
+        showCancelButton: false,
+        confirmButtonColor: ' #d5c429 ',
+        confirmButtonText: 'Confirmar',
+    }).then((result) => {
+       
+    });
     }
   });
 

@@ -115,12 +115,10 @@ function createButton(action, id) {
           url: 'https://localhost:7084/api/DetalleCompra/'+id,
           contentType: 'application/json',
           success: function (response) {
-            console.log(response);
             window.location.reload();
           },
           error: function (error) {
             // Handle the error
-            console.log(error);
             Swal.fire({
               title: 'Error',
               text: 'No es posible eliminar después de 24 horas.',
@@ -160,11 +158,19 @@ function createButton(action, id) {
             idDc.value =item.idDetalleCompra;
             var accion = document.getElementById("optionEdit");
             accion.value = "edit"
-            console.log("item ",item);
           }
           });
       } else {
-        console.log("La variable aún no tiene un valor asignado.");
+        Swal.fire({
+          title: 'Error',
+          text: 'La variable aún no tiene un valor asignado.',
+          icon:"warning",
+          showCancelButton: false,
+          confirmButtonColor: ' #d5c429 ',
+          confirmButtonText: 'Confirmar',
+      }).then((result) => {
+         
+      });
       }
   }
 
@@ -186,7 +192,7 @@ function createButton(action, id) {
 function nuevoDetalleCompra(){
 
     const idCompra = urlParams.get('idCompra');
-    console.log("nuevo detalle "+urlParams.get('idCompra'));
+    //console.log("nuevo detalle "+urlParams.get('idCompra'));
     if (idCompra != null) {
         const destinationURL = `http://127.0.0.1:5500/Frontend/nuevaCompra.html?idCompra=${idCompra}`;
         window.location.href = destinationURL;
@@ -237,7 +243,7 @@ function crearDetalleCompra(){
         idDetalleCompra: idDetalleCompra.value=="" ? "0" : idDetalleCompra.value
         });
 
-    console.log("rq ",request);
+    //console.log("rq ",request);
    
     if (idCompra != null) {
         $.ajax({
@@ -247,14 +253,11 @@ function crearDetalleCompra(){
         contentType: "application/json",
         success: function(response) {
             // Procesar la respuesta exitosa
-            console.log(response);
 
             limpiarFormulario();
             window.location.reload();
         },
         error: function(error) {
-            // Manejar el error
-            console.log(error);
               Swal.fire({
                 title: 'Error',
                 text: 'No es posible editar después de 24 horas.',
@@ -288,7 +291,7 @@ function updateDetalleCompra(){
         idDetalleCompra: idDetalleCompra.value=="" ? "0" : idDetalleCompra.value
         });
 
-    console.log("rq ",request);
+    //console.log("rq ",request);
 
     if (idCompra != null) {
         $.ajax({
@@ -298,7 +301,7 @@ function updateDetalleCompra(){
         contentType: "application/json",
         success: function(response) {
             // Procesar la respuesta exitosa
-            console.log(response);
+           // console.log(response);
 
             // Mostrar ventana de confirmación después de guardar
             Swal.fire({
@@ -312,8 +315,16 @@ function updateDetalleCompra(){
             window.location.reload();
         },
         error: function(error) {
-            // Manejar el error
-            console.log(error);
+            Swal.fire({
+              title: 'Error',
+              text: error.message,
+              icon:"warning",
+              showCancelButton: false,
+              confirmButtonColor: ' #d5c429 ',
+              confirmButtonText: 'Confirmar',
+          }).then((result) => {
+             
+          });
         }
         });
     }else{
@@ -370,7 +381,6 @@ function consultarProductos() {
 function onExitoProductosList(data) {
 
   listaProductos= data;
-  console.log(data)
 
   var select = $("#idExistencias");
     select.empty();
@@ -381,7 +391,16 @@ function onExitoProductosList(data) {
 }
 
 function onErrorProductosList(error) {
-  console.log(error)
+  Swal.fire({
+    title: 'Error',
+    text: error.message,
+    icon:"warning",
+    showCancelButton: false,
+    confirmButtonColor: ' #d5c429 ',
+    confirmButtonText: 'Confirmar',
+}).then((result) => {
+   
+});
 }
 
 
@@ -404,7 +423,16 @@ listarProveedor();
 }
 
 function onErrorProveedorList(error) {
-  console.log(error)
+  Swal.fire({
+    title: 'Error',
+    text: error.message,
+    icon:"warning",
+    showCancelButton: false,
+    confirmButtonColor: ' #d5c429 ',
+    confirmButtonText: 'Confirmar',
+}).then((result) => {
+   
+});
 }
 
 function listarProveedor() {

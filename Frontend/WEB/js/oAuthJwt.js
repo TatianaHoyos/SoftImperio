@@ -84,7 +84,6 @@ function refreshAccessToken() {
                 return response.json();
             })
             .then(data => {
-                console.log(data);
                 objetoRecuperado.authoritation = data;
 
                 // Almacenar el objeto actualizado en el localStorage

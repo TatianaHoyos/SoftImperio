@@ -21,7 +21,6 @@ function mostrarVentaNotificacionPorRedireccion(){
 
         // Tu código aquí
         data.forEach(function (detalleVenta) {
-            console.log(detalleVenta);
             mostrarProductosTablaNotificacion(detalleVenta.nombreProducto + ' ' + detalleVenta.referenciaProducto,
                 detalleVenta.subTotalAPagar, detalleVenta.idProductos, detalleVenta.cantidadProducto)
             $("#totalVenta").text(detalleVenta.totalVenta);
@@ -66,7 +65,6 @@ function consultarCategorias(token) {
 
 function onExitoCategorias(data) {
     categorias = data;
-    console.log(data);
     handleAjaxRequest(function (token) {
         consultarProductosAgrupados(data, token);
     });
@@ -78,8 +76,6 @@ function onExitoCategorias(data) {
 
 }
 function onErrorCategorias(error) {
-    console.log(error);
-    console.log(error.responseJSON.value)   
     Swal.fire({
         title: 'Error',
         text: error.responseJSON.value.message,
@@ -114,7 +110,6 @@ function consultarProductosAgrupados(categorias,token) {
 
 function onExitoProductos(data, categorias) {
     productos = data;
-    console.log(data);
     mostrarProductos(data, categorias);
     ocultarCargando();
 }
@@ -189,8 +184,17 @@ function mostrarProductos(data, categorias) {
 }
 
 function onErrorProductos(error) {
-    console.log(error)
     ocultarCargando();
+    Swal.fire({
+        title: 'Error',
+        text: error.responseJSON.message,
+        icon:"warning",
+        showCancelButton: false,
+        confirmButtonColor: ' #d5c429 ',
+        confirmButtonText: 'Confirmar',
+    }).then((result) => {
+       
+    });
 }
 
 function selectCategoria() {
@@ -253,7 +257,7 @@ function mostrarProductosTabla(nombre, precio, idProducto) {
     var cantidadBoton = '<th><div class="quantity">'
         + '<div class="qty">'
         + ' <span class="minus bg-dark">-</span>'
-        + '<input type="number" class="count" name="qty" value="1">'
+        + '<input type="number" class="count" name="qty" value="1" readonly>'
         + ' <span class="plus bg-dark">+</span>'
         + '</div>' +
         '</div></th>';
@@ -377,16 +381,9 @@ function confirmarVenta(){
                         var cantidad = $(this).find('.count').val(); // Aquí se usa la clase 'count' del input
                         var total = $(this).find('.total').text();
                     
-                        // Hacer lo que desees con los datos, por ejemplo, imprimirlos en la consola
-                        console.log('ID: ' + id);
-                        // console.log('Producto: ' + producto);
-                        // console.log('Precio: ' + precio);
-                        console.log('Cantidad: ' + cantidad);
-                        // console.log('Total: ' + total);
                         pedido.push({"idProducto": Number(id), "cantidad": Number(cantidad)});
                     });
                     var pedidoTotal={"pedido":pedido};
-                    console.log(pedidoTotal);
                     $("#cargando").modal("show");
                     handleAjaxRequest(function (token) {
                         callApiVentaBarra(pedidoTotal, token);
@@ -428,7 +425,6 @@ function confirmarVentaNotificacion(idPedido,token){
 
 function onExitoPedido(data){
     ocultarCargando();
-    console.log(data)
     Swal.fire({
         title: 'Exito',
         text: 'La Venta fue realizada con exito',
@@ -454,7 +450,6 @@ function onExitoPedido(data){
 
 function onErrorPedido(error){
     ocultarCargando();
-    console.log(error.responseJSON.value)   
     Swal.fire({
         title: 'Error',
         text: error.responseJSON.value.message,
@@ -467,17 +462,3 @@ function onErrorPedido(error){
     });
 
 }
-
-
-// function preventCloseLoading() {
-//     document.addEventListener('keydown', function(event) {
-//         // Obtener el modal
-//         var modal = document.getElementById('cargando');
-    
-//         // Verificar si la tecla presionada es "Esc" y si el modal está abierto
-//         if (event.key === 'Escape' && modal.classList.contains('show')) {
-//           event.preventDefault(); // Evitar el comportamiento por defecto (cerrar el modal)
-//           event.stopPropagation(); // Detener la propagación del evento
-//         }
-//       });
-// }
