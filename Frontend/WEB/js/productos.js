@@ -138,7 +138,6 @@ function onExitoProductos(data) {
         dom: '<"row"<"col-md-6"l><"col-md-6"f>>tip',
         pageLength: 5,
         lengthMenu: [5, 10, 25, 50], 
-        data: data,
         language: {
             "sProcessing": "Procesando...",
             "sLengthMenu": "Mostrar _MENU_ registros",
