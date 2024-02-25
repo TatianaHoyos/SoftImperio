@@ -23,6 +23,22 @@ namespace venta.Controllers
             _context = context;
         }
 
+        //Api para consultar productos con el id de existencia en dc
+        [HttpGet("ObtenerProductosExistencia")]
+        public IActionResult ObtenerProductosExistencia()
+        {
+            var productosExistenciaSPResult = _context.ProductosExistenciaSPResult
+                           .FromSqlRaw("CALL sp_obtenerProductoExistencias()")
+                           .ToList();
+
+            if (productosExistenciaSPResult == null || productosExistenciaSPResult.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(productosExistenciaSPResult);
+        }
+
         // GET: api/Productos
         //[HttpGet]
         //public async Task<ActionResult<IEnumerable<object>>> GetProductos()

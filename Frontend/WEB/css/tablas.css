@@ -178,4 +178,6 @@
 .dataTables_filter label:hover::before {
     color: #e2c651; /* cuando se pasa el ratón */
 }
-
+.table td{
+    padding: 0.25rem;
+}

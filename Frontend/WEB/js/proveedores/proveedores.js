@@ -242,6 +242,8 @@ $(document).ready(function() {
   function iniciarDataTables(data) {
     $('#miTabla').DataTable({
       dom: '<"row"<"col-md-6"l><"col-md-6"f>>tip',
+      pageLength: 5,
+      lengthMenu: [5, 10, 25, 50],
       data: data,
       columns: [
         { data: 'idProveedores' },
