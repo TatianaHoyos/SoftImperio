@@ -10,8 +10,8 @@ async function obtenerVentasUltimoMes() {
         console.log('Datos de la API (Ventas Último Mes):', datos);
 
         if (Array.isArray(datos) && datos.length > 0 && datos[0].totalVenta !== undefined) {
-            // Formatear el número con el símbolo de pesos
-            const totalVentaFormateado = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(datos[0].totalVenta);
+            // Formatear el número con el símbolo de pesos y sin mostrar centavos
+            const totalVentaFormateado = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(datos[0].totalVenta);
 
             // Actualiza el contenido del dashboard con los datos formateados
             document.getElementById('ventasTotales').innerHTML = totalVentaFormateado;
@@ -22,6 +22,7 @@ async function obtenerVentasUltimoMes() {
         console.error(error);
     }
 }
+
 
 
 
@@ -38,7 +39,7 @@ async function obtenerComprasUltimoMes() {
         console.log('Datos de la API (Compras Último Mes):', datos);
 
         if (datos.length > 0) {
-            const totalCompraFormateado = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(datos[0].totalCompra);
+            const totalCompraFormateado = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(datos[0].totalCompra);
 
             document.getElementById('comprasTotales').innerHTML = totalCompraFormateado;
         } else {
@@ -60,7 +61,7 @@ async function obtenerCreditosUltimoMes() {
         console.log('Datos de la API (Créditos Último Mes):', datos);
 
         if (datos.length > 0) {
-            const totalCreditoFormateado = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(datos[0].totalCredito);
+            const totalCreditoFormateado = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(datos[0].totalCredito);
 
             document.getElementById('creditosTotales').innerHTML = totalCreditoFormateado;
         } else {
@@ -106,7 +107,6 @@ function obtenerDatosCompletos(datos) {
 }
 
 
-// Función para obtener datos de la API de Ventas
 async function obtenerDatosGraficoVentas() {
     try {
         const datos = await fetchData('https://localhost:7084/api/Ventas/ventas-por-mes');
@@ -118,7 +118,6 @@ async function obtenerDatosGraficoVentas() {
     }
 }
 
-// Función para obtener datos de la API de Compras
 async function obtenerDatosGraficoCompras() {
     try {
         const datos = await fetchData('https://localhost:7084/api/Compras/compras-por-mes');
@@ -130,33 +129,71 @@ async function obtenerDatosGraficoCompras() {
     }
 }
 
-// Función para mostrar el gráfico de Ventas
-async function mostrarGrafico() {
+function obtenerEtiquetas(datos) {
+    const etiquetas = datos.map(item => {
+        const fecha = new Date(item.año, item.mes - 1); 
+        return moment(fecha).format('YYYY-MM');
+    });
+    return etiquetas;
+}
+
+function obtenerDatosCompletos(datos) {
+    const datosPorMes = datos.reduce((acumulador, item) => {
+        const fecha = new Date(item.año, item.mes - 1);
+        const etiqueta = moment(fecha).format('YYYY-MM');
+
+        if (!acumulador[etiqueta]) {
+            acumulador[etiqueta] = 0;
+        }
+
+        acumulador[etiqueta] += item.totalVenta || item.totalCompra || 0;
+        return acumulador;
+    }, {});
+
+    return datosPorMes;
+}
+
+// Función para mostrar el gráfico de Ventas y Compras combinadas
+async function mostrarGraficoVentasYCompras() {
     try {
         const datosGraficoVentas = await obtenerDatosGraficoVentas();
+        const datosGraficoCompras = await obtenerDatosGraficoCompras();
 
-        if (datosGraficoVentas && datosGraficoVentas.length > 0) {
-            // Agrupa los datos por mes y suma los montos de venta
+        if (datosGraficoVentas && datosGraficoVentas.length > 0 && datosGraficoCompras && datosGraficoCompras.length > 0) {
             const datosPorMesVentas = obtenerDatosCompletos(datosGraficoVentas);
+            const datosPorMesCompras = obtenerDatosCompletos(datosGraficoCompras);
 
-            // Extrae las etiquetas (meses) y los datos (montos) desde el objeto agrupado
-            const etiquetasVentas = obtenerEtiquetas(datosGraficoVentas);
-            const montosVentas = Object.values(datosPorMesVentas);
+            // Extrae las etiquetas (meses) y los datos (montos) desde los objetos agrupados
+            let etiquetas = Object.keys({ ...datosPorMesVentas, ...datosPorMesCompras });
+            etiquetas = etiquetas.sort((a, b) => a.localeCompare(b)); // Ordena las etiquetas
+
+            const montosVentas = etiquetas.map(etiqueta => datosPorMesVentas[etiqueta] || 0);
+            const montosCompras = etiquetas.map(etiqueta => datosPorMesCompras[etiqueta] || 0);
 
             // Configurar los datos según el formato necesario para Chart.js
-            const dataVentas = {
-                labels: etiquetasVentas,
+            const data = {
+                labels: etiquetas,
                 datasets: [{
                     label: 'Total de Ventas',
                     data: montosVentas,
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    fill: false,
                     borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1
+                    borderWidth: 2,
+                    pointRadius: 5,
+                    pointHoverRadius: 8,
+                }, {
+                    label: 'Total de Compras',
+                    data: montosCompras,
+                    fill: false,
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 2,
+                    pointRadius: 5,
+                    pointHoverRadius: 8,
                 }]
             };
 
             // Configurar las opciones del gráfico
-            const optionsVentas = {
+            const options = {
                 scales: {
                     x: {
                         title: {
@@ -168,43 +205,54 @@ async function mostrarGrafico() {
                         beginAtZero: true,
                         title: {
                             display: true,
-                            text: 'Total de Ventas'
+                            text: 'Total de Ventas y Compras'
                         }
                     }
                 }
             };
 
             // Obtener el contexto del canvas y renderizar el gráfico
-            const ctxVentas = document.getElementById('myChartVentas');
-            const myChartVentas = new Chart(ctxVentas, {
-                type: 'bar',
-                data: dataVentas,
-                options: optionsVentas
+            const ctx = document.getElementById('myChartVentasYCompras');
+            const myChart = new Chart(ctx, {
+                type: 'line',
+                data: data,
+                options: options
             });
         } else {
-            console.warn('No se encontraron datos válidos para mostrar el gráfico de Ventas.');
+            console.warn('No se encontraron datos válidos para mostrar el gráfico de Ventas y Compras.');
         }
     } catch (error) {
-        console.error('Error al mostrar el gráfico de Ventas:', error);
+        console.error('Error al mostrar el gráfico de Ventas y Compras:', error);
     }
 }
 
-// Función para mostrar el gráfico de Compras
-async function mostrarGraficoCompras() {
-    try {
-        const datosGraficoCompras = await obtenerDatosGraficoCompras();
 
-        if (datosGraficoCompras && datosGraficoCompras.length > 0) {
-            const datosPorMesCompras = obtenerDatosCompletos(datosGraficoCompras);
-            const etiquetasCompras = obtenerEtiquetas(datosGraficoCompras);
-            const montosCompras = Object.values(datosPorMesCompras);
+// Función para obtener datos de la API de Productos
+async function obtenerDatosGraficoProductos() {
+    try {
+        const respuesta = await fetch('https://localhost:7084/api/Productos/productos-con-existencias');
+        if (!respuesta.ok) {
+            throw new Error('Error al obtener los datos de productos. Estado de la respuesta: ' + respuesta.status);
+        }
+
+        const datos = await respuesta.json();
+        console.log('Datos de la API (Productos):', datos);
+
+        if (datos && datos.length > 0) {
+            // Extrae los nombres de productos, referencias y cantidades
+            const nombresProductos = datos.map(item => item.nombreProducto);
+            const referenciasProductos = datos.map(item => item.referenciaProducto);
+            const cantidadesProductos = datos.map(item => item.cantidad);
+
+            // Combina nombre y referencia para formar la etiqueta del producto
+            const etiquetasProductos = nombresProductos.map((nombre, index) => `${nombre} - ${referenciasProductos[index]}`);
 
             // Configurar los datos según el formato necesario para Chart.js
-            const dataCompras = {
-                labels: etiquetasCompras,
+            const dataProductos = {
+                labels: etiquetasProductos,
                 datasets: [{
-                    label: 'Total de Compras',
-                    data: montosCompras,
+                    label: 'Cantidad de Productos',
+                    data: cantidadesProductos,
                     backgroundColor: 'rgba(255, 99, 132, 0.2)',
                     borderColor: 'rgba(255, 99, 132, 1)',
                     borderWidth: 1
@@ -212,44 +260,45 @@ async function mostrarGraficoCompras() {
             };
 
             // Configurar las opciones del gráfico
-            const optionsCompras = {
+            const optionsProductos = {
                 scales: {
                     x: {
                         title: {
                             display: true,
-                            text: 'Mes'
+                            text: 'Productos'
                         }
                     },
                     y: {
                         beginAtZero: true,
                         title: {
                             display: true,
-                            text: 'Total de Compras'
+                            text: 'Cantidad'
                         }
                     }
                 }
             };
 
             // Obtener el contexto del canvas y renderizar el gráfico
-            const ctxCompras = document.getElementById('myChartCompras');
-            const myChartCompras = new Chart(ctxCompras, {
+            const ctxProductos = document.getElementById('myChartProductos');
+            const myChartProductos = new Chart(ctxProductos, {
                 type: 'bar',
-                data: dataCompras,
-                options: optionsCompras
+                data: dataProductos,
+                options: optionsProductos
             });
-        } else {
-            console.warn('No se encontraron datos válidos para mostrar el gráfico de Compras.');
         }
     } catch (error) {
-        console.error('Error al mostrar el gráfico de Compras:', error);
+        console.error('Error al obtener datos del gráfico de Productos:', error);
     }
 }
 
-// Llamamos a las funciones para mostrar ambos gráficos al cargar la página
+
+
+
+
 window.onload = function () {
     obtenerVentasUltimoMes();
     obtenerComprasUltimoMes();
     obtenerCreditosUltimoMes();
-    mostrarGrafico();
-    mostrarGraficoCompras();
+    mostrarGraficoVentasYCompras();
+    obtenerDatosGraficoProductos();
 };

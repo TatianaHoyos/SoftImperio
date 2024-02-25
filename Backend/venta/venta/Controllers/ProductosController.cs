@@ -9,6 +9,7 @@ using venta.Data;
 using venta.DTO;
 using venta.Models;
 
+
 namespace venta.Controllers
 {
     [Route("api/[controller]")]
@@ -99,8 +100,42 @@ namespace venta.Controllers
             return Ok(productosTransformados);
         }
 
-        
-      
-    
+
+
+
+
+
+
+
+
+
+
+        [HttpGet("productos-con-existencias")]
+        public ActionResult<IEnumerable<ProductoConExistenciaDTO>> ObtenerProductosConExistencias()
+        {
+            try
+            {
+                var productosConExistencias = _context.Productos
+                    .Join(_context.Existencia,
+                        producto => producto.IdProductos,
+                        existencia => existencia.IdProductos,
+                        (producto, existencia) => new { producto, existencia })
+                    .Select(pe => new ProductoConExistenciaDTO
+                    {
+                        NombreProducto = pe.producto.NombreProducto,
+                        ReferenciaProducto = pe.producto.ReferenciaProducto,
+                        Cantidad = pe.existencia.Cantidad
+                    })
+                    .ToList();
+
+                return Ok(productosConExistencias);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error al obtener productos con existencias");
+            }
+        }
+
     }
+
 }

@@ -38,19 +38,19 @@ namespace venta.Controllers
 
         // GET: api/Ventas/ByFecha
         [HttpGet("ByFecha")]
-        public async Task<ActionResult<IEnumerable<Venta>>> GetVentasPorFecha(DateTime fechaInicio, DateTime fechaFin)
+        public async Task<ActionResult<IEnumerable<Venta>>> GetVentasPorFecha(DateTime? fechaInicio = null, DateTime? fechaFin = null)
         {
-            if (_context.Venta == null)
-            {
-                return NotFound();
-            }
-
             try
             {
-                var ventas = await _context.Venta
-                    .Where(venta => venta.fechaVenta >= fechaInicio && venta.fechaVenta <= fechaFin)
-                    .ToListAsync();
+                IQueryable<Venta> query = _context.Venta;
 
+                if (fechaInicio.HasValue && fechaFin.HasValue)
+                {
+                    // Aplica el filtro por fechas solo si ambas fechas están presentes
+                    query = query.Where(venta => venta.fechaVenta >= fechaInicio.Value && venta.fechaVenta <= fechaFin.Value);
+                }
+
+                var ventas = await query.ToListAsync();
                 return Ok(ventas);
             }
             catch (Exception ex)
@@ -58,6 +58,8 @@ namespace venta.Controllers
                 return StatusCode(500, $"Error interno del servidor: {ex.Message}");
             }
         }
+
+
 
 
         // GET: api/Ventas
