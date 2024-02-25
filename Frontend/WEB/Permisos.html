@@ -6,8 +6,8 @@
     <title>Permisos</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.0/css/dataTables.bootstrap4.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap4.min.css">
     <link rel="stylesheet" href="css/style.css">
@@ -118,7 +118,7 @@ p{
                                     <th>Modulo</th>
                                     <th>Crear</th>
                                     <th>Modificar</th>
-                                    <th>Ver</th>
+                                    <th>Consultar</th>
                                     <th>Eliminar</th>
                                 </tr>
                             </thead>
@@ -147,42 +147,32 @@ p{
     </div>
 
     <div class="container contenido-principal">
-        <h1 class="Titulo">Roles</h1>
+        <h1 class="Titulo">Roles y sus permisos</h1>
         <!--Botones - crear, reporte -->
         <div class="row">
             <div class="col col-lg-2"></div>
-            <div class="col  col-lg-4">
-                <div class="form-group col">
-                    <button type="button" class="btn btn-primary col-md-5 form-control btn mt-5 mb-2"
-                        onclick="mostrarFormularioCrear()" data-toggle="modal"
-                        data-target="#modalRoles"><strong>Crear</strong>
-                    </button>
-                    <button type="button" class="col-md-5 form-control btn mt-5 mb-2"><strong>Reporte</strong>
-                    </button>
-                    <button type="submit"  class="col-md-5 form-control btn mt-5 mb-2" onclick="downloadBackup()"><strong>BackupBD</strong></button>
-                    
-       
+            <div class="col col-lg-8">
+                <div class="form-group row">
+                    <div class="col-md-2  mb-2">
+                        <button type="button" class="btn btn-primary form-control" onclick="mostrarFormularioCrear()" data-toggle="modal" data-target="#modalRoles">
+                            <strong>Crear</strong>
+                        </button>
+                    </div>
+                    <div class="col-md-2 mb-2">
+                        <button type="button" class="btn form-control"><strong>Reporte</strong></button>
+                    </div>
+                    <div class="col-md-2 mb-2">
+                        <button type="submit" class="btn form-control" onclick="downloadBackup()">
+                            <strong>BackupBD</strong>
+                        </button>
+                    </div>
                 </div>
             </div>
-            <div class="col"></div>
-        </div>
-        <!--Tabla roles-->
-        <div class="row justify-content-md-center">
-            <table id="tablaRol" class="table w-100">
-                <thead class="text-center">
-                    <tr>
-                        <th>Rol </th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody class="text-center">
-                </tbody>
-            </table>
+            <div class="col col-lg-2"></div>
         </div>
 
         <!--Roles y sus permisos-->
-        <h1 class="Titulo">Roles y sus permisos</h1>
+       
         <div class="row justify-content-md-center">
             <!-- Elemento para la tabla principal -->
 

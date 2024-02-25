@@ -23,17 +23,86 @@ function onExitoRoles(data) {
     console.log("consulta de roles");
     console.log(data);
 
-    mostrarTablaRoles(data);
+   // mostrarTablaRoles(data);
     mostrarListaRolesyPermisos(data);
 }
 
-function mostrarTablaRoles(data) {
-    // Destruir la DataTable existente si ya ha sido inicializada
-if ($.fn.DataTable.isDataTable('#tablaRol')) {
-    $('#tablaRol').DataTable().destroy();
-}
-    // Obtén una referencia a la DataTable
-    var dataTable = $('#tablaRol').DataTable({
+
+function mostrarListaRolesyPermisos(roles) {
+    // Crear la estructura básica de la tabla
+    var tablaPrincipal = $('<table>').attr('id', 'tablaPrincipal').addClass('table w-100');
+    var thead = $('<thead>').appendTo(tablaPrincipal);
+    var tbody = $('<tbody>').appendTo(tablaPrincipal);
+
+    // Agregar encabezados
+    var encabezados = $('<tr>').appendTo(thead);
+    $('<th>').text('ID Rol').appendTo(encabezados);
+    $('<th>').text('Nombre Rol').appendTo(encabezados);
+    $('<th>').text('Módulo').appendTo(encabezados);
+    $('<th>').text('Permisos').appendTo(encabezados);
+    $('<th>').text('Acciones').appendTo(encabezados);
+
+    roles.forEach(function (rol) {
+        var boton1 = "<button onclick='EliminarRol("+ JSON.stringify(rol) +")' class='btn btn-delete' data-id='1'><i class='fas fa-trash'></i></button>";
+        var boton2 = "<button onclick='EditarRol("+ JSON.stringify(rol) +")' class='btn btn-edit' data-toggle='modal' data-target='#modalRoles'><i class='fas fa-edit'></i></button>";
+        var boton3 = "<button onclick='mostrarListaRolyPermisos("+ JSON.stringify(rol) +")' class='btn btn-edit' data-toggle='modal' data-target='#modalRolesYPermisos'><i class='fas fa-wrench'></i></button>";
+
+        var fila = $('<tr>').appendTo(tbody);
+        $('<td>').text(rol.idRol).appendTo(fila);
+        $('<td>').text(rol.nombreRol).appendTo(fila);
+
+        // Agrupar por módulo
+        var permisosPorModulo = {};
+        rol.permisos.forEach(function (permiso) {
+            if (!permisosPorModulo[permiso.modulo.nombre]) {
+                permisosPorModulo[permiso.modulo.nombre] = [];
+            }
+            permisosPorModulo[permiso.modulo.nombre].push(permiso.acciones.nombre);
+        });
+
+        // Añadir celdas para módulo y permisos
+        var modulos = Object.keys(permisosPorModulo);
+        var moduloCell = $('<td>').appendTo(fila);
+        var permisosCell = $('<td>').appendTo(fila);
+
+        if (modulos.length > 0) {
+            //moduloCell.text(modulos.join('\n'));
+            modulos.forEach(function (modulo) {
+                permisosCell.append($('<p>').html( permisosPorModulo[modulo].join(', ')));
+                moduloCell.append($('<p>').html( modulo ));
+            });
+        }
+
+        // Añadir celda vacía si no hay módulos o permisos
+        else {
+            moduloCell.text('');
+            permisosCell.text('');
+        }
+
+        // Añadir botones a la columna de acciones
+        var accionesCell = $('<td>').appendTo(fila);
+        var boton1 = $("<button>").addClass('btn btn-delete').attr('data-id', '1').html('<i class="fas fa-trash"></i>').click(function () {
+            EliminarRol(rol);
+        });
+        var boton2 = $("<button>").addClass('btn btn-edit').attr('data-toggle', 'modal').attr('data-target', '#modalRoles').html('<i class="fas fa-edit"></i>').click(function () {
+            EditarRol(rol);
+        });
+        var boton3 = $("<button>").addClass('btn btn-edit').attr('data-toggle', 'modal').attr('data-target', '#modalRolesYPermisos').html('<i class="fas fa-wrench"></i>').click(function () {
+            mostrarListaRolyPermisos(rol);
+        });
+
+        accionesCell.append(boton3, boton2, boton1);
+    });
+
+    // Insertar la tabla en el contenedor
+    $('#tabla').empty().append(tablaPrincipal);
+
+    // Inicializar DataTables después de agregar la tabla
+    $('#tablaPrincipal').DataTable({
+        dom: '<"row"<"col-md-6"l><"col-md-6"f>>tip',
+        pageLength: 5,
+        lengthMenu: [5, 10, 25, 50], 
+       
         language: {
             "sProcessing": "Procesando...",
             "sLengthMenu": "Mostrar _MENU_ registros",
@@ -59,71 +128,8 @@ if ($.fn.DataTable.isDataTable('#tablaRol')) {
             }
         }
     });
-    
-    // Limpia la tabla
-    dataTable.clear();
-
-   // $('#tablaRol > tbody').empty();
-    $.each(data, function(id, rol) {
-
-        var boton1 = "<button onclick='EliminarRol("+ JSON.stringify(rol) +")' class='btn btn-delete' data-id='1'><i class='fas fa-trash'></i></button>";
-        var boton2 = "<button onclick='EditarRol("+ JSON.stringify(rol) +")' class='btn btn-edit' data-toggle='modal' data-target='#modalRoles'><i class='fas fa-edit'></i></button>";
-        var boton3 = "<button onclick='mostrarListaRolyPermisos("+ JSON.stringify(rol) +")' class='btn btn-edit' data-toggle='modal' data-target='#modalRolesYPermisos'><i class='fas fa-wrench'></i></button>";
-
-        // $('#tablaRol').append('<tr><td>' + rol.nombreRol + '</td><td>' + rol.estado+
-        // '</td><td>' + boton3 + '</td><td>' + boton2 + '</td><td>' + boton1 + '</td></tr>');
-        // //console.log(rol.id + ' ' + rol.nombreRol);
-
-         // Agrega la fila a la DataTable
-         dataTable.row.add([
-            rol.nombreRol,
-            rol.estado,
-            boton3 +
-            boton2 +
-            boton1
-        ]).draw();
-
-    });
 }
 
-function mostrarListaRolesyPermisos(roles) {
-    var tablaPrincipal = '<table id="tablaPrincipal" class="table w-100"><thead><tr><th>ID Rol</th><th>Nombre Rol</th><th>Módulo</th><th>Permisos</th></tr></thead><tbody>';
-
-    roles.forEach(function (rol) {
-        tablaPrincipal += '<tr><td>' + rol.idRol + '</td><td>' + rol.nombreRol + '</td>';
-
-        // Agrupar por módulo
-        var permisosPorModulo = {};
-        rol.permisos.forEach(function (permiso) {
-            if (!permisosPorModulo[permiso.modulo.nombre]) {
-                permisosPorModulo[permiso.modulo.nombre] = [];
-            }
-            permisosPorModulo[permiso.modulo.nombre].push(permiso.acciones.nombre);
-        });
-
-        // Generar celdas para módulo y permisos
-        var modulos = Object.keys(permisosPorModulo);
-        if (modulos.length > 0) {
-            tablaPrincipal += '<td>' + modulos.join('<br>') + '</td>';
-            tablaPrincipal += '<td>';
-            modulos.forEach(function (modulo) {
-                tablaPrincipal += '<p><strong>' + modulo + ':</strong> ' + permisosPorModulo[modulo].join(', ') + '</p>';
-            });
-            tablaPrincipal += '</td>';
-        } else {
-            // Agregar celdas vacías si no hay módulos o permisos
-            tablaPrincipal += '<td></td><td></td>';
-        }
-
-        tablaPrincipal += '</tr>';
-    });
-
-    tablaPrincipal += '</tbody></table>';
-    $('#tabla').html(tablaPrincipal);
-
-    // Inicializar DataTables después de agregar la tabla
-    $('#tablaPrincipal').DataTable();
-}
 
 
 

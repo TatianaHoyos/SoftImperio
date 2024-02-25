@@ -33,41 +33,20 @@
 
                         <div class="form-row justify-content-center">
                             <div class="form-group col-md-6">
-                                <label for="categoria" class="text-white">
-                                    Seleccione una categoria
-                                </label>
+                                <label for="idCategoria" class="text-white">Seleccione una Categoría</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i
                                                 class="fas fa-user"></i></span>
                                     </div>
 
-                                    <select id="categoria" name="idCategoria" class="form-control">
-                                        <option value="1">Cervezas</option>
+                                    <select id="idCategoria" name="idCategoria" class="form-control">
 
                                     </select>
                                 </div>
                             </div>
                         </div>
-                        <!-- <div class="form-row justify-content-center">
-                            <div class="form-group col-md-6">
-                                <label for="proveedor" class="text-white">
-                                    Seleccione un proveedor
-                                </label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" style="background-color: #e5c850"><i
-                                                class="fas fa-user"></i></span>
-                                    </div>
-
-                                    <select id="proveedor" name="idProveedores" class="form-control">
-                                        <option value="1">Bavaria</option>
-
-                                    </select>
-                                </div>
-                            </div>
-                        </div> -->
-
+                    
                         <div class="form-row justify-content-center">
                             <div class="form-group col-md-6">
                                 <label for="nombre" class="text-white">
@@ -98,9 +77,9 @@
                                                 class="far fa-envelope"></i></span>
                                     </div>
                                     <input type="text" class="form-control" id="referencia" name="referenciaProducto"
-                                        placeholder="Referencia Producto" onkeypress="return soloNumeros(event)">  
+                                        placeholder="Referencia Producto" onkeypress="return validarNumero(event)">  
                                     </div>
-                                    <span id="mensajeNumeros"></span>
+                                
 
                             </div>
                         </div>
@@ -116,9 +95,9 @@
                                                 class="far fa-envelope"></i></span>
                                     </div>
                                     <input type="text" class="form-control" id="precio" name="precioProducto"
-                                        placeholder="Precio Producto" onkeypress="return soloNumeros(event)">
+                                        placeholder="Precio Producto" onkeypress="return validarNumero(event)">
                                 </div>
-                                <span id="mensajeNumerosPrecio"></span>
+                              
                             </div>
 
                         </div>
