@@ -1,4 +1,15 @@
- 
+$(document).ready(function () {
+  const fecha = new Date();
+
+    const año = fecha.getFullYear();
+    const mes = String(fecha.getMonth() + 1).padStart(2, '0'); // Sumamos 1 porque los meses en JavaScript son de 0 a 11
+    const dia = String(fecha.getDate()).padStart(2, '0');
+
+    const fechaFinal = `${año}-${mes}-${dia}`;
+    mostrarVentas("1999-02-23", fechaFinal);
+});
+
+
 // Consultar y mostrar Ventas
 const apiUrl = "https://localhost:7084/api/Ventas/ByFecha";
 
@@ -17,9 +28,17 @@ let paginaActual = 1;
 const ventasPorPagina = 10; // Puedes ajustar el número de ventas por página
 
 // Función para mostrar ventas dentro del rango de fechas
-function mostrarVentas() {
- const fechaInicial = document.querySelector('#fecha-inicial').value;
- const fechaFinal = document.querySelector('#fecha-final').value;
+function mostrarVentas(Finicial = "", Ffinal="") {
+  var fechaInicial = "";
+  var fechaFinal = "";
+  if (Ffinal === "" && Finicial === "") {
+    fechaInicial = document.querySelector('#fecha-inicial').value;
+    fechaFinal = document.querySelector('#fecha-final').value;
+  } else {
+    fechaFinal = Ffinal;
+    fechaInicial = Finicial;
+  }
+  
 
  // Validar pa q no estes vacias
  if (!fechaInicial || !fechaFinal) {
