@@ -126,9 +126,9 @@ function consultarProductos(token) {
 function onExitoProductos(data) {
     console.log(data);
 // Destruir la DataTable existente si ya ha sido inicializada
-if ($.fn.DataTable.isDataTable('#tablaProductos')) {
-    $('#tablaProductos').DataTable().destroy();
-}
+    if ($.fn.DataTable.isDataTable('#tablaProductos')) {
+        $('#tablaProductos').DataTable().destroy();
+    }
     // Obtén una referencia a la DataTable
     var dataTable = $('#tablaProductos').DataTable({
         dom: '<"row"<"col-md-6"l><"col-md-6"f>>tip',
@@ -158,7 +158,9 @@ if ($.fn.DataTable.isDataTable('#tablaProductos')) {
                 "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
                 "sSortDescending": ": Activar para ordenar la columna de manera descendente"
             }
-        }
+        },
+        lengthMenu: [5, 10, 25, 50],
+        pageLength: 5, // Número de registros por página
     });
     
     // Limpia la tabla

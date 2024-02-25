@@ -149,7 +149,7 @@ function editarProveedor() {
 }
 
 // Function to create a table row with the given data
-function createTableRow(data) {
+/*function createTableRow(data) {
   const row = document.createElement("tr");
 
   const propertyOrder = ["idProveedores", "documento", "nombre","email","telefono","direccion"];
@@ -205,7 +205,7 @@ function createTableRow(data) {
   row.appendChild(deleteCell);
 
   return row;
-}
+}*/
 
 $(document).ready(function() {
   $.ajax({
@@ -218,14 +218,14 @@ $(document).ready(function() {
         console.log('Primer dato:', data[0]);
 
         // Agregar los datos directamente al tbody
-        const tableBody = $('#tbodyProveedores');
+       /* const tableBody = $('#tbodyProveedores');
         data.forEach(function(item) {
           const row = createTableRow(item);
           tableBody.append(row);
-        });
+        });*/
 
         // Inicializar DataTables después de agregar los datos
-        iniciarDataTables();
+        iniciarDataTables(data);
 
       } else {
         console.log('No hay datos en la respuesta.');
@@ -240,12 +240,15 @@ $(document).ready(function() {
 
   // Inicializar DataTables directamente después de la carga de la página
   function iniciarDataTables(data) {
-    $('#miTabla').DataTable({
+    if ($.fn.DataTable.isDataTable('#miTabla')) {
+      $('#miTabla').DataTable().destroy();
+    }
+    var dataTable = $('#miTabla').DataTable({
       dom: '<"row"<"col-md-6"l><"col-md-6"f>>tip',
       pageLength: 5,
       lengthMenu: [5, 10, 25, 50],
-      data: data,
-      columns: [
+     /* data: data,
+      columns:[
         { data: 'idProveedores' },
         { data: 'documento' },
         { data: 'nombre' },
@@ -264,8 +267,10 @@ $(document).ready(function() {
             return '<button onclick="alertaEliminarEditar(\'eliminar\', ' + row.idProveedores + ')" class="btn btn-eliminar" > <i class="fa fa-trash"></i></button>';
           }
         }
-      ],
+      ],*/
+    
       rowId: 'idProveedores',
+     
       language: { /*language, parametro adicional para cambiar los texto del datatable */
         "sProcessing": "Procesando...",
         "sLengthMenu": "Mostrar _MENU_ registros",
@@ -289,8 +294,11 @@ $(document).ready(function() {
           "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
           "sSortDescending": ": Activar para ordenar la columna de manera descendente"
         }
-      }
+      },
     });
+
+
+
 
 // Seleccionar el elemento de búsqueda
 var inputSearch = $('#miTabla_filter input');
@@ -298,10 +306,39 @@ inputSearch.addClass('form-control'); // Asegurarse de que el input tenga la cla
 inputSearch.removeAttr('placeholder'); // Quitar el atributo placeholder si existe
 
 // Crear el span con el ícono y agregarlo al input de búsqueda
-var iconSpan = $('<span class="input-group-text" style="background-color: #e5c850; color: red;"><i class="fas fa-search"></i></span>');
-inputSearch.parent().prepend(iconSpan);
-  }
+var iconSpan = $('<span class="input-group-text" style="background-color: #e5c850;"><i class="fas fa-search"></i></span>');
+
+dataTable.clear();
+
+$.each(data, function (id, productos) {
+  /*var nombreCategoria = "";
+  if (productos.idCategoria == 1) {
+      nombreCategoria = "cervezas";
+  } else if (productos.idCategoria == 2) {
+      nombreCategoria = "wiskey";
+  } else if (productos.idCategoria == 3) {
+      nombreCategoria = "aguardiente";
+  }*/
+  var boton1 ='<button class="btn btn-editar" data-toggle="modal" data-target="#miModal" onclick="alertaEliminarEditar(\'editar\', ' + productos.idProveedores + ')"><i class="fa fa-edit"></i></button>';
+  var boton2 = '<button onclick="alertaEliminarEditar(\'eliminar\', ' + productos.idProveedores + ')" class="btn btn-eliminar" > <i class="fa fa-trash"></i></button>';
+ 
+  // Agrega la fila a la DataTable
+  dataTable.row.add([
+      productos.documento,
+      productos.nombre,
+      productos.email,
+      productos.telefono,
+      productos.direccion,
+      boton1 + boton2
+  ]).draw();
+
+  // console.log(productos.id + ' ' + productos.nombreProducto + ' ' + productos.idCategoria + ' ' +
+  //     productos.referenciaProducto + ' ' + productos.precioProducto);
 });
+
+  }
+}
+);
 
 // Function to create a table row with the given data
 function createTableRow(data) {
