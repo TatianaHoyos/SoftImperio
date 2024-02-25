@@ -19,7 +19,6 @@ function consultarRoles() {
 }
 
 function onExitoRoles(data) {
-    console.log(data);
     var $dropdown = $("#idRol");
     $.each(data, function () {
         $dropdown.append($("<option />").val(this.idRol).text(this.nombreRol));
@@ -45,7 +44,16 @@ function mostrarRolesConPermisos(roles) {
   }
 
 function onErrorRoles(error) {
-    console.log(error)
+    Swal.fire({
+        title: 'Error',
+        text: error.responseJSON.message,
+        icon:"warning",
+        showCancelButton: false,
+        confirmButtonColor: ' #d5c429 ',
+        confirmButtonText: 'Confirmar',
+    }).then((result) => {
+       
+    });
 }
 
 
@@ -54,8 +62,6 @@ function crearUsuario(){
 
 	// Create an FormData object 
     var formData = new FormData(form);
-
-   console.log(formData);
 
    $.ajax({
     type: "POST",
@@ -71,7 +77,6 @@ function crearUsuario(){
 }
 
 function onExitoCrearUsuario(data){
-    console.log(data);
     var mensaje = $("#resultadoCrear");
     mensaje.addClass("alert-success");
     mensaje.removeClass("alert-danger");
@@ -81,7 +86,6 @@ function onExitoCrearUsuario(data){
     $("#foto-preview").attr('src', '');
 }
 function onErrorCrearUsuario(error){
-    console.log(error);
     var mensaje = $("#resultadoCrear");
     mensaje.addClass("alert-danger");
     mensaje.removeClass("alert-success");

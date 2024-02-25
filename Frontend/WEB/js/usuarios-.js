@@ -18,7 +18,7 @@ function consultarUsuarios() {
     });
 }
 function onErrorUsuarios(error) {
-    console.log(error)
+    
 }
 
 function onExitoUsuarios(data) {

@@ -99,13 +99,20 @@ async function verDetalles(idVenta) {
 
     const detallesVenta = await response.json();
 
-    console.log('Detalles de la venta:', detallesVenta);
-
     // Llamamos a la función para mostrar detalles en una modal
     mostrarDetallesEnModal(idVenta, detallesVenta);
 
   } catch (error) {
-    console.error("Error al obtener detalles de la venta:", error);
+    Swal.fire({
+      title: 'Error',
+      text: error.message,
+      icon:"warning",
+      showCancelButton: false,
+      confirmButtonColor: ' #d5c429 ',
+      confirmButtonText: 'Confirmar',
+  }).then((result) => {
+     
+  });
   }
 }
 

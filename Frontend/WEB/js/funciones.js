@@ -32,7 +32,7 @@ function login() {
         password: passwordEncryptada,
     };
 
-    console.log(JSON.stringify(formData))
+    // console.log(JSON.stringify(formData))
 
     if (validarCampoVacio($("#emailLogin").val().length, 'Por favor ingrese un email')) {
         return false;
@@ -60,7 +60,6 @@ function callApiLogin(formData){
 
 
 function onExito(data) {
-    console.log(data)
    
     var permisosModulos = agruparPorModulo(data.rol.permisos);
     data.rol.permisos = permisosModulos;
@@ -111,7 +110,6 @@ function agruparPorModulo(permisos) {
   }
 function onError(error) {
 
-    console.log(error.responseJSON);
     var mensaje = $("#resultadoLogin");
     mensaje.show();
     mensaje.text(error.responseJSON.message);
@@ -139,13 +137,11 @@ function callApiLogout(token){
     fetch("http://localhost:8081/edge-service/v1/authorization/logout", requestOptions)
         .then(response => response.text())
         .then(result => {
-            console.log(result);
             $("#cargando").modal("hide");
             localStorage.removeItem('miObjeto');
             window.location = "./iniciosesion.html"
         })
         .catch(error => {
-            console.log('error haciendo logout', error);
             $("#cargando").modal("hide");
             Swal.fire({
                 icon: 'warning',
@@ -171,7 +167,6 @@ function onExitoCrearProveedor(data) {
 }
 
     function onErrorProv(error) {
-        console.log(error);
     
         // Display the error using SweetAlert2
         Swal.fire({
@@ -189,8 +184,6 @@ function crearUsuario() {
         telefono: $("#telefono").val(),
         direccion: $("#direccion").val(),
     };
-
-    console.log(JSON.stringify(formData))
 
     if (validarCampoVacio($("#nombre").val().length, 'Por favor ingrese un nombre')) {
         return false;

@@ -84,12 +84,22 @@ function consultarcreditos() {
 }
 
 function onErrorcreditos(error) {
-    console.log(error);
+    // console.log(error);
+    Swal.fire({
+        title: 'Error',
+        text: error.responseJSON.value.message,
+        icon:"warning",
+        showCancelButton: false,
+        confirmButtonColor: ' #d5c429 ',
+        confirmButtonText: 'Confirmar',
+    }).then((result) => {
+       
+    });
 }
 
 function onExitocreditos(data) {
-    console.log("Consulta de Créditos");
-    console.log(data);
+   // console.log("Consulta de Créditos");
+    //console.log(data);
 
     // $('#tablaCreditos > tbody').empty();
 
@@ -164,7 +174,17 @@ function onExitocreditos(data) {
                     agregarFilaATabla(userData, creditos);
                 },
                 error: function (error) {
-                    console.log(error);
+                    //console.log(error);
+                    Swal.fire({
+                        title: 'Error',
+                        text: error.responseJSON.value.message,
+                        icon:"warning",
+                        showCancelButton: false,
+                        confirmButtonColor: ' #d5c429 ',
+                        confirmButtonText: 'Confirmar',
+                    }).then((result) => {
+                       
+                    });
                 }
             });
         } else {
@@ -247,7 +267,7 @@ function actualizarUsuarioCredito() {
         "documento": $("#documento").val(),
         "telefono":  $("#telefono").val()
       });
-    console.log(formData);
+    //console.log(formData);
     $.ajax({
         type: "Put",
         enctype: 'multipart/form-data',
