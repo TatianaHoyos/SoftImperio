@@ -9,7 +9,7 @@ var modulo = {
         "existencia" : "./Existencias.html"
     },
     "usuario" : {
-        "usuario" : "./usuarios.html"        
+        "usuario" : "./Usuarios.html"        
     },
     "proveedor" : {
         "proveedor" : "./nuestrosProveedores.html"

@@ -3,11 +3,7 @@ $(document).ready(function () {
     consultarUsuarios();
     consultarRoles();
     consultarRolesA();
-    consultarRolesL();
     buscarUsuarioTabla();
-    // $('#email').on('input', function () {
-    //     validarEmailU();
-    // });
 });
 
 
@@ -51,8 +47,29 @@ function consultarRoles() {
     });
 }
 function onExitoRoles(data) {
-    
+    var $dropdown = $("#idRol");
+    $.each(data, function () {
+        $dropdown.append($("<option />").val(this.idRol).text(this.nombreRol));
+    });
+    mostrarRolesConPermisos(data);
 }
+
+function mostrarRolesConPermisos(roles) {
+
+    // clear the existing list
+    $("#contentRoles .lista-Roles .card-header").remove();
+    $("#contentRoles .lista-Roles .lista-permisos").remove();
+    
+    $.each(roles, function(index,rol) {
+      $('#contentRoles .lista-Roles').append('<div class="card-header">'+rol.nombreRol +'</div>')
+      $('#contentRoles .lista-Roles').append('<div class="card-body lista-permisos"><ul></ul></div>')
+     
+      $.each(rol.permisos, function(index,permiso) {
+        $('#contentRoles .lista-Roles .lista-permisos ul').append('<li>'+permiso.acciones.nombre +" "+permiso.modulo.nombre+'</li>')
+    });
+    });
+  
+  }
 
 function onErrorRoles(error) {
     Swal.fire({
