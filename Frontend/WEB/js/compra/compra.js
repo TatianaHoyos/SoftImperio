@@ -59,7 +59,7 @@ function addCompra() {
       } else {
         // User clicked "Cancel" or closed the dialog, do nothing
       }
-   });
+  });
 }
 
 function generarPDF(){
@@ -249,10 +249,12 @@ $(document).ready(function() {
   function iniciarDataTables(data) {
     $('#miTabla').DataTable({
       dom: '<"row"<"col-md-6"l><"col-md-6"f>>tip',
+      lengthMenu: [5, 10, 25, 50],
+      pageLength: 5,
       data: data,
       columns: [
-      
-         { data: 'idCompra' },
+
+        { data: 'idCompra' },
         { data: 'fechaCompra' },
         { data: 'totalCompra' },
         {
