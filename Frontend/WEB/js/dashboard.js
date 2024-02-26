@@ -39,7 +39,7 @@ async function obtenerVentasUltimoMes() {
 
 async function obtenerComprasUltimoMes() {
     try {
-        const respuesta = await fetch('https://localhost:7084/api/Compras/compras-ultimo-mes');
+        const respuesta = await fetch('https://localhost:7084/api/Compra/compras-ultimo-mes');
         if (!respuesta.ok) {
             throw new Error('Error al obtener las compras del último mes. Estado de la respuesta: ' + respuesta.status);
         }
@@ -151,7 +151,7 @@ async function obtenerDatosGraficoVentas() {
 // Función para obtener datos de la API de Compras
 async function obtenerDatosGraficoCompras() {
     try {
-        const datos = await fetchData('https://localhost:7084/api/Compras/compras-por-mes');
+        const datos = await fetchData('https://localhost:7084/api/Compra/compras-por-mes');
         //console.log('Datos completos de la API (Compras):', datos);
         return datos;
     } catch (error) {

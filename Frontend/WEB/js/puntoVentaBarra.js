@@ -40,7 +40,7 @@ function mostrarProductosTablaNotificacion(nombre, precio, idProducto,cantidad) 
     var cantidadBoton = '<th><div class="quantity">'
         + '<div class="qty">'
         + ' <span class="minus bg-dark">-</span>'
-        + '<input type="number" class="count" name="qty" value="'+cantidad+'">'
+        + '<input type="number" class="count" name="qty" value="'+cantidad+'" readonly>'
         + ' <span class="plus bg-dark">+</span>'
         + '</div>' +
         '</div></th>';
