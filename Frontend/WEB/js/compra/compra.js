@@ -29,8 +29,7 @@ function addCompra() {
       text: 'Estás seguro de eliminar esta Compra?',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
+      confirmButtonColor: '#ae9243',
       cancelButtonText: 'Cancelar',
       confirmButtonText: 'Sí, eliminar!'
     }).then((result) => {
@@ -60,7 +59,7 @@ function addCompra() {
       } else {
         // User clicked "Cancel" or closed the dialog, do nothing
       }
-  });
+   });
 }
 
 function generarPDF(){
@@ -159,7 +158,7 @@ function createButtonCell(action, buttonText, buttonClass, onClickHandler) {
 
 //función para eliminar o editar proveedor
 function alertaEliminarEditar(action,idProveedor) {
-    console.log("id "+idProveedor   +" la acción que usd eligió es "+action);
+    console.log("id "+idProveedor   +" la acción que usted eligió es "+action);
     if (action=="eliminar"){
         eliminarProveedor(idProveedor);
     }else if (action=="editar"){
@@ -251,12 +250,10 @@ $(document).ready(function() {
     console.log("Iniciar DataTables");
     $('#miTabla').DataTable({
       dom: '<"row"<"col-md-6"l><"col-md-6"f>>tip',
-      lengthMenu: [5, 10, 25, 50],
-      pageLength: 5,
       data: data,
       columns: [
-
-        { data: 'idCompra' },
+      
+         { data: 'idCompra' },
         { data: 'fechaCompra' },
         { data: 'totalCompra' },
         {

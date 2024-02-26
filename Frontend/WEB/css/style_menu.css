@@ -81,7 +81,7 @@
   cursor: pointer;
   border-radius: 50%; /* Hace que la imagen sea redonda */
   object-fit: cover; /* Ajusta el tamaño de la imagen manteniendo su relación de aspecto y recortándola según sea necesario */
-  border: 2px solid #fff; /* Añade un borde blanco opcional */
+  border: 2px solid #ae9243; /* Añade un borde blanco opcional */
 
 }
 #imgUsuario {
@@ -177,11 +177,11 @@ display: none;
       position: fixed;
       top: 0;
       left: 0;
-        background-color: #090909;
+      background-color: #090909;
 
       padding-top: 20px;
       transition: all 0.3s;
-      box-shadow: 0 14px 10px rgba(174, 146, 67, 0.973); ; /* Sombra en el lado derecho */
+      /* box-shadow: 0 14px 10px rgba(174, 146, 67, 0.973); ; Sombra en el lado derecho */
       z-index: 1000; /* Asegura que el menú esté sobre otros elementos */
     }
 

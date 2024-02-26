@@ -209,22 +209,30 @@ namespace venta.Controllers
                         page.Margin(30);
                         page.Header().ShowOnce().Row(row =>
                         {
-                            Console.WriteLine("linea --------- "+ _webHostEnvironment.WebRootPath);
                             var rutaImagen = Path.Combine(_webHostEnvironment.WebRootPath, "img/logo.png");
                             byte[] imagenData = System.IO.File.ReadAllBytes(rutaImagen);
 
                             // Agregar el logo al encabezado
-                            row.ConstantItem(95).Image(imagenData);
+                            row.ConstantItem(95).Background(Colors.White).Image(imagenData);
 
 
                             row.RelativeItem()
                             .Column(col =>
                             {
-                                col.Item().AlignCenter().Text("Imperio").Bold().FontSize(14);
-                                col.Item().AlignCenter().Text("Cll 49 #28-47").FontSize(10);                           
+                                col.Item().AlignCenter().Text("Discoteca Imperio").Bold().FontSize(12);
+                                col.Item().AlignCenter().Text("Dirección: Cll 49 #28-47").FontSize(10);                           
                             });
 
-                            row.RelativeItem().Column(col =>
+                            row.RelativeItem()
+                            .Column(col =>
+                            {
+
+                                col.Item().AlignCenter().Text("Reporte Compras").FontSize(12);
+                                col.Item().AlignCenter().Text("Celular: 300 4395676").FontSize(10);
+                            });
+
+                            row.RelativeItem()
+                            .Column(col =>
                             {
                                 col.Item().AlignCenter().Text(DateTime.Now.ToString("dd/MM/yyyy")).FontSize(10);
                                 col.Item().AlignCenter().Text(DateTime.Now.ToString("HH:mm:ss")).FontSize(10);
@@ -232,7 +240,7 @@ namespace venta.Controllers
                         });
                         
 
-                        page.Content().PaddingVertical(15).Column(col1 =>
+                        page.Content().PaddingVertical(10).Column(col1 =>
                         {
                             col1.Item().AlignCenter().Text("Compras").Bold().FontSize(16);
 

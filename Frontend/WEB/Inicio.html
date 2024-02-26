@@ -14,10 +14,7 @@
 
     <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.min.js" integrity="sha512-L0Shl7nXXzIlBSUUPpxrokqq4ojqgZFQczTYlGjzONGTDAcLremjwaWv5A+EDLnxhQzY5xUZPWLOLqYRkY0Cbw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="js/dashboard.js"></script>
 
-
-   
 </head>
 
 <body>
@@ -25,9 +22,9 @@
     <div id="menu-container"></div>
     <!-- contenido propio de la pagina -->
 
-    <h2 class="Titulo" style="text-align: center;">Bienvenido</h2>
+    <h2 class="Titulo mt-4 mb-4" style="text-align: center;">Bienvenido</h2>
     <div id="content">
-        <section>
+        <!-- <section>
             <div class="container">
                 <div class="row">
                     <div class="col-lg-9">
@@ -35,29 +32,32 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </section> -->
         <section>
             <div class="container">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-lg-4">
-                                <h6 class="text-muted">Total Ventas Mes en Curso:</h6>
-                                <h3><span id="ventasTotales"></span></h3>
-                            </div>
-                            <div class="col-lg-4">
-                                <h6 class="text-muted">Total Compras Mes en Curso</h6>
-                                <h3><span id="comprasTotales"></span></h3>
-                            </div>
-                            <div class="col-lg-4">
-                                <h6 class="text-muted">Total Creditos Mes en Curso</h6>
-                                <h3><span id="creditosTotales"></span></h3>
-                            </div>
-                        </div>
+              <div class="card">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-lg-4 info-box">
+                      <i class="fas fa-chart-bar"></i>
+                      <h6 class="text-muted">Total Ventas Mes en Curso:</h6>
+                      <h3><span id="ventasTotales"></span></h3>
                     </div>
+                    <div class="col-lg-4 info-box">
+                      <i class="fas fa-shopping-cart"></i>
+                      <h6 class="text-muted">Total Compras Mes en Curso</h6>
+                      <h3><span id="comprasTotales"></span></h3>
+                    </div>
+                    <div class="col-lg-4 info-box">
+                      <i class="fas fa-credit-card"></i>
+                      <h6 class="text-muted">Total Creditos Mes en Curso</h6>
+                      <h3><span id="creditosTotales"></span></h3>
+                    </div>
+                  </div>
                 </div>
+              </div>
             </div>
-        </section>
+          </section>
         <br>
         <section class="bg-grey">
             <div class="container">
@@ -75,8 +75,7 @@
         </section>
     </div>
     
-<script src="https://code.jquery.com/jquery-3.6.1.min.js"
-  integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 
