@@ -48,7 +48,6 @@ function crearUsuarioCredito() {
         "totalCredito": 0
 
     });
-    console.log(formData);
 
     $.ajax({
         type: "POST",
@@ -66,7 +65,6 @@ function crearUsuarioCredito() {
 
 
 function onExitoCrearUsuariocredito(data) {
-    console.log(data);
     var mensaje = $("#resultadoCrear");
     mensaje.addClass("alert-success");
     mensaje.removeClass("alert-danger");
@@ -90,7 +88,6 @@ function onExitoCrearUsuariocredito(data) {
 }
 
 function onErrorusuariocreditocrear(error) {
-    console.log(error);
     var mensaje = $("#resultadoCrear");
     mensaje.addClass("alert-danger");
     mensaje.removeClass("alert-success");
@@ -111,12 +108,19 @@ function consultarusuariocredito() {
 }
 
 function onErrorusuariocredito(error) {
-    console.log(error);
+    Swal.fire({
+        title: 'Error',
+        text: error.responseJSON.message,
+        icon:"warning",
+        showCancelButton: false,
+        confirmButtonColor: ' #d5c429 ',
+        confirmButtonText: 'Confirmar',
+    }).then((result) => {
+       
+    });
 }
 
 function onExitousuariocredito(data) {
-    console.log("consulta de Usuarios Creditos");
-    console.log(data);
 
     $('#tablaUsuarioCredito > tbody').empty();
     $.each(data, function (id, usuariocredito) {
@@ -127,9 +131,13 @@ function onExitousuariocredito(data) {
 
         $('#tablaUsuarioCredito').append('<tr><td>' + usuariocredito.idUsuarioCredito +'</td><td>' + usuariocredito.nombre +
             '</td><td>' + usuariocredito.documento + '</td><td>' + usuariocredito.telefono + '</td><td>' + usuariocredito.totalCredito +
+<<<<<<< HEAD
             '</td><td>'+boton1+' '+boton0+ '</td><td>'+ boton3 +' '+ boton2 + '</td></tr>');
         console.log(usuariocredito.idUsuarioCredito + ' '+ usuariocredito.nombre + ' ' + usuariocredito.documento
             + ' ' + usuariocredito.telefono + ' ' + usuariocredito.totalCredito );
+=======
+            '</td><td>'+ boton0+ ' ' + boton2 +' '+ boton1 + '</td></tr>');
+>>>>>>> 9c2f46a5b202143f3b56a681a70bf5e4e58eafce
 
     });
 }
@@ -167,7 +175,6 @@ function onExitousuariocredito(data) {
                 }
             },
             error:  function (error) {
-                console.log(error)
                 Swal.fire({
         title: 'Error',
         text: error.message,
@@ -202,7 +209,6 @@ function actualizarUsuarioCredito() {
         "documento": $("#documento").val(),
         "telefono":  $("#telefono").val()
       });
-    console.log(formData);
     $.ajax({
         type: "Put",
         enctype: 'multipart/form-data',

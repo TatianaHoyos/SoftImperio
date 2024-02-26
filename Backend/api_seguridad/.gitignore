@@ -39,3 +39,6 @@ out/
 ### images
 usuarios-photos/
 producto-photos/
+
+.gradle/
+.idea/

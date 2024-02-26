@@ -8,29 +8,12 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/style_menu.css">
-    <link rel="stylesheet" href="css/styles_Notificacion.css">
 <link rel="stylesheet" href="css/tablas.css">
 </head>
 
 <body>
 
-  <!-- Incluye el menú -->
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      fetch('menucontainer.html')
-        .then(response => response.text())
-        .then(html => {
-          document.getElementById('importedContent').innerHTML = html;
-          // Optionally, you can execute scripts from the imported content if needed
-          const scripts = document.getElementById('importedContent').getElementsByTagName('script');
-          for (let script of scripts) {
-            eval(script.innerText);
-          }
-        });
-    });
-  </script>
-  <div id="importedContent"></div>
+    <div id="menu-container"></div>
   <div class="container">
 
     <div class="form-group">
@@ -152,6 +135,7 @@
   </div>  
    <!--Datatables-->
    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
    <!--   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>-->
@@ -165,10 +149,12 @@
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
         </script>
    <!----> 
+   <script src="js/oAuthJwt.js"></script>
    <script  src="js/detalleCompra.js"></script>
-    <script src="js/menuLateral.js"></script>
-    <script src="js/datosUsuario.js"></script>
     <script>
+         $(document).ready(function () {
+            $("#menu-container").load("menu.html");
+        });
         document.getElementById('btnBack').addEventListener('click', function () {
             window.history.back();
         });

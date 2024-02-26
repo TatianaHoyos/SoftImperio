@@ -732,3 +732,7 @@ replay_pid*
 # Additional files built by Visual Studio
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudio,visualstudiocode,intellij,java,csharp
+./Backend/apigateway/.idea/
+
+.idea/
+Backend/.idea/

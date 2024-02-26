@@ -21,9 +21,6 @@ connection.onclose(async () => {
 const receiveMessage = async () => {
     try {
         await connection.on("ReceiveMessage", (message, user) => {
-            console.log(message);
-            //alert(user,message);
-
             // Convertir el string JSON a un objeto
             var notificacionPedidos = JSON.parse(message);
             onExitoVentasPendientes(notificacionPedidos);
@@ -128,21 +125,30 @@ function consultarApiVentasPorNotificacion(idVenta, token){
         
     });
 }
-function onExitoVentasPorNotificacion(data,idVenta){
-    data.forEach(function (detalleVenta) {
-        console.log(detalleVenta)
-        // alert(detalleVenta.nombreProducto);
-        mostrarProductosTablaNotificacion(detalleVenta.nombreProducto+' '+detalleVenta.referenciaProducto,
-        detalleVenta.subTotalAPagar,detalleVenta.idProductos, detalleVenta.cantidadProducto)
-        $("#totalVenta").text(detalleVenta.totalVenta);
-        $("#estadoPedidoVenta").val(idVenta);
-       
-    });
-    
-    
-    // mostrarProductosTabla(producto.nombreProducto + " " + referencia.nombreReferencia,
-    // referencia.precio, seleccion);
+
+function onExitoVentasPorNotificacion(data, idVenta) {
+    var urlRedireccion = "PuntoVentaBarra.html";
+
+    if (!window.location.href.includes(urlRedireccion)) {
+        // Si no estás ya en la URL de redirección, establece un indicador en localStorage
+        localStorage.setItem('redireccionPorNotificacion', 'true');
+        var objetoString = JSON.stringify(data);
+        localStorage.setItem('notificacion', objetoString);
+        localStorage.setItem('idVenta', idVenta);
+
+        // Redirige solo si no estás ya en la URL de redirección
+        window.location.href = urlRedireccion;
+    } else {
+        // Si ya estás en la URL de redirección, ejecuta el código directamente sin esperar al evento load
+        data.forEach(function (detalleVenta) {
+            mostrarProductosTablaNotificacion(detalleVenta.nombreProducto + ' ' + detalleVenta.referenciaProducto,
+                detalleVenta.subTotalAPagar, detalleVenta.idProductos, detalleVenta.cantidadProducto)
+            $("#totalVenta").text(detalleVenta.totalVenta);
+            $("#estadoPedidoVenta").val(idVenta);
+        });
+    }
 }
+
 
 function mostrarProductosTablaNotificacion(nombre, precio, idProducto,cantidad) {
     var botonEliminar = ' <th><button class="btn btn-danger"  onclick="eliminarRegistroPedido(this)"><i class="fas fa-trash-alt"></i></button></th>';
@@ -162,14 +168,30 @@ function mostrarProductosTablaNotificacion(nombre, precio, idProducto,cantidad) 
 
 
 function onErrorVentasPorNotificacion(error){
-    console.log(error.responseJSON)   
-
+    Swal.fire({
+        title: 'Error',
+        text: error.responseJSON.message,
+        icon:"warning",
+        showCancelButton: false,
+        confirmButtonColor: ' #d5c429 ',
+        confirmButtonText: 'Confirmar',
+    }).then((result) => {
+       
+    });
 }
 
 
 function onErrorVentasPendientes(error){
-    console.log(error.responseJSON)   
-
+    Swal.fire({
+        title: 'Error',
+        text: error.responseJSON.message,
+        icon:"warning",
+        showCancelButton: false,
+        confirmButtonColor: ' #d5c429 ',
+        confirmButtonText: 'Confirmar',
+    }).then((result) => {
+       
+    });
 }
 
 
