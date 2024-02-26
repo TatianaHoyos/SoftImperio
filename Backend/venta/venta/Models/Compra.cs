@@ -8,7 +8,7 @@ namespace venta.Model
     {
         [Key]
         public int IdCompra { get; set; }
-        public DateTime? FechaCompra { get; set; }
+        public DateTime FechaCompra { get; set; }
         public double? TotalCompra { get; set; }
     }
 

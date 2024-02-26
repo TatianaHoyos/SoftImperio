@@ -25,7 +25,6 @@ function consultarCategorias(token) {
 
 function onExitoCategorias(data) {
     categorias = data;
-    console.log(data);
     handleAjaxRequest(function (token) {
         consultarProductosAgrupados(data, token);
     });
@@ -37,8 +36,17 @@ function onExitoCategorias(data) {
 
 }
 function onErrorCategorias(error) {
-    console.log(error)
     $("#cargando").modal("hide");
+    Swal.fire({
+        title: 'Error',
+        text: error.responseJSON.message,
+        icon:"warning",
+        showCancelButton: false,
+        confirmButtonColor: ' #d5c429 ',
+        confirmButtonText: 'Confirmar',
+    }).then((result) => {
+       
+    });
 }
 
 
@@ -58,7 +66,6 @@ function consultarProductosAgrupados(categorias,token) {
 }
 function onExitoProductos(data, categorias) {
     productos = data;
-    console.log(data);
     mostrarProductos(data, categorias);
     $("#cargando").modal("hide");
 }
@@ -126,8 +133,17 @@ function mostrarProductos(data, categorias) {
 }
 
 function onErrorProductos(error) {
-    console.log(error)
     $("#cargando").modal("hide");
+    Swal.fire({
+        title: 'Error',
+        text: error.responseJSON.message,
+        icon:"warning",
+        showCancelButton: false,
+        confirmButtonColor: ' #d5c429 ',
+        confirmButtonText: 'Confirmar',
+    }).then((result) => {
+       
+    });
 }
 
 function selectCategoria() {
@@ -187,7 +203,7 @@ function mostrarProductosTabla(nombre, precio, idProducto) {
     var cantidadBoton = '<th><div class="quantity">'
         + '<div class="qty">'
         + ' <span class="minus bg-dark">-</span>'
-        + '<input type="number" class="count" name="qty" value="1">'
+        + '<input type="number" class="count" name="qty" value="1" readonly>'
         + ' <span class="plus bg-dark">+</span>'
         + '</div>' +
         '</div></th>';
@@ -319,16 +335,9 @@ function confirmarVenta(){
                 var cantidad = $(this).find('.count').val(); // Aquí se usa la clase 'count' del input
                 var total = $(this).find('.total').text();
             
-                // Hacer lo que desees con los datos, por ejemplo, imprimirlos en la consola
-                console.log('ID: ' + id);
-                console.log('Producto: ' + producto);
-                console.log('Precio: ' + precio);
-                console.log('Cantidad: ' + cantidad);
-                console.log('Total: ' + total);
                 pedido.push({"idProducto":id, "cantidad":cantidad});
               });
               var pedidoTotal={"pedido":pedido};
-              console.log(pedidoTotal);
               handleAjaxRequest(function (token) {
                 callApiVentaMesa(pedidoTotal, token);
             });
@@ -355,7 +364,6 @@ function callApiVentaMesa(pedidoTotal,token){
 }
 
 function onExitoPedido(data){
-    console.log(data)
     Swal.fire({
         title: 'Exito',
         text: 'El pedido fue enviado con exito',
@@ -370,7 +378,6 @@ function onExitoPedido(data){
 }
 
 function onErrorPedido(error){
-    console.log(error.responseJSON.value)   
     Swal.fire({
         title: 'Error',
         text: error.responseJSON.value.message,

@@ -1,7 +1,10 @@
 $(document).ready(function () {
     $("#resultadoCrear").hide();
     handleAjaxRequest(consultarProductos);
+    handleAjaxRequest(consultarCategorias);
+    
     buscarProductosTabla();
+   
 });
 
 
@@ -9,8 +12,15 @@ function mostrarFormularioCrear() {
     var titulo = $("#tituloFomularioProducto");
     titulo.text("Crear un nuevo productos");
     var btnform = $("#btn-form");
-    btnform.text("Guardar");
-    btnform.click(crearProducto);
+    // btnform.text("Guardar");
+    // var product=  btnform.click(crearProducto);
+    handleAjaxRequest(function (token) {
+        btnform.click(function () {
+            crearProducto(token);
+        });
+    });
+   
+    
 }
 function mostrarFormularioActualizar() {
     var titulo = $("#tituloFomularioProducto");
@@ -20,19 +30,57 @@ function mostrarFormularioActualizar() {
 
 }
 
+function consultarCategorias(token) {
+    $("#textCargando").text("Cargando Categorias");
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8081/edge-service/v1/service/categorias/consultar",
+        "headers": {
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`
+        },
+        success: onExitoCategorias,
+        error: onErrorCategorias
+    });
+}
 
-function crearProducto() {
+function onExitoCategorias(data) {
+    categorias = data;
+    var $dropdown = $("#idCategoria");
+    // $dropdown.append($("<option />").val("-1").text("Todos"));
+    $.each(data, function () {
+        $dropdown.append($("<option />").val(this.idCategoria).text(this.nombreCategoria));
+    });
+
+}
+function onErrorCategorias(error) {
+    
+    $("#cargando").modal("hide");
+    Swal.fire({
+        title: 'Error',
+        text: error.responseJSON.message,
+        icon:"warning",
+        showCancelButton: false,
+        confirmButtonColor: ' #d5c429 ',
+        confirmButtonText: 'Confirmar',
+    }).then((result) => {
+       
+    });
+}
+
+function crearProducto(token) {
     var form = $('#formCrearProducto')[0];
 
     // Create an FormData object 
     var formData = new FormData(form);
 
-    console.log(formData);
-
     $.ajax({
         type: "POST",
         enctype: 'multipart/form-data',
-        url: "http://localhost:8080/api/producto/crear",
+        url: "http://localhost:8081/edge-service/v1/service/productos/crear",
+        'headers': {
+           'Authorization': `Bearer ${token}`
+        },
         data: formData,
         processData: false,
         contentType: false,
@@ -43,46 +91,26 @@ function crearProducto() {
 }
 
 function onExitoCrearProducto(data) {
-    console.log(data);
-    // var mensaje = $("#resultadoCrear");
-    // mensaje.addClass("alert-success");
-    // mensaje.removeClass("alert-danger");
-    // mensaje.show();
-    // mensaje.text(data.message);
-    Swal.fire({
-        title: 'Exito',
-        text: 'Producto creado Satisfactoriamente ',
-        icon: 'succes',
-        showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
-        confirmButtonText: 'Eliminar',
-        cancelButtonText: 'Cancelar'
-    }).then((result) => {
+    var mensaje = $("#resultadoCrear");
+    mensaje.addClass("alert-success");
+    mensaje.removeClass("alert-danger");
+    mensaje.show();
+    mensaje.text(data.message);
+    
     
     $("#formCrearProducto").trigger("reset");
     $("#foto-preview").attr('src', '');
     handleAjaxRequest(consultarProductos);
-    });
+
    
 }
 function onErrorCrearProducto(error) {
-    console.log(error);
-    // var mensaje = $("#resultadoCrear");
-    // mensaje.addClass("alert-danger");
-    // mensaje.removeClass("alert-success");
-    // mensaje.show();
-    // mensaje.text(error.message);
-    Swal.fire({
-        title: '¿Estás seguro de eliminar el producto?',
-        text: 'Producto Eliminado ',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
-        confirmButtonText: 'Eliminar',
-        cancelButtonText: 'Cancelar'
-    })
+    var mensaje = $("#resultadoCrear");
+    mensaje.addClass("alert-danger");
+    mensaje.removeClass("alert-success");
+    mensaje.show();
+    mensaje.text(error.message);
+
 
 }
 
@@ -101,13 +129,15 @@ function consultarProductos(token) {
 }
 
 function onExitoProductos(data) {
-    console.log(data);
 // Destruir la DataTable existente si ya ha sido inicializada
-if ($.fn.DataTable.isDataTable('#tablaProductos')) {
-    $('#tablaProductos').DataTable().destroy();
-}
+    if ($.fn.DataTable.isDataTable('#tablaProductos')) {
+        $('#tablaProductos').DataTable().destroy();
+    }
     // Obtén una referencia a la DataTable
     var dataTable = $('#tablaProductos').DataTable({
+        dom: '<"row"<"col-md-6"l><"col-md-6"f>>tip',
+        pageLength: 5,
+        lengthMenu: [5, 10, 25, 50], 
         language: {
             "sProcessing": "Procesando...",
             "sLengthMenu": "Mostrar _MENU_ registros",
@@ -131,7 +161,9 @@ if ($.fn.DataTable.isDataTable('#tablaProductos')) {
                 "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
                 "sSortDescending": ": Activar para ordenar la columna de manera descendente"
             }
-        }
+        },
+        lengthMenu: [5, 10, 25, 50],
+        pageLength: 5, // Número de registros por página
     });
     
     // Limpia la tabla
@@ -161,15 +193,21 @@ if ($.fn.DataTable.isDataTable('#tablaProductos')) {
             boton1 +
             boton2
         ]).draw();
-
-        // console.log(productos.id + ' ' + productos.nombreProducto + ' ' + productos.idCategoria + ' ' +
-        //     productos.referenciaProducto + ' ' + productos.precioProducto);
     });
 }
 
 
 function onErrorProductos(error) {
-    console.log(error)
+    Swal.fire({
+        title: 'Error',
+        text: error.responseJSON.message,
+        icon:"warning",
+        showCancelButton: false,
+        confirmButtonColor: ' #d5c429 ',
+        confirmButtonText: 'Confirmar',
+    }).then((result) => {
+       
+    });
 }
 
 function EliminarProducto(Producto) {
@@ -185,20 +223,30 @@ function EliminarProducto(Producto) {
     }).then((result) => {
         if (result.isConfirmed) {
             // Realizar la solicitud de eliminación AJAX
-            $.ajax({
-                url: 'http://localhost:8080/api/producto/eliminar/' + Producto.idProductos,
-                type: 'Delete',
-                success: function (response) {
-                    // Manejar la respuesta de eliminación exitosa
-                    Swal.fire('Eliminado', response.message, 'success');
-                    // Actualizar la tabla o realizar cualquier otra acción necesaria
-                    handleAjaxRequest(consultarProductos);
-                },
-                error: function (xhr, status, error) {
-                    // Manejar los errores de la solicitud AJAX
-                    Swal.fire('Error', error.message, 'error');
-                }
+            handleAjaxRequest(function (token) {
+                callApiEliminarProducto(Producto,token);
             });
+        }
+    });
+}
+
+function callApiEliminarProducto(Producto,token){
+    $.ajax({
+        url: "http://localhost:8081/edge-service/v1/service/productos/eliminar/" + Producto.idProductos,
+        type: 'DELETE',
+        "headers": {
+            
+           'Authorization': `Bearer ${token}`
+        },
+        success: function (response) {
+            // Manejar la respuesta de eliminación exitosa
+            Swal.fire('Eliminado', response.message, 'success');
+            // Actualizar la tabla o realizar cualquier otra acción necesaria
+            handleAjaxRequest(consultarProductos);
+        },
+        error: function (xhr, status, error) {
+            // Manejar los errores de la solicitud AJAX
+            Swal.fire('Error', error.message, 'error');
         }
     });
 }
@@ -214,51 +262,33 @@ function EditarProducto(producto) {
     preview.src = "http://localhost:8080/" + producto.fotoProducto;
     preview.style.display = "block";
     var btnform = $("#btn-form");
-    btnform.click(function () { actualizarProducto(producto.idProductos); });
+    handleAjaxRequest(function (token) {
+        btnform.click(function () {
+            actualizarProducto(producto.idProductos,token);
+        });
+    });
+    // btnform.click(function () { actualizarProducto(producto.idProductos); });
 
 }
 
-function actualizarProducto(idProductos) {
+function actualizarProducto(idProductos,token) {
     var form = $('#formCrearProducto')[0];
 
     // Create an FormData object
     var formData = new FormData(form);
 
-    console.log(formData);
-
     $.ajax({
         type: "Put",
         enctype: 'multipart/form-data',
-        url: "http://localhost:8080/api/producto/actualizar/" + idProductos,
+        url: "http://localhost:8081/edge-service/v1/service/productos/actualizar/" + idProductos,
+          "headers": {
+            'Authorization': `Bearer ${token}`
+        },
         data: formData,
         processData: false,
         contentType: false,
-        success: function(response) {
-            console.log(response);
-            Swal.fire({
-              type: 'success',
-              text: 'Registro actualizado',
-              icon:"success",
-              showConfirmButton: true,
-            })
-            setTimeout(() => {
-              window.location.reload();
-             }, 1500);
-          },
-          error: function(error) {
-            console.log(error);
-            Swal.fire({
-              type: 'error',
-              text: "No se pudo actualizar registro",
-              icon: 'error',
-              showConfirmButton: true,
-            })
-            setTimeout(() => {
-              window.location.reload();
-             }, 1500);
-          }
-        // success: onExitoCrearProducto,
-        // error: onErrorCrearProducto
+         success: onExitoCrearProducto,
+         error: onErrorCrearProducto
     });
 }
 function buscarProductosTabla() {

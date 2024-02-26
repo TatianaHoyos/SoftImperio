@@ -1,7 +1,4 @@
-console.log("cargando scripts compras");
-
 function addCompra() {
-    console.log(new Date().getTime() + ' fecha' );
     //window.location.href = 'comprasDetail.html';
 
     $.ajax({
@@ -10,19 +7,25 @@ function addCompra() {
       contentType: "application/json",
       success: function(response) {
         // Procesar la respuesta exitosa
-        console.log("getLast ",response);
         habilitarVistaDetalle(response.idCompra+1);
         //window.location.reload();
       },
       error: function(error) {
-        // Manejar el error
-        console.log(error);
+        Swal.fire({
+          title: 'Error',
+          text: error.responseJSON.message,
+          icon:"warning",
+          showCancelButton: false,
+          confirmButtonColor: ' #d5c429 ',
+          confirmButtonText: 'Confirmar',
+      }).then((result) => {
+         
+      });
       }
     });
   }
 
   function deleteCompra(idCompra) {
-    console.log("deleteCompra ",idCompra);
     // Display a confirmation dialog using SweetAlert
     Swal.fire({
       title: 'Confirma Eliminación',
@@ -41,13 +44,9 @@ function addCompra() {
           url: `https://localhost:7084/api/Compra/${idCompra}`,
           contentType: 'application/json',
           success: function (response) {
-            // Procesar la respuesta exitosa
-            console.log(response);
             window.location.reload();
           },
           error: function (error) {
-            // Manejar el error
-            console.log(error);
             Swal.fire({
               title: 'Error',
               text: 'No es posible eliminar después de 24 horas.',
@@ -60,7 +59,45 @@ function addCompra() {
       } else {
         // User clicked "Cancel" or closed the dialog, do nothing
       }
-   });
+  });
+}
+
+function generarPDF(){
+  $.ajax({
+    type: "GET",
+    url: "https://localhost:7084/api/Compra/GenerarPDF",
+    xhrFields: {
+      responseType: 'arraybuffer' // Indica que esperamos un array de bytes como respuesta
+    },
+    success: function (response, status, xhr) {
+      if (xhr.status === 200) {
+        // Crea un objeto Blob con la respuesta y tipo de contenido PDF
+        const blob = new Blob([response], { type: 'application/pdf' });
+
+        // Crea una URL de objeto para el blob
+        const blobURL = URL.createObjectURL(blob);
+
+        // Crea un enlace invisible para descargar el PDF
+        const link = document.createElement('a');
+        link.href = blobURL;
+        link.download = 'Compras.pdf'; // Puedes cambiar el nombre del archivo si es necesario
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        // Libera la URL de objeto después de unos segundos (puedes ajustar el tiempo)
+        setTimeout(() => {
+          URL.revokeObjectURL(blobURL);
+        }, 5000); // 5000 milisegundos (5 segundos) como ejemplo
+      } else {
+        console.error(`Error en la respuesta del servidor. Código de estado: ${xhr.status}`);
+      }
+    },
+    error: function (error) {
+      // Manejar el error
+      console.error("Error en la solicitud:", error);
+    }
+  });
 }
 
   function habilitarVistaDetalle(idCompra){
@@ -120,7 +157,6 @@ function createButtonCell(action, buttonText, buttonClass, onClickHandler) {
 
 //función para eliminar o editar proveedor
 function alertaEliminarEditar(action,idProveedor) {
-    console.log("id "+idProveedor   +" la acción que usd eligió es "+action);
     if (action=="eliminar"){
         eliminarProveedor(idProveedor);
     }else if (action=="editar"){
@@ -139,7 +175,6 @@ function editarProveedor() {
         direccion: $("#direccionE").val(),
         email: $("#emailE").val()
       };
-    console.log(data);
 
 
   $.ajax({
@@ -148,7 +183,6 @@ function editarProveedor() {
     data: JSON.stringify(data),
     contentType: "application/json",
     success: function(response) {
-      console.log(response);
       Swal.fire({
         type: 'success',
         text: 'Registro actualizado',
@@ -161,7 +195,6 @@ function editarProveedor() {
       }, 1500);
     },
     error: function(error) {
-      console.log(error);
       Swal.fire({
         type: 'error',
         text: "No se pudo actualizar registro",
@@ -181,11 +214,9 @@ $(document).ready(function() {
   $.ajax({
     url: 'https://localhost:7084/api/Compra',
     success: function(data) {
-      console.log('Datos consultados:', data);
 
       // Verificar si hay datos en la respuesta
       if (data && data.length > 0) {
-        console.log('consulta de servicio');
 
         // Agregar los datos directamente al tbody
         const tableBody = $('#tbody_compras');
@@ -197,23 +228,32 @@ $(document).ready(function() {
         // Inicializar DataTables después de agregar los datos
         iniciarDataTables();
       } else {
-        console.log('No hay datos en la respuesta.');
         //iniciarDataTables();
       }
     },
     error: function(xhr, error, thrown) {
-      console.log('Error al obtener datos:', error);
-      console.log('Respuesta de la API:', xhr.responseText);
+      Swal.fire({
+        title: 'Error',
+        text: xhr.responseText,
+        icon:"warning",
+        showCancelButton: false,
+        confirmButtonColor: ' #d5c429 ',
+        confirmButtonText: 'Confirmar',
+    }).then((result) => {
+       
+    });
     }
   });
 
   // Inicializar DataTables directamente después de la carga de la página
   function iniciarDataTables(data) {
-    console.log("Iniciar DataTables");
     $('#miTabla').DataTable({
       dom: '<"row"<"col-md-6"l><"col-md-6"f>>tip',
+      lengthMenu: [5, 10, 25, 50],
+      pageLength: 5,
       data: data,
       columns: [
+
         { data: 'idCompra' },
         { data: 'fechaCompra' },
         { data: 'totalCompra' },
@@ -228,6 +268,12 @@ $(document).ready(function() {
           render: function(data, type, row) {
             return '<button onclick="deleteCompra(' + row.idCompra + ')" class="btn btn-eliminar" > <i class="fa fa-trash"></i></button>';
           }
+        }
+      ],
+      columnDefs: [
+        {
+          targets: 0,
+          visible: false
         }
       ],
       rowId: 'idCompra',
