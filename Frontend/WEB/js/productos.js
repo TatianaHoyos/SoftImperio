@@ -282,7 +282,6 @@ function actualizarProducto(idProductos,token) {
         enctype: 'multipart/form-data',
         url: "http://localhost:8081/edge-service/v1/service/productos/actualizar/" + idProductos,
           "headers": {
-            "Content-Type": "application/json",
             'Authorization': `Bearer ${token}`
         },
         data: formData,
