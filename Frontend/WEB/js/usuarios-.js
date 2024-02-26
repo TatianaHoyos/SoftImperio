@@ -21,12 +21,12 @@ function onErrorUsuarios(error) {
     console.log(error)
 }
 
-function onExitoUsuarios(data) {
-    console.log("consulta de Usuarios");
-    console.log(data);
-    mostrarTablaUsuarios(data);
+// function onExitoUsuarios(data) {
+//     console.log("consulta de Usuarios");
+//     console.log(data);
+//     mostrarTablaUsuarios(data);
 
-}
+// }
 
 function consultarRoles() {
     $.ajax({
@@ -40,11 +40,74 @@ function consultarRoles() {
     });
 } 
 
-function mostrarTablaUsuarios(data) {
-    $('#tablaUsuarios > tbody').empty();
+// function mostrarTablaUsuarios(data) {
+//     $('#tablaUsuarios > tbody').empty();
+//     $.each(data, function (id, usuarios) {
+
+//         // Obtener el nombre del rol a través de una consulta AJAX
+//         $.ajax({
+//             url: 'http://localhost:8080/api/roles/' + usuarios.rol.idRol, // Ajusta la URL según la estructura de tu API
+//             type: 'GET',
+//             headers: {
+//                 "Content-Type": "application/json"
+//             },
+//             success: function (rolData) {
+//                 // Construir los botones
+//                 var boton1 = "<button onclick='EliminarUsuario(" + JSON.stringify(usuarios) + ")' class='btn btn-delete' data-id='1'><i class='fas fa-trash'></i></button>";
+//                 var boton2 = "<button onclick='EditarUsuario(" + JSON.stringify(usuarios) + ")' class='btn btn-edit' data-toggle='modal' data-target='#formActualizarUsuarios'><i class='fas fa-edit'></i></button>";
+
+//                 // Agregar una fila a la tabla con el nombre del rol en lugar del ID
+//                 $('#tablaUsuarios').append('<tr><td>' + usuarios.idUsuarios +'</td><td>' + rolData.nombreRol +'</td><td>' + usuarios.nombre +
+//                     '</td><td>' + usuarios.documento + '</td><td>' + usuarios.email +'</td><td>' + usuarios.telefono + '</td><td>' + usuarios.estado +
+//                     '</td><td>' + boton2 + '</td><td>' + boton1 + '</td></tr>');
+//                 console.log(usuarios.idUsuarios + ' ' + rolData.nombreRol + ' ' + usuarios.nombre + ' ' + usuarios.documento
+//                 + ' ' + usuarios.email + ' ' + usuarios.telefono + ' ' + usuarios.estado);
+//             },
+//             error: function (error) {
+//                 console.error("Error al obtener el nombre del rol: ", error);
+//             }
+//         });
+//     });
+// }
+
+function onExitoUsuarios(data) {
+    console.log(data);
+
+
+if ($.fn.DataTable.isDataTable('#tablaUsuarios')) {
+    $('#tablaUsuarios').DataTable().destroy();
+}
+    // Obtén una referencia a la DataTable
+    var dataTable = $('#tablaUsuarios').DataTable({
+        language: {
+            "sProcessing": "Procesando...",
+            "sLengthMenu": "Mostrar _MENU_ registros",
+            "sZeroRecords": "No se encontraron resultados",
+            "sEmptyTable": "Ningún dato disponible en esta tabla",
+            "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+            "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+            "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+            "sInfoPostFix": "",
+            "sSearch": "Buscar:",
+            "sUrl": "",
+            "sInfoThousands": ",",
+            "sLoadingRecords": "Cargando...",
+            "oPaginate": {
+                "sFirst": "Primero",
+                "sLast": "Último",
+                "sNext": "Siguiente",
+                "sPrevious": "Anterior"
+            },
+            "oAria": {
+                "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+            },
+        }
+    });
+    // Limpia la tabla
+    dataTable.clear();
     $.each(data, function (id, usuarios) {
 
-        // Obtener el nombre del rol a través de una consulta AJAX
         $.ajax({
             url: 'http://localhost:8080/api/roles/' + usuarios.rol.idRol, // Ajusta la URL según la estructura de tu API
             type: 'GET',
@@ -53,15 +116,23 @@ function mostrarTablaUsuarios(data) {
             },
             success: function (rolData) {
                 // Construir los botones
-                var boton1 = "<button onclick='EliminarUsuario(" + JSON.stringify(usuarios) + ")' class='btn btn-delete' data-id='1'><i class='fas fa-trash'></i></button>";
-                var boton2 = "<button onclick='EditarUsuario(" + JSON.stringify(usuarios) + ")' class='btn btn-edit' data-toggle='modal' data-target='#formActualizarUsuarios'><i class='fas fa-edit'></i></button>";
+                var boton1 = "<button onclick='EliminarUsuario(" + JSON.stringify(usuarios) + ")' class='btn btn-eliminar' data-id='1'><i class='fas fa-trash'></i></button>";
+                var boton2 = "<button onclick='EditarUsuario(" + JSON.stringify(usuarios) + ")' class='btn btn-editar' data-toggle='modal' data-target='#formActualizarUsuarios'><i class='fas fa-edit'></i></button>";
 
-                // Agregar una fila a la tabla con el nombre del rol en lugar del ID
-                $('#tablaUsuarios').append('<tr><td>' + usuarios.idUsuarios +'</td><td>' + rolData.nombreRol +'</td><td>' + usuarios.nombre +
-                    '</td><td>' + usuarios.documento + '</td><td>' + usuarios.email +'</td><td>' + usuarios.telefono + '</td><td>' + usuarios.estado +
-                    '</td><td>' + boton2 + '</td><td>' + boton1 + '</td></tr>');
-                console.log(usuarios.idUsuarios + ' ' + rolData.nombreRol + ' ' + usuarios.nombre + ' ' + usuarios.documento
-                + ' ' + usuarios.email + ' ' + usuarios.telefono + ' ' + usuarios.estado);
+                // Agrega la fila a la DataTable
+                dataTable.row.add([
+                    usuarios.idUsuarios,
+                    rolData.nombreRol,
+                    usuarios.nombre,
+                    usuarios.documento,
+                    usuarios.email,
+                    usuarios.telefono,
+                    usuarios.estado,
+                    boton1 +
+                    boton2
+                ]).draw();
+                // console.log(usuarios.idUsuarios + ' ' + rolData.nombreRol + ' ' + usuarios.nombre + ' ' + usuarios.documento
+                // + ' ' + usuarios.email + ' ' + usuarios.telefono + ' ' + usuarios.estado);
             },
             error: function (error) {
                 console.error("Error al obtener el nombre del rol: ", error);
@@ -69,35 +140,6 @@ function mostrarTablaUsuarios(data) {
         });
     });
 }
-
-
-
-// function mostrarTablaUsuarios(data) {
-//     $('#tablaUsuarios > tbody').empty();
-//     $.each(data, function(id, usuarios,) {
-//         var nombreRol="";
-//     if(usuarios.idRol==1){
-//         nombreRol="Administrador";
-//     } else if(usuarios.idRol==4){
-//         nombreRol="Supervisor";
-//     }else if(usuarios.idRol==8){
-//         nombreRol="Colaborador";
-//     }else if(usuarios.idRol==9){
-//         nombreRol="Mesero";
-//     }
-
-
-//         var boton1 = "<button onclick='EliminarUsuario("+ JSON.stringify(usuarios) +")' class='btn btn-delete' data-id='1'><i class='fas fa-trash'></i></button>";
-//         var boton2 = "<button onclick='EditarUsuario("+ JSON.stringify(usuarios) +")' class='btn btn-edit' data-toggle='modal' data-target='#formActualizarUsuarios'><i class='fas fa-edit'></i></button>";
-
-//         $('#tablaUsuarios').append('<tr><td>' + usuarios.idUsuarios + '</td><td>' + nombreRol+ '</td><td>' + usuarios.nombre+
-//         '</td><td>' + usuarios.documento+ '</td><td>' + usuarios.email+ '</td><td>' + usuarios.telefono+ '</td><td>' + usuarios.estado+
-//         '</td><td>' + boton2 + '</td><td>' + boton1 + '</td></tr>');
-//         console.log(usuarios.idUsuarios + ' ' + usuarios.idRol + ' ' + usuarios.nombre + ' ' + usuarios.documento 
-//         + ' ' + usuarios.email + ' ' + usuarios.telefono + ' ' + usuarios.estado);
-
-//     });
-// }
 
 function consultarRolesL() {
     $.ajax({
@@ -343,7 +385,11 @@ function EliminarUsuario(usuarios){
         confirmButtonColor: '#d33',
         cancelButtonColor: '#3085d6',
         confirmButtonText: 'Eliminar',
-        cancelButtonText: 'Cancelar'
+        cancelButtonText: 'Cancelar',
+        customClass: {
+            confirmButton: 'mi-clase-confirm',
+            cancelButton: 'mi-clase-cancel',
+        },
     }).then((result) => {
         if (result.isConfirmed) {
             // Realizar la solicitud de eliminación AJAX
