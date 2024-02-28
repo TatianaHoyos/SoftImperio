@@ -20,9 +20,6 @@ function consultarRoles(token) {
 }
 
 function onExitoRoles(data) {
-    console.log("consulta de roles");
-    console.log(data);
-
    // mostrarTablaRoles(data);
     mostrarListaRolesyPermisos(data);
 }
@@ -136,7 +133,6 @@ function mostrarListaRolesyPermisos(roles) {
 function mostrarListaRolyPermisos(data) {
     $("#resultadoCrearConfig").hide();
     $('#tablaRolYPermisos > tbody').empty();
-    console.log(JSON.stringify(data))
     var nuevoData = agruparPorModulo(data.permisos);
 $("#idRol").val(data.idRol);
 $("#nombreRolTitulo").text(data.nombreRol);
@@ -209,7 +205,16 @@ function estaElPermisoActivo(permisos, permiso, checkbox){
 }
 
 function onErrorRoles(error) {
-    console.log(error)
+    Swal.fire({
+        title: 'Error',
+        text: error.responseJSON.message,
+        icon:"warning",
+        showCancelButton: false,
+        confirmButtonColor: ' #d5c429 ',
+        confirmButtonText: 'Confirmar',
+    }).then((result) => {
+       
+    });
 }
 function mostrarFormularioCrear(){
     var titulo = $("#tituloFomularioRol");
@@ -238,12 +243,10 @@ function eventoFormularioRol(){
     }
 }
 function crearRol(){
-    console.log("crear rol");
     var formData = {
        nombreRol:$("#nombreRol").val(),
        estado:$("#estado").val(),
     };
-    console.log(JSON.stringify(formData))
     handleAjaxRequest(function (token) {
         callApiCrearRol(formData, token);
     });
@@ -266,12 +269,10 @@ function callApiCrearRol(formData,token){
 }
 
 function actualizarRol(idRol){
-    console.log("actualizar rol");
     var formData = {
        nombreRol:$("#nombreRol").val(),
        estado:$("#estado").val(),
     };
-    console.log(JSON.stringify(formData))
 
     handleAjaxRequest(function (token) {
         callApiActualizarRol(idRol, formData, token);
@@ -295,7 +296,6 @@ function callApiActualizarRol(idRol, formData, token){
 
 
 function onExitoCrearRol(data){
-    console.log(data);
     var mensaje = $("#resultadoCrear");
     mensaje.addClass("alert-success");
     mensaje.removeClass("alert-danger");
@@ -305,7 +305,6 @@ function onExitoCrearRol(data){
    handleAjaxRequest(consultarRoles);
 }
 function onErrorCrearRol(error){
-    console.log(error);
     var mensaje = $("#resultadoCrear");
     mensaje.addClass("alert-danger");
     mensaje.removeClass("alert-success");
@@ -366,7 +365,6 @@ function EditarRol(rol){
 
 function guardarConfiguracion() {
     $("#resultadoCrearConfig").hide();
-    console.log("guardar configuración");
     var form = $('#formGuardarConfiguracion')[0];
 	// Create an FormData object
     var formData = new FormData(form);
@@ -381,7 +379,6 @@ function guardarConfiguracion() {
             permisos: permisos
          };
 
-    console.log(JSON.stringify(data));
     handleAjaxRequest(function (token) {
         callApiGuardarConfiguracion(data, token);
     });
@@ -402,7 +399,6 @@ function callApiGuardarConfiguracion(data,token){
 }
 
 function onExitoCrearConfiguracion(data){
-    console.log(data);
     var mensaje = $("#resultadoCrearConfig");
     mensaje.addClass("alert-success");
     mensaje.removeClass("alert-danger");
@@ -411,7 +407,6 @@ function onExitoCrearConfiguracion(data){
    handleAjaxRequest(consultarRoles);
 }
 function onErrorCrearConfiguracion(error){
-    console.log(error);
     var mensaje = $("#resultadoCrearConfig");
     mensaje.addClass("alert-danger");
     mensaje.removeClass("alert-success");
@@ -434,16 +429,21 @@ function consultarPermiso(token) {
 
 var permisosCache = {};
 function onExitoPermisos(data) {
-    console.log("consulta de permisos");
-    console.log(data);
     permisosCache = agruparPorModulo(data);
 
 }
 
 function onErrorPermisos(error) {
-    console.log("consulta de permisos");
-    console.log(error);
-
+    Swal.fire({
+        title: 'Error',
+        text: error.responseJSON.message,
+        icon:"warning",
+        showCancelButton: false,
+        confirmButtonColor: ' #d5c429 ',
+        confirmButtonText: 'Confirmar',
+    }).then((result) => {
+       
+    });
 }
 
 

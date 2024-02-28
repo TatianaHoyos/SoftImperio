@@ -21,9 +21,6 @@ connection.onclose(async () => {
 const receiveMessage = async () => {
     try {
         await connection.on("ReceiveMessage", (message, user) => {
-            console.log(message);
-            //alert(user,message);
-
             // Convertir el string JSON a un objeto
             var notificacionPedidos = JSON.parse(message);
             onExitoVentasPendientes(notificacionPedidos);
@@ -131,7 +128,6 @@ function consultarApiVentasPorNotificacion(idVenta, token){
 
 function onExitoVentasPorNotificacion(data, idVenta) {
     var urlRedireccion = "PuntoVentaBarra.html";
-    console.log(window.location.href);
 
     if (!window.location.href.includes(urlRedireccion)) {
         // Si no estás ya en la URL de redirección, establece un indicador en localStorage
@@ -145,7 +141,6 @@ function onExitoVentasPorNotificacion(data, idVenta) {
     } else {
         // Si ya estás en la URL de redirección, ejecuta el código directamente sin esperar al evento load
         data.forEach(function (detalleVenta) {
-            console.log(detalleVenta);
             mostrarProductosTablaNotificacion(detalleVenta.nombreProducto + ' ' + detalleVenta.referenciaProducto,
                 detalleVenta.subTotalAPagar, detalleVenta.idProductos, detalleVenta.cantidadProducto)
             $("#totalVenta").text(detalleVenta.totalVenta);
@@ -173,14 +168,30 @@ function mostrarProductosTablaNotificacion(nombre, precio, idProducto,cantidad) 
 
 
 function onErrorVentasPorNotificacion(error){
-    console.log(error.responseJSON)   
-
+    Swal.fire({
+        title: 'Error',
+        text: error.responseJSON.message,
+        icon:"warning",
+        showCancelButton: false,
+        confirmButtonColor: ' #d5c429 ',
+        confirmButtonText: 'Confirmar',
+    }).then((result) => {
+       
+    });
 }
 
 
 function onErrorVentasPendientes(error){
-    console.log(error.responseJSON)   
-
+    Swal.fire({
+        title: 'Error',
+        text: error.responseJSON.message,
+        icon:"warning",
+        showCancelButton: false,
+        confirmButtonColor: ' #d5c429 ',
+        confirmButtonText: 'Confirmar',
+    }).then((result) => {
+       
+    });
 }
 
 

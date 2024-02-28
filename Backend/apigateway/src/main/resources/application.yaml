@@ -107,7 +107,7 @@ spring:
             - RewritePath=/edge-service/v1/service/productos/crear, /api/producto/crear
 
         - id: services-productos-actualizar
-          uri: https://localhost:8080
+          uri: http://localhost:8080
           predicates:
             - Path=/edge-service/v1/service/productos/actualizar/**
           filters:
@@ -118,7 +118,7 @@ spring:
             - RewritePath=/edge-service/v1/service/productos/actualizar/(?<idproductos>.*), /api/producto/actualizar/$\{idproductos}
 
         - id: services-productos-eliminar
-          uri: https://localhost:8080
+          uri: http://localhost:8080
           predicates:
             - Path=/edge-service/v1/service/productos/eliminar/**
           filters:
