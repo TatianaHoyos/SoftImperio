@@ -395,7 +395,7 @@ spring:
               args:
                 modulo: Proveedor
                 accion: Editar
-            - RewritePath=/edge-service/v1/service/proveedor/elimactualizar/id/(?<idproveedor>.*), /api/proveedor/eliminar/$\{idproveedor}
+            - RewritePath=/edge-service/v1/service/proveedor/actualizar/id/(?<idproveedor>.*), /api/proveedor/actualizar/$\{idproveedor}
 
 
         - id: services-proveedor-eliminar-id

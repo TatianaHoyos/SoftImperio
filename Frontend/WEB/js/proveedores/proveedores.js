@@ -133,14 +133,20 @@ function editarProveedor() {
         direccion: $("#direccionE").val(),
         email: $("#emailE").val()
       };
-      handleAjaxRequest(callApiEditarProveedor);
+      handleAjaxRequest(function (token) {
+        callApiEditarProveedor(data,token);
+    
+    });
 }
 
-function callApiEditarProveedor(token){
+function callApiEditarProveedor(data,token){
 
   $.ajax({
     type: "PUT",
-    url: "http://localhost:8081/edge-service/v1/service/proveedor/elimactualizar/id/" + $("#idProveedorE").val(),
+    url: "http://localhost:8081/edge-service/v1/service/proveedor/actualizar/id/" + $("#idProveedorE").val(),
+    "headers": {
+      'Authorization': `Bearer ${token}`
+    },
     data: JSON.stringify(data),
     contentType: "application/json",
     success: function(response) {
