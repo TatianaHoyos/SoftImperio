@@ -75,8 +75,7 @@ function eliminarProveedor(idProveedor) {
         text: 'Esta seguro de eliminar el proveedor '+ idProveedor,
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
+        confirmButtonColor: '#ae9243',
         confirmButtonText: 'Eliminar',
         cancelButtonText: 'Cancelar'
     }).then((result) => {
@@ -90,9 +89,9 @@ function eliminarProveedor(idProveedor) {
               Swal.fire({
                 type: 'success',
                 icon:"success",
-                text: 'Eliminado ',
+                text: 'El proveedor ha sido eliminado. ',
                 showConfirmButton: false,
-                timer: 2000
+                timer: 1500
               })
               setTimeout(() => {
                 window.location.reload();
@@ -149,65 +148,6 @@ function editarProveedor() {
   });
 }
 
-// Function to create a table row with the given data
-/*function createTableRow(data) {
-  const row = document.createElement("tr");
-
-  const propertyOrder = ["idProveedores", "documento", "nombre","email","telefono","direccion"];
-  // Crear celdas para propiedades
-  for (const property of propertyOrder) {
-    if (data.hasOwnProperty(property)) {
-      const cell = document.createElement("td");
-      cell.textContent = data[property];
-      row.appendChild(cell);
-    }
-  }
-
-  // Agregar botón de edición
-  const editCell = document.createElement("td");
-  const editButton = document.createElement("button");
-  editButton.type = "button";
-  editButton.setAttribute("data-toggle", "modal");
-  editButton.setAttribute("data-target", "#miModal");
-  editButton.className = "btn btn-warning d-inline";
-  editButton.onclick = function() {
-    alertaEditar('editar', data.idProveedores);
-  };
-  const editIcon = document.createElement("svg");
-  editIcon.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-  editIcon.setAttribute("width", "16");
-  editIcon.setAttribute("height", "16");
-  editIcon.setAttribute("fill", "currentColor");
-  editIcon.setAttribute("class", "fa fa-edit");
-  editIcon.setAttribute("viewBox", "0 0 16 16");
-  const editPath = document.createElement("path");
-  editPath.setAttribute("d", "m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z");
-  editIcon.appendChild(editPath);
-  editButton.appendChild(editIcon);
-  editButton.onclick = function() {
-      alertaEliminarEditar('editar', data.idProveedores);
-    };
-  editCell.appendChild(editButton);
-  row.appendChild(editCell);
-
-  // Add the delete button cell
-  const deleteCell = document.createElement("td");
-  const deleteButton = document.createElement("button");
-  deleteButton.type = "button";
-  deleteButton.className = "btn btn-warning d-inline";
-  deleteButton.onclick = function() {
-    alertaEliminarEditar('eliminar', data.idProveedores);
-  };
-  const deleteIcon = document.createElement("i");
-  deleteIcon.className = "fa fa-trash";
-  deleteIcon.setAttribute("aria-hidden", "true");
-  deleteButton.appendChild(deleteIcon);
-  deleteCell.appendChild(deleteButton);
-  row.appendChild(deleteCell);
-
-  return row;
-}*/
-
 $(document).ready(function() {
   $.ajax({
     url: 'http://localhost:8080/api/proveedorconsultar',
@@ -253,30 +193,9 @@ $(document).ready(function() {
       dom: '<"row"<"col-md-6"l><"col-md-6"f>>tip',
       pageLength: 5,
       lengthMenu: [5, 10, 25, 50],
-     /* data: data,
-      columns:[
-        { data: 'idProveedores' },
-        { data: 'documento' },
-        { data: 'nombre' },
-        { data: 'email' },
-        { data: 'telefono' },
-        { data: 'direccion' },
-        {
-          data: null,
-          render: function(data, type, row) {
-            return '<button class="btn btn-editar" data-toggle="modal" data-target="#miModal" onclick="alertaEliminarEditar(\'editar\', ' + row.idProveedores + ')"><i class="fa fa-edit"></i></button>';
-          }
-        },
-        {
-          data: null,
-          render: function(data, type, row) {
-            return '<button onclick="alertaEliminarEditar(\'eliminar\', ' + row.idProveedores + ')" class="btn btn-eliminar" > <i class="fa fa-trash"></i></button>';
-          }
-        }
-      ],*/
-    
+
       rowId: 'idProveedores',
-     
+
       language: { /*language, parametro adicional para cambiar los texto del datatable */
         "sProcessing": "Procesando...",
         "sLengthMenu": "Mostrar _MENU_ registros",
@@ -303,28 +222,15 @@ $(document).ready(function() {
       },
     });
 
-
-
-
 // Seleccionar el elemento de búsqueda
 var inputSearch = $('#miTabla_filter input');
-inputSearch.addClass('form-control'); // Asegurarse de que el input tenga la clase form-control
+inputSearch.removeAttr('form-control'); // Asegurarse de que el input tenga la clase form-control
 inputSearch.removeAttr('placeholder'); // Quitar el atributo placeholder si existe
-
-// Crear el span con el ícono y agregarlo al input de búsqueda
-var iconSpan = $('<span class="input-group-text" style="background-color: #e5c850;"><i class="fas fa-search"></i></span>');
 
 dataTable.clear();
 
 $.each(data, function (id, productos) {
-  /*var nombreCategoria = "";
-  if (productos.idCategoria == 1) {
-      nombreCategoria = "cervezas";
-  } else if (productos.idCategoria == 2) {
-      nombreCategoria = "wiskey";
-  } else if (productos.idCategoria == 3) {
-      nombreCategoria = "aguardiente";
-  }*/
+
   var boton1 ='<button class="btn btn-editar" data-toggle="modal" data-target="#miModal" onclick="alertaEliminarEditar(\'editar\', ' + productos.idProveedores + ')"><i class="fa fa-edit"></i></button>';
   var boton2 = '<button onclick="alertaEliminarEditar(\'eliminar\', ' + productos.idProveedores + ')" class="btn btn-eliminar" > <i class="fa fa-trash"></i></button>';
  
@@ -361,7 +267,7 @@ function createTableRow(data) {
     }
   }
 
-  // Add the edit button cell
+  // Añadir la celda del botón de edición
   const editCell = document.createElement("td");
   const editButton = document.createElement("button");
   editButton.type = "button";
