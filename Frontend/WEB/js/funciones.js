@@ -176,40 +176,40 @@ function onExitoCrearProveedor(data) {
         });
     }
 
-function crearUsuario() {
-    var formData = {
-        nombre: $("#nombre").val(),
-        documento: $("#documento").val(),
-        email: $("#email").val(),
-        telefono: $("#telefono").val(),
-        direccion: $("#direccion").val(),
-    };
+// function crearUsuario() {
+//     var formData = {
+//         nombre: $("#nombre").val(),
+//         documento: $("#documento").val(),
+//         email: $("#email").val(),
+//         telefono: $("#telefono").val(),
+//         direccion: $("#direccion").val(),
+//     };
 
-    if (validarCampoVacio($("#nombre").val().length, 'Por favor ingrese un nombre')) {
-        return false;
-    }
-    if (validarCampoVacio($("#documento").val().length, 'Por favor ingrese documento')) {
-        return false;
-    }
-    if (validarCampoVacio($("#email").val().length, 'Por favor ingrese email')) {
-        return false;
-    }
-    if (validarCampoVacio($("#telefono").val().length, 'Por favor ingrese telefono')) {
-        return false;
-    }
-    if (validarCampoVacio($("#direccion").val().length, 'Por favor ingrese direccion')) {
-        return false;
-    }
+//     if (validarCampoVacio($("#nombre").val().length, 'Por favor ingrese un nombre')) {
+//         return false;
+//     }
+//     if (validarCampoVacio($("#documento").val().length, 'Por favor ingrese documento')) {
+//         return false;
+//     }
+//     if (validarCampoVacio($("#email").val().length, 'Por favor ingrese email')) {
+//         return false;
+//     }
+//     if (validarCampoVacio($("#telefono").val().length, 'Por favor ingrese telefono')) {
+//         return false;
+//     }
+//     if (validarCampoVacio($("#direccion").val().length, 'Por favor ingrese direccion')) {
+//         return false;
+//     }
 
-    $.ajax({
-        type: "POST",
-        url: "http://localhost:8080/api/proveedor/crear",
-        "headers": {
-            "Content-Type": "application/json"
-        },
-        "data": JSON.stringify(formData),
-        success: onExitoCrearProveedor,
-        error: onErrorProv
+//     // $.ajax({
+//     //     type: "POST",
+//     //     url: "http://localhost:8080/api/proveedor/crear",
+//     //     "headers": {
+//     //         "Content-Type": "application/json"
+//     //     },
+//     //     "data": JSON.stringify(formData),
+//     //     success: onExitoCrearProveedor,
+//     //     error: onErrorProv
 
-    });
-}
+//     // });
+// }

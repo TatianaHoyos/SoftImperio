@@ -187,7 +187,6 @@ spring:
                 accion: Consultar
             - RewritePath=/edge-service/v1/service/venta/consultar/(?<idventa>.*), /api/Ventas/$\{idventa}
 
-
         - id: services-venta-mesa-crear
           uri: https://localhost:7084
           predicates:
@@ -209,6 +208,17 @@ spring:
                 modulo: Venta
                 accion: Consultar
             - RewritePath=/edge-service/v1/service/venta/pendiente/consultar, /api/Ventas/Pendientes
+
+        - id: services-venta-ultimo-mes-consultar
+          uri: https://localhost:7084
+          predicates:
+            - Path=/edge-service/v1/service/venta/ultimo-mes/consultar
+          filters:
+            - name: AuthenticationFilter
+              args:
+                modulo: Venta
+                accion: Consultar
+            - RewritePath=/edge-service/v1/service/venta/ultimo-mes/consultar, /api/Ventas/ventas-ultimo-mes
 
 
         ##COMPRAS##
@@ -293,6 +303,8 @@ spring:
                 modulo: Configuracion
                 accion: Consultar
             - RewritePath=/edge-service/v1/service/permisos/consultar, /api/permisos
+
+
 
 management:
   endpoint:

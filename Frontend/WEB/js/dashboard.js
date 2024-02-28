@@ -1,7 +1,18 @@
 // Función para obtener las ventas del ultimo mes
-async function obtenerVentasUltimoMes() {
+async function obtenerVentasUltimoMes(token) {
     try {
-        const respuesta = await fetch('https://localhost:7084/api/Ventas/ventas-ultimo-mes');
+        var apiUrl = 'http://localhost:8081/edge-service/v1/service/venta/ultimo-mes/consultar';
+
+        var myHeaders = new Headers();
+        myHeaders.append('Authorization', `Bearer ${token}`);
+
+        var requestOptions = {
+            method: 'GET',
+            headers: myHeaders
+        };
+
+        const respuesta = await fetch(apiUrl, requestOptions);
+
         if (!respuesta.ok) {
             throw new Error('Error al obtener las ventas del último mes. Estado de la respuesta: ' + respuesta.status);
         }
@@ -336,7 +347,8 @@ async function obtenerDatosGraficoProductos() {
 
 
 window.onload = function () {
-    obtenerVentasUltimoMes();
+    handleAjaxRequest(obtenerVentasUltimoMes);
+    
     obtenerComprasUltimoMes();
     obtenerCreditosUltimoMes();
     mostrarGraficoVentasYCompras();
