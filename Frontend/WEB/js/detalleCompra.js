@@ -104,8 +104,7 @@ function createButton(action, id) {
       text: 'Estas seguro de eliminar este detalle de la compra?',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
+      confirmButtonColor: '#ae9243',
       cancelButtonText: 'Cancelar',
       confirmButtonText: 'Si, eliminar!'
     }).then((result) => {
@@ -339,8 +338,7 @@ function confirmarYGuardarDetalleCliente() {
     text: '¿Estás seguro de que deseas guardar los cambios?',
     icon: 'question',
     showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
+    confirmButtonColor: '#ae9243',
     cancelButtonText: 'Cancelar',
     confirmButtonText: 'Sí, guardar'
   }).then((result) => {

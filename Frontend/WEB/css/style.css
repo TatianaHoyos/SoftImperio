@@ -1,5 +1,5 @@
 body{
-  background-image: linear-gradient(to top, #051937, #2a1429, #30171b, #2b1e16, #25231c); 
+  background-image: linear-gradient(to top, #051937, #2a1429, #30171b, #2b1e16, #25231c);
   /* background: rgb(174,146,67);
   background: radial-gradient(circle, rgba(174,146,67,1) 0%, rgba(9,9,9,1) 100%); */
   font-family:"Baskerville", serif;
@@ -19,13 +19,15 @@ body{
 
 .form-group button {
   background-color: #ae9243;
-  color: #090909; /* Letra blanca */
-  border: 1px solid #090909; /* Borde amarillo */
+  color: #090909;
+  border: 1px solid #ae9243; /* Borde amarillo */
+  border-radius: 8px; /* Bordes más cuadrados */
+  padding: 10px 15px; /* Ajustar el espaciado interno para un aspecto equilibrado */
   transition: background-color 0.3s, color 0.3s, border 0.3s; /* Transición suave */
 }
 
 .form-group button:hover {
-  background-color: rgba(174, 146, 67, 0.5) ;
+  background-color: #090909;
   color: #ffffff; /* Letra al pasar el mouse */
 }
 
@@ -53,7 +55,9 @@ body{
     
     /* Estilos para el menú */
     .colornavbar {
-      background-color: #090909;
+      background-color: transparent;
+      box-shadow: 0 8px 8px rgba(0, 0, 0, 0.1); /* Ajusta los valores según tus preferencias */
+
     }
     .logout-link {
       margin-left: auto; /* Mover el enlace de cierre de sesión a la derecha */
@@ -174,7 +178,13 @@ body{
   color: #090909;
   border: 0;
 }
-.card{
+
+
+.btn-secondary{
+  background-color: #ae9243;
+  color: #090909;
+}
+/* .card{
   background-color: #09090995 !important;
   color: #fff;
 }
@@ -184,18 +194,10 @@ body{
   background-color: #262525 !important;
   color: #fff;
 }
-.card-body{
-  background-color: #3a3a3a !important;
-  color: #fff;
-}
 
-
-.btn-secondary{
-  background-color: #ae9243;
-  color: #090909;
-}
+/* estilos para ventanas modales */
 .swal2-modal {
-  background-color: #1c1c1c;
+  background-color: #090909;
 
 }
 .swal2-title {
@@ -205,11 +207,29 @@ body{
   color: white !important;
 }
 .swal2-popup .swal2-actions .swal2-confirm {
-  background-color: #ae9243;
+  background-color: #000;
+  border: 1px solid #ae9243;
   font-weight: bold;
-  color: black;
-
+  color: #fff;
 }
+
+.swal2-popup .swal2-actions .swal2-cancel {
+  background-color: #000;
+  border: 1px solid #ae9243;
+  font-weight: bold;
+  color: #fff;
+}
+
+.swal2-popup .swal2-styled:hover {
+  background-color: #ae9243 !important;
+  color: #000 !important;
+}
+
+.swal2-popup .swal2-styled:active {
+  background-color: #ae9243 !important;
+  color: #000 !important;
+}
+/*  */
 
 .btn-warning{
   background-color: #ae9243;
@@ -220,13 +240,6 @@ body{
   display: flex;
   justify-content: center ;
 }
-
-.swal2-popup .swal2-actions .swal2-cancel {
-  background-color: #ae9243;
-  font-weight: bold;
-  color: black;
-}
-
 
 .qty .count {
 color: #000;
@@ -401,7 +414,43 @@ background-color:white;
   }
 
 
+/* dashboard */
+.card {
+  border: 1px solid #495057;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  margin-bottom: 20px;
+}
 
+.card-body {
+  padding: 20px;
+  background-color: #090909;
 
+}
 
+.info-box {
+  text-align: center;
+}
+
+.info-box i {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+.info-box h6 {
+  color: #6c757d;
+  margin-bottom: 5px;
+}
+
+.info-box h3 {
+  color: #ffffff;
+}
+#myChartVentas,
+#myChartCompras {
+    width: 100%; /* Ajusta el ancho al 100% del contenedor */
+    height: 100%; /* Ajusta la altura al 100% del contenedor */
+    background-color: #090909; /* Color de fondo del gráfico */
+    border-radius: 10px; /* Bordes redondeados */
+}
 
