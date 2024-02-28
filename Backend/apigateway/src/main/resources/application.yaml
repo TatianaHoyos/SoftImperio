@@ -363,6 +363,18 @@ spring:
             - RewritePath=/edge-service/v1/service/permisos/consultar, /api/permisos
 
           ##Proveedor##
+        - id: services-proveedor-crear
+          uri: http://localhost:8080
+          predicates:
+            - Path=/edge-service/v1/service/proveedor/crear
+            # - Header=scope, httpbin
+          filters:
+            - name: AuthenticationFilter
+              args:
+                modulo: Proveedor
+                accion: Crear
+            - RewritePath=/edge-service/v1/service/proveedor/crear, /api/proveedor/crear
+
         - id: services-proveedor-consultar
           uri: http://localhost:8080
           predicates:

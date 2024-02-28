@@ -100,8 +100,8 @@ function eliminarProveedor(idProveedor, token) {
             const xhr = new XMLHttpRequest();
                    
             const pathDelete = "http://localhost:8081/edge-service/v1/service/proveedor/eliminar/id/" + idProveedor;
-            xhr.setRequestHeader('Authorization', `Bearer ${token}`);
             xhr.open("DELETE", pathDelete, true);
+            xhr.setRequestHeader('Authorization', `Bearer ${token}`);
             xhr.onload = function () {
               if (xhr.status === 200) {
               Swal.fire({
@@ -349,4 +349,72 @@ function createTableRow(data) {
 
   return row;
 }
+//logica para crear proveedor
+function onExitoCrearProveedor(data) {
+  Swal.fire({
+      type: 'success',
+      text: 'Registro guardado.',
+      icon: "success",
+      showConfirmButton: false,
+      timer: 1500
+  });
 
+  setTimeout(() => {
+      window.location.reload();
+  }, 1500);
+}
+
+  function onErrorProv(error) {
+  
+      // Display the error using SweetAlert2
+      Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: error.message || 'Ocurrió un error inesperado.',
+      });
+  }
+
+function crearUsuarioProveedor() {
+  var formData = {
+      nombre: $("#nombre").val(),
+      documento: $("#documento").val(),
+      email: $("#email").val(),
+      telefono: $("#telefono").val(),
+      direccion: $("#direccion").val(),
+  };
+
+  if (validarCampoVacio($("#nombre").val().length, 'Por favor ingrese un nombre')) {
+      return false;
+  }
+  if (validarCampoVacio($("#documento").val().length, 'Por favor ingrese documento')) {
+      return false;
+  }
+  if (validarCampoVacio($("#email").val().length, 'Por favor ingrese email')) {
+      return false;
+  }
+  if (validarCampoVacio($("#telefono").val().length, 'Por favor ingrese telefono')) {
+      return false;
+  }
+  if (validarCampoVacio($("#direccion").val().length, 'Por favor ingrese direccion')) {
+      return false;
+  }
+
+  handleAjaxRequest(function (token) {
+    callApiCrearProveedor(formData,token);
+
+});
+}
+function callApiCrearProveedor(formData,token){
+  $.ajax({
+    type: "POST",
+    url: "http://localhost:8081/edge-service/v1/service/proveedor/crear",
+    "headers": {
+        "Content-Type": "application/json",
+        'Authorization': `Bearer ${token}`,
+    },
+    "data": JSON.stringify(formData),
+    success: onExitoCrearProveedor,
+    error: onErrorProv
+
+});
+}
