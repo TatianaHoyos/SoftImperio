@@ -27,6 +27,8 @@ async function obtenerVentasUltimoMes(token) {
             // Actualiza el contenido del dashboard con los datos formateados
             document.getElementById('ventasTotales').innerHTML = totalVentaFormateado;
         } else {
+            const totalVentaFormateado = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(0);
+            document.getElementById('ventasTotales').innerHTML = totalVentaFormateado;
             console.warn('La respuesta de la API no contiene los datos esperados para las ventas del último mes.');
         }
     } catch (error) {
@@ -64,6 +66,9 @@ async function obtenerComprasUltimoMes() {
 
             document.getElementById('comprasTotales').innerHTML = totalCompraFormateado;
         } else {
+            const totalCompraFormateado = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(0);
+
+            document.getElementById('comprasTotales').innerHTML = totalCompraFormateado;
             console.warn('La respuesta de la API no contiene los datos esperados para las compras del último mes.');
         }
     } catch (error) {
