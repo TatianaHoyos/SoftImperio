@@ -140,6 +140,17 @@ spring:
                 accion: Consultar
             - RewritePath=/edge-service/v1/service/productos/consultar/agrupados, /api/Productos/Agrupados
 
+        - id: services-productos-existencias-consultar
+          uri: https://localhost:7084
+          predicates:
+            - Path=/edge-service/v1/service/productos/con/existencias
+          filters:
+            - name: AuthenticationFilter
+              args:
+                modulo: Producto
+                accion: Consultar
+            - RewritePath=/edge-service/v1/service/productos/con/existencias, /api/Productos/productos-con-existencias
+
 
         ##CATEGORIAS##
         - id: services-categoria-consultar
@@ -220,6 +231,17 @@ spring:
                 accion: Consultar
             - RewritePath=/edge-service/v1/service/venta/ultimo-mes/consultar, /api/Ventas/ventas-ultimo-mes
 
+        - id: services-venta-por-mes-consultar
+          uri: https://localhost:7084
+          predicates:
+            - Path=/edge-service/v1/service/venta/por-mes/consultar
+          filters:
+            - name: AuthenticationFilter
+              args:
+                modulo: Venta
+                accion: Consultar
+            - RewritePath=/edge-service/v1/service/venta/por-mes/consultar, /api/Ventas/ventas-por-mes
+
 
         ##COMPRAS##
         - id: services-compras-consultar
@@ -232,6 +254,42 @@ spring:
                 modulo: Compras
                 accion: Consultar
             - RewritePath=/edge-service/v1/service/compras/consultar, /api/Compras
+
+        - id: services-compras-ultimo-mes-consultar
+          uri: https://localhost:7084
+          predicates:
+            - Path=/edge-service/v1/service/compras/ultimo-mes/consultar
+          filters:
+            - name: AuthenticationFilter
+              args:
+                modulo: Compra
+                accion: Consultar
+            - RewritePath=/edge-service/v1/service/compras/ultimo-mes/consultar, /api/Compra/compras-ultimo-mes
+
+        - id: services-compras-por-mes-consultar
+          uri: https://localhost:7084
+          predicates:
+            - Path=/edge-service/v1/service/compras/por-mes/consultar
+          filters:
+            - name: AuthenticationFilter
+              args:
+                modulo: Compra
+                accion: Consultar
+            - RewritePath=/edge-service/v1/service/compras/por-mes/consultar, /api/Compra/compras-por-mes
+
+
+        ##Creditos##
+        - id: services-creditos-ultimo-mes-consultar
+          uri: https://localhost:7084
+          predicates:
+            - Path=/edge-service/v1/service/creditos/ultimo-mes/consultar
+          filters:
+            - name: AuthenticationFilter
+              args:
+                modulo: Venta
+                accion: Consultar
+            - RewritePath=/edge-service/v1/service/creditos/ultimo-mes/consultar, /api/Creditos/creditos-ultimo-mes
+
 
         ##ROLES Y PERMISOS##
         - id: services-roles-consultar
@@ -304,6 +362,52 @@ spring:
                 accion: Consultar
             - RewritePath=/edge-service/v1/service/permisos/consultar, /api/permisos
 
+          ##Proveedor##
+        - id: services-proveedor-consultar
+          uri: http://localhost:8080
+          predicates:
+            - Path=/edge-service/v1/service/proveedor/consultar
+            # - Header=scope, httpbin
+          filters:
+            - name: AuthenticationFilter
+              args:
+                modulo: Proveedor
+                accion: Consultar
+            - RewritePath=/edge-service/v1/service/proveedor/consultar, /api/proveedorconsultar
+
+        - id: services-proveedor-consultar-id
+          uri: http://localhost:8080
+          predicates:
+            - Path=/edge-service/v1/service/proveedor/consultar/id/**
+          filters:
+            - name: AuthenticationFilter
+              args:
+                modulo: Proveedor
+                accion: Consultar
+            - RewritePath=/edge-service/v1/service/proveedor/consultar/id/(?<idproveedor>.*), /api/proveedorconsultar/$\{idproveedor}
+
+        - id: services-proveedor-actualizar-id
+          uri: http://localhost:8080
+          predicates:
+            - Path=/edge-service/v1/service/proveedor/actualizar/id/**
+          filters:
+            - name: AuthenticationFilter
+              args:
+                modulo: Proveedor
+                accion: Editar
+            - RewritePath=/edge-service/v1/service/proveedor/elimactualizar/id/(?<idproveedor>.*), /api/proveedor/eliminar/$\{idproveedor}
+
+
+        - id: services-proveedor-eliminar-id
+          uri: http://localhost:8080
+          predicates:
+            - Path=/edge-service/v1/service/proveedor/eliminar/id/**
+          filters:
+            - name: AuthenticationFilter
+              args:
+                modulo: Proveedor
+                accion: Eliminar
+            - RewritePath=/edge-service/v1/service/proveedor/eliminar/id/(?<idproveedor>.*), /api/proveedor/eliminar/$\{idproveedor}
 
 
 management:

@@ -2,15 +2,21 @@ $(document).ready(function() {
   $("#inputBusqueda").on("input", function() {
     var idProveedor = $(this).val();
 
-    buscarDatos(idProveedor);
+    handleAjaxRequest(function (token) {
+      buscarDatos(idProveedor,token);
+  
+  });
+    // buscarDatos(idProveedor);
   });
 });
 
-function buscarDatos(idProveedor) {
+function buscarDatos(idProveedor, token) {
   $.ajax({
     type: "GET",
-    url: "http://localhost:8080/api/proveedorconsultar/",
-
+    url: "http://localhost:8081/edge-service/v1/service/proveedor/consultar",
+    "headers": {
+        'Authorization': `Bearer ${token}`,
+  },
     data: { query: idProveedor },
     dataType: "json",
     success: function(response) {
@@ -35,19 +41,29 @@ function buscarDatos(idProveedor) {
 //función para eliminar o editar proveedor
 function alertaEliminarEditar(action,idProveedor) {
     if (action=="eliminar"){
-        eliminarProveedor(idProveedor);
+      handleAjaxRequest(function (token) {
+        eliminarProveedor(idProveedor,token);
+    
+    });
+      // eliminarProveedor(idProveedor);
     }else if (action=="editar"){
-        consultarProveedor(idProveedor);
+      
+    handleAjaxRequest(function (token) {
+      consultarProveedor(idProveedor,token);
+  
+  });
+      // consultarProveedor(idProveedor);
     }
 }
 
-function consultarProveedor(idProveedor) {
+function consultarProveedor(idProveedor, token) {
 
     $.ajax({
         type: "GET",
-        url:"http://localhost:8080/api/proveedorconsultar/"+idProveedor,
+        url:"http://localhost:8081/edge-service/v1/service/proveedor/consultar/id/" + idProveedor,
         "headers": {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`
           },
         success: function (data){
           $("#documentoE").val(data.documento);
@@ -69,7 +85,7 @@ function consultarProveedor(idProveedor) {
 
 
 //Ajax para eliminar proveedor
-function eliminarProveedor(idProveedor) {
+function eliminarProveedor(idProveedor, token) {
     Swal.fire({
         title: '¿Estás seguro?',
         text: 'Esta seguro de eliminar el proveedor '+ idProveedor,
@@ -82,7 +98,9 @@ function eliminarProveedor(idProveedor) {
         if (result.isConfirmed) {
             // Realizar la solicitud de eliminación AJAX
             const xhr = new XMLHttpRequest();
-            const pathDelete = "http://localhost:8080/api/proveedor/eliminar/"+idProveedor;
+                   
+            const pathDelete = "http://localhost:8081/edge-service/v1/service/proveedor/eliminar/id/" + idProveedor;
+            xhr.setRequestHeader('Authorization', `Bearer ${token}`);
             xhr.open("DELETE", pathDelete, true);
             xhr.onload = function () {
               if (xhr.status === 200) {
@@ -115,10 +133,14 @@ function editarProveedor() {
         direccion: $("#direccionE").val(),
         email: $("#emailE").val()
       };
+      handleAjaxRequest(callApiEditarProveedor);
+}
+
+function callApiEditarProveedor(token){
 
   $.ajax({
     type: "PUT",
-    url: "http://localhost:8080/api/proveedor/actualizar/" + $("#idProveedorE").val(),
+    url: "http://localhost:8081/edge-service/v1/service/proveedor/elimactualizar/id/" + $("#idProveedorE").val(),
     data: JSON.stringify(data),
     contentType: "application/json",
     success: function(response) {
@@ -149,8 +171,20 @@ function editarProveedor() {
 }
 
 $(document).ready(function() {
+  handleAjaxRequest(callApiConsultarProveedor);
+  // callApiConsultarProveedor(token)
+
+
+ 
+});
+
+
+function callApiConsultarProveedor(token) {
   $.ajax({
-    url: 'http://localhost:8080/api/proveedorconsultar',
+    url: 'http://localhost:8081/edge-service/v1/service/proveedor/consultar',
+    "headers": {
+      'Authorization': `Bearer ${token}`
+    },
     success: function(data) {
 
       // Verificar si hay datos en la respuesta
@@ -171,56 +205,57 @@ $(document).ready(function() {
       }
     },
     error: function(xhr, error, thrown) {
-      Swal.fire({
-        title: 'Error',
-        text: xhr.responseText,
-        icon:"warning",
-        showCancelButton: false,
-        confirmButtonColor: ' #d5c429 ',
-        confirmButtonText: 'Confirmar',
-    }).then((result) => {
-       
-    });
+          Swal.fire({
+            title: 'Error',
+            text: xhr.responseText,
+            icon:"warning",
+            showCancelButton: false,
+            confirmButtonColor: ' #d5c429 ',
+            confirmButtonText: 'Confirmar',
+        }).then((result) => {
+          
+        });
     }
   });
+}
 
-  // Inicializar DataTables directamente después de la carga de la página
-  function iniciarDataTables(data) {
-    if ($.fn.DataTable.isDataTable('#miTabla')) {
-      $('#miTabla').DataTable().destroy();
-    }
-    var dataTable = $('#miTabla').DataTable({
-      dom: '<"row"<"col-md-6"l><"col-md-6"f>>tip',
-      pageLength: 5,
-      lengthMenu: [5, 10, 25, 50],
+ // Inicializar DataTables directamente después de la carga de la página
+ function iniciarDataTables(data) {
+  if ($.fn.DataTable.isDataTable('#miTabla')) {
+    $('#miTabla').DataTable().destroy();
+  }
+  var dataTable = $('#miTabla').DataTable({
+    dom: '<"row"<"col-md-6"l><"col-md-6"f>>tip',
+    pageLength: 5,
+    lengthMenu: [5, 10, 25, 50],
 
-      rowId: 'idProveedores',
+    rowId: 'idProveedores',
 
-      language: { /*language, parametro adicional para cambiar los texto del datatable */
-        "sProcessing": "Procesando...",
-        "sLengthMenu": "Mostrar _MENU_ registros",
-        "sZeroRecords": "No se encontraron resultados",
-        "sEmptyTable": "Ningún dato disponible en esta tabla",
-        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-        "sInfoPostFix": "",
-        "sSearch": "Buscar:",
-        "sUrl": "",
-        "sInfoThousands": ",",
-        "sLoadingRecords": "Cargando...",
-        "oPaginate": {
-          "sFirst": "Primero",
-          "sLast": "Último",
-          "sNext": "Siguiente",
-          "sPrevious": "Anterior"
-        },
-        "oAria": {
-          "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-          "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-        }
+    language: { /*language, parametro adicional para cambiar los texto del datatable */
+      "sProcessing": "Procesando...",
+      "sLengthMenu": "Mostrar _MENU_ registros",
+      "sZeroRecords": "No se encontraron resultados",
+      "sEmptyTable": "Ningún dato disponible en esta tabla",
+      "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+      "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+      "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+      "sInfoPostFix": "",
+      "sSearch": "Buscar:",
+      "sUrl": "",
+      "sInfoThousands": ",",
+      "sLoadingRecords": "Cargando...",
+      "oPaginate": {
+        "sFirst": "Primero",
+        "sLast": "Último",
+        "sNext": "Siguiente",
+        "sPrevious": "Anterior"
       },
-    });
+      "oAria": {
+        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+      }
+    },
+  });
 
 // Seleccionar el elemento de búsqueda
 var inputSearch = $('#miTabla_filter input');
@@ -231,27 +266,24 @@ dataTable.clear();
 
 $.each(data, function (id, productos) {
 
-  var boton1 ='<button class="btn btn-editar" data-toggle="modal" data-target="#miModal" onclick="alertaEliminarEditar(\'editar\', ' + productos.idProveedores + ')"><i class="fa fa-edit"></i></button>';
-  var boton2 = '<button onclick="alertaEliminarEditar(\'eliminar\', ' + productos.idProveedores + ')" class="btn btn-eliminar" > <i class="fa fa-trash"></i></button>';
- 
-  // Agrega la fila a la DataTable
-  dataTable.row.add([
-      productos.documento,
-      productos.nombre,
-      productos.email,
-      productos.telefono,
-      productos.direccion,
-      boton1 + boton2
-  ]).draw();
+var boton1 ='<button class="btn btn-editar" data-toggle="modal" data-target="#miModal" onclick="alertaEliminarEditar(\'editar\', ' + productos.idProveedores + ')"><i class="fa fa-edit"></i></button>';
+var boton2 = '<button onclick="alertaEliminarEditar(\'eliminar\', ' + productos.idProveedores + ')" class="btn btn-eliminar" > <i class="fa fa-trash"></i></button>';
 
-  // console.log(productos.id + ' ' + productos.nombreProducto + ' ' + productos.idCategoria + ' ' +
-  //     productos.referenciaProducto + ' ' + productos.precioProducto);
+// Agrega la fila a la DataTable
+dataTable.row.add([
+    productos.documento,
+    productos.nombre,
+    productos.email,
+    productos.telefono,
+    productos.direccion,
+    boton1 + boton2
+]).draw();
+
+// console.log(productos.id + ' ' + productos.nombreProducto + ' ' + productos.idCategoria + ' ' +
+//     productos.referenciaProducto + ' ' + productos.precioProducto);
 });
 
-  }
 }
-);
-
 // Function to create a table row with the given data
 function createTableRow(data) {
   const row = document.createElement("tr");

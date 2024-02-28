@@ -10,7 +10,7 @@ $(document).ready(function () {
 
 function mostrarFormularioCrear() {
     var titulo = $("#tituloFomularioProducto");
-    titulo.text("Crear un nuevo productos");
+    titulo.text("Crear un nuevo producto");
     var btnform = $("#btn-form");
     // btnform.text("Guardar");
     // var product=  btnform.click(crearProducto);
