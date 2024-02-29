@@ -40,9 +40,8 @@ public class ControllerProducto {
                         .body(new Response("error", "Ya existe un producto igual"));
             }
             String uploadDir = "producto-photos/";
-            //String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-            String fileName = producto.getReferenciaProducto();
-            fileName = producto.getNombreProducto()  +"-"+ fileName;
+            String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+            fileName = producto.getNombreProducto()  +"-"+ producto.getReferenciaProducto().concat(fileName);
 
 
             var productoEntity = new ProductoEntity();
@@ -115,9 +114,8 @@ public class ControllerProducto {
                         .body(new Response("error", "Ya existe un producto igual"));
             }
             String uploadDir = "producto-photos/";
-            //String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-            String fileName = producto.getReferenciaProducto();
-            fileName = producto.getNombreProducto()  +"-"+ fileName;
+            String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+            fileName = producto.getNombreProducto()  +"-"+ producto.getReferenciaProducto().concat(fileName);
 
             var productoEntity = new ProductoEntity();
             productoEntity.setIdProductos(id);
