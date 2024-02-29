@@ -14,11 +14,14 @@ function mostrarFormularioCrear() {
     var btnform = $("#btn-form");
     // btnform.text("Guardar");
     // var product=  btnform.click(crearProducto);
-    handleAjaxRequest(function (token) {
-        btnform.click(function () {
+    
+        btnform.click(function (event) {
+            event.preventDefault();  
+            handleAjaxRequest(function (token) {
             crearProducto(token);
         });
-    });
+        });
+   
    
     
 }
@@ -69,10 +72,21 @@ function onErrorCategorias(error) {
 }
 
 function crearProducto(token) {
-    var form = $('#formCrearProducto')[0];
+    var idCategoria = $('#idCategoria').val();
+    var nombreProducto = $('#nombre').val();
+    var referenciaProducto = $('#referencia').val();
+    var stockMinimo = $('#stockMinimo').val();
+    var precioProducto = $('#precio').val();
+    var fotoInput = $('#fotos')[0];
+    var foto = fotoInput.files[0];
 
-    // Create an FormData object 
-    var formData = new FormData(form);
+    var formData = new FormData();
+    formData.append('idCategoria', idCategoria);
+    formData.append('nombreProducto', nombreProducto);
+    formData.append('referenciaProducto', referenciaProducto);
+    formData.append('stockMinimo', stockMinimo);
+    formData.append('precioProducto', precioProducto);
+    formData.append('foto', foto);
 
     $.ajax({
         type: "POST",
@@ -87,29 +101,39 @@ function crearProducto(token) {
         success: onExitoCrearProducto,
         error: onErrorCrearProducto
     });
-
+    return false;
 }
 
 function onExitoCrearProducto(data) {
-    var mensaje = $("#resultadoCrear");
-    mensaje.addClass("alert-success");
-    mensaje.removeClass("alert-danger");
-    mensaje.show();
-    mensaje.text(data.message);
-    
-    
-    $("#formCrearProducto").trigger("reset");
-    $("#foto-preview").attr('src', '');
-    handleAjaxRequest(consultarProductos);
 
-   
+   /* Swal.fire({
+        title: 'Exito',
+        text: data.message,
+        type: 'success',
+        icon:"success",
+        showCancelButton: false,
+        confirmButtonColor: ' #d5c429 ',
+        confirmButtonText: 'Confirmar',
+    }).then((result) => {
+        //$("#formCrearProducto").trigger("reset");
+        $("#foto-preview").attr('src', '');
+        handleAjaxRequest(consultarProductos);
+    });*/
+
+    console.log(data);
+
 }
 function onErrorCrearProducto(error) {
-    var mensaje = $("#resultadoCrear");
-    mensaje.addClass("alert-danger");
-    mensaje.removeClass("alert-success");
-    mensaje.show();
-    mensaje.text(error.message);
+    Swal.fire({
+        title: 'Error',
+        text: error.responseJSON.message,
+        icon:"warning",
+        showCancelButton: false,
+        confirmButtonColor: ' #d5c429 ',
+        confirmButtonText: 'Confirmar',
+    }).then((result) => {
+       
+    });
 
 
 }
@@ -188,6 +212,7 @@ function onExitoProductos(data) {
             nombreCategoria,
             productos.nombreProducto,
             productos.referenciaProducto,
+            productos.existencia.stock,
             productos.existencia.cantidad,
             productos.precioProducto,
             boton1 +
@@ -246,7 +271,7 @@ function callApiEliminarProducto(Producto,token){
         },
         error: function (xhr, status, error) {
             // Manejar los errores de la solicitud AJAX
-            Swal.fire('Error', error.message, 'error');
+            Swal.fire('Error', error.responseJSON.message, 'error');
         }
     });
 }
@@ -257,25 +282,41 @@ function EditarProducto(producto) {
     $("#proveedor option[value=" + producto.idProveedores + "]").attr("selected", true);
     $("#nombre").val(producto.nombreProducto);
     $("#referencia").val(producto.referenciaProducto);
+    $("#stockMinimo").val(producto.existencia.stock);
     $("#precio").val(producto.precioProducto);
     var preview = document.getElementById("foto-preview");
     preview.src = "http://localhost:8080/" + producto.fotoProducto;
     preview.style.display = "block";
     var btnform = $("#btn-form");
-    handleAjaxRequest(function (token) {
-        btnform.click(function () {
+    
+        btnform.click(function (event) {
+            event.preventDefault();  
+            handleAjaxRequest(function (token) {
             actualizarProducto(producto.idProductos,token);
+            return false;
         });
-    });
+        });
+    
     // btnform.click(function () { actualizarProducto(producto.idProductos); });
 
 }
 
 function actualizarProducto(idProductos,token) {
-    var form = $('#formCrearProducto')[0];
+    var idCategoria = $('#idCategoria').val();
+    var nombreProducto = $('#nombre').val();
+    var referenciaProducto = $('#referencia').val();
+    var stockMinimo = $('#stockMinimo').val();
+    var precioProducto = $('#precio').val();
+    var fotoInput = $('#fotos')[0];
+    var foto = fotoInput.files[0];
 
-    // Create an FormData object
-    var formData = new FormData(form);
+    var formData = new FormData();
+    formData.append('idCategoria', idCategoria);
+    formData.append('nombreProducto', nombreProducto);
+    formData.append('referenciaProducto', referenciaProducto);
+    formData.append('stockMinimo', stockMinimo);
+    formData.append('precioProducto', precioProducto);
+    formData.append('foto', foto);
 
     $.ajax({
         type: "Put",

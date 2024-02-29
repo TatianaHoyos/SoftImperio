@@ -3,8 +3,11 @@ package com.imperio.service.controlador;
 import com.imperio.service.model.dto.comun.Response;
 import com.imperio.service.model.dto.producto.ProductoRequest;
 import com.imperio.service.model.dto.usuarios.UsuariosRequest;
+import com.imperio.service.model.entity.ExistenciasEntity;
 import com.imperio.service.model.entity.ProductoEntity;
 import com.imperio.service.model.entity.UsuariosEntity;
+import com.imperio.service.repository.ExistenciasRepository;
+import com.imperio.service.repository.ExistenciasService;
 import com.imperio.service.repository.ProductoService;
 import com.imperio.service.util.FileUploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,8 @@ public class ControllerProducto {
 
     @Autowired
     private ProductoService productoService;
+    @Autowired
+    private ExistenciasService existenciasService;
     private String urlServer = "http://localhost:8080/";
 
     @PostMapping(value = "api/producto/crear", produces = MediaType.APPLICATION_JSON_VALUE,
@@ -28,8 +33,15 @@ public class ControllerProducto {
     public ResponseEntity<?> crearProducto( ProductoRequest producto,
                                            @RequestParam("foto") MultipartFile multipartFile){
         try {
+            var productoDuplicado = productoService.obtenerProductoDuplicado(producto.getNombreProducto(),
+                    producto.getReferenciaProducto());
+            if (productoDuplicado != null && !productoDuplicado.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body(new Response("error", "Ya existe un producto igual"));
+            }
             String uploadDir = "producto-photos/";
-            String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+            //String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+            String fileName = producto.getReferenciaProducto();
             fileName = producto.getNombreProducto()  +"-"+ fileName;
 
 
@@ -49,7 +61,20 @@ public class ControllerProducto {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                         .body(new Response("error", "Error al guardar el producto"));
             } else {
-                return ResponseEntity.ok(new Response("exito", "se creo el producto con exito"));
+                var existenciaEntity = new ExistenciasEntity();
+                existenciaEntity.setProductos(productodb);
+                existenciaEntity.setStock(producto.getStockMinimo());
+                existenciaEntity.setCantidad(0);
+                existenciaEntity.setEstado("Activo");
+                var existenciaDb = existenciasService.crearExistencia(existenciaEntity);
+
+                if (existenciaDb != null) {
+                    return ResponseEntity.ok(new Response("exito", "se creo el producto con exito"));
+                } else {
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                            .body(new Response("error", "Error relacionar el producto en existencia"));
+                }
+
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -78,19 +103,25 @@ public class ControllerProducto {
 
     @PutMapping(value = "api/producto/actualizar/{id}", produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> updateProductos( ProductoRequest producto,
+    public ResponseEntity<?> updateProductos(ProductoRequest producto,
                                              @PathVariable("id") Integer id,
                                              @RequestParam("foto") MultipartFile multipartFile) throws Exception {
 
         try {
+            var productoDuplicado = productoService.obtenerProductoDuplicado(producto.getNombreProducto(),
+                    producto.getReferenciaProducto());
+            if (productoDuplicado != null && !productoDuplicado.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body(new Response("error", "Ya existe un producto igual"));
+            }
             String uploadDir = "producto-photos/";
-            String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+            //String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+            String fileName = producto.getReferenciaProducto();
             fileName = producto.getNombreProducto()  +"-"+ fileName;
 
             var productoEntity = new ProductoEntity();
             productoEntity.setIdProductos(id);
             productoEntity.setIdCategoria (producto.getIdCategoria());
-           //productoEntity.setIdProveedores(producto.getIdProveedores());
             productoEntity.setNombreProducto(producto.getNombreProducto());
             productoEntity.setPrecioProducto(producto.getPrecioProducto());
             productoEntity.setFotoProducto(uploadDir + fileName);
@@ -103,9 +134,18 @@ public class ControllerProducto {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                         .body(new Response("error", "Error al actualizar el producto"));
             } else {
-                return ResponseEntity.ok(new Response("exito", "se actualizo el producto con exito"));
+                var existenciaDb = existenciasService.encontrarExistenciaPorProducto(productodb);
+                existenciaDb.setStock(producto.getStockMinimo());
+                var existenciaDbActualizada = existenciasService.crearExistencia(existenciaDb);
+
+                if (existenciaDbActualizada != null) {
+                    return ResponseEntity.ok(new Response("exito", "se actualizo el producto con exito"));
+                } else {
+                    return ResponseEntity.ok(new Response("exito", "se actualizo el producto pero no el stock en existencia"));
+                }
             }
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new Response("error", "Ha ocurrido un error al actualizar el producto"));
         }
