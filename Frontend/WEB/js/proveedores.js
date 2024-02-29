@@ -23,10 +23,8 @@ function buscarDatos(idProveedor) {
         text: error.responseJSON.message,
         icon:"warning",
         showCancelButton: false,
-        confirmButtonColor: ' #d5c429 ',
         confirmButtonText: 'Confirmar',
     }).then((result) => {
-       
     });
     }
   });
@@ -176,7 +174,6 @@ $(document).ready(function() {
         text: xhr.responseText,
         icon:"warning",
         showCancelButton: false,
-        confirmButtonColor: ' #d5c429 ',
         confirmButtonText: 'Confirmar',
     }).then((result) => {
        
@@ -232,8 +229,8 @@ dataTable.clear();
 $.each(data, function (id, productos) {
 
   var boton1 ='<button class="btn btn-editar" data-toggle="modal" data-target="#miModal" onclick="alertaEliminarEditar(\'editar\', ' + productos.idProveedores + ')"><i class="fa fa-edit"></i></button>';
+  var espacio = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
   var boton2 = '<button onclick="alertaEliminarEditar(\'eliminar\', ' + productos.idProveedores + ')" class="btn btn-eliminar" > <i class="fa fa-trash"></i></button>';
- 
   // Agrega la fila a la DataTable
   dataTable.row.add([
       productos.documento,
@@ -241,7 +238,7 @@ $.each(data, function (id, productos) {
       productos.email,
       productos.telefono,
       productos.direccion,
-      boton1 + boton2
+      boton1 + espacio + boton2
   ]).draw();
 
   // console.log(productos.id + ' ' + productos.nombreProducto + ' ' + productos.idCategoria + ' ' +

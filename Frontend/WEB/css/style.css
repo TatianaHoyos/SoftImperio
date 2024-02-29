@@ -1,7 +1,8 @@
 body{
-  background-image: linear-gradient(to top, #051937, #2a1429, #30171b, #2b1e16, #25231c);
+  /* background-image: linear-gradient(to top, #051937, #2a1429, #30171b, #2b1e16, #25231c); */
   /* background: rgb(174,146,67);
   background: radial-gradient(circle, rgba(174,146,67,1) 0%, rgba(9,9,9,1) 100%); */
+  background-color: #1e1d1d;
   font-family:"Baskerville", serif;
 } 
 
@@ -64,35 +65,7 @@ body{
       padding: 5px;
       border-radius: 10px;
     }
-    .nav-link i {
-      margin-right: 7px; /* Espaciado entre el ícono y el texto del enlace */
 
-    }
-
-    .nav-item {
-      margin-right: 20px; /* Espaciado entre elementos del menú */
-
-    }
-    .nav-item.menu-item .nav-link {
-      font-size: 16px;
-      color: #959292; /* Un tono de gris oscuro */
-      text-decoration: none;
-      padding: 5px;
-      border-radius: 10px;
-      transition: background-color 0.3s ease;
-      font-family: "Baskerville", serif;
-  }
-  
-  /* Estilo para el estado activo del enlace */
-  .navbar-nav .nav-item.menu-item .nav-link.active {
-    background-color: #090909; /* Color de fondo para el estado activo */
-    color: #fff; /* Color del texto en estado activo */
-  }
-
-.nav-link:hover {
-  color: #e2c651 !important;
-
-}
     /* Estilos para el contenedor del usuario */
     .user-container {
       display: flex;
@@ -183,16 +156,6 @@ body{
 .btn-secondary{
   background-color: #ae9243;
   color: #090909;
-}
-/* .card{
-  background-color: #09090995 !important;
-  color: #fff;
-}
-
-
-.card-header{
-  background-color: #262525 !important;
-  color: #fff;
 }
 
 /* estilos para ventanas modales */
@@ -416,16 +379,23 @@ background-color:white;
 
 /* dashboard */
 .card {
-  border: 1px solid #495057;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-  color: #ffffff;
-  margin-bottom: 20px;
+  border: 1px solid #ae9243;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);;
 }
 
 .card-body {
-  padding: 20px;
   background-color: #090909;
+}
+
+.card1 {
+  border: 1px solid #090909;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.846);;
+  margin-bottom: 15px;
+}
+.card-body1 {
+  padding: 15px;
+  background-color: #ae9243;
 
 }
 
@@ -436,15 +406,18 @@ background-color:white;
 .info-box i {
   font-size: 36px;
   margin-bottom: 10px;
+  color: #090909;
+
 }
 
 .info-box h6 {
-  color: #6c757d;
+  /* color: #6c757d; */
   margin-bottom: 5px;
 }
 
 .info-box h3 {
-  color: #ffffff;
+  color: #090909;
+  font-weight: bold; /* Agrega negrita al texto */
 }
 #myChartVentas,
 #myChartCompras {

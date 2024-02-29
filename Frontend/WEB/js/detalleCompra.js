@@ -50,8 +50,9 @@ $(document).ready(function () {
       miTabla.clear();
       // Itera a través de los datos y agrégalos a la tabla
       $.each(data, function (index, item) {
-        var acciones = '<div class="btn-group" role="group">';
+        var acciones = '';
         acciones += '<button class="btn btn-editar" onclick="editDetail(' + item.idDetalleCompra + ')"><i class="fas fa-edit"></i></button>';
+        acciones += '&nbsp;&nbsp;&nbsp;&nbsp'; // Agrega un espacio en blanco
         acciones += '<button class="btn btn-eliminar" onclick="deleteDetail(' + item.idDetalleCompra + ')"><i class="fas fa-trash"></i></button>';
         acciones += '</div>';
 
@@ -165,7 +166,6 @@ function createButton(action, id) {
           text: 'La variable aún no tiene un valor asignado.',
           icon:"warning",
           showCancelButton: false,
-          confirmButtonColor: ' #d5c429 ',
           confirmButtonText: 'Confirmar',
       }).then((result) => {
          
@@ -319,7 +319,6 @@ function updateDetalleCompra(){
               text: error.message,
               icon:"warning",
               showCancelButton: false,
-              confirmButtonColor: ' #d5c429 ',
               confirmButtonText: 'Confirmar',
           }).then((result) => {
              
@@ -394,7 +393,6 @@ function onErrorProductosList(error) {
     text: error.message,
     icon:"warning",
     showCancelButton: false,
-    confirmButtonColor: ' #d5c429 ',
     confirmButtonText: 'Confirmar',
 }).then((result) => {
    
@@ -426,7 +424,6 @@ function onErrorProveedorList(error) {
     text: error.message,
     icon:"warning",
     showCancelButton: false,
-    confirmButtonColor: ' #d5c429 ',
     confirmButtonText: 'Confirmar',
 }).then((result) => {
    

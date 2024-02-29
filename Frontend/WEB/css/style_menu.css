@@ -10,8 +10,6 @@
   align-items: center;
 }
 
-
-
 .side-nav li {
   display: flex; /* Utilizar flexbox */
   align-items: center; /* Centrar verticalmente */
@@ -81,14 +79,13 @@
   cursor: pointer;
   border-radius: 50%; /* Hace que la imagen sea redonda */
   object-fit: cover; /* Ajusta el tamaño de la imagen manteniendo su relación de aspecto y recortándola según sea necesario */
-  border: 2px solid #ae9243; /* Añade un borde blanco opcional */
+  border: 2px solid #ae9243;
 
 }
 #imgUsuario {
   display: flex;
   align-items: center;
 }
-
 
 .sub-item {
   width: 100%;
@@ -177,6 +174,8 @@ display: none;
       position: fixed;
       top: 0;
       left: 0;
+      /* background: rgb(174,146,67);
+      background: radial-gradient(circle, rgba(174,146,67,1) 0%, rgba(9,9,9,1) 100%);  */
       background-color: #090909;
 
       padding-top: 20px;
@@ -193,31 +192,47 @@ display: none;
       max-width: 80%; /* Ajusta el tamaño del logo */
     }
 
+    .nav-link i {
+      margin-right: 7px; /* Espaciado entre el ícono y el texto del enlace */
+      color: #959292; /* Color predeterminado del ícono */
+      transition: color 0.3s ease;
+    }
+    .nav-link:hover i {
+      color: #ae9243; /* Cambia el color del ícono al pasar el ratón */
+    }
+
     .nav-link {
       font-size: 16px;
-      color: #959292; /* Color del texto del menú */
+      /* color: #090909; Color del texto del menú */
       text-decoration: none;
       transition: color 0.3s ease;
       display: flex;
       align-items: center;
     }
-    .nav-link:hover {
-      color: #ae9243; /* Cambia el color al pasar el ratón */
-    }
 
-    .menu-item.active {
-      background-color: #ae4343; /* Color de fondo cuando está activo */
-    }
+    .nav-item {
+      margin-right: 20px; /* Espaciado entre elementos del menú */
 
-    .nav-link i {
-      color: #959292; /* Color predeterminado del ícono */
-      transition: color 0.3s ease;
+    }
+    .nav-item.menu-item .nav-link {
+      font-size: 16px;
+      color: #959292; /* Un tono de gris oscuro */
+      text-decoration: none;
+      padding: 5px;
+      border-radius: 10px;
+      transition: background-color 0.3s ease;
+      font-family: "Baskerville", serif;
     }
     
-    .nav-link:hover i {
-        color: #ae9243; /* Cambia el color del ícono al pasar el ratón */
+    /* Estilo para el estado activo del enlace */
+    .navbar-nav .nav-item.menu-item .nav-link.active {
+      background-color: #090909; /* Color de fondo para el estado activo */
+      color: #fff; /* Color del texto en estado activo */
     }
-  
+
+    .nav-link:hover {
+      color: #e2c651 !important;
+    }
 
     /*logo pequeño navbar*/
     .navbar {
