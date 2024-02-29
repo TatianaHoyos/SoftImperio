@@ -1,45 +1,34 @@
 /* Estilo para el wrapper de DataTables */
 .dataTables_wrapper  {
     background-color: #090909;
-    color: #959292;
+    color: #090909;
     border-radius: 15px; /* Ajusta el valor según tus preferencias */
     overflow: hidden; /* Asegura que las esquinas redondeadas se muestren correctamente */
-    padding: 20px; /* Ajusta el espacio interior según tus preferencias */
-    box-shadow: 0 0 30px rgba(11, 11, 11, 0.973); /* Borde con sombra en todos los lados */
+    padding: 15px; /* Ajusta el espacio interior según tus preferencias */
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.973); /* Borde con sombra en todos los lados */
     position: relative;
 
 }
 
 /* Estilo para el texto en DataTables */
 .table {
-    color: #959292;
-    border-radius: 15px; /* Ajusta el valor según tus preferencias */
-    overflow: hidden; /* Asegura que las esquinas redondeadas se muestren correctamente */
+    border-radius: 10px;
+    overflow: hidden;
 }
 
 .table thead th {
-    border: 1px solid #1e1d1d;
-    padding: 10px; /* Ajusta según tus preferencias */
+    background-color: #ae9243;
+    border: 1px solid #ae9243;
+    padding: 15px; /* Ajusta según tus preferencias */
     font-weight: bold;
-}
-
-/* Cambiar el color de fondo de las cabeceras al pasar el mouse */
-.table thead th:hover {
-    background-color: #333;
-}
-
-/* Estilo para el encabezado al hacer clic */
-.table thead th.sorting_asc,
-.table thead th.sorting_desc {
-    background-color: #333;
-    color: #fff;
+    color: #090909;
 }
 
 /* Estilo para las celdas de la tabla */
 .table tbody td {
     color: #959292;
     border: none;
-    border-bottom: 3px solid #090909; /* Color de las líneas entre las celdas */
+    border-bottom: 2px solid #ae9243; /* Color de las líneas entre las celdas */
     font-size: 16px; /* Tamaño de letra en las celdas */
     cursor: pointer;
     text-align: center; /* Centra verticalmente el contenido */
@@ -47,30 +36,38 @@
 
 /* Estilo para las filas impares */
 .table tbody tr:nth-child(odd) {
-    background-color:#1e1d1d;
+    background-color:#090909;
 }
 
 /* Estilo para las filas pares 2d2d2d*/
 .table tbody tr:nth-child(even) {
-    background-color:#1e1d1d;
+    background-color:#090909;
 }
 
 /* Agregar un sombreado sutil a las filas al pasar el mouse */
 .table tbody tr:hover {
-    background-color: #3d3d3e ;
+    background-color: #202020 ;
 }
 
 /* Estilo para los botones de DataTables */
 .table tbody .btn-editar,
 .table tbody .btn-eliminar {
-    /* background-color: #090909; Color de fondo para los botones Editar y Eliminar */
-    color: #959292; /* Color del texto */
-    cursor: pointer;
+    width: 30px; /* Establece un ancho fijo */
+    height: 30px; /* Establece una altura fija */
+    background-color: #959292; /* Color de fondo para los botones Editar y Eliminar */
+    color: #090909; /* Color del texto */
+    border-radius: 50%; /* Agrega bordes redondeados para formar un círculo */
+    padding: 8px; /* Ajusta el relleno según sea necesario */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: flex;
 }
+
 /* Cambiar el color de fondo de los botones al pasar el mouse*/
 .table tbody .btn-editar:hover,
 .table tbody .btn-eliminar:hover {
-    color: #ae9243;
+    background-color: #ae9243;
 }
 /* Estilos para los botones en el pie de página de DataTables */
 .dataTables_wrapper .dataTables_paginate .paginate_button {
@@ -84,17 +81,17 @@
     cursor: pointer;
     border: 1px solid #ae9243;  /* Cambiar el color del borde a un tono más oscuro */
     border-radius: 4px;
-    color: #959292;
+    color: #ae9243;
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-    background-color: #090909;  /* Cambiar el color de fondo al pasar el ratón a un azul más claro */
-    color: #e2c651;
+    background-color: #ae9243;
+    color: #090909;
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button.current {
     background-color: #ae9243;
-    color: #000;
+    color: #090909;
 }
 
 /* Estilos para el botón de "Mostrar X registros" */
@@ -103,21 +100,18 @@
     border-radius: 4px;
     padding: 0.25em 0.5em;
     height: 100%;
-    background-color: #0a0a0bda;
+    background-color: #090909;
     color: #959292;
 }
 /* Cambiar el color del borde al pasar el mouse */
 .dataTables_wrapper .dataTables_length select:hover {
     border-color: #e2c651;
 }
-.dataTables_wrapper .dataTables_length select:hover {
-    background-color: #000000;
-}
 
 /* Centra los botones en el pie de página */
 .dataTables_wrapper .dataTables_paginate {
     text-align: center;
-    margin-top: 10px;  /* Ajusta el margen superior para separar de la tabla */
+    margin-top: 0px;  /* Ajusta el margen superior para separar de la tabla */
 }
 
 /* Añade las flechas sin fondo */
@@ -140,36 +134,26 @@
     position: relative;
     display: flex;
     align-items: center;
-    justify-content: flex-end; /* Alinea al final del contenedor (derecha) */
+    justify-content: flex-end;
 }
 
 .dataTables_filter input {
     width: 200px; /* Ancho personalizado */
     padding: 3px; /* Espaciado interno */
-    border: 1px solid #ae9243; /* Borde gris claro */
+    border: 1px solid #ae9243;
     border-radius: 20px; /* Bordes redondeados */
-    background-color: #0a0a0bda;
+    background-color: #090909;
     color: #959292; /* Color del texto en el input */
     margin-left: 10px; /* Margen a la izquierda */
     font-size: 14px; /* Tamaño de fuente */
     outline: none; /* Eliminar el contorno al hacer clic */
 }
 
-/* Cambia el color de fondo al seleccionar el cuadro de búsqueda */
-.dataTables_filter input:active,
-.dataTables_filter input:focus {
-    background-color: #000000; /* cuando el cuadro está activo o enfocado */
-}
-/* Cambia el color de fondo al pasar el mouse por el cuadro de búsqueda */
-.dataTables_filter input:hover {
-    background-color: #090909; /* Amarillo al pasar el mouse */
-}
-
 .dataTables_filter label::before {
     font-family: 'Font Awesome 5 Free';
-    content: '\f002'; /* Código del icono de búsqueda en Font Awesome */
-    color: #ae9243; /* Color del icono */
-    margin-right: 5px; /* Espacio entre el ícono y el texto (si lo hay) */
+    content: '\f002';
+    color: #ae9243;
+    margin-right: 5px;
 }
 
 /* Cambiar el color del ícono de búsqueda al pasar el ratón */
