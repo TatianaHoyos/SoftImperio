@@ -13,6 +13,8 @@ $(document).ready(function () {
   var miTabla = $('#miTabla').DataTable({
     // ... otras opciones ...
     dom: '<"row"<"col-md-6"l><"col-md-6"f>>tip',
+    pageLength: 5,
+    lengthMenu: [5, 10, 25, 50],
     language: {
       "sProcessing": "Procesando...",
       "sLengthMenu": "Mostrar _MENU_ registros",

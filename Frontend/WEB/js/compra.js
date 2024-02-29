@@ -246,15 +246,15 @@ $(document).ready(function() {
     success: function(data) {
       // Verificar si hay datos en la respuesta
       if (data && data.length > 0) {
-        // Agregar los datos directamente al tbody
+       /* // Agregar los datos directamente al tbody
         const tableBody = $('#tbody_compras');
         data.forEach(function(item) {
           const row = createTableRow(item);
           tableBody.append(row);
-        });
+        });*/
 
         // Inicializar DataTables después de agregar los datos
-        iniciarDataTables();
+        iniciarDataTables(data);
       } else {
         Swal.fire({
           title: 'Error',
@@ -286,7 +286,7 @@ $(document).ready(function() {
 
   // Inicializar DataTables directamente después de la carga de la página
   function iniciarDataTables(data) {
- 
+ /*
     $('#miTabla').DataTable({
       dom: '<"row"<"col-md-6"l><"col-md-6"f>>tip',
       data: data,
@@ -314,7 +314,13 @@ $(document).ready(function() {
           visible: false
         }
       ],
-      rowId: 'idCompra',
+      rowId: 'idCompra', */
+      var dataTable = $('#miTabla').DataTable({
+        dom: '<"row"<"col-md-6"l><"col-md-6"f>>tip',
+        pageLength: 5,
+        lengthMenu: [5, 10, 25, 50],
+  
+        rowId: 'idCompra',
       language: { /*language, parametro adicional para cambiar los texto del datatable */
         "sProcessing": "Procesando...",
         "sLengthMenu": "Mostrar _MENU_ registros",
@@ -338,7 +344,31 @@ $(document).ready(function() {
           "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
           "sSortDescending": ": Activar para ordenar la columna de manera descendente"
         }
-      }
+      },
     });
+  
+      // Seleccionar el elemento de búsqueda
+      var inputSearch = $('#miTabla_filter input');
+      inputSearch.removeAttr('form-control'); // Asegurarse de que el input tenga la clase form-control
+      inputSearch.removeAttr('placeholder'); // Quitar el atributo placeholder si existe
+    
+      dataTable.clear();
+    
+      console.log("q hay aqui?", data);
+      $.each(data, function (id, proveedor) {
+    
+        var boton1 ='<button class="btn btn-editar" data-toggle="modal" data-target="#miModal" onclick="habilitarVistaDetalle(' + proveedor.idCompra + ')"><i class="fa fa-edit"></i></button>';
+        var espacio = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+        var boton2 = '<button onclick="deleteCompra( ' + proveedor.idCompra + ')" class="btn btn-eliminar" > <i class="fa fa-trash"></i></button>';
+        // Agrega la fila a la DataTable
+        dataTable.row.add([
+            proveedor.idCompra,
+            proveedor.fechaCompra,
+            proveedor.totalCompra,
+            boton1 + espacio + boton2
+        ]).draw();
+  
+      });
+    }
   }
-});
+  );
