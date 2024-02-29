@@ -283,7 +283,7 @@ function callApiEliminarProducto(Producto,token){
         },
         error: function (xhr, status, error) {
             // Manejar los errores de la solicitud AJAX
-            Swal.fire('Error', error.responseJSON.message, 'error');
+            Swal.fire('Error', xhr.responseJSON.message, 'error');
         }
     });
 }

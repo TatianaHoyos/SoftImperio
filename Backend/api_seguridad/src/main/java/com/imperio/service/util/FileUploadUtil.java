@@ -26,4 +26,16 @@ public class FileUploadUtil {
             throw new IOException("No se pudo guardar la imagen: " + fileName, ioe);
         }
     }
+
+    public static void deleteFile(String filePath) throws IOException {
+        Path path = Paths.get(filePath);
+        Files.deleteIfExists(path);
+    }
+
+    public static void renameFile(String currentFilePath, String newFileName) throws IOException {
+        Path currentPath = Paths.get(currentFilePath);
+        Path newPath = currentPath.resolveSibling(newFileName);
+
+        Files.move(currentPath, newPath, StandardCopyOption.REPLACE_EXISTING);
+    }
 }

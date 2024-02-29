@@ -11,6 +11,7 @@ import com.imperio.service.repository.ExistenciasService;
 import com.imperio.service.repository.ProductoService;
 import com.imperio.service.util.FileUploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -89,10 +90,39 @@ public class ControllerProducto {
 
     @DeleteMapping("api/producto/eliminar/{id}")
     public ResponseEntity<?> deleteProducto(@PathVariable("id") Integer id){
+        var existenciaDB = new ExistenciasEntity();
         try {
-            productoService.eliminarProductos(id);
-            return ResponseEntity.ok(new Response("exito", "se elimino el producto con exito"));
-        }catch (Exception e) {
+            var productoDb = productoService.obtenerProductoPorId(id);
+            if (productoDb.isPresent()) {
+                existenciaDB = existenciasService.encontrarExistenciaPorProducto(productoDb.get());
+                if (existenciaDB.getCantidad() == 0) {
+                    var filePicture = existenciaDB.getProductos().getFotoProducto();
+                    existenciasService.eliminarExistenciaYProducto(existenciaDB);
+                    FileUploadUtil.deleteFile(filePicture);
+                    return ResponseEntity.ok(new Response("exito", "se elimino el producto con exito"));
+                } else {
+                    return ResponseEntity.status(HttpStatus.FAILED_DEPENDENCY)
+                            .body(new Response("error", "No se puede eliminar el producto ya que tiene candidades en existencias"));
+                }
+            } else {
+                return ResponseEntity.status(HttpStatus.FAILED_DEPENDENCY)
+                        .body(new Response("error", "No fue posible eliminar el producto"));
+            }
+
+        }
+        catch (DataIntegrityViolationException e) {
+            existenciaDB.setEstado("Inactivo");
+            var existenciaUpdated = existenciasService.crearExistencia(existenciaDB);
+            if (existenciaUpdated != null) {
+                return ResponseEntity.status(HttpStatus.OK)
+                        .body(new Response("error", "No es posible eliminar el producto, pero su estado se cambio a inactivo"));
+            } else {
+                return ResponseEntity.status(HttpStatus.FAILED_DEPENDENCY)
+                        .body(new Response("error", "No es posible eliminar el producto, debido a que hay una compra relacionada a existencia"));
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new Response("error", "Ha ocurrido un error al intentar eliminar el producto"));
         }
@@ -104,29 +134,45 @@ public class ControllerProducto {
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> updateProductos(ProductoRequest producto,
                                              @PathVariable("id") Integer id,
-                                             @RequestParam("foto") MultipartFile multipartFile) throws Exception {
+                                             @RequestParam(name = "foto", required = false) MultipartFile multipartFile) throws Exception {
 
         try {
             var productoDuplicado = productoService.obtenerProductoDuplicado(producto.getNombreProducto(),
                     producto.getReferenciaProducto());
-            if (productoDuplicado != null && !productoDuplicado.isEmpty()) {
+            if (productoDuplicado != null && !productoDuplicado.isEmpty() && productoDuplicado.get(0).getIdProductos() != id) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                         .body(new Response("error", "Ya existe un producto igual"));
             }
-            String uploadDir = "producto-photos/";
-            String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-            fileName = producto.getNombreProducto()  +"-"+ producto.getReferenciaProducto().concat(fileName);
+
+            var productoDB = productoService.obtenerProductoPorId(id);
+
+            if (productoDB.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.FAILED_DEPENDENCY)
+                        .body(new Response("error", "Error al actualizar el producto, No se cuentra nigún producto con ese id"));
+            }
 
             var productoEntity = new ProductoEntity();
+            if (multipartFile != null && !multipartFile.isEmpty()) {
+                String uploadDir = "producto-photos/";
+                String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+                fileName = producto.getNombreProducto()  +"-"+ producto.getReferenciaProducto().concat(fileName);
+                productoEntity.setFotoProducto(uploadDir + fileName);
+
+                FileUploadUtil.deleteFile(productoDB.get().getFotoProducto());
+                FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+            } else {
+                // La imagen no llego para ser actualizada
+                productoEntity.setFotoProducto(productoDB.get().getFotoProducto());
+            }
+
             productoEntity.setIdProductos(id);
             productoEntity.setIdCategoria (producto.getIdCategoria());
             productoEntity.setNombreProducto(producto.getNombreProducto());
             productoEntity.setPrecioProducto(producto.getPrecioProducto());
-            productoEntity.setFotoProducto(uploadDir + fileName);
             productoEntity.setReferenciaProducto(producto.getReferenciaProducto());
 
             var productodb = productoService.crearProducto(productoEntity);
-            FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+
 
             if (productodb == null) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
