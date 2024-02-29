@@ -14,9 +14,6 @@ public class ExistenciasEntity {
     @Column(name = "IdExistencias")
     private Integer idExistencias ;
 
-  //  @Column(nullable = false, name = "IdProductos")
-    //private Integer idProductos;
-
     @Column(nullable = false, name = "Stock")
     private Integer stock;
 
