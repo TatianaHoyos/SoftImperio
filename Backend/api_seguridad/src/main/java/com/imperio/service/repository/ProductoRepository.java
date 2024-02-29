@@ -19,5 +19,5 @@ public interface ProductoRepository extends JpaRepository<ProductoEntity,Integer
             "FROM ProductoEntity p LEFT JOIN ExistenciasEntity e ON p.idProductos = e.productos.idProductos")
     List<ProductoResponse> obtenerProductosConExistencias();
 
-
+    List<ProductoEntity> findByNombreProductoAndReferenciaProducto(String nombreProducto, String referenciaProducto);
 }

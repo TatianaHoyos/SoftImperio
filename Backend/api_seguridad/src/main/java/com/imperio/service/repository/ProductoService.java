@@ -23,6 +23,11 @@ public class ProductoService {
 
     }
 
+    public List<ProductoEntity> obtenerProductoDuplicado(String nombre, String referencia){
+        return  productoRepository.findByNombreProductoAndReferenciaProducto(nombre, referencia);
+
+    }
+
     public List<ProductoEntity> obtenerProductos(){
         return productoRepository.findAll();
     }

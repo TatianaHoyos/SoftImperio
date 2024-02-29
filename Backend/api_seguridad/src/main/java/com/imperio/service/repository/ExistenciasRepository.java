@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ExistenciasRepository extends JpaRepository<ExistenciasEntity,Integer> {
+    ExistenciasEntity findByProductos(ProductoEntity producto);
 }
