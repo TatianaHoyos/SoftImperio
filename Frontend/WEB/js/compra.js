@@ -298,7 +298,7 @@ $(document).ready(function() {
         {
           data: null,
           render: function(data, type, row) {
-            return '<button class="btn btn-editar" data-toggle="modal" data-target="#miModal" onclick="habilitarVistaDetalle( ' + row.idCompra + ')"><i class="fa fa-edit"></i></button>';
+            return '<button class="btn btn-editar" data-toggle="modal" data-target="#miModal" onclick="habilitarVistaDetalle( ' + row.idCompra + ')"><i class="fa fa-eye"></i></button>';
           }
         },
         {
