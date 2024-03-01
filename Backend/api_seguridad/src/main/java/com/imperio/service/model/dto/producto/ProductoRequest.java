@@ -12,6 +12,6 @@ public class ProductoRequest {
    private String nombreProducto ;
    private String referenciaProducto;
    private float precioProducto;
-
+   private int stockMinimo;
 }
 

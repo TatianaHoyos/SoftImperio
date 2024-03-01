@@ -1,3 +1,4 @@
+
 function addCompra() {
     //window.location.href = 'comprasDetail.html';
 
@@ -11,6 +12,7 @@ function addCompra() {
         //window.location.reload();
       },
       error: function(error) {
+        // Manejar el error
         Swal.fire({
           title: 'Error',
           text: error.responseJSON.message,
@@ -26,14 +28,14 @@ function addCompra() {
   }
 
   function deleteCompra(idCompra) {
+   
     // Display a confirmation dialog using SweetAlert
     Swal.fire({
       title: 'Confirma Eliminación',
       text: 'Estás seguro de eliminar esta Compra?',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
+      confirmButtonColor: '#ae9243',
       cancelButtonText: 'Cancelar',
       confirmButtonText: 'Sí, eliminar!'
     }).then((result) => {
@@ -44,9 +46,13 @@ function addCompra() {
           url: `https://localhost:7084/api/Compra/${idCompra}`,
           contentType: 'application/json',
           success: function (response) {
+            // Procesar la respuesta exitosa
+          
             window.location.reload();
           },
           error: function (error) {
+            // Manejar el error
+           
             Swal.fire({
               title: 'Error',
               text: 'No es posible eliminar después de 24 horas.',
@@ -59,10 +65,11 @@ function addCompra() {
       } else {
         // User clicked "Cancel" or closed the dialog, do nothing
       }
-  });
+   });
 }
 
 function generarPDF(){
+
   $.ajax({
     type: "GET",
     url: "https://localhost:7084/api/Compra/GenerarPDF",
@@ -90,18 +97,37 @@ function generarPDF(){
           URL.revokeObjectURL(blobURL);
         }, 5000); // 5000 milisegundos (5 segundos) como ejemplo
       } else {
-        console.error(`Error en la respuesta del servidor. Código de estado: ${xhr.status}`);
+       
+        Swal.fire({
+          title: 'Error',
+          text: `Error en la respuesta del servidor. Código de estado: ${xhr.status}`,
+          icon:"warning",
+          showCancelButton: false,
+          confirmButtonColor: ' #d5c429 ',
+          confirmButtonText: 'Confirmar',
+      }).then((result) => {
+         
+      });
       }
     },
     error: function (error) {
       // Manejar el error
-      console.error("Error en la solicitud:", error);
+      Swal.fire({
+        title: 'Error',
+        text: 'Error en la respuesta',
+        icon:"warning",
+        showCancelButton: false,
+        confirmButtonColor: ' #d5c429 ',
+        confirmButtonText: 'Confirmar',
+    }).then((result) => {
+       
+    });
     }
   });
 }
 
   function habilitarVistaDetalle(idCompra){
-    const destinationURL = `http://127.0.0.1:5500/Frontend/WEB/comprasDetail.html?idCompra=${idCompra}`;
+    const destinationURL = `http://127.0.0.1:5500/comprasDetail.html?idCompra=${idCompra}`;
     window.location.href = destinationURL;
   }
 
@@ -157,6 +183,7 @@ function createButtonCell(action, buttonText, buttonClass, onClickHandler) {
 
 //función para eliminar o editar proveedor
 function alertaEliminarEditar(action,idProveedor) {
+
     if (action=="eliminar"){
         eliminarProveedor(idProveedor);
     }else if (action=="editar"){
@@ -175,6 +202,7 @@ function editarProveedor() {
         direccion: $("#direccionE").val(),
         email: $("#emailE").val()
       };
+  
 
 
   $.ajax({
@@ -183,6 +211,7 @@ function editarProveedor() {
     data: JSON.stringify(data),
     contentType: "application/json",
     success: function(response) {
+     
       Swal.fire({
         type: 'success',
         text: 'Registro actualizado',
@@ -195,6 +224,7 @@ function editarProveedor() {
       }, 1500);
     },
     error: function(error) {
+ 
       Swal.fire({
         type: 'error',
         text: "No se pudo actualizar registro",
@@ -214,27 +244,35 @@ $(document).ready(function() {
   $.ajax({
     url: 'https://localhost:7084/api/Compra',
     success: function(data) {
-
       // Verificar si hay datos en la respuesta
       if (data && data.length > 0) {
-
-        // Agregar los datos directamente al tbody
+       /* // Agregar los datos directamente al tbody
         const tableBody = $('#tbody_compras');
         data.forEach(function(item) {
           const row = createTableRow(item);
           tableBody.append(row);
-        });
+        });*/
 
         // Inicializar DataTables después de agregar los datos
-        iniciarDataTables();
+        iniciarDataTables(data);
       } else {
+        Swal.fire({
+          title: 'Error',
+          text: 'No hay datos en la respuesta',
+          icon:"warning",
+          showCancelButton: false,
+          confirmButtonColor: ' #d5c429 ',
+          confirmButtonText: 'Confirmar',
+      }).then((result) => {
+         
+      });
         //iniciarDataTables();
       }
     },
     error: function(xhr, error, thrown) {
       Swal.fire({
         title: 'Error',
-        text: xhr.responseText,
+        text: 'Respuesta de la API:'+ xhr.responseText,
         icon:"warning",
         showCancelButton: false,
         confirmButtonColor: ' #d5c429 ',
@@ -242,25 +280,25 @@ $(document).ready(function() {
     }).then((result) => {
        
     });
+   
     }
   });
 
   // Inicializar DataTables directamente después de la carga de la página
   function iniciarDataTables(data) {
+ /*
     $('#miTabla').DataTable({
       dom: '<"row"<"col-md-6"l><"col-md-6"f>>tip',
-      lengthMenu: [5, 10, 25, 50],
-      pageLength: 5,
       data: data,
       columns: [
-
-        { data: 'idCompra' },
+      
+         { data: 'idCompra' },
         { data: 'fechaCompra' },
         { data: 'totalCompra' },
         {
           data: null,
           render: function(data, type, row) {
-            return '<button class="btn btn-editar" data-toggle="modal" data-target="#miModal" onclick="habilitarVistaDetalle( ' + row.idCompra + ')"><i class="fa fa-edit"></i></button>';
+            return '<button class="btn btn-editar" data-toggle="modal" data-target="#miModal" onclick="habilitarVistaDetalle( ' + row.idCompra + ')"><i class="fa fa-eye"></i></button>';
           }
         },
         {
@@ -276,7 +314,13 @@ $(document).ready(function() {
           visible: false
         }
       ],
-      rowId: 'idCompra',
+      rowId: 'idCompra', */
+      var dataTable = $('#miTabla').DataTable({
+        dom: '<"row"<"col-md-6"l><"col-md-6"f>>tip',
+        pageLength: 5,
+        lengthMenu: [5, 10, 25, 50],
+  
+        rowId: 'idCompra',
       language: { /*language, parametro adicional para cambiar los texto del datatable */
         "sProcessing": "Procesando...",
         "sLengthMenu": "Mostrar _MENU_ registros",
@@ -300,7 +344,31 @@ $(document).ready(function() {
           "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
           "sSortDescending": ": Activar para ordenar la columna de manera descendente"
         }
-      }
+      },
     });
+  
+      // Seleccionar el elemento de búsqueda
+      var inputSearch = $('#miTabla_filter input');
+      inputSearch.removeAttr('form-control'); // Asegurarse de que el input tenga la clase form-control
+      inputSearch.removeAttr('placeholder'); // Quitar el atributo placeholder si existe
+    
+      dataTable.clear();
+    
+      console.log("q hay aqui?", data);
+      $.each(data, function (id, proveedor) {
+    
+        var boton1 ='<button class="btn btn-editar" data-toggle="modal" data-target="#miModal" onclick="habilitarVistaDetalle(' + proveedor.idCompra + ')"><i class="fa fa-edit"></i></button>';
+        var espacio = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+        var boton2 = '<button onclick="deleteCompra( ' + proveedor.idCompra + ')" class="btn btn-eliminar" > <i class="fa fa-trash"></i></button>';
+        // Agrega la fila a la DataTable
+        dataTable.row.add([
+            proveedor.idCompra,
+            proveedor.fechaCompra,
+            proveedor.totalCompra,
+            boton1 + espacio + boton2
+        ]).draw();
+  
+      });
+    }
   }
-});
+  );

@@ -22,7 +22,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div >
-                    <form id="formCrearProducto" method="" enctype="multipart/form-data" action="">
+                   <form id="formCrearProducto" enctype="multipart/form-data" onsubmit="return false;">
                         <h4 id="tituloFomularioProducto" class="mt-3  text-white  text-center"></h4>
                         <div class="form-row justify-content-center">
                             <div class="form-group col-md-6">
@@ -76,10 +76,24 @@
                                                 class="far fa-envelope"></i></span>
                                     </div>
                                     <input type="text" class="form-control" id="referencia" name="referenciaProducto"
-                                        placeholder="Referencia Producto" onkeypress="return validarNumero(event)">  
+                                        placeholder="Referencia Producto">  
                                     </div>
-                                
+                            </div>
+                        </div>
 
+                        <div class="form-row justify-content-center">
+                            <div class="form-group col-md-6">
+                                <label for="stockMinimo" class="text-white">
+                                    Stock minimo del Producto
+                                </label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i
+                                                class="far fa-envelope"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control" id="stockMinimo" name="stockMinimo"
+                                        placeholder="Stock minimo" onkeypress="return validarNumero(event)">  
+                                    </div>
                             </div>
                         </div>
 
@@ -124,8 +138,8 @@
                         </div>
 
                         <div class="form-group text-center mt-3">
-                            <input type="hidden" name="operacion" value="login">
-                            <button id="btn-form" type="button" class="col-md-3 btn">
+                            <!--<input type="hidden" name="operacion" value="login">-->
+                            <button id="btn-form"type="button" class="col-md-3 btn">
                                 <i class="fas fa-save"></i><strong>Guardar</strong>
                             </button>
 
@@ -154,6 +168,7 @@
                             <th>Categoria </th>
                             <th>Nombre</th>
                             <th>Referencia </th>
+                            <th>Stock</th>
                             <th>Cantidad</th>
                             <th>Precio</th>
                             <th>Acciones</th>
@@ -172,16 +187,17 @@
 
     </div>
     <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+   <!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="js/productos.js"></script>
 <script src="js/oAuthJwt.js"></script>
 <script src="js/validaciones.js"></script>
 <script src="js/mostrarFoto.js"></script>
 
-    <script>
+ <script>
         $(document).ready(function () {
             $("#menu-container").load("menu.html");
         });

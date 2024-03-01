@@ -16,8 +16,10 @@ public interface ProductoRepository extends JpaRepository<ProductoEntity,Integer
     @Query("SELECT new com.imperio.service.model.dto.producto.ProductoResponse(p.idProductos, p.idCategoria, p.nombreProducto, " +
             "p.fotoProducto, p.precioProducto, p.referenciaProducto, " +
             "new com.imperio.service.model.dto.existencias.ExistenciaDto(e.idExistencias, e.stock, e.cantidad, e.estado)) " +
-            "FROM ProductoEntity p LEFT JOIN ExistenciasEntity e ON p.idProductos = e.productos.idProductos")
+            "FROM ProductoEntity p LEFT JOIN ExistenciasEntity e ON p.idProductos = e.productos.idProductos " +
+            "WHERE e.estado = 'Activo'")
     List<ProductoResponse> obtenerProductosConExistencias();
 
+    List<ProductoEntity> findByNombreProductoAndReferenciaProducto(String nombreProducto, String referenciaProducto);
 
 }

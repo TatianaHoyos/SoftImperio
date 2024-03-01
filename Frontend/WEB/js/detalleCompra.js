@@ -13,6 +13,8 @@ $(document).ready(function () {
   var miTabla = $('#miTabla').DataTable({
     // ... otras opciones ...
     dom: '<"row"<"col-md-6"l><"col-md-6"f>>tip',
+    pageLength: 5,
+    lengthMenu: [5, 10, 25, 50],
     language: {
       "sProcessing": "Procesando...",
       "sLengthMenu": "Mostrar _MENU_ registros",
@@ -50,8 +52,9 @@ $(document).ready(function () {
       miTabla.clear();
       // Itera a través de los datos y agrégalos a la tabla
       $.each(data, function (index, item) {
-        var acciones = '<div class="btn-group" role="group">';
+        var acciones = '';
         acciones += '<button class="btn btn-editar" onclick="editDetail(' + item.idDetalleCompra + ')"><i class="fas fa-edit"></i></button>';
+        acciones += '&nbsp;&nbsp;&nbsp;&nbsp'; // Agrega un espacio en blanco
         acciones += '<button class="btn btn-eliminar" onclick="deleteDetail(' + item.idDetalleCompra + ')"><i class="fas fa-trash"></i></button>';
         acciones += '</div>';
 
@@ -84,7 +87,7 @@ function handleAPIError(error) {
 
 // Función para redirigir a la página de compras
 function redirectToComprasPage() {
-  const destinationURL = 'http://127.0.0.1:5500/Frontend/WEB/compras.html';
+  const destinationURL = 'http://127.0.0.1:5500/compras.html';
   window.location.href = destinationURL;
 }
 
@@ -104,8 +107,7 @@ function createButton(action, id) {
       text: 'Estas seguro de eliminar este detalle de la compra?',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
+      confirmButtonColor: '#ae9243',
       cancelButtonText: 'Cancelar',
       confirmButtonText: 'Si, eliminar!'
     }).then((result) => {
@@ -166,7 +168,6 @@ function createButton(action, id) {
           text: 'La variable aún no tiene un valor asignado.',
           icon:"warning",
           showCancelButton: false,
-          confirmButtonColor: ' #d5c429 ',
           confirmButtonText: 'Confirmar',
       }).then((result) => {
          
@@ -194,10 +195,10 @@ function nuevoDetalleCompra(){
     const idCompra = urlParams.get('idCompra');
     //console.log("nuevo detalle "+urlParams.get('idCompra'));
     if (idCompra != null) {
-        const destinationURL = `http://127.0.0.1:5500/Frontend/nuevaCompra.html?idCompra=${idCompra}`;
+        const destinationURL = `http://127.0.0.1:5500/nuevaCompra.html?idCompra=${idCompra}`;
         window.location.href = destinationURL;
     }else{
-      const destinationURL = `http://127.0.0.1:5500/Frontend/WEB/compras.html`;
+      const destinationURL = `http://127.0.0.1:5500/compras.html`;
       window.location.href = destinationURL;
     }
 
@@ -268,7 +269,7 @@ function crearDetalleCompra(){
         }
         });
     }else{
-        const destinationURL = `http://127.0.0.1:5500/Frontend/WEB/compras.html`;
+        const destinationURL = `http://127.0.0.1:5500/compras.html`;
         window.location.href = destinationURL;
     }
 }
@@ -320,7 +321,6 @@ function updateDetalleCompra(){
               text: error.message,
               icon:"warning",
               showCancelButton: false,
-              confirmButtonColor: ' #d5c429 ',
               confirmButtonText: 'Confirmar',
           }).then((result) => {
              
@@ -328,7 +328,7 @@ function updateDetalleCompra(){
         }
         });
     }else{
-        const destinationURL = `http://127.0.0.1:5500/Frontend/WEB/compras.html`;
+        const destinationURL = `http://127.0.0.1:5500/compras.html`;
         window.location.href = destinationURL;
     }
 }
@@ -339,8 +339,7 @@ function confirmarYGuardarDetalleCliente() {
     text: '¿Estás seguro de que deseas guardar los cambios?',
     icon: 'question',
     showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
+    confirmButtonColor: '#ae9243',
     cancelButtonText: 'Cancelar',
     confirmButtonText: 'Sí, guardar'
   }).then((result) => {
@@ -396,7 +395,6 @@ function onErrorProductosList(error) {
     text: error.message,
     icon:"warning",
     showCancelButton: false,
-    confirmButtonColor: ' #d5c429 ',
     confirmButtonText: 'Confirmar',
 }).then((result) => {
    
@@ -428,7 +426,6 @@ function onErrorProveedorList(error) {
     text: error.message,
     icon:"warning",
     showCancelButton: false,
-    confirmButtonColor: ' #d5c429 ',
     confirmButtonText: 'Confirmar',
 }).then((result) => {
    
