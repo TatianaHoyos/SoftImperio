@@ -23,6 +23,8 @@ namespace venta.Data
         public DbSet<Productos> Productos { get; set; }
         public DbSet<DetalleVenta> DetalleVenta { get; set; }
         public DbSet<Creditos> creditos { get; set; }
+        public DbSet<AbonoCredito> AbonoCreditos { get; set; }
+
         public DbSet<DetalleCompraResults> DetalleCompraResult { get; set; }
         public DbSet<ProductosExistenciaSPResult> ProductosExistenciaSPResult { get; set; }
 
@@ -38,6 +40,9 @@ namespace venta.Data
                 .Property(e => e.Fecha)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP");
             // Otros ajustes de configuración si los tienes
+            modelBuilder.Entity<AbonoCredito>()
+                .Property(e => e.FechaAbono)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             base.OnModelCreating(modelBuilder);
         }
