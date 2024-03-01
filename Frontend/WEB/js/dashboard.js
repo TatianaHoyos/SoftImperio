@@ -120,6 +120,9 @@ async function obtenerCreditosUltimoMes(token) {
 
             document.getElementById('creditosTotales').innerHTML = totalCreditoFormateado;
         } else {
+            const totalCreditoFormateado = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(0);
+
+            document.getElementById('creditosTotales').innerHTML = totalCreditoFormateado;
             console.warn('La respuesta de la API no contiene los datos esperados para los créditos del último mes.');
         }
     } catch (error) {
@@ -238,10 +241,10 @@ function obtenerDatosCompletos(datos) {
 }
 
 // Función para mostrar el gráfico de Ventas y Compras combinadas
-async function mostrarGraficoVentasYCompras() {
+async function mostrarGraficoVentasYCompras(token) {
     try {
-        const datosGraficoVentas = await handleAjaxRequest(obtenerDatosGraficoVentas);
-        const datosGraficoCompras = await handleAjaxRequest(obtenerDatosGraficoCompras);
+        const datosGraficoVentas = await obtenerDatosGraficoVentas(token);
+        const datosGraficoCompras = await obtenerDatosGraficoCompras(token);
 
         if (datosGraficoVentas && datosGraficoVentas.length > 0 && datosGraficoCompras && datosGraficoCompras.length > 0) {
             const datosPorMesVentas = obtenerDatosCompletos(datosGraficoVentas);
@@ -391,6 +394,6 @@ window.onload = function () {
     
     handleAjaxRequest(obtenerComprasUltimoMes);
     handleAjaxRequest(obtenerCreditosUltimoMes);
-    mostrarGraficoVentasYCompras();
+    handleAjaxRequest(mostrarGraficoVentasYCompras);
     handleAjaxRequest(obtenerDatosGraficoProductos);
 };
