@@ -1,16 +1,16 @@
 $(document).ready(function () {
     $("#resultadoCrear").hide();
-    consultarUsuarios();
-    consultarRoles();
-    consultarRolesL();
+    handleAjaxRequest(consultarUsuarios);
+    handleAjaxRequest(consultarRoles);
     buscarUsuarioTabla();
 });
 
-function consultarUsuarios() {
+function consultarUsuarios(token) {
     $.ajax({
         type: "GET",
-        url: "http://localhost:8080/api/usuarios/consultar",
+        url: "http://localhost:8081/edge-service/v1/service/usuario/consultar",
         "headers": {
+            'Authorization': `Bearer ${token}`,
             "Content-Type": "application/json"
           },
         success: onExitoUsuarios,
@@ -18,21 +18,26 @@ function consultarUsuarios() {
     });
 }
 function onErrorUsuarios(error) {
-    console.log(error)
+    Swal.fire({
+        title: 'Error',
+        text: error.responseJSON.message,
+        icon:"warning",
+        showCancelButton: false,
+        confirmButtonColor: ' #d5c429 ',
+        confirmButtonText: 'Confirmar',
+    }).then((result) => {
+       
+    });
 }
 
-// function onExitoUsuarios(data) {
-//     console.log("consulta de Usuarios");
-//     console.log(data);
-//     mostrarTablaUsuarios(data);
 
-// }
 
-function consultarRoles() {
+function consultarRoles(token) {
     $.ajax({
         type: "GET",
-        url: "http://localhost:8080/api/roles",
+        url: "http://localhost:8081/edge-service/v1/service/roles/consultar",
         "headers": {
+            'Authorization': `Bearer ${token}`,
             "Content-Type": "application/json"
           },
         success: onExitoRoles,
@@ -40,38 +45,8 @@ function consultarRoles() {
     });
 } 
 
-// function mostrarTablaUsuarios(data) {
-//     $('#tablaUsuarios > tbody').empty();
-//     $.each(data, function (id, usuarios) {
-
-//         // Obtener el nombre del rol a través de una consulta AJAX
-//         $.ajax({
-//             url: 'http://localhost:8080/api/roles/' + usuarios.rol.idRol, // Ajusta la URL según la estructura de tu API
-//             type: 'GET',
-//             headers: {
-//                 "Content-Type": "application/json"
-//             },
-//             success: function (rolData) {
-//                 // Construir los botones
-//                 var boton1 = "<button onclick='EliminarUsuario(" + JSON.stringify(usuarios) + ")' class='btn btn-delete' data-id='1'><i class='fas fa-trash'></i></button>";
-//                 var boton2 = "<button onclick='EditarUsuario(" + JSON.stringify(usuarios) + ")' class='btn btn-edit' data-toggle='modal' data-target='#formActualizarUsuarios'><i class='fas fa-edit'></i></button>";
-
-//                 // Agregar una fila a la tabla con el nombre del rol en lugar del ID
-//                 $('#tablaUsuarios').append('<tr><td>' + usuarios.idUsuarios +'</td><td>' + rolData.nombreRol +'</td><td>' + usuarios.nombre +
-//                     '</td><td>' + usuarios.documento + '</td><td>' + usuarios.email +'</td><td>' + usuarios.telefono + '</td><td>' + usuarios.estado +
-//                     '</td><td>' + boton2 + '</td><td>' + boton1 + '</td></tr>');
-//                 console.log(usuarios.idUsuarios + ' ' + rolData.nombreRol + ' ' + usuarios.nombre + ' ' + usuarios.documento
-//                 + ' ' + usuarios.email + ' ' + usuarios.telefono + ' ' + usuarios.estado);
-//             },
-//             error: function (error) {
-//                 console.error("Error al obtener el nombre del rol: ", error);
-//             }
-//         });
-//     });
-// }
 
 function onExitoUsuarios(data) {
-    console.log(data);
 
 
     if ($.fn.DataTable.isDataTable('#tablaUsuarios')) {
@@ -113,79 +88,25 @@ function onExitoUsuarios(data) {
     dataTable.clear();
     $.each(data, function (id, usuarios) {
 
-        $.ajax({
-            url: 'http://localhost:8080/api/roles/' + usuarios.rol.idRol, // Ajusta la URL según la estructura de tu API
-            type: 'GET',
-            headers: {
-                "Content-Type": "application/json"
-            },
-            success: function (rolData) {
-                // Construir los botones
-                var boton1 = "<button onclick='EliminarUsuario(" + JSON.stringify(usuarios) + ")' class='btn btn-eliminar' data-id='1'><i class='fas fa-trash'></i></button>";
-                var boton2 = "<button onclick='EditarUsuario(" + JSON.stringify(usuarios) + ")' class='btn btn-editar' data-toggle='modal' data-target='#formActualizarUsuarios'><i class='fas fa-edit'></i></button>";
+        var boton1 = "<button onclick='EliminarUsuario(" + JSON.stringify(usuarios) + ")' class='btn btn-eliminar' data-id='1'><i class='fas fa-trash'></i></button>";
+        var boton2 = "<button onclick='EditarUsuario(" + JSON.stringify(usuarios) + ")' class='btn btn-editar' data-toggle='modal' data-target='#formActualizarUsuarios'><i class='fas fa-edit'></i></button>";
 
-                // Agrega la fila a la DataTable
-                dataTable.row.add([
-                    usuarios.idUsuarios,
-                    rolData.nombreRol,
-                    usuarios.nombre,
-                    usuarios.documento,
-                    usuarios.email,
-                    usuarios.telefono,
-                    usuarios.estado,
-                    boton1 +
-                    boton2
-                ]).draw();
-                // console.log(usuarios.idUsuarios + ' ' + rolData.nombreRol + ' ' + usuarios.nombre + ' ' + usuarios.documento
-                // + ' ' + usuarios.email + ' ' + usuarios.telefono + ' ' + usuarios.estado);
-            },
-            error: function (error) {
-                console.error("Error al obtener el nombre del rol: ", error);
-            }
-        });
+        // Agrega la fila a la DataTable
+        dataTable.row.add([
+            usuarios.idUsuarios,
+            usuarios.rol.nombreRol,
+            usuarios.nombre,
+            usuarios.documento,
+            usuarios.email,
+            usuarios.telefono,
+            usuarios.estado,
+            boton1 +
+            boton2
+        ]).draw();
+      
     });
 }
 
-function consultarRolesL() {
-    $.ajax({
-        type: "GET",
-        url: "http://localhost:8080/api/roles",
-        "headers": {
-            "Content-Type": "application/json"
-        },
-        success: onExitoRolesL,
-        error: onErrorRolesL
-    });
-}
-
-function onExitoRolesL(data) {
-    console.log(data);
-    var $dropdown = $("#idRolCrear");
-    $.each(data, function () {
-        $dropdown.append($("<option />").val(this.idRol).text(this.nombreRol));
-    });
-    // mostrarRolesConPermisos(data);
-}
-
-// function mostrarRolesConPermisos(roles) {
-
-//     // clear the existing list
-//     $("#contentRoles .lista-Roles .card-header").remove();
-//     $("#contentRoles .lista-Roles .lista-permisos").remove();
-
-//     $.each(roles, function(index,rol) {
-//         $('#contentRoles .lista-Roles').append('<div class="card-header">'+rol.nombreRol +'</div>')
-//         $('#contentRoles .lista-Roles').append('<div class="card-body lista-permisos"><ul></ul></div>')
-
-//         $.each(rol.permisos, function(index,permiso) {
-//             $('#contentRoles .lista-Roles .lista-permisos ul').append('<li>'+permiso.nombrePermiso +" "+permiso.modulo+'</li>')
-//         });
-//     });
-
-// }
-function onErrorRolesL(error) {
-    console.log(error)
-}
 
 function mostrarFormularioCrearUsuarios() {
     var titulo = $("#tituloFormularioUsuarios");
@@ -245,12 +166,19 @@ function crearUsuarios() {
 
 	// Create an FormData object
     var formData = new FormData(form);
+    handleAjaxRequest(function (token) {
+        callApiCrearUsuario(token,formData);
+});
+}
 
-    console.log(formData)
+function callApiCrearUsuario(token,formData){
     $.ajax({
         type: "POST",
         enctype: 'multipart/form-data',
-        url:"http://localhost:8080/api/usuarios/crear",
+        url:"http://localhost:8081/edge-service/v1/service/usuario/crear",
+        "headers": {
+            'Authorization': `Bearer ${token}`,
+      },
         data: formData,
         processData: false,
         contentType: false,
@@ -260,47 +188,44 @@ function crearUsuarios() {
 }
 
 
-
-function consultarRoles() {
-    $.ajax({
-        type: "GET",
-        url: "http://localhost:8080/api/roles",
-        "headers": {
-            "Content-Type": "application/json"
-          },
-        success: onExitoRoles,
-        error: onErrorRoles
-    });
-}
-
 function onExitoRoles(data) {
-    console.log(data);
-    var $dropdown = $("#idRol");
+    var $dropdown = $("#idRolCrear");
+    var $dropdownActualizar = $("#idRol");
     $.each(data, function () {
         $dropdown.append($("<option />").val(this.idRol).text(this.nombreRol));
+        $dropdownActualizar.append($("<option />").val(this.idRol).text(this.nombreRol));
     });
-    // mostrarRolesConPermisos(data);
+     mostrarRolesConPermisos(data);
 }
 
-// function mostrarRolesConPermisos(roles) {
+function mostrarRolesConPermisos(roles) {
 
-//     // clear the existing list
-//     $("#contentRoles .lista-Roles .card-header").remove();
-//     $("#contentRoles .lista-Roles .lista-permisos").remove();
+    // clear the existing list
+    $("#contentRoles .lista-Roles .card-header").remove();
+    $("#contentRoles .lista-Roles .lista-permisos").remove();
     
-//     $.each(roles, function(index,rol) {
-//       $('#contentRoles .lista-Roles').append('<div class="card-header">'+rol.nombreRol +'</div>')
-//       $('#contentRoles .lista-Roles').append('<div class="card-body lista-permisos"><ul></ul></div>')
+    $.each(roles, function(index,rol) {
+      $('#contentRoles .lista-Roles').append('<div class="card-header">'+rol.nombreRol +'</div>')
+      $('#contentRoles .lista-Roles').append('<div class="card-body lista-permisos"><ul></ul></div>')
      
-//       $.each(rol.permisos, function(index,permiso) {
-//         $('#contentRoles .lista-Roles .lista-permisos ul').append('<li>'+permiso.nombrePermiso +" "+permiso.modulo+'</li>')
-//     });
-//     });
+      $.each(rol.permisos, function(index,permiso) {
+        $('#contentRoles .lista-Roles .lista-permisos ul').append('<li class = "text-white">'+permiso.acciones.nombre +" "+permiso.modulo.nombre+'</li>')
+    });
+    });
   
-//   }
+  }
 
 function onErrorRoles(error) {
-    console.log(error)
+    Swal.fire({
+        title: 'Error',
+        text: error.responseJSON.message,
+        icon:"warning",
+        showCancelButton: false,
+        confirmButtonColor: ' #d5c429 ',
+        confirmButtonText: 'Confirmar',
+    }).then((result) => {
+       
+    });
 }
 
 function mostrarFormularioActualizar(){
@@ -324,22 +249,29 @@ function EditarUsuario(usuarios){
     preview.src = "http://localhost:8080/"+usuarios.foto;
     preview.style.display = "block";
     var btnform = $("#btn-form");
-    btnform.click(function(){ actualizarUsuario(usuarios.idUsuarios); });
+    btnform.click(function () {
+             
+        handleAjaxRequest(function (token) {
+            actualizarUsuario(usuarios.idUsuarios,token);
+    });
+    });
+    // btnform.click(function(){ actualizarUsuario(usuarios.idUsuarios); });
    
 }
 
-function actualizarUsuario(idUsuarios){
+function actualizarUsuario(idUsuarios, token){
     var form = $('#formActualizarUsuario')[0];
 
 	// Create an FormData object 
     var formData = new FormData(form);
 
-   console.log(formData);
-
    $.ajax({
     type: "Put",
     enctype: 'multipart/form-data',
-    url:"http://localhost:8080/api/usuarios/actualizar/"+idUsuarios,
+    url:"http://localhost:8081/edge-service/v1/service/usuario/actualizar/"+idUsuarios,
+    "headers": {
+        'Authorization': `Bearer ${token}`,
+  },
     data: formData,
     processData: false,
     contentType: false,
@@ -361,7 +293,7 @@ function buscarUsuarioTabla(){
         });
 }
 function onExitoCrearUsuario(data){
-    console.log(data);
+    handleAjaxRequest(consultarUsuarios);
     var mensaje = $("#resultadoCrear");
     mensaje.addClass("alert-success");
     mensaje.removeClass("alert-danger");
@@ -371,7 +303,6 @@ function onExitoCrearUsuario(data){
     $("#foto-preview").attr('src', '');
 }
 function onErrorCrearUsuario(error){
-    console.log(error);
     var mensaje = $("#resultadoCrear");
     mensaje.addClass("alert-danger");
     mensaje.removeClass("alert-success");
@@ -398,20 +329,32 @@ function EliminarUsuario(usuarios){
     }).then((result) => {
         if (result.isConfirmed) {
             // Realizar la solicitud de eliminación AJAX
-            $.ajax({
-                url: 'http://localhost:8080/api/usuarios/eliminar/'+usuarios.idUsuarios,
-                type: 'Delete',
-                success: function(response) {
-                    // Manejar la respuesta de eliminación exitosa
-                    Swal.fire('Eliminado',response.message, 'success');
-                    // Actualizar la tabla o realizar cualquier otra acción necesaria
-                    consultarUsuarios();
-                },
-                error: function(xhr, status, error) {
-                    // Manejar los errores de la solicitud AJAX
-                    Swal.fire('Error', error.message, 'error');
-                }
-            });
+       
+handleAjaxRequest(function (token) {
+    callApiEliminarUsuario(usuarios,token);
+
+});
+ 
+        }
+    });
+
+}
+function callApiEliminarUsuario(usuarios,token){
+    $.ajax({
+        url: 'http://localhost:8081/edge-service/v1/service/usuario/eliminar/'+usuarios.idUsuarios,
+        type: 'Delete',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+        },
+        success: function(response) {
+            // Manejar la respuesta de eliminación exitosa
+            Swal.fire('Eliminado',response.message, 'success');
+            // Actualizar la tabla o realizar cualquier otra acción necesaria
+          handleAjaxRequest(consultarUsuarios);
+        },
+        error: function(xhr, status, error) {
+            // Manejar los errores de la solicitud AJAX
+            Swal.fire('Error', error.message, 'error');
         }
     });
 }
