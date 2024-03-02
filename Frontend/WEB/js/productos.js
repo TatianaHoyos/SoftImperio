@@ -15,8 +15,8 @@ function mostrarFormularioCrear() {
     // btnform.text("Guardar");
     // var product=  btnform.click(crearProducto);
     
-        btnform.click(function (event) {
-            event.preventDefault();  
+        btnform.click(function () {
+             
             handleAjaxRequest(function (token) {
             crearProducto(token);
         });
@@ -106,7 +106,6 @@ function crearProducto(token) {
         success: onExitoCrearProducto,
         error: onErrorCrearProducto
     });
-    return false;
 }
 
 function onExitoCrearProducto(data) {
