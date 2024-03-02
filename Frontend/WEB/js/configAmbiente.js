@@ -3,6 +3,7 @@ var modulo = {
         "p_barra" : "./PuntoVentaBarra.html",
         "p_mesa" : "./puntoVentaMesa.html",
         "reporte" : "./ventas.html",
+        "credito" : "./creditos.html"
     },
     "producto" : {
         "producto" : "./productos.html",

@@ -92,7 +92,7 @@ function refreshAccessToken() {
                 resolve(objetoRecuperado.authoritation.accessToken);
             })
             .catch(error => {
-                console.log('error al recuperar el refresh token', error);
+                //console.log('error al recuperar el refresh token', error);
                 $("#cargando").modal("hide");
                 if (error.message.includes('401')) {
 
