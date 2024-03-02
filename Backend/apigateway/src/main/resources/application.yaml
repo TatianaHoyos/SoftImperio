@@ -251,9 +251,45 @@ spring:
           filters:
             - name: AuthenticationFilter
               args:
-                modulo: Compras
+                modulo: Compra
                 accion: Consultar
-            - RewritePath=/edge-service/v1/service/compras/consultar, /api/Compras
+            - RewritePath=/edge-service/v1/service/compras/consultar, /api/Compra
+
+        - id: services-compras-consultar
+          uri: https://localhost:7084
+          predicates:
+            - Path=/edge-service/v1/service/compras/consultar/pdf
+            - Header=target, pdf
+          filters:
+            - name: AuthenticationFilter
+              args:
+                modulo: Compra
+                accion: Consultar
+            - RewritePath=/edge-service/v1/service/compras/consultar/pdf, /api/Compra/GenerarPDF
+
+
+        - id: services-compras-consultar
+          uri: https://localhost:7084
+          predicates:
+            - Path=/edge-service/v1/service/compras/consultar/**
+          filters:
+            - name: AuthenticationFilter
+              args:
+                modulo: Compra
+                accion: Consultar
+            - RewritePath=/edge-service/v1/service/compras/consultar/(?<idcompra>.*), /api/Compra/$\{idcompra}
+
+        - id: services-compras-consultar
+          uri: https://localhost:7084
+          predicates:
+            - Path=/edge-service/v1/service/compras/eliminar/**
+          filters:
+            - name: AuthenticationFilter
+              args:
+                modulo: Compra
+                accion: Eliminar
+            - RewritePath=/edge-service/v1/service/compras/eliminar/(?<idcompra>.*), /api/Compra/{id}/$\{idcompra}
+
 
         - id: services-compras-ultimo-mes-consultar
           uri: https://localhost:7084
@@ -340,7 +376,6 @@ spring:
           uri: http://localhost:8080
           predicates:
             - Path=/edge-service/v1/service/roles/consultar
-            # - Header=scope, httpbin
           filters:
             - name: AuthenticationFilter
               args:
