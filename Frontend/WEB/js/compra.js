@@ -18,7 +18,7 @@ function addCompra() {
           text: error.responseJSON.message,
           icon:"warning",
           showCancelButton: false,
-          confirmButtonColor: ' #d5c429 ',
+          confirmButtonColor: ' #ae9243 ',
           confirmButtonText: 'Confirmar',
       }).then((result) => {
          
@@ -55,7 +55,7 @@ function addCompra() {
            
             Swal.fire({
               title: 'Error',
-              text: 'No es posible eliminar después de 24 horas.',
+              text: 'No es posible eliminar una compra después de 24 horas.',
               icon: 'error',
               showConfirmButton: false,
               timer: 1500
@@ -103,7 +103,7 @@ function generarPDF(){
           text: `Error en la respuesta del servidor. Código de estado: ${xhr.status}`,
           icon:"warning",
           showCancelButton: false,
-          confirmButtonColor: ' #d5c429 ',
+          confirmButtonColor: ' #ae9243 ',
           confirmButtonText: 'Confirmar',
       }).then((result) => {
          
@@ -117,7 +117,7 @@ function generarPDF(){
         text: 'Error en la respuesta',
         icon:"warning",
         showCancelButton: false,
-        confirmButtonColor: ' #d5c429 ',
+        confirmButtonColor: ' #ae9243 ',
         confirmButtonText: 'Confirmar',
     }).then((result) => {
        
@@ -224,12 +224,14 @@ function editarProveedor() {
       }, 1500);
     },
     error: function(error) {
- 
+
       Swal.fire({
         type: 'error',
         text: "No se pudo actualizar registro",
         icon: 'error',
         showConfirmButton: false,
+        confirmButtonColor: ' #ae9243 ',
+        confirmButtonText: 'Ok',
         timer: 1500
       })
       setTimeout(() => {
@@ -246,12 +248,6 @@ $(document).ready(function() {
     success: function(data) {
       // Verificar si hay datos en la respuesta
       if (data && data.length > 0) {
-       /* // Agregar los datos directamente al tbody
-        const tableBody = $('#tbody_compras');
-        data.forEach(function(item) {
-          const row = createTableRow(item);
-          tableBody.append(row);
-        });*/
 
         // Inicializar DataTables después de agregar los datos
         iniciarDataTables(data);
@@ -261,7 +257,7 @@ $(document).ready(function() {
           text: 'No hay datos en la respuesta',
           icon:"warning",
           showCancelButton: false,
-          confirmButtonColor: ' #d5c429 ',
+          confirmButtonColor: ' #ae9243 ',
           confirmButtonText: 'Confirmar',
       }).then((result) => {
          
@@ -275,7 +271,7 @@ $(document).ready(function() {
         text: 'Respuesta de la API:'+ xhr.responseText,
         icon:"warning",
         showCancelButton: false,
-        confirmButtonColor: ' #d5c429 ',
+        confirmButtonColor: ' #ae9243 ',
         confirmButtonText: 'Confirmar',
     }).then((result) => {
        
@@ -286,42 +282,13 @@ $(document).ready(function() {
 
   // Inicializar DataTables directamente después de la carga de la página
   function iniciarDataTables(data) {
- /*
-    $('#miTabla').DataTable({
-      dom: '<"row"<"col-md-6"l><"col-md-6"f>>tip',
-      data: data,
-      columns: [
-      
-         { data: 'idCompra' },
-        { data: 'fechaCompra' },
-        { data: 'totalCompra' },
-        {
-          data: null,
-          render: function(data, type, row) {
-            return '<button class="btn btn-editar" data-toggle="modal" data-target="#miModal" onclick="habilitarVistaDetalle( ' + row.idCompra + ')"><i class="fa fa-eye"></i></button>';
-          }
-        },
-        {
-          data: null,
-          render: function(data, type, row) {
-            return '<button onclick="deleteCompra(' + row.idCompra + ')" class="btn btn-eliminar" > <i class="fa fa-trash"></i></button>';
-          }
-        }
-      ],
-      columnDefs: [
-        {
-          targets: 0,
-          visible: false
-        }
-      ],
-      rowId: 'idCompra', */
       var dataTable = $('#miTabla').DataTable({
         dom: '<"row"<"col-md-6"l><"col-md-6"f>>tip',
         pageLength: 5,
         lengthMenu: [5, 10, 25, 50],
   
         rowId: 'idCompra',
-      language: { /*language, parametro adicional para cambiar los texto del datatable */
+        language: { /*language, parametro adicional para cambiar los texto del datatable */
         "sProcessing": "Procesando...",
         "sLengthMenu": "Mostrar _MENU_ registros",
         "sZeroRecords": "No se encontraron resultados",
@@ -354,17 +321,16 @@ $(document).ready(function() {
     
       dataTable.clear();
     
-      console.log("q hay aqui?", data);
       $.each(data, function (id, proveedor) {
     
-        var boton1 ='<button class="btn btn-editar" data-toggle="modal" data-target="#miModal" onclick="habilitarVistaDetalle(' + proveedor.idCompra + ')"><i class="fa fa-edit"></i></button>';
+        var boton1 ='<button class="btn btn-editar" data-toggle="modal" data-target="#miModal" onclick="habilitarVistaDetalle(' + proveedor.idCompra + ')"><i class="fa-solid fa-eye"></i></button>';
         var espacio = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-        var boton2 = '<button onclick="deleteCompra( ' + proveedor.idCompra + ')" class="btn btn-eliminar" > <i class="fa fa-trash"></i></button>';
+        var boton2 = '<button onclick="deleteCompra( ' + proveedor.idCompra + ')" class="btn btn-eliminar" ><i class="fa-solid fa-trash-can"></i></button>';
         // Agrega la fila a la DataTable
         dataTable.row.add([
             proveedor.idCompra,
             proveedor.fechaCompra,
-            proveedor.totalCompra,
+            '$ ' + proveedor.totalCompra.toLocaleString('es-CO'),
             boton1 + espacio + boton2
         ]).draw();
   
