@@ -124,7 +124,7 @@ function onExitoCrearProducto(data) {
         handleAjaxRequest(consultarProductos);
     });
 
-    console.log(data);
+    // console.log(data);
 
 }
 function onErrorCrearProducto(error) {
@@ -271,7 +271,7 @@ function callApiEliminarProducto(Producto,token){
         url: "http://localhost:8081/edge-service/v1/service/productos/eliminar/" + Producto.idProductos,
         type: 'DELETE',
         "headers": {
-            
+   
            'Authorization': `Bearer ${token}`
         },
         success: function (response) {

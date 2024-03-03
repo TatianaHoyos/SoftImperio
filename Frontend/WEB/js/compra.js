@@ -7,8 +7,8 @@ $(document).ready(function() {
 
 function addCompra() {
     //window.location.href = 'comprasDetail.html';
-
-    handleAjaxRequest(callApiAddCompra);
+    habilitarVistaDetalle("Nuevo");
+    //handleAjaxRequest(callApiAddCompra);
   }
 function callApiAddCompra(token){
   $.ajax({
