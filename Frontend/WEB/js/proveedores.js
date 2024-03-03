@@ -29,7 +29,7 @@ function buscarDatos(idProveedor, token) {
         text: error.responseJSON.message,
         icon:"warning",
         showCancelButton: false,
-        confirmButtonColor: ' #d5c429 ',
+        confirmButtonColor: ' #ae9243 ',
         confirmButtonText: 'Confirmar',
     }).then((result) => {
        
@@ -98,7 +98,6 @@ function eliminarProveedor(idProveedor, token) {
         if (result.isConfirmed) {
             // Realizar la solicitud de eliminación AJAX
             const xhr = new XMLHttpRequest();
-                   
             const pathDelete = "http://localhost:8081/edge-service/v1/service/proveedor/eliminar/id/" + idProveedor;
             xhr.open("DELETE", pathDelete, true);
             xhr.setRequestHeader('Authorization', `Bearer ${token}`);
@@ -180,10 +179,7 @@ $(document).ready(function() {
   handleAjaxRequest(callApiConsultarProveedor);
   // callApiConsultarProveedor(token)
 
-
- 
 });
-
 
 function callApiConsultarProveedor(token) {
   $.ajax({
@@ -195,13 +191,6 @@ function callApiConsultarProveedor(token) {
 
       // Verificar si hay datos en la respuesta
       if (data && data.length > 0) {
-
-        // Agregar los datos directamente al tbody
-       /* const tableBody = $('#tbodyProveedores');
-        data.forEach(function(item) {
-          const row = createTableRow(item);
-          tableBody.append(row);
-        });*/
 
         // Inicializar DataTables después de agregar los datos
         iniciarDataTables(data);
@@ -216,7 +205,7 @@ function callApiConsultarProveedor(token) {
             text: xhr.responseText,
             icon:"warning",
             showCancelButton: false,
-            confirmButtonColor: ' #d5c429 ',
+            confirmButtonColor: ' #ae9243 ',
             confirmButtonText: 'Confirmar',
         }).then((result) => {
           
@@ -272,8 +261,9 @@ dataTable.clear();
 
 $.each(data, function (id, productos) {
 
-var boton1 ='<button class="btn btn-editar" data-toggle="modal" data-target="#miModal" onclick="alertaEliminarEditar(\'editar\', ' + productos.idProveedores + ')"><i class="fa fa-edit"></i></button>';
-var boton2 = '<button onclick="alertaEliminarEditar(\'eliminar\', ' + productos.idProveedores + ')" class="btn btn-eliminar" > <i class="fa fa-trash"></i></button>';
+var boton1 ='<button class="btn btn-editar" data-toggle="modal" data-target="#miModal" onclick="alertaEliminarEditar(\'editar\', ' + productos.idProveedores + ')"><i class="fa-solid fa-user-pen"></i></button>';
+var espacio = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+var boton2 = '<button onclick="alertaEliminarEditar(\'eliminar\', ' + productos.idProveedores + ')" class="btn btn-eliminar" > <i class="fa-solid fa-trash-can"></i></button>';
 
 // Agrega la fila a la DataTable
 dataTable.row.add([
@@ -282,11 +272,9 @@ dataTable.row.add([
     productos.email,
     productos.telefono,
     productos.direccion,
-    boton1 + boton2
+    boton1 + espacio +boton2
 ]).draw();
 
-// console.log(productos.id + ' ' + productos.nombreProducto + ' ' + productos.idCategoria + ' ' +
-//     productos.referenciaProducto + ' ' + productos.precioProducto);
 });
 
 }
