@@ -151,6 +151,17 @@ spring:
                 accion: Consultar
             - RewritePath=/edge-service/v1/service/productos/con/existencias, /api/Productos/productos-con-existencias
 
+        - id: services-productos-existencias-consultar
+          uri: https://localhost:7084
+          predicates:
+            - Path=/edge-service/v1/service/productos/existencias
+          filters:
+            - name: AuthenticationFilter
+              args:
+                modulo: Producto
+                accion: Consultar
+            - RewritePath=/edge-service/v1/service/productos/existencias, /api/Productos/ObtenerProductosExistencia
+
 
         ##CATEGORIAS##
         - id: services-categoria-consultar
@@ -313,6 +324,50 @@ spring:
                 accion: Consultar
             - RewritePath=/edge-service/v1/service/compras/por-mes/consultar, /api/Compra/compras-por-mes
 
+        ##DETALLE COMPRA##
+        - id: services-detallecompras-actualizar
+          uri: https://localhost:7084
+          predicates:
+            - Path=/edge-service/v1/service/detalle-compras/actualizar
+          filters:
+            - name: AuthenticationFilter
+              args:
+                modulo: Compra
+                accion: Editar
+            - RewritePath=/edge-service/v1/service/detalle-compras/actualizar, /api/DetalleCompra
+
+        - id: services-detallecompras-actualizar-id
+          uri: https://localhost:7084
+          predicates:
+            - Path=/edge-service/v1/service/detalle-compras/actualizar/**
+          filters:
+            - name: AuthenticationFilter
+              args:
+                modulo: Compra
+                accion: Editar
+            - RewritePath=/edge-service/v1/service/detalle-compras/actualizar/(?<idcompra>.*), /api/DetalleCompra/$\{idcompra}
+
+        - id: services-detallecompras-eliminar-id
+          uri: https://localhost:7084
+          predicates:
+            - Path=/edge-service/v1/service/detalle-compras/eliminar/**
+          filters:
+            - name: AuthenticationFilter
+              args:
+                modulo: Compra
+                accion: Eliminar
+            - RewritePath=/edge-service/v1/service/detalle-compras/eliminar/(?<idcompra>.*), /api/DetalleCompra/$\{idcompra}
+
+        - id: services-detallecompras-consultar-id
+          uri: https://localhost:7084
+          predicates:
+            - Path=/edge-service/v1/service/detalle-compras/consultar/id/**
+          filters:
+            - name: AuthenticationFilter
+              args:
+                modulo: Compra
+                accion: Consultar
+            - RewritePath=/edge-service/v1/service/detalle-compras/consultar/id/(?<idcompra>.*), /api/DetalleCompra/ObtenerDetalleCompraPorIdCompra/$\{idcompra}
 
         ##Creditos##
         - id: services-creditos-ultimo-mes-consultar
