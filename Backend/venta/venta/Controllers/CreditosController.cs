@@ -26,10 +26,10 @@ namespace venta.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Creditos>>> Getcreditos()
         {
-          if (_context.creditos == null)
-          {
-              return NotFound();
-          }
+            if (_context.creditos == null)
+            {
+                return NotFound();
+            }
             return await _context.creditos.ToListAsync();
         }
 
@@ -39,7 +39,7 @@ namespace venta.Controllers
         {
             var creditos = await _context.creditos.ToListAsync();
 
-            var creditosList = creditos.Where(e => e.IdUsuarioCredito ==id).ToList();
+            var creditosList = creditos.Where(e => e.IdUsuarioCredito == id).ToList();
 
             if (creditosList == null)
             {
@@ -114,10 +114,10 @@ namespace venta.Controllers
         [HttpPost]
         public async Task<ActionResult<Creditos>> PostCreditos(Creditos creditos)
         {
-          if (_context.creditos == null)
-          {
-              return Problem("Entity set 'ApplicationDbContext.creditos'  is null.");
-          }
+            if (_context.creditos == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.creditos'  is null.");
+            }
             _context.creditos.Add(creditos);
             await _context.SaveChangesAsync();
 

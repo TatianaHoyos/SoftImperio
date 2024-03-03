@@ -182,9 +182,15 @@ function onErrorVentasPorNotificacion(error){
 
 
 function onErrorVentasPendientes(error){
+    var message = "";
+    if (error.responseJSON.hasOwnProperty('errors')) {
+        message = error.responseJSON.errors[0].message;
+    } else {
+        message = error.responseJSON.message;
+    }
     Swal.fire({
         title: 'Error',
-        text: error.responseJSON.message,
+        text: message,
         icon:"warning",
         showCancelButton: false,
         confirmButtonColor: ' #d5c429 ',
