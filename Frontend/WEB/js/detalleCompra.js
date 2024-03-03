@@ -81,8 +81,8 @@ function callApiObtenerDetalleCompra(token,miTabla){
           item.categoria,
           item.proveedor,
           item.cantidadProducto,
-          item.precio,
-          item.subtotal,
+          '$ ' + item.precio.toLocaleString('es-CO'),
+          '$ ' + item.subtotal.toLocaleString('es-CO'),
           acciones
         ]).draw();
       });
