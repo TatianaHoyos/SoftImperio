@@ -7,8 +7,8 @@ $(document).ready(function() {
 
 function addCompra() {
     //window.location.href = 'comprasDetail.html';
-
-    handleAjaxRequest(callApiAddCompra);
+    habilitarVistaDetalle("Nuevo");
+    //handleAjaxRequest(callApiAddCompra);
   }
 function callApiAddCompra(token){
   $.ajax({
@@ -130,7 +130,7 @@ function callApiGenerarPdf(token){
           text: `Error en la respuesta del servidor. Código de estado: ${xhr.status}`,
           icon:"warning",
           showCancelButton: false,
-          confirmButtonColor: ' #d5c429 ',
+          confirmButtonColor: ' #ae9243 ',
           confirmButtonText: 'Confirmar',
       }).then((result) => {
          
@@ -144,7 +144,7 @@ function callApiGenerarPdf(token){
         text: 'Error en la respuesta',
         icon:"warning",
         showCancelButton: false,
-        confirmButtonColor: ' #d5c429 ',
+        confirmButtonColor: ' #ae9243 ',
         confirmButtonText: 'Confirmar',
     }).then((result) => {
        
@@ -228,12 +228,6 @@ function callApiConsultarCompra(token){
     success: function(data) {
       // Verificar si hay datos en la respuesta
       if (data && data.length > 0) {
-       /* // Agregar los datos directamente al tbody
-        const tableBody = $('#tbody_compras');
-        data.forEach(function(item) {
-          const row = createTableRow(item);
-          tableBody.append(row);
-        });*/
 
         // Inicializar DataTables después de agregar los datos
         iniciarDataTables(data);
@@ -243,7 +237,7 @@ function callApiConsultarCompra(token){
           text: 'No hay datos en la respuesta',
           icon:"warning",
           showCancelButton: false,
-          confirmButtonColor: ' #d5c429 ',
+          confirmButtonColor: ' #ae9243 ',
           confirmButtonText: 'Confirmar',
       }).then((result) => {
          
@@ -257,7 +251,7 @@ function callApiConsultarCompra(token){
         text: 'Respuesta de la API:'+ xhr.responseText,
         icon:"warning",
         showCancelButton: false,
-        confirmButtonColor: ' #d5c429 ',
+        confirmButtonColor: ' #ae9243 ',
         confirmButtonText: 'Confirmar',
     }).then((result) => {
        
