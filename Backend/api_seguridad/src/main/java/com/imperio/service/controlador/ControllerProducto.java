@@ -2,22 +2,49 @@ package com.imperio.service.controlador;
 
 import com.imperio.service.model.dto.comun.Response;
 import com.imperio.service.model.dto.producto.ProductoRequest;
-import com.imperio.service.model.dto.usuarios.UsuariosRequest;
+import com.imperio.service.model.dto.producto.ProductoResponse;
 import com.imperio.service.model.entity.ExistenciasEntity;
 import com.imperio.service.model.entity.ProductoEntity;
-import com.imperio.service.model.entity.UsuariosEntity;
-import com.imperio.service.repository.ExistenciasRepository;
+import com.imperio.service.services.pdf.PdfUtil;
+import com.imperio.service.repository.CategoriaService;
 import com.imperio.service.repository.ExistenciasService;
 import com.imperio.service.repository.ProductoService;
+import com.imperio.service.services.pdf.model.ProductoReporte;
 import com.imperio.service.util.FileUploadUtil;
+import com.itextpdf.io.exceptions.IOException;
+import com.itextpdf.io.source.ByteArrayOutputStream;
+import com.itextpdf.kernel.colors.ColorConstants;
+import com.itextpdf.kernel.colors.DeviceRgb;
+import com.itextpdf.kernel.geom.PageSize;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.borders.Border;
+import com.itextpdf.layout.borders.SolidBorder;
+import com.itextpdf.layout.element.Cell;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.properties.TextAlignment;
+import com.itextpdf.layout.properties.UnitValue;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.ByteArrayInputStream;
+import java.net.MalformedURLException;
+import java.sql.Array;
+import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
+import java.util.Locale;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
@@ -27,7 +54,17 @@ public class ControllerProducto {
     private ProductoService productoService;
     @Autowired
     private ExistenciasService existenciasService;
+
+    @Autowired
+    private CategoriaService categoriaService;
+
+    @Autowired
+    private PdfUtil pdfUtil;
+
     private String urlServer = "http://localhost:8080/";
+
+    static Locale colombianLocale = new Locale("es", "CO");
+    static NumberFormat colombianCurrencyFormat = NumberFormat.getCurrencyInstance(colombianLocale);
 
     @PostMapping(value = "api/producto/crear", produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -44,9 +81,11 @@ public class ControllerProducto {
             String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
             fileName = producto.getNombreProducto()  +"-"+ producto.getReferenciaProducto().concat(fileName);
 
+            var categoria = categoriaService.obtenerCategoriaId(producto.getIdCategoria());
+
 
             var productoEntity = new ProductoEntity();
-            productoEntity.setIdCategoria (producto.getIdCategoria());
+            productoEntity.setCategoria (categoria);
             //productoEntity.setIdProveedores(producto.getIdProveedores());
             productoEntity.setNombreProducto(producto.getNombreProducto());
             productoEntity.setPrecioProducto(producto.getPrecioProducto());
@@ -155,7 +194,7 @@ public class ControllerProducto {
             if (multipartFile != null && !multipartFile.isEmpty()) {
                 String uploadDir = "producto-photos/";
                 String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-                fileName = producto.getNombreProducto()  +"-"+ producto.getReferenciaProducto().concat(fileName);
+                fileName = producto.getNombreProducto() + "-" + producto.getReferenciaProducto().concat(fileName);
                 productoEntity.setFotoProducto(uploadDir + fileName);
 
                 FileUploadUtil.deleteFile(productoDB.get().getFotoProducto());
@@ -165,8 +204,9 @@ public class ControllerProducto {
                 productoEntity.setFotoProducto(productoDB.get().getFotoProducto());
             }
 
+            var categoria = categoriaService.obtenerCategoriaId(producto.getIdCategoria());
             productoEntity.setIdProductos(id);
-            productoEntity.setIdCategoria (producto.getIdCategoria());
+            productoEntity.setCategoria(categoria);
             productoEntity.setNombreProducto(producto.getNombreProducto());
             productoEntity.setPrecioProducto(producto.getPrecioProducto());
             productoEntity.setReferenciaProducto(producto.getReferenciaProducto());
@@ -194,6 +234,57 @@ public class ControllerProducto {
                     .body(new Response("error", "Ha ocurrido un error al actualizar el producto"));
         }
     }
+    
+    @GetMapping(value = "api/producto/generar/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
+    public ResponseEntity<byte[]> generarPDF() throws IOException {
+        // Fetch data for PDF generation (replace with your logic)
+        List<ProductoResponse> productos = productoService.obtenerProductosCantidades();
+
+
+        if (productos.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        // Generate PDF using iText API
+        ByteArrayOutputStream byteArrayOutputStream = null;
+        try {
+            String[] nombreColumnas = {"Categoria", "Nombre", "Referencia", "Stock", "Cantidad", "Precio"};
+
+            List<String[]> productoReporteList = new ArrayList<>();
+
+            for (ProductoResponse producto : productos) {
+                String[] productoReporte = getProductoReporte(producto);
+                productoReporteList.add(productoReporte);
+            }
+
+            byteArrayOutputStream = pdfUtil.generarPDF("Productos", productoReporteList, nombreColumnas);
+            //byteArrayOutputStream = generatePDF(productos);
+        } catch (MalformedURLException e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData("attachment", "Productos.pdf");
+        InputStreamResource resource = new InputStreamResource(new ByteArrayInputStream(byteArrayOutputStream.toByteArray()));
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(byteArrayOutputStream.toByteArray());
+    }
+
+    private static String[] getProductoReporte(ProductoResponse producto) {
+        return new String[] {
+                producto.getNombreCategoria(),
+                producto.getNombreProducto(),
+                producto.getReferenciaProducto(),
+                String.valueOf(producto.getExistencia().getStock()),
+                String.valueOf(producto.getExistencia().getCantidad()),
+                colombianCurrencyFormat.format(producto.getPrecioProducto())
+        };
+    }
+
 }
 
 

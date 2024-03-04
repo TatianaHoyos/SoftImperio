@@ -15,6 +15,7 @@ public class ProductoResponse {
     private String fotoProducto;
     private float precioProducto;
     private String referenciaProducto;
+    private String nombreCategoria;
     private ExistenciaDto existencia;
 
 }

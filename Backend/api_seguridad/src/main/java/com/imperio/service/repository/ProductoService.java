@@ -38,7 +38,7 @@ public class ProductoService {
     }
 
     public  List<ProductoResponse> obtenerProductosCantidades(){
-        return productoRepository.obtenerProductosConExistencias();
+        return productoRepository.obtenerProductosConExistenciasYCategoria();
     }
 
     public void eliminarProductos(int idProducto){
