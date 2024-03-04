@@ -6,10 +6,10 @@
     <title>usuarioCredito</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="css/tablas.css">
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/style_menu.css">
-    <link rel="stylesheet" href="css/styles_Notificacion.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap4.min.css">
 </head>
 
 <body>
@@ -93,63 +93,57 @@
         </div>
     </div>
 
-
-    <!-- <div class="contenido-principal">
-        <div class="container p-2 g-col-6">
-            <h4 class="mt-3  text-white  text-center">Nuestros usuarios Créditos</h4>
-
-            <div class="form-row justify-content-center">
-                <div class="form-group col-md-4">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" style="background-color: #e5c850">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                    class="bi bi-search" viewBox="0 0 16 16">
-                                    <path
-                                        d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                                </svg>
-                            </span>
+    <div class="modal fade" id="formAbonarCreditos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div style="background-color: rgba(0, 0, 0, 0.869);">
+                    <form id="formAbonarCredito">
+                        <input type="hidden" id="idUsuarioCredito">
+                        <h4 id="tituloFormularioAbonarCreditos" class="mt-3 text-white text-center"></h4>
+                        <div class="form-row justify-content-center">
+                            <div class="form-group col-md-6">
+                                <!--<div id="resultadoCrear" class="alert alert-danger" role="alert">Error</div>-->
+                            </div>
                         </div>
-                        <input type="email" class="form-control" id="consultarTablaUsuarioCredito" name="buscar"
-                            placeholder="buscar">
-                    </div>
-                </div>
-            </div>
-            <div class="form-group col-md-3 offset-md-3">
-                <div class="form-row">
-                    <button type="button" class="btn btn-primary col-md-5 form-control btn mt-1 mb-2"
-                        onclick="mostrarFormularioCrearUsuarioCreditos()" data-toggle="modal"
-                        data-target="#formCrearUsuarioCredito"><strong>Crear</strong></button>
-                    <button type="button" onclick=""
-                        class="col-md-7 form-control btn mt-1 mb-2"><strong>Reporte</strong></button>
-                </div>
-                <br>
-                <div>
-                    <table id="tablaUsuarioCredito" class="table table-dark table-striped w-100">
-                        <thead class="text-center">
-                            <tr>
-                                <th>Nombre</th>
-                                <th>Documento </th>
-                                <th>Teléfono</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody class="text-center">
-                        </tbody>
-                    </table>
+                        <div class="form-row justify-content-center">
+                            <div class="form-group col-md-6">
+                                <label for="documento" class="text-white">Ingrese el monto a abonar</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" style="background-color: #e5c850"><i
+                                                class="far fa-id-card"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control" id="documento" name="documento"
+                                        placeholder="Documento" onkeypress="return validarNumeroUC(event)">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row justify-content-center">
+                            <div class="form-group col-md-4">
+                                <div class="preview mt-3">
+                                    <img id="foto-preview" width="400px">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group text-center mt-3">
+                            <input type="hidden" name="operacion" value="login">
+                            <button id="btn-form" type="button"
+                                class="col-md-2 form-control btn"><strong>Guardar</strong></button>
+                            <button type="button" data-dismiss="modal"
+                                class="col-md-2 form-control btn"><strong>Cancelar</strong></button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
-    </div> -->
+    </div>
 
     <!--Modal para detalle creditos-->
     <div class="modal fade" id="detalleCredito" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div style="background-color: rgba(0, 0, 0, 0.869);">
-                    <button type="button" class="btn btn-primary col-md-2 form-control btn mt-1 m-2">
-                                    <strong>Abonar</strong>
-                                </button>
+                    <h3 class="mt-3  text-white  text-center">Creditos Asociados</h4>
                     <table id="tablaDetalleCredito" class="table table-dark table-striped mb-0 w-100">
                         <thead class="text-center">
                             <tr>
@@ -166,47 +160,68 @@
         </div>
     </div>
 
-    <div>
-        <div class="container p-2 g-col-6">
-
-            <h3 class="mt-3  text-white  text-center">Nuestros usuarios Créditos</h4>
-                <div class="container p-2">
-                    <div class="row">
-                        <div class="col-md-2 offset-md-1">
-                            <div class="bott">
-                                <button type="button" class="btn btn-primary col-md-12 form-control btn mt-1 mb-2"
-                                    onclick="mostrarFormularioCrearUsuarioCreditos()" data-toggle="modal" data-target="#formCrearUsuarioCredito">
-                                    <strong>Crear</strong>
+    <div class="modal fade" id="detalleAbono" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div style="background-color: rgba(0, 0, 0, 0.869);">
+                    <h3 class="mt-3  text-white  text-center">Detalles de Abonos</h4>
+                    <button type="button" class="btn btn-primary col-md-2 form-control btn mt-1 m-2">
+                                    <strong>Abonar</strong>
                                 </button>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" style="background-color: #e5c850">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                            class="bi bi-search" viewBox="0 0 16 16">
-                                            <path
-                                                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                                        </svg>
-                                    </span>
-                                </div>
-                                <input type="text" class="form-control" id="consultarTablaUsuarioCredito" name="nombre" placeholder="buscar">
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="bott">
-                                <a href="#" class="btn btn-warning col-md-12 form-control btn mt-1 mb-2">
-                                    <strong>Generar Reporte</strong>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+                    <table id="tablaDetalleAbono" class="table table-dark table-striped mb-0 w-100">
+                        <thead class="text-center">
+                            <tr>
+                            <th>#</th>
+                            <th>Fecha de abono</th>
+                            <th>Precio de abono</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-center">
+                        </tbody>
+                        </table>
                 </div>
+            </div>
+        </div>
+    </div>
 
 
-            <div class="row justify-content-md-center">
-                <table id="tablaUsuarioCredito" class="table table-dark table-striped table w-100 mx-5">
+
+<div class="modal fade" id="tuModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content" style="background-color: black; color: white;">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Asociar Pedido</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" style="background-color: rgba(0, 0, 0, 0.869); color: white;">
+          <p><span id="idUltimoRegistro"></span></p>
+          <p><span id="totalVenta"></span></p>
+          <p><span id="NombreUsuarioCredito"></span></p>
+
+          <!-- Otros detalles del registro si es necesario -->
+        </div>
+        <div class="form-group text-center mt-3">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-success" onclick="CrearCredito()">Crear Crédito</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    <h3 class="mt-3  text-white  text-center">Nuestros usuarios Créditos</h4>
+
+    <div class="contenido-principal">
+        <div class="container bg-secundary">
+            <div class="form-group">
+                <button type="button" class="btn btn-primary mr-2" onclick="mostrarFormularioCrearUsuarioCreditos()"data-toggle="modal"data-target="#formCrearUsuarioCredito"><i class="fas fa-plus"></i></button>
+                <button type="button" onclick=""  class="btn btn-primary"> <i class="fas fa-file-alt"></i></button>
+            </div>
+
+            <div class="form-group">
+                <table id="tablaUsuarioCreditos" class="table w-100">
                 <thead class="text-center">
                     <tr>
 
@@ -215,6 +230,7 @@
                     <th>Documento</th>
                     <th>Teléfono</th>
                     <th>TotalCredito</th>
+                    <th>AccionesCreditos</th>
                     <th>Acciones</th>
 
                     </tr>
@@ -229,27 +245,14 @@
 
 
 
-
-
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 
-    <script src="https://code.jquery.com/jquery-3.6.1.min.js"
-        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous">
-        </script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
-        </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
-        </script>
     <script src="js/usuarioCredito.js"></script>
     <script src="js/validaciones.js"></script>
-
     <script src="js/funciones.js"></script>
     <script>
       $(document).ready(function () {

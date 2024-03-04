@@ -17,6 +17,21 @@ body{
     display:none;
     margin-bottom:30px;
 }
+/* Estilo para el botón de confirmar (Eliminar) */
+.swal2-confirm {
+  background-color: black !important;
+  color: white !important;
+}
+
+/* Estilo para el botón de cancelar (Cancelar) */
+.swal2-cancel {
+  background-color: transparent !important;
+  color: yellow !important;
+  border: 1px solid yellow !important;
+}
+
+/* Estilo para la flecha arriba del botón */
+
 
 .form-group button {
   background-color: #ae9243;

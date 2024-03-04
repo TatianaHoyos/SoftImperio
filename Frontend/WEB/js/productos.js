@@ -15,8 +15,8 @@ function mostrarFormularioCrear() {
     // btnform.text("Guardar");
     // var product=  btnform.click(crearProducto);
     
-        btnform.click(function (event) {
-            event.preventDefault();  
+        btnform.click(function () {
+             
             handleAjaxRequest(function (token) {
             crearProducto(token);
         });
@@ -34,7 +34,7 @@ function mostrarFormularioActualizar() {
 }
 
 function consultarCategorias(token) {
-    $("#textCargando").text("Cargando Categorias");
+    //$("#textCargando").text("Cargando Categorias");
     $.ajax({
         type: "GET",
         url: "http://localhost:8081/edge-service/v1/service/categorias/consultar",
@@ -57,11 +57,16 @@ function onExitoCategorias(data) {
 
 }
 function onErrorCategorias(error) {
-    
-    $("#cargando").modal("hide");
+  // $("#cargando").modal("hide");
+    var message = "";
+    if (error.responseJSON.hasOwnProperty('errors')) {
+        message = error.responseJSON.errors[0].message;
+    } else {
+        message = error.responseJSON.message;
+    }
     Swal.fire({
         title: 'Error',
-        text: error.responseJSON.message,
+        text: message,
         icon:"warning",
         showCancelButton: false,
         confirmButtonColor: ' #d5c429 ',
@@ -101,12 +106,11 @@ function crearProducto(token) {
         success: onExitoCrearProducto,
         error: onErrorCrearProducto
     });
-    return false;
 }
 
 function onExitoCrearProducto(data) {
-
-   /* Swal.fire({
+    $("#formCrearProductos").modal("hide");
+    Swal.fire({
         title: 'Exito',
         text: data.message,
         type: 'success',
@@ -115,15 +119,16 @@ function onExitoCrearProducto(data) {
         confirmButtonColor: ' #d5c429 ',
         confirmButtonText: 'Confirmar',
     }).then((result) => {
-        //$("#formCrearProducto").trigger("reset");
+        $("#formCrearProducto").trigger("reset");
         $("#foto-preview").attr('src', '');
         handleAjaxRequest(consultarProductos);
-    });*/
+    });
 
-    console.log(data);
+    // console.log(data);
 
 }
 function onErrorCrearProducto(error) {
+    $("#formCrearProductos").modal("hide");
     Swal.fire({
         title: 'Error',
         text: error.responseJSON.message,
@@ -223,9 +228,15 @@ function onExitoProductos(data) {
 
 
 function onErrorProductos(error) {
+    var message = "";
+    if (error.responseJSON.hasOwnProperty('errors')) {
+        message = error.responseJSON.errors[0].message;
+    } else {
+        message = error.responseJSON.message;
+    }
     Swal.fire({
         title: 'Error',
-        text: error.responseJSON.message,
+        text: message,
         icon:"warning",
         showCancelButton: false,
         confirmButtonColor: ' #d5c429 ',
@@ -260,7 +271,7 @@ function callApiEliminarProducto(Producto,token){
         url: "http://localhost:8081/edge-service/v1/service/productos/eliminar/" + Producto.idProductos,
         type: 'DELETE',
         "headers": {
-            
+   
            'Authorization': `Bearer ${token}`
         },
         success: function (response) {
@@ -271,7 +282,7 @@ function callApiEliminarProducto(Producto,token){
         },
         error: function (xhr, status, error) {
             // Manejar los errores de la solicitud AJAX
-            Swal.fire('Error', error.responseJSON.message, 'error');
+            Swal.fire('Error', xhr.responseJSON.message, 'error');
         }
     });
 }
@@ -302,21 +313,9 @@ function EditarProducto(producto) {
 }
 
 function actualizarProducto(idProductos,token) {
-    var idCategoria = $('#idCategoria').val();
-    var nombreProducto = $('#nombre').val();
-    var referenciaProducto = $('#referencia').val();
-    var stockMinimo = $('#stockMinimo').val();
-    var precioProducto = $('#precio').val();
-    var fotoInput = $('#fotos')[0];
-    var foto = fotoInput.files[0];
-
-    var formData = new FormData();
-    formData.append('idCategoria', idCategoria);
-    formData.append('nombreProducto', nombreProducto);
-    formData.append('referenciaProducto', referenciaProducto);
-    formData.append('stockMinimo', stockMinimo);
-    formData.append('precioProducto', precioProducto);
-    formData.append('foto', foto);
+    var form = $('#formCrearProducto')[0];
+    // Create an FormData object 
+    var formData = new FormData(form);
 
     $.ajax({
         type: "Put",

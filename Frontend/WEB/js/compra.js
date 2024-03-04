@@ -1,31 +1,43 @@
+$(document).ready(function() {
+  handleAjaxRequest(callApiConsultarCompra);
+ 
+   
+   });
+ 
 
 function addCompra() {
     //window.location.href = 'comprasDetail.html';
-
-    $.ajax({
-      type: "GET",
-      url: "https://localhost:7084/api/Compra/1090208030",
-      contentType: "application/json",
-      success: function(response) {
-        // Procesar la respuesta exitosa
-        habilitarVistaDetalle(response.idCompra+1);
-        //window.location.reload();
-      },
-      error: function(error) {
-        // Manejar el error
-        Swal.fire({
-          title: 'Error',
-          text: error.responseJSON.message,
-          icon:"warning",
-          showCancelButton: false,
-          confirmButtonColor: ' #ae9243 ',
-          confirmButtonText: 'Confirmar',
-      }).then((result) => {
-         
-      });
-      }
-    });
+    habilitarVistaDetalle("Nuevo");
+    //handleAjaxRequest(callApiAddCompra);
   }
+function callApiAddCompra(token){
+  $.ajax({
+    type: "GET",
+    url: "http://localhost:8081/edge-service/v1/service/compras/consultar/1090208030",
+    "headers": {
+      'Authorization': `Bearer ${token}`
+  },
+    contentType: "application/json",
+    success: function(response) {
+      // Procesar la respuesta exitosa
+      habilitarVistaDetalle(response.idCompra+1);
+      //window.location.reload();
+    },
+    error: function(error) {
+      // Manejar el error
+      Swal.fire({
+        title: 'Error',
+        text: error.responseJSON.message,
+        icon:"warning",
+        showCancelButton: false,
+        confirmButtonColor: ' #d5c429 ',
+        confirmButtonText: 'Confirmar',
+    }).then((result) => {
+       
+    });
+    }
+  });
+}
 
   function deleteCompra(idCompra) {
    
@@ -41,38 +53,53 @@ function addCompra() {
     }).then((result) => {
       if (result.isConfirmed) {
         // User clicked "Yes," proceed with the API call
-        $.ajax({
-          type: 'DELETE',
-          url: `https://localhost:7084/api/Compra/${idCompra}`,
-          contentType: 'application/json',
-          success: function (response) {
-            // Procesar la respuesta exitosa
-          
-            window.location.reload();
-          },
-          error: function (error) {
-            // Manejar el error
-           
-            Swal.fire({
-              title: 'Error',
-              text: 'No es posible eliminar una compra después de 24 horas.',
-              icon: 'error',
-              showConfirmButton: false,
-              timer: 1500
-            });
-          }
-        });
+        handleAjaxRequest(function (token) {
+          callAPiDeleteCompra(idCompra,token);
+  });
+      
       } else {
         // User clicked "Cancel" or closed the dialog, do nothing
       }
    });
 }
-
+function callAPiDeleteCompra(idCompra,token){
+  $.ajax({
+    type: 'DELETE',
+    url: `http://localhost:8081/edge-service/v1/service/compras/eliminar/${idCompra}`,
+    "headers": {
+      'Authorization': `Bearer ${token}`
+  },
+    contentType: 'application/json',
+    success: function (response) {
+      // Procesar la respuesta exitosa
+    
+      window.location.reload();
+    },
+    error: function (error) {
+      // Manejar el error
+     
+      Swal.fire({
+        title: 'Error',
+        text: 'No es posible eliminar después de 24 horas.',
+        icon: 'error',
+        showConfirmButton: false,
+        timer: 1500
+      });
+    }
+  });
+}
 function generarPDF(){
-
+handleAjaxRequest(callApiGenerarPdf);
+ 
+}
+function callApiGenerarPdf(token){
   $.ajax({
     type: "GET",
-    url: "https://localhost:7084/api/Compra/GenerarPDF",
+    url: "http://localhost:8081/edge-service/v1/service/compras/consultar/pdf",
+    "headers": {
+      'Authorization': `Bearer ${token}`,
+      'target' : 'pdf'
+  },
     xhrFields: {
       responseType: 'arraybuffer' // Indica que esperamos un array de bytes como respuesta
     },
@@ -127,7 +154,7 @@ function generarPDF(){
 }
 
   function habilitarVistaDetalle(idCompra){
-    const destinationURL = `http://127.0.0.1:5500/Frontend/WEB/comprasDetail.html?idCompra=${idCompra}`;
+    const destinationURL = `http://127.0.0.1:5500/comprasDetail.html?idCompra=${idCompra}`;
     window.location.href = destinationURL;
   }
 
@@ -192,59 +219,12 @@ function alertaEliminarEditar(action,idProveedor) {
 }
 
 
-//Ajax para editar Proveedor
-function editarProveedor() {
-
-    var data = {
-        nombre: $("#nombreE").val(),
-        documento: $("#documentoE").val(),
-        telefono: $("#telefonoE").val(),
-        direccion: $("#direccionE").val(),
-        email: $("#emailE").val()
-      };
-  
-
-
+function callApiConsultarCompra(token){
   $.ajax({
-    type: "PUT",
-    url: "http://localhost:8080/api/proveedor/actualizar/" + $("#idProveedorE").val(),
-    data: JSON.stringify(data),
-    contentType: "application/json",
-    success: function(response) {
-     
-      Swal.fire({
-        type: 'success',
-        text: 'Registro actualizado',
-        icon:"success",
-        showConfirmButton: false,
-        timer: 1500
-      })
-      setTimeout(() => {
-        window.location.reload();
-      }, 1500);
-    },
-    error: function(error) {
-
-      Swal.fire({
-        type: 'error',
-        text: "No se pudo actualizar registro",
-        icon: 'error',
-        showConfirmButton: false,
-        confirmButtonColor: ' #ae9243 ',
-        confirmButtonText: 'Ok',
-        timer: 1500
-      })
-      setTimeout(() => {
-        window.location.reload();
-      }, 1500);
-    }
-  });
-}
-
-
-$(document).ready(function() {
-  $.ajax({
-    url: 'https://localhost:7084/api/Compra',
+    url: 'http://localhost:8081/edge-service/v1/service/compras/consultar',
+    "headers": {
+      'Authorization': `Bearer ${token}`
+  },
     success: function(data) {
       // Verificar si hay datos en la respuesta
       if (data && data.length > 0) {
@@ -279,62 +259,90 @@ $(document).ready(function() {
    
     }
   });
-
-  // Inicializar DataTables directamente después de la carga de la página
-  function iniciarDataTables(data) {
-      var dataTable = $('#miTabla').DataTable({
-        dom: '<"row"<"col-md-6"l><"col-md-6"f>>tip',
-        pageLength: 5,
-        lengthMenu: [5, 10, 25, 50],
-  
-        rowId: 'idCompra',
-        language: { /*language, parametro adicional para cambiar los texto del datatable */
-        "sProcessing": "Procesando...",
-        "sLengthMenu": "Mostrar _MENU_ registros",
-        "sZeroRecords": "No se encontraron resultados",
-        "sEmptyTable": "Ningún dato disponible en esta tabla",
-        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-        "sInfoPostFix": "",
-        "sSearch": "Buscar:",
-        "sUrl": "",
-        "sInfoThousands": ",",
-        "sLoadingRecords": "Cargando...",
-        "oPaginate": {
-          "sFirst": "Primero",
-          "sLast": "Último",
-          "sNext": "Siguiente",
-          "sPrevious": "Anterior"
-        },
-        "oAria": {
-          "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-          "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-        }
-      },
-    });
-  
-      // Seleccionar el elemento de búsqueda
-      var inputSearch = $('#miTabla_filter input');
-      inputSearch.removeAttr('form-control'); // Asegurarse de que el input tenga la clase form-control
-      inputSearch.removeAttr('placeholder'); // Quitar el atributo placeholder si existe
-    
-      dataTable.clear();
-    
-      $.each(data, function (id, proveedor) {
-    
-        var boton1 ='<button class="btn btn-editar" data-toggle="modal" data-target="#miModal" onclick="habilitarVistaDetalle(' + proveedor.idCompra + ')"><i class="fa-solid fa-eye"></i></button>';
-        var espacio = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-        var boton2 = '<button onclick="deleteCompra( ' + proveedor.idCompra + ')" class="btn btn-eliminar" ><i class="fa-solid fa-trash-can"></i></button>';
-        // Agrega la fila a la DataTable
-        dataTable.row.add([
-            proveedor.idCompra,
-            proveedor.fechaCompra,
-            '$ ' + proveedor.totalCompra.toLocaleString('es-CO'),
-            boton1 + espacio + boton2
-        ]).draw();
-  
-      });
-    }
-  }
-  );
+}
+// Inicializar DataTables directamente después de la carga de la página
+function iniciarDataTables(data) {
+  /*
+     $('#miTabla').DataTable({
+       dom: '<"row"<"col-md-6"l><"col-md-6"f>>tip',
+       data: data,
+       columns: [
+       
+          { data: 'idCompra' },
+         { data: 'fechaCompra' },
+         { data: 'totalCompra' },
+         {
+           data: null,
+           render: function(data, type, row) {
+             return '<button class="btn btn-editar" data-toggle="modal" data-target="#miModal" onclick="habilitarVistaDetalle( ' + row.idCompra + ')"><i class="fa fa-eye"></i></button>';
+           }
+         },
+         {
+           data: null,
+           render: function(data, type, row) {
+             return '<button onclick="deleteCompra(' + row.idCompra + ')" class="btn btn-eliminar" > <i class="fa fa-trash"></i></button>';
+           }
+         }
+       ],
+       columnDefs: [
+         {
+           targets: 0,
+           visible: false
+         }
+       ],
+       rowId: 'idCompra', */
+       var dataTable = $('#miTabla').DataTable({
+         dom: '<"row"<"col-md-6"l><"col-md-6"f>>tip',
+         pageLength: 5,
+         lengthMenu: [5, 10, 25, 50],
+   
+         rowId: 'idCompra',
+       language: { /*language, parametro adicional para cambiar los texto del datatable */
+         "sProcessing": "Procesando...",
+         "sLengthMenu": "Mostrar _MENU_ registros",
+         "sZeroRecords": "No se encontraron resultados",
+         "sEmptyTable": "Ningún dato disponible en esta tabla",
+         "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+         "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+         "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+         "sInfoPostFix": "",
+         "sSearch": "Buscar:",
+         "sUrl": "",
+         "sInfoThousands": ",",
+         "sLoadingRecords": "Cargando...",
+         "oPaginate": {
+           "sFirst": "Primero",
+           "sLast": "Último",
+           "sNext": "Siguiente",
+           "sPrevious": "Anterior"
+         },
+         "oAria": {
+           "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+           "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+         }
+       },
+     });
+   
+       // Seleccionar el elemento de búsqueda
+       var inputSearch = $('#miTabla_filter input');
+       inputSearch.removeAttr('form-control'); // Asegurarse de que el input tenga la clase form-control
+       inputSearch.removeAttr('placeholder'); // Quitar el atributo placeholder si existe
+     
+       dataTable.clear();
+     
+       
+       $.each(data, function (id, proveedor) {
+     
+         var boton1 ='<button class="btn btn-editar" data-toggle="modal" data-target="#miModal" onclick="habilitarVistaDetalle(' + proveedor.idCompra + ')"><i class="fa fa-edit"></i></button>';
+         var espacio = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+         var boton2 = '<button onclick="deleteCompra( ' + proveedor.idCompra + ')" class="btn btn-eliminar" > <i class="fa fa-trash"></i></button>';
+         // Agrega la fila a la DataTable
+         dataTable.row.add([
+             proveedor.idCompra,
+             proveedor.fechaCompra,
+             proveedor.totalCompra,
+             boton1 + espacio + boton2
+         ]).draw();
+   
+       });
+     }
