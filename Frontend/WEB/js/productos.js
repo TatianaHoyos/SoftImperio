@@ -157,6 +157,7 @@ function consultarProductos(token) {
     });
 }
 
+
 function onExitoProductos(data) {
 // Destruir la DataTable existente si ya ha sido inicializada
     if ($.fn.DataTable.isDataTable('#tablaProductos')) {
@@ -343,3 +344,70 @@ function buscarProductosTabla() {
         });
     });
 }
+
+function generarPDFProductos(){
+    handleAjaxRequest(callApiGenerarPdf);
+}
+
+
+function callApiGenerarPdf(token){
+      $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/api/producto/generar/pdf",
+        "headers": {
+          'Authorization': `Bearer ${token}`,
+          'target' : 'pdf'
+      },
+        xhrFields: {
+          responseType: 'arraybuffer' // Indica que esperamos un array de bytes como respuesta
+        },
+        success: function (response, status, xhr) {
+          if (xhr.status === 200) {
+            // Crea un objeto Blob con la respuesta y tipo de contenido PDF
+            
+            const blob = new Blob([response], { type: 'application/pdf' });
+    
+            // Crea una URL de objeto para el blob
+            const blobURL = URL.createObjectURL(blob);
+    
+            // Crea un enlace invisible para descargar el PDF
+            const link = document.createElement('a');
+            link.href = blobURL;
+            link.download = 'Productos.pdf'; // Puedes cambiar el nombre del archivo si es necesario
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+    
+            // Libera la URL de objeto después de unos segundos (puedes ajustar el tiempo)
+            setTimeout(() => {
+              URL.revokeObjectURL(blobURL);
+            }, 5000); // 5000 milisegundos (5 segundos) como ejemplo
+          } else {
+           
+            Swal.fire({
+              title: 'Error',
+              text: `Error en la respuesta del servidor. Código de estado: ${xhr.status}`,
+              icon:"warning",
+              showCancelButton: false,
+              confirmButtonColor: ' #ae9243 ',
+              confirmButtonText: 'Confirmar',
+          }).then((result) => {
+             
+          });
+          }
+        },
+        error: function (error) {
+          // Manejar el error
+          Swal.fire({
+            title: 'Error',
+            text: 'Error en la respuesta',
+            icon:"warning",
+            showCancelButton: false,
+            confirmButtonColor: ' #ae9243 ',
+            confirmButtonText: 'Confirmar',
+        }).then((result) => {
+           
+        });
+        }
+      });
+    }
