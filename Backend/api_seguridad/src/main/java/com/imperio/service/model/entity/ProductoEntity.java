@@ -16,8 +16,8 @@ public class ProductoEntity {
     @Column(name = "IdProductos")
     private Integer idProductos ;
 
-    @Column(nullable = false, name = "IdCategoria")
-    private Integer idCategoria ;
+    //@Column(nullable = false, name = "IdCategoria")
+    //private Integer idCategoria ;
 
     @Column(nullable = false, name = "NombreProducto")
     private String nombreProducto;
@@ -31,5 +31,8 @@ public class ProductoEntity {
     @Column(nullable = false, name="ReferenciaProducto")
     private String referenciaProducto;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "IdCategoria")
+    private CategoriaEntity categoria;
 
 }
