@@ -36,7 +36,8 @@ namespace venta.Controllers
             {
                 return NotFound();
             }
-            return await _context.Compras.ToListAsync();
+
+            return await _context.Compras.OrderByDescending(c=> c.IdCompra).ToListAsync();
         }
 
         // GET: api/Compra/5
@@ -158,6 +159,9 @@ namespace venta.Controllers
                 //Eliminar cada detalle de compra encontrado
                 foreach (var detalleCompra in detallesCompra)
                 {
+                    Existencia Producto = _context.Existencia.Where(e=> e.IdExistencias == detalleCompra.IdExistencias).FirstOrDefault();
+                    Producto.Stock = Producto.Stock - detalleCompra.CantidadProducto;
+                    _context.Update(Producto);
                     _context.DetalleCompra.Remove(detalleCompra);
 
                 }
@@ -168,11 +172,6 @@ namespace venta.Controllers
 
                 return NoContent();
             }
-        }
-
-        private bool validarFechaCompra(DateTime? fechaCompra)
-        {
-            throw new NotImplementedException();
         }
 
         private bool CompraExists(int id)

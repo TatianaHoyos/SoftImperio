@@ -30,7 +30,7 @@ function callApiAddCompra(token){
         text: error.responseJSON.message,
         icon:"warning",
         showCancelButton: false,
-        confirmButtonColor: ' #d5c429 ',
+        confirmButtonColor: ' #ae9243 ',
         confirmButtonText: 'Confirmar',
     }).then((result) => {
        
@@ -262,35 +262,7 @@ function callApiConsultarCompra(token){
 }
 // Inicializar DataTables directamente después de la carga de la página
 function iniciarDataTables(data) {
-  /*
-     $('#miTabla').DataTable({
-       dom: '<"row"<"col-md-6"l><"col-md-6"f>>tip',
-       data: data,
-       columns: [
-       
-          { data: 'idCompra' },
-         { data: 'fechaCompra' },
-         { data: 'totalCompra' },
-         {
-           data: null,
-           render: function(data, type, row) {
-             return '<button class="btn btn-editar" data-toggle="modal" data-target="#miModal" onclick="habilitarVistaDetalle( ' + row.idCompra + ')"><i class="fa fa-eye"></i></button>';
-           }
-         },
-         {
-           data: null,
-           render: function(data, type, row) {
-             return '<button onclick="deleteCompra(' + row.idCompra + ')" class="btn btn-eliminar" > <i class="fa fa-trash"></i></button>';
-           }
-         }
-       ],
-       columnDefs: [
-         {
-           targets: 0,
-           visible: false
-         }
-       ],
-       rowId: 'idCompra', */
+  
        var dataTable = $('#miTabla').DataTable({
          dom: '<"row"<"col-md-6"l><"col-md-6"f>>tip',
          pageLength: 5,
@@ -317,8 +289,8 @@ function iniciarDataTables(data) {
            "sPrevious": "Anterior"
          },
          "oAria": {
-           "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-           "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+          "sSortDescending": ": Activar para ordenar la columna de manera descendente",
+           "sSortAscending": ": Activar para ordenar la columna de manera ascendente"
          }
        },
      });
@@ -333,14 +305,14 @@ function iniciarDataTables(data) {
        
        $.each(data, function (id, proveedor) {
      
-         var boton1 ='<button class="btn btn-editar" data-toggle="modal" data-target="#miModal" onclick="habilitarVistaDetalle(' + proveedor.idCompra + ')"><i class="fa fa-edit"></i></button>';
+         var boton1 ='<button class="btn btn-editar" data-toggle="modal" data-target="#miModal" onclick="habilitarVistaDetalle(' + proveedor.idCompra + ')"><i class="fa-solid fa-eye"></i></button>';
          var espacio = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-         var boton2 = '<button onclick="deleteCompra( ' + proveedor.idCompra + ')" class="btn btn-eliminar" > <i class="fa fa-trash"></i></button>';
+         var boton2 = '<button onclick="deleteCompra( ' + proveedor.idCompra + ')" class="btn btn-eliminar" > <i class="fa-solid fa-trash-can"></i></button>';
          // Agrega la fila a la DataTable
          dataTable.row.add([
              proveedor.idCompra,
-             proveedor.fechaCompra,
-             proveedor.totalCompra,
+             proveedor.fechaCompra.slice(0,-9),
+             '$ '+proveedor.totalCompra.toLocaleString("es-CO"),
              boton1 + espacio + boton2
          ]).draw();
    
