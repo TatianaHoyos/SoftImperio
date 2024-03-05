@@ -285,6 +285,7 @@ namespace venta.Controllers
                 return File(stream, "aplication/pdf", "Compras.pdf");
             }
 
+
         }
     }
 
