@@ -46,7 +46,6 @@ function consultarCategorias(token) {
 
 function onExitoCategorias(data) {
     categorias = data;
-    console.log(data);
     var $dropdown = $("#idCategoria");
     // $dropdown.append($("<option />").val("-1").text("Todos"));
     $.each(data, function () {
@@ -55,8 +54,18 @@ function onExitoCategorias(data) {
 
 }
 function onErrorCategorias(error) {
-    console.log(error)
+    
     $("#cargando").modal("hide");
+    Swal.fire({
+        title: 'Error',
+        text: error.responseJSON.message,
+        icon:"warning",
+        showCancelButton: false,
+        confirmButtonColor: ' #d5c429 ',
+        confirmButtonText: 'Confirmar',
+    }).then((result) => {
+       
+    });
 }
 
 function crearProducto(token) {
@@ -64,8 +73,6 @@ function crearProducto(token) {
 
     // Create an FormData object 
     var formData = new FormData(form);
-
-    console.log(formData);
 
     $.ajax({
         type: "POST",
@@ -84,7 +91,6 @@ function crearProducto(token) {
 }
 
 function onExitoCrearProducto(data) {
-    console.log(data);
     var mensaje = $("#resultadoCrear");
     mensaje.addClass("alert-success");
     mensaje.removeClass("alert-danger");
@@ -99,7 +105,6 @@ function onExitoCrearProducto(data) {
    
 }
 function onErrorCrearProducto(error) {
-    console.log(error);
     var mensaje = $("#resultadoCrear");
     mensaje.addClass("alert-danger");
     mensaje.removeClass("alert-success");
@@ -124,17 +129,15 @@ function consultarProductos(token) {
 }
 
 function onExitoProductos(data) {
-    console.log(data);
 // Destruir la DataTable existente si ya ha sido inicializada
-if ($.fn.DataTable.isDataTable('#tablaProductos')) {
-    $('#tablaProductos').DataTable().destroy();
-}
+    if ($.fn.DataTable.isDataTable('#tablaProductos')) {
+        $('#tablaProductos').DataTable().destroy();
+    }
     // Obtén una referencia a la DataTable
     var dataTable = $('#tablaProductos').DataTable({
         dom: '<"row"<"col-md-6"l><"col-md-6"f>>tip',
         pageLength: 5,
         lengthMenu: [5, 10, 25, 50], 
-        data: data,
         language: {
             "sProcessing": "Procesando...",
             "sLengthMenu": "Mostrar _MENU_ registros",
@@ -158,7 +161,9 @@ if ($.fn.DataTable.isDataTable('#tablaProductos')) {
                 "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
                 "sSortDescending": ": Activar para ordenar la columna de manera descendente"
             }
-        }
+        },
+        lengthMenu: [5, 10, 25, 50],
+        pageLength: 5, // Número de registros por página
     });
     
     // Limpia la tabla
@@ -188,15 +193,21 @@ if ($.fn.DataTable.isDataTable('#tablaProductos')) {
             boton1 +
             boton2
         ]).draw();
-
-        // console.log(productos.id + ' ' + productos.nombreProducto + ' ' + productos.idCategoria + ' ' +
-        //     productos.referenciaProducto + ' ' + productos.precioProducto);
     });
 }
 
 
 function onErrorProductos(error) {
-    console.log(error)
+    Swal.fire({
+        title: 'Error',
+        text: error.responseJSON.message,
+        icon:"warning",
+        showCancelButton: false,
+        confirmButtonColor: ' #d5c429 ',
+        confirmButtonText: 'Confirmar',
+    }).then((result) => {
+       
+    });
 }
 
 function EliminarProducto(Producto) {
@@ -266,14 +277,11 @@ function actualizarProducto(idProductos,token) {
     // Create an FormData object
     var formData = new FormData(form);
 
-    console.log(formData);
-
     $.ajax({
         type: "Put",
         enctype: 'multipart/form-data',
         url: "http://localhost:8081/edge-service/v1/service/productos/actualizar/" + idProductos,
           "headers": {
-            "Content-Type": "application/json",
             'Authorization': `Bearer ${token}`
         },
         data: formData,

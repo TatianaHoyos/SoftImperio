@@ -1,4 +1,15 @@
- 
+$(document).ready(function () {
+  const fecha = new Date();
+
+    const año = fecha.getFullYear();
+    const mes = String(fecha.getMonth() + 1).padStart(2, '0'); // Sumamos 1 porque los meses en JavaScript son de 0 a 11
+    const dia = String(fecha.getDate()).padStart(2, '0');
+
+    const fechaFinal = `${año}-${mes}-${dia}`;
+    mostrarVentas("1999-02-23", fechaFinal);
+});
+
+
 // Consultar y mostrar Ventas
 const apiUrl = "https://localhost:7084/api/Ventas/ByFecha";
 
@@ -17,9 +28,17 @@ let paginaActual = 1;
 const ventasPorPagina = 6; // Puedes ajustar el número de ventas por página
 
 // Función para mostrar ventas dentro del rango de fechas
-function mostrarVentas() {
-  const fechaInicial = document.querySelector('#fecha-inicial').value;
-  const fechaFinal = document.querySelector('#fecha-final').value;
+function mostrarVentas(Finicial = "", Ffinal="") {
+  var fechaInicial = "";
+  var fechaFinal = "";
+  if (Ffinal === "" && Finicial === "") {
+    fechaInicial = document.querySelector('#fecha-inicial').value;
+    fechaFinal = document.querySelector('#fecha-final').value;
+  } else {
+    fechaFinal = Ffinal;
+    fechaInicial = Finicial;
+  }
+  
 
   // Verificar si se han ingresado fechas
   const filtrarPorFechas = fechaInicial && fechaFinal;
@@ -103,13 +122,20 @@ async function verDetalles(idVenta) {
 
     const detallesVenta = await response.json();
 
-    console.log('Detalles de la venta:', detallesVenta);
-
     // Llamamos a la función para mostrar detalles en una modal
     mostrarDetallesEnModal(idVenta, detallesVenta);
 
   } catch (error) {
-    console.error("Error al obtener detalles de la venta:", error);
+    Swal.fire({
+      title: 'Error',
+      text: error.message,
+      icon:"warning",
+      showCancelButton: false,
+      confirmButtonColor: ' #d5c429 ',
+      confirmButtonText: 'Confirmar',
+  }).then((result) => {
+     
+  });
   }
 }
 

@@ -7,7 +7,7 @@ async function obtenerVentasUltimoMes() {
         }
 
         const datos = await respuesta.json();
-        console.log('Datos de la API (Ventas Último Mes):', datos);
+        //console.log('Datos de la API (Ventas Último Mes):', datos);
 
         if (Array.isArray(datos) && datos.length > 0 && datos[0].totalVenta !== undefined) {
             // Formatear el número con el símbolo de pesos y sin mostrar centavos
@@ -19,7 +19,17 @@ async function obtenerVentasUltimoMes() {
             console.warn('La respuesta de la API no contiene los datos esperados para las ventas del último mes.');
         }
     } catch (error) {
-        console.error(error);
+        //console.error(error);
+        Swal.fire({
+        title: 'Error',
+        text: error.message,
+        icon:"warning",
+        showCancelButton: false,
+        confirmButtonColor: ' #d5c429 ',
+        confirmButtonText: 'Confirmar',
+    }).then((result) => {
+       
+    });
     }
 }
 
@@ -30,13 +40,13 @@ async function obtenerVentasUltimoMes() {
 
 async function obtenerComprasUltimoMes() {
     try {
-        const respuesta = await fetch('https://localhost:7084/api/Compras/compras-ultimo-mes');
+        const respuesta = await fetch('https://localhost:7084/api/Compra/compras-ultimo-mes');
         if (!respuesta.ok) {
             throw new Error('Error al obtener las compras del último mes. Estado de la respuesta: ' + respuesta.status);
         }
 
         const datos = await respuesta.json();
-        console.log('Datos de la API (Compras Último Mes):', datos);
+        //console.log('Datos de la API (Compras Último Mes):', datos);
 
         if (datos.length > 0) {
             const totalCompraFormateado = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(datos[0].totalCompra);
@@ -46,7 +56,17 @@ async function obtenerComprasUltimoMes() {
             console.warn('La respuesta de la API no contiene los datos esperados para las compras del último mes.');
         }
     } catch (error) {
-        console.error(error);
+        //console.error(error);
+        Swal.fire({
+            title: 'Error',
+            text: error.message,
+            icon:"warning",
+            showCancelButton: false,
+            confirmButtonColor: ' #d5c429 ',
+            confirmButtonText: 'Confirmar',
+        }).then((result) => {
+           
+        });
     }
 }
 
@@ -58,7 +78,7 @@ async function obtenerCreditosUltimoMes() {
         }
 
         const datos = await respuesta.json();
-        console.log('Datos de la API (Créditos Último Mes):', datos);
+        //console.log('Datos de la API (Créditos Último Mes):', datos);
 
         if (datos.length > 0) {
             const totalCreditoFormateado = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(datos[0].totalCredito);
@@ -110,21 +130,41 @@ function obtenerDatosCompletos(datos) {
 async function obtenerDatosGraficoVentas() {
     try {
         const datos = await fetchData('https://localhost:7084/api/Ventas/ventas-por-mes');
-        console.log('Datos completos de la API (Ventas):', datos);
+        //console.log('Datos completos de la API (Ventas):', datos);
         return datos;
     } catch (error) {
-        console.error('Error al obtener datos del gráfico de Ventas:', error);
+        //console.error('Error al obtener datos del gráfico de Ventas:', error);
+        Swal.fire({
+            title: 'Error',
+            text: error.message,
+            icon:"warning",
+            showCancelButton: false,
+            confirmButtonColor: ' #d5c429 ',
+            confirmButtonText: 'Confirmar',
+        }).then((result) => {
+           
+        });
         return [];
     }
 }
 
 async function obtenerDatosGraficoCompras() {
     try {
-        const datos = await fetchData('https://localhost:7084/api/Compras/compras-por-mes');
-        console.log('Datos completos de la API (Compras):', datos);
+        const datos = await fetchData('https://localhost:7084/api/Compra/compras-por-mes');
+        //console.log('Datos completos de la API (Compras):', datos);
         return datos;
     } catch (error) {
-        console.error('Error al obtener datos del gráfico de Compras:', error);
+       //console.error('Error al obtener datos del gráfico de Compras:', error);
+        Swal.fire({
+            title: 'Error',
+            text: error.message,
+            icon:"warning",
+            showCancelButton: false,
+            confirmButtonColor: ' #d5c429 ',
+            confirmButtonText: 'Confirmar',
+        }).then((result) => {
+           
+        });
         return [];
     }
 }

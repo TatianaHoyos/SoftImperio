@@ -5,19 +5,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Nuestros Proveedores</title>
-    <!-- estilos propios de la pagina  -->
     <!-- estilos generales-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/style_menu.css">
-    <link rel="stylesheet" href="css/styles_Notificacion.css">
+    <!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap4.min.css"> -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap4.min.css">
+
     <!--estilos especificos-->
     <link rel="stylesheet" href="css/tablas.css">
 
     <!--js comunes-->
-    <script src="https://code.jquery.com/jquery-3.6.1.min.js"
-    integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
@@ -25,24 +25,7 @@
 </head>
 
 <body>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            fetch('menucontainer.html')
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById('importedContent').innerHTML = html;
-                // Optionally, you can execute scripts from the imported content if needed
-                const scripts = document.getElementById('importedContent').getElementsByTagName('script');
-                for (let script of scripts) {
-                    eval(script.innerText);
-                }
-            });
-        });
-    </script>
-
-    <!-- Container for the imported content -->
-    <div id="importedContent"></div>
-
+    <div id="menu-container"></div>
     <!-- contenido propio de la pagina -->
 
     <h3 class="mt-3  text-white  text-center">Proveedores</h3>
@@ -58,7 +41,7 @@
 
         <div class="modal fade" id="formCrearProveedor" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
-            <div class="modal-content" style="background-color: rgba(0, 0, 0, 0.869);">
+            <div class="modal-content">
                 <div class="modal-header">
                     <h4 id="tituloFormularioProveedor" class="mt-3 text-center">Nuevo Proveedor</h4>
                 </div>
@@ -74,10 +57,10 @@
 
                         <div class="form-row justify-content-center">
                             <div class="form-group col-md-6">
-                                <label for="nombre" class="text-white">Nombre de proveedor</label>
+                                <label for="nombre" class="text">Nombre de proveedor</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" style="background-color: #ae9243; color: #212529;"><i class="fas fa-user"></i></span>
+                                        <span class="input-group-text"><i class="fas fa-user"></i></span>
                                     </div>
                                     <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Proveedor" onkeypress="return sololetrasnombre(event)">
                                 </div>
@@ -85,10 +68,10 @@
                         </div>
                         <div class="form-row justify-content-center">
                             <div class="form-group col-md-6">
-                                <label for="documento" class="text-white">Ingrese el documento</label>
+                                <label for="documento" class="text">Ingrese el documento</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" style="background-color: #ae9243; color: #212529;"><i class="far fa-id-card"></i></span>
+                                        <span class="input-group-text"><i class="far fa-id-card"></i></span>
                                     </div>
                                     <input type="text" class="form-control" id="documento" name="documento" placeholder="Documento" onkeypress="return validarDocumento(event)">
                                 </div>
@@ -96,10 +79,10 @@
                         </div>
                         <div class="form-row justify-content-center">
                             <div class="form-group col-md-6">
-                                <label for="email" class="text-white">Ingrese email</label>
+                                <label for="email" class="text">Ingrese email</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" style="background-color: #ae9243; color: #212529;"><i class="far fa-envelope"></i></span>
+                                        <span class="input-group-text" ><i class="far fa-envelope"></i></span>
                                     </div>
                                     <input type="email" class="form-control" id="email" name="email" placeholder="Email" onkeypress="return validarEmail(event)">
                                 </div>
@@ -108,10 +91,10 @@
                         </div>
                         <div class="form-row justify-content-center">
                             <div class="form-group col-md-6">
-                                <label for="telefono" class="text-white">Ingrese teléfono</label>
+                                <label for="telefono" class="text">Ingrese teléfono</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" style="background-color: #ae9243; color: #212529;"><i class="fas fa-phone"></i></span>
+                                        <span class="input-group-text"><i class="fas fa-phone"></i></span>
                                     </div>
                                     <input type="tel" class="form-control" id="telefono" name="telefono" placeholder="Teléfono" onkeypress="return validarCelular(event)">
                                 </div>
@@ -119,10 +102,10 @@
                         </div>
                         <div class="form-row justify-content-center">
                             <div class="form-group col-md-6">
-                                <label for="direccion" class="text-white">Ingrese dirección</label>
+                                <label for="direccion" class="text">Ingrese dirección</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" style="background-color: #ae9243; color: #212529;"><i class="fas fa-map-marker-alt"></i></span>
+                                        <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
                                     </div>
                                     <input type="text" class="form-control" id="direccion" name="direccion" placeholder="Dirección" onkeypress="return validarDireccion(event)">
                                 </div>
@@ -133,7 +116,7 @@
                         <div class="form-group text-center mt-3">
 
                             <input type="hidden" name="operacion" value="login">
-                            <button id="btn-form" type="button" onclick="crearUsuario()" class="col-md-3 form-control btn" >
+                            <button id="btn-form" type="button" onclick="crearUsuario()" class="col-md-3 btn" >
                                 <i class="fas fa-save"></i> <strong>Guardar</strong>
                             </button>
 
@@ -149,16 +132,15 @@
     </div>
 
     <!--Inicia tabla proveedores-->
-    <table id="miTabla" class="table   w-100 ">
+    <table id="miTabla" class="table w-100 ">
         <thead >
             <tr>
-                <th>#</th>
                 <th>Documento</th>
                 <th>Nombre</th>
                 <th>Email</th>
                 <th>Teléfono</th>
                 <th>Dirección</th>
-                <th colspan="2">Acciones</th>
+                <th >Acciones</th>
             </tr>
         </thead>
         <tbody id="tbodyProveedores">
@@ -171,7 +153,7 @@
     <div id="miModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <!-- Contenido del modal -->
-            <div class="modal-content" style="background-color: rgba(0, 0, 0, 0.869);">
+            <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
@@ -182,12 +164,12 @@
 
                         <div class="form-row justify-content-center">
                             <div class="form-group col-md-6">
-                                <label for="nombreE" class="text-white">
+                                <label for="nombreE" class="text">
                                     Nombre del proveedor
                                 </label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" style="background-color: #ae9243">
+                                        <span class="input-group-text">
                                             <i class="fas fa-user"></i>
                                         </span>
                                     </div>
@@ -198,12 +180,12 @@
 
                         <div class="form-row justify-content-center">
                             <div class="form-group col-md-6">
-                                <label for="documentoE" class="text-white">
+                                <label for="documentoE" class="text">
                                     Documento
                                 </label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" style="background-color: #ae9243">
+                                        <span class="input-group-text">
                                             <i class="far fa-id-card"></i>
                                         </span>
                                     </div>
@@ -214,12 +196,12 @@
 
                         <div class="form-row justify-content-center">
                             <div class="form-group col-md-6">
-                                <label for="emailE" class="text-white">
+                                <label for="emailE" class="text">
                                     Email
                                 </label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" style="background-color: #ae9243">
+                                        <span class="input-group-text">
                                             <i class="far fa-envelope"></i>
                                         </span>
                                     </div>
@@ -230,12 +212,12 @@
 
                         <div class="form-row justify-content-center">
                             <div class="form-group col-md-6">
-                                <label for="telefonoE" class="text-white">
+                                <label for="telefonoE" class="text">
                                     Teléfono
                                 </label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" style="background-color: #ae9243">
+                                        <span class="input-group-text">
                                             <i class="fas fa-phone"></i>
                                         </span>
                                     </div>
@@ -246,12 +228,12 @@
 
                         <div class="form-row justify-content-center">
                             <div class="form-group col-md-6">
-                                <label for="direccionE" class="text-white">
+                                <label for="direccionE" class="text">
                                     Dirección
                                 </label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" style="background-color: #ae9243">
+                                        <span class="input-group-text">
                                             <i class="fas fa-map-marker-alt"></i>
                                         </span>
                                     </div>
@@ -262,10 +244,10 @@
 
                         <div class="form-group text-center mt-3">
                             <input type="hidden" name="operacion" value="login">
-                            <button id="btn-form" type="button" onclick="editarProveedor()" class="col-md-3 form-control btn" style="background-color: #ae9243; color: #090909;">
+                            <button id="btn-form" type="button" onclick="editarProveedor()" class="col-md-3 btn">
                                 <i class="fas fa-save"></i> <strong>Guardar</strong>
                             </button>
-                            <button type="button" data-dismiss="modal" class="col-md-3 form-control btn" style="background-color: #ae9243; color: #090909;">
+                            <button type="button" data-dismiss="modal" class="col-md-3 btn">
                                 <i class="fas fa-times"></i> <strong>Cancelar</strong>
                             </button>
                         </div>
@@ -280,8 +262,15 @@
   <!--scripts cargar menu y dependencias comunes-->
 
     <!--scripts cargar menu y dependencias comunes-->
+
+    <script src="js/oAuthJwt.js"></script>
     <script src="js/validaciones.js"></script>
     <script src="js/funciones.js"></script>
     <script src="js/proveedores/proveedores.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#menu-container").load("menu.html");
+        });
+    </script>
 </body>
 </html>

@@ -3,11 +3,7 @@ $(document).ready(function () {
     consultarUsuarios();
     consultarRoles();
     consultarRolesA();
-    consultarRolesL();
     buscarUsuarioTabla();
-    // $('#email').on('input', function () {
-    //     validarEmailU();
-    // });
 });
 
 
@@ -24,11 +20,18 @@ function consultarUsuarios() {
 }
 
 function onErrorUsuarios(error) {
-    console.log(error)
+    Swal.fire({
+        title: 'Error',
+        text: error.responseJSON.value.message,
+        icon:"warning",
+        showCancelButton: false,
+        confirmButtonColor: ' #d5c429 ',
+        confirmButtonText: 'Confirmar',
+    }).then((result) => {
+       
+    });
 }
 function onExitoUsuarios(data) {
-    console.log("consulta de Usuarios");
-    console.log(data);
     mostrarTablaUsuarios(data);
 }
 
@@ -44,11 +47,41 @@ function consultarRoles() {
     });
 }
 function onExitoRoles(data) {
-    console.log(data);
+    var $dropdown = $("#idRol");
+    $.each(data, function () {
+        $dropdown.append($("<option />").val(this.idRol).text(this.nombreRol));
+    });
+    mostrarRolesConPermisos(data);
 }
 
+function mostrarRolesConPermisos(roles) {
+
+    // clear the existing list
+    $("#contentRoles .lista-Roles .card-header").remove();
+    $("#contentRoles .lista-Roles .lista-permisos").remove();
+    
+    $.each(roles, function(index,rol) {
+      $('#contentRoles .lista-Roles').append('<div class="card-header">'+rol.nombreRol +'</div>')
+      $('#contentRoles .lista-Roles').append('<div class="card-body lista-permisos"><ul></ul></div>')
+     
+      $.each(rol.permisos, function(index,permiso) {
+        $('#contentRoles .lista-Roles .lista-permisos ul').append('<li>'+permiso.acciones.nombre +" "+permiso.modulo.nombre+'</li>')
+    });
+    });
+  
+  }
+
 function onErrorRoles(error) {
-    console.log(error)
+    Swal.fire({
+        title: 'Error',
+        text: error.responseJSON.value.message,
+        icon:"warning",
+        showCancelButton: false,
+        confirmButtonColor: ' #d5c429 ',
+        confirmButtonText: 'Confirmar',
+    }).then((result) => {
+       
+    });
 }
 
 
@@ -136,7 +169,16 @@ function buscarUsuarioTabla(){
 //   }
 
 function onErrorRolesL(error) {
-    console.log(error)
+    Swal.fire({
+        title: 'Error',
+        text: error.responseJSON.value.message,
+        icon:"warning",
+        showCancelButton: false,
+        confirmButtonColor: ' #d5c429 ',
+        confirmButtonText: 'Confirmar',
+    }).then((result) => {
+       
+    });
 }
 
 
@@ -221,8 +263,6 @@ function crearUsuarios() {
 
 	// Create an FormData object
     var formData = new FormData(form);
-
-    console.log(formData)
     $.ajax({
         type: "POST",
         enctype: 'multipart/form-data',
@@ -240,7 +280,7 @@ function crearUsuarios() {
 
 
 function onExitoCrearUsuario(data) {
-    console.log(data);
+   
     var mensaje = $("#resultadoCrear");
     mensaje.addClass("alert-success");
     mensaje.removeClass("alert-danger");
@@ -289,7 +329,7 @@ function obtenerPrimerRolId() {
 
 
 function onErrorCrearUsuario(error) {
-    console.log(error);
+
     var mensaje = $("#resultadoCrear");
     mensaje.addClass("alert-danger");
     mensaje.removeClass("alert-success");
@@ -319,7 +359,7 @@ function consultarRolesA() {
 }
 
 function onExitoRolesA(data) {
-    console.log(data);
+   
     var $dropdown = $("#idRolActualizar");
     $.each(data, function () {
         $dropdown.append($("<option />").val(this.idRol).text(this.nombreRol));
@@ -345,7 +385,16 @@ function onExitoRolesA(data) {
 //   }
 
 function onErrorRolesA(error) {
-    console.log(error)
+    Swal.fire({
+        title: 'Error',
+        text: error.responseJSON.value.message,
+        icon:"warning",
+        showCancelButton: false,
+        confirmButtonColor: ' #d5c429 ',
+        confirmButtonText: 'Confirmar',
+    }).then((result) => {
+       
+    });
 }
 
 
@@ -380,7 +429,7 @@ function actualizarUsuarios(idUsuarios){
 	// Create an FormData object 
     var formData = new FormData(form);
 
-   console.log(formData);
+   
 
    $.ajax({
     type: "Put",
@@ -397,7 +446,7 @@ function actualizarUsuarios(idUsuarios){
 
 
 function onExitoActualizarUsuario(data){
-    console.log(data);
+   
     var mensaje = $("#resultadoCrear");
     mensaje.addClass("alert-success");
     mensaje.removeClass("alert-danger");
@@ -407,7 +456,7 @@ function onExitoActualizarUsuario(data){
     $("#foto-previewActualizar").attr('src', '');
 }
 function onErrorActualizarUsuario(error){
-    console.log(error);
+   
     var mensaje = $("#resultadoCrear");
     mensaje.addClass("alert-danger");
     mensaje.removeClass("alert-success");

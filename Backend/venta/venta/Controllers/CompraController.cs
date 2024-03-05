@@ -210,11 +210,11 @@ namespace venta.Controllers
                         page.Header().ShowOnce().Row(row =>
                         {
                             Console.WriteLine("linea --------- "+ _webHostEnvironment.WebRootPath);
-                            var rutaImagen = Path.Combine(_webHostEnvironment.WebRootPath, "img/LogoImperio.jpg");
+                            var rutaImagen = Path.Combine(_webHostEnvironment.WebRootPath, "img/logo.png");
                             byte[] imagenData = System.IO.File.ReadAllBytes(rutaImagen);
 
                             // Agregar el logo al encabezado
-                            row.ConstantItem(95).Background(Colors.Grey.Medium).Image(imagenData);
+                            row.ConstantItem(95).Image(imagenData);
 
 
                             row.RelativeItem()
@@ -286,6 +286,66 @@ namespace venta.Controllers
             }
 
 
+        }
+
+        //GET: api/compras/ultimo-mes
+        [HttpGet("compras-ultimo-mes")]
+        public ActionResult<IEnumerable<ComprasPorMesDTO>> ObtenerComprasUltimoMes()
+        {
+            try
+            {
+                // Obtener fecha de inicio del mes actual
+                var fechaInicio = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+                // Obtener fecha de inicio del mes siguiente
+                var fechaFin = fechaInicio.AddMonths(1);
+
+                var comprasUltimoMes = _context.Compras
+                    .Where(c => c.FechaCompra >= fechaInicio && c.FechaCompra < fechaFin)
+                    .GroupBy(c => new { Año = c.FechaCompra.Year, Mes = c.FechaCompra.Month })
+                    .Select(g => new ComprasPorMesDTO
+                    {
+                        Año = g.Key.Año,
+                        Mes = g.Key.Mes,
+                        TotalCompra = g.Sum(c => c.TotalCompra)
+                    })
+                    .ToList();
+
+                return Ok(comprasUltimoMes);
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest("Error al obtener las compras del último mes");
+            }
+        }
+
+        [HttpGet("compras-por-mes")]
+        public ActionResult<IEnumerable<ComprasPorMesDTO>> ObtenerComprasUltimos12Meses()
+        {
+            try
+            {
+                var fechaInicio = DateTime.Now.AddMonths(-12);
+
+                var comprasUltimos12Meses = _context.Compras
+                    .Where(c => c.FechaCompra >= fechaInicio)
+                    .GroupBy(c => new { Año = c.FechaCompra.Year, Mes = c.FechaCompra.Month })
+                    .Select(g => new ComprasPorMesDTO
+                    {
+                        Año = g.Key.Año,
+                        Mes = g.Key.Mes,
+                        TotalCompra = g.Sum(c => c.TotalCompra)
+                    })
+                    .OrderBy(g => g.Año)
+                    .ThenBy(g => g.Mes)
+                    .ToList();
+
+                return Ok(comprasUltimos12Meses);
+            }
+            catch (Exception ex)
+            {
+                // Manejar el error según tus necesidades
+                return BadRequest("Error al obtener las compras por mes");
+            }
         }
     }
 
