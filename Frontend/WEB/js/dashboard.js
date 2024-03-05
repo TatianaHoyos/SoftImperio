@@ -267,7 +267,12 @@ async function mostrarGraficoVentasYCompras() {
 }
 
 
-// Función para obtener datos de la API de Productos
+
+
+
+
+
+
 async function obtenerDatosGraficoProductos() {
     try {
         const respuesta = await fetch('https://localhost:7084/api/Productos/productos-con-existencias');
@@ -284,46 +289,56 @@ async function obtenerDatosGraficoProductos() {
             const referenciasProductos = datos.map(item => item.referenciaProducto);
             const cantidadesProductos = datos.map(item => item.cantidad);
 
-            // Combina nombre y referencia para formar la etiqueta del producto
-            const etiquetasProductos = nombresProductos.map((nombre, index) => `${nombre} - ${referenciasProductos[index]}`);
-
-            // Configurar los datos según el formato necesario para Chart.js
-            const dataProductos = {
-                labels: etiquetasProductos,
+            // Configurar los datos según el formato necesario para Chart.js - Polar Area Chart
+            const dataProductosPolarArea = {
+                labels: nombresProductos.map((nombre, index) => `${nombre} - ${referenciasProductos[index]}`),
                 datasets: [{
                     label: 'Cantidad de Productos',
                     data: cantidadesProductos,
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    borderColor: 'rgba(255, 99, 132, 1)',
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                        // Puedes agregar más colores si tienes más datos
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                        // Puedes agregar más colores si tienes más datos
+                    ],
                     borderWidth: 1
                 }]
             };
 
-            // Configurar las opciones del gráfico
-            const optionsProductos = {
+            // Configurar las opciones del Polar Area Chart
+            const optionsProductosPolarArea = {
                 scales: {
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Productos'
-                        }
-                    },
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Cantidad'
-                        }
+                    r: {
+                        suggestedMin: 0,
+                        suggestedMax: Math.max(...cantidadesProductos) + 10
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'bottom'
                     }
                 }
             };
 
-            // Obtener el contexto del canvas y renderizar el gráfico
-            const ctxProductos = document.getElementById('myChartProductos');
-            const myChartProductos = new Chart(ctxProductos, {
-                type: 'bar',
-                data: dataProductos,
-                options: optionsProductos
+            // Obtener el contexto del canvas y renderizar el Polar Area Chart
+            const ctxPolarArea = document.getElementById('myPolarAreaChartProductos');
+            const myPolarAreaChartProductos = new Chart(ctxPolarArea, {
+                type: 'polarArea',
+                data: dataProductosPolarArea,
+                options: optionsProductosPolarArea
             });
         }
     } catch (error) {
