@@ -1,10 +1,7 @@
 $(document).ready(function () {
     $("#resultadoCrear").hide();
     handleAjaxRequest(consultarProductos);
-    handleAjaxRequest(consultarCategorias);
-    
     buscarProductosTabla();
-   
 });
 
 
@@ -12,8 +9,6 @@ function mostrarFormularioCrear() {
     var titulo = $("#tituloFomularioProducto");
     titulo.text("Crear un nuevo producto");
     var btnform = $("#btn-form");
-    // btnform.text("Guardar");
-    // var product=  btnform.click(crearProducto);
     
         btnform.click(function () {
              
@@ -33,48 +28,7 @@ function mostrarFormularioActualizar() {
 
 }
 
-function consultarCategorias(token) {
-    //$("#textCargando").text("Cargando Categorias");
-    $.ajax({
-        type: "GET",
-        url: "http://localhost:8081/edge-service/v1/service/categorias/consultar",
-        "headers": {
-            "Content-Type": "application/json",
-            'Authorization': `Bearer ${token}`
-        },
-        success: onExitoCategorias,
-        error: onErrorCategorias
-    });
-}
 
-function onExitoCategorias(data) {
-    categorias = data;
-    var $dropdown = $("#idCategoria");
-    // $dropdown.append($("<option />").val("-1").text("Todos"));
-    $.each(data, function () {
-        $dropdown.append($("<option />").val(this.idCategoria).text(this.nombreCategoria));
-    });
-
-}
-function onErrorCategorias(error) {
-  // $("#cargando").modal("hide");
-    var message = "";
-    if (error.responseJSON.hasOwnProperty('errors')) {
-        message = error.responseJSON.errors[0].message;
-    } else {
-        message = error.responseJSON.message;
-    }
-    Swal.fire({
-        title: 'Error',
-        text: message,
-        icon:"warning",
-        showCancelButton: false,
-        confirmButtonColor: ' #d5c429 ',
-        confirmButtonText: 'Confirmar',
-    }).then((result) => {
-       
-    });
-}
 
 function crearProducto(token) {
     var idCategoria = $('#idCategoria').val();
@@ -201,21 +155,13 @@ function onExitoProductos(data) {
 
     // Recorre los datos y agrega las filas
     $.each(data, function (id, productos) {
-        var nombreCategoria = "";
-        if (productos.idCategoria == 1) {
-            nombreCategoria = "cervezas";
-        } else if (productos.idCategoria == 2) {
-            nombreCategoria = "wiskey";
-        } else if (productos.idCategoria == 3) {
-            nombreCategoria = "aguardiente";
-        }
 
         var boton1 = "<button onclick='EliminarProducto(" + JSON.stringify(productos) + ")' class='btn btn-eliminar' data-id='1'><i class='fas fa-trash'></i></button>";
         var boton2 = "<button onclick='EditarProducto(" + JSON.stringify(productos) + ")' class='btn btn-editar' data-toggle='modal' data-target='#formCrearProductos'><i class='fas fa-edit'></i></button>";
 
         // Agrega la fila a la DataTable
         dataTable.row.add([
-            nombreCategoria,
+           productos.nombreCategoria,
             productos.nombreProducto,
             productos.referenciaProducto,
             productos.existencia.stock,
