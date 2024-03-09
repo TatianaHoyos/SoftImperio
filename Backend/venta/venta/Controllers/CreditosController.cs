@@ -148,5 +148,15 @@ namespace venta.Controllers
         {
             return (_context.creditos?.Any(e => e.IdCreditos == id)).GetValueOrDefault();
         }
+
+        [HttpGet("ByVenta/{idVenta}")]
+        public async Task<ActionResult<IEnumerable<Creditos>>> GetCreditosPorIdVenta(int idVenta)
+        {
+            var creditos = await _context.creditos
+                .Where(creditos => creditos.IdVenta == idVenta)
+                .ToListAsync();
+
+            return creditos;
+        }
     }
 }

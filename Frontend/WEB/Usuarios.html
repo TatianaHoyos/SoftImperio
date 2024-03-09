@@ -138,7 +138,7 @@
                       <span class="input-group-text" style="background-color: #e5c850"><i
                           class="far fa-id-card"></i></span>
                     </div>
-                    <input type="" class="form-control" id="documento" name="documento" placeholder="Documento">
+                    <input type="" class="form-control" id="documento" name="documento" placeholder="Documento" onkeypress="return validarNumeroUC(event)">
                   </div>
                 </div>
               </div>
@@ -149,7 +149,7 @@
                   <div class="input-group-prepend">
                     <span class="input-group-text" style="background-color: #e5c850"><i class="fas fa-user"></i></span>
                   </div>
-                  <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre de colaborador">
+                  <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre de colaborador" onkeypress="return sololetrasnombre(event)">
                 </div>
               </div>
             </div>
@@ -162,7 +162,7 @@
                     <span class="input-group-text" style="background-color: #e5c850"><i class="fas fa-phone"></i></span>
                   </div>
                   <input type="tel" class="form-control" id="telefono" name="telefono"
-                    placeholder="Teléfono de colaborador">
+                    placeholder="Teléfono de colaborador" onkeypress="return validarNumeroUC(event)"">
                 </div>
               </div>
 
@@ -174,8 +174,9 @@
                     <span class="input-group-text" style="background-color: #e5c850"><i
                         class="far fa-envelope"></i></span>
                   </div>
-                  <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+                  <input type="email" class="form-control" id="email" name="email" placeholder="Email" onkeypress="return validarEmailU(event)">
                 </div>
+                <small id="emailMensajeA" class="form-text"></small>
               </div>
             </div>
 
@@ -317,6 +318,25 @@
         $("#menu-container").load("menu.html");
       });
     </script>
+
+<script>
+  $(document).ready(function () {
+      // Restablece el formulario cuando se cierra la modal
+      $('#formCrearUsuarios').on('hidden.bs.modal', function (e) {
+          // Restablece el formulario a su estado inicial
+          $('#formCrearUsuario')[0].reset();
+      });
+
+      // Agrega un evento de clic para el botón de "Guardar"
+      $('#btn-form').on('click', function () {
+          // Aquí puedes agregar la lógica para procesar el formulario
+          // ...
+
+          // Después de procesar, cierra la modal si es necesario
+          $('#formCrearUsuarios').modal('hide');
+      });
+  });
+</script>
   
 
 
