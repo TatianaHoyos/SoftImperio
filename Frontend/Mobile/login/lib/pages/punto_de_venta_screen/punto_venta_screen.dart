@@ -22,7 +22,10 @@ class _MySellingPointPageState extends State<SellingPointScreen>
     with SingleTickerProviderStateMixin {
   bool _isLoading = true;
   List<String> _categorias = [];
+  List<Categoria> _categoriasFromApis = [];
   List<Productos> _productos = [];
+  String _selectedCategoria = '';
+  late Productos _productosPorCategoria;
 
   late TabController _tabController;
 
@@ -77,14 +80,10 @@ class _MySellingPointPageState extends State<SellingPointScreen>
       right: 0.0,
       bottom: 0.0,
       child: ListView.builder(
-        itemCount: _productos.length,
+        itemCount: _productosPorCategoria.productos.length,
         itemBuilder: (context, index) {
-          Productos product = _productos[index]; // Get the current product
-
-          //custom widget to display each product
-          //TODO: acá hay que pasar el producto dependiendo de la categoria
-          return ProductCard(
-              product: product.productos.first); // Pass the product to the widget
+          Producto product = _productosPorCategoria.productos[index]; // Get the current product
+          return ProductCard(product: product); // Pass the product to the widget
         },
       ),
     );
@@ -177,6 +176,13 @@ class _MySellingPointPageState extends State<SellingPointScreen>
 
     if (exitoCategoria && exitoProductos) {
       setState(() {
+          var categoriaSeleccionada = _categoriasFromApis.firstWhere(
+            (categoria) => categoria.nombreCategoria == _selectedCategoria);
+
+          _productosPorCategoria = _productos.firstWhere(
+            (producto) => producto.idCategoria == categoriaSeleccionada.idCategoria.toString());
+
+
          _isLoading = false;
         });
     } else {
@@ -228,10 +234,12 @@ Future<bool> consumirApiProductos() async {
           headers: headers);
       if (response.statusCode == 200) {
         setState(() {
-          final categoria = categoriaFromJson(response.body);
-          _categorias = categoria.map((c) => c.nombreCategoria).toList();
-          _tabController =
-              TabController(length: _categorias.length, vsync: this);
+          _categoriasFromApis = categoriaFromJson(response.body);
+          _categorias = _categoriasFromApis.map((c) => c.nombreCategoria).toList();
+          _selectedCategoria = _categorias.first;
+          _tabController = TabController(length: _categorias.length, vsync: this);
+          // Añadir un listener para escuchar cambios de tabs
+          _tabController.addListener(_handleTabChange);
           //_isLoading = false;
         });
         return true;
@@ -244,6 +252,14 @@ Future<bool> consumirApiProductos() async {
       mostrarError(e, response);
       return false;
     }
+  }
+
+  void _handleTabChange() {
+    // Esta función se llama cada vez que se cambia de tab
+    setState(() {
+      _selectedCategoria = _categorias[_tabController.index];
+    });
+    print("Tab cambiada: ${_tabController.index}");
   }
 
   void mostrarError(e, response) {

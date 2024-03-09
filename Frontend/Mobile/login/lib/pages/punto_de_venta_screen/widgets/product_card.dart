@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:login/infraestructura/models/productos.dart';
+import 'package:login/util/format_currency.dart';
 //import 'package:login/provider/cart_provider.dart';
 
 class ProductCard extends StatefulWidget {
@@ -19,7 +20,7 @@ class _ProductCardState extends State<ProductCard> {
   void initState() {
     super.initState();
     _selectedReferenceItem =
-        widget.product.referencias[0].nombreReferencia; // Set initial value
+        widget.product.referencias[0].idProducto.toString(); // Set initial value
   }
 
   @override
@@ -61,9 +62,9 @@ class _ProductCardState extends State<ProductCard> {
                   // Units & price
                   Row(
                     children: [
-                      Text('${obtenerCantidadProductos(widget.product)} units'),
+                      Text('${obtenerCantidadProductos(widget.product)} disponibles'),
                       const SizedBox(width: 8.0),
-                      Text('COP ${obtenerPrecioProductos(widget.product)}'),
+                      Text(obtenerPrecioProductos(widget.product)),
                     ],
                   ),
                   const SizedBox(height: 4.0),
@@ -76,7 +77,7 @@ class _ProductCardState extends State<ProductCard> {
                               _selectedReferenceItem, // Use state variable for value
                           items: widget.product.referencias.map((item) {
                             return DropdownMenuItem(
-                              value: item.nombreReferencia,
+                              value: item.idProducto.toString(),
                               child: Text(item.nombreReferencia),
                             );
                           }).toList(),
@@ -112,12 +113,16 @@ class _ProductCardState extends State<ProductCard> {
   }
 
   String obtenerCantidadProductos(Producto producto) {
-    //widget.product.units
-    return "3";
+    var referencia = producto.referencias.firstWhere(
+      (r) => r.idProducto.toString() == _selectedReferenceItem);
+
+      return FormatCurrency.formatearMoneda(referencia.precio);
   }
 
   String obtenerPrecioProductos(Producto producto) {
-    //widget.product.price.toStringAsFixed(2)
-    return "21";
+    var referencia = producto.referencias.firstWhere(
+      (r) => r.idProducto.toString() == _selectedReferenceItem);
+
+      return referencia.existencia.cantidad.toString();
   }
 }

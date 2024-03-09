@@ -188,6 +188,18 @@ spring:
                 accion: Consultar
             - RewritePath=/edge-service/v1/service/categorias/consultar, /api/Categorias
 
+        - id: services-categoria-crear
+          uri: https://localhost:7084
+          predicates:
+            - Path=/edge-service/v1/service/categorias/crear
+            # - Header=scope, httpbin
+          filters:
+            - name: AuthenticationFilter
+              args:
+                modulo: Producto
+                accion: Crear
+            - RewritePath=/edge-service/v1/service/categorias/crear, /api/Categorias
+
         ##VENTAS##
         - id: services-venta-barra-crear
           uri: https://localhost:7084

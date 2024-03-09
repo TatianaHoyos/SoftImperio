@@ -55,7 +55,7 @@ class Producto {
 class Referencia {
     final int idProducto;
     final String nombreReferencia;
-    final int precio;
+    final num precio;
     final Existencia existencia;
 
     Referencia({
