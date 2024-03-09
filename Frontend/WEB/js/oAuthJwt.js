@@ -92,8 +92,6 @@ function refreshAccessToken() {
                 resolve(objetoRecuperado.authoritation.accessToken);
             })
             .catch(error => {
-                //console.log('error al recuperar el refresh token', error);
-                $("#cargando").modal("hide");
                 if (error.message.includes('401')) {
 
                     // Aquí puedes manejar el código 401, por ejemplo, redirigir a la página de inicio de sesión

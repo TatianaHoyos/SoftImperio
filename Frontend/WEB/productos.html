@@ -148,19 +148,74 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="formCrearCategoria" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div >
+                        <h4 id="tituloFomularioCategoria" class="mt-3  text-white  text-center">Crear una categoría</h4>
+
+                        <div class="form-row justify-content-center">
+                            <div class="form-group col-md-6">
+                                <label for="nombreCategoria" class="text-white">
+                                    Nombre de la Categoría
+                                </label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" style="background-color: #e5c850"><i class="fas fa-beer"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control" id="nombreCategoria" name="nombreCategoria"
+                                        placeholder="Nombre Categoría">
+                                </div>
+                            </div>
+                            
+                        </div>
+
+                        <div class="form-group text-center mt-3">
+                            <input type="hidden" name="operacion" id="operacionCategoria" value="">
+                            <input type="hidden" id="idCategoriaActualizar" value="">
+                            <button id="btn-form-categoria" onclick="eventoFormularioCategoria()" type="button"
+                                class="col-md-2 form-control btn"><strong>Guardar</strong></button>
+
+                            <button type="button" data-dismiss="modal"
+                                class="col-md-2 form-control btn"><strong>Cancelar</strong></button>
+                            <!-- <p class="mt-4">¿Sin cuenta? <a id="login" href="v_registro.php">Registrate</a></p> -->
+                        </div>
+                        
+                        <table id="tablaCategoria" class="table w-100">
+                            <thead class="text-center">
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Categoría</th>
+                                    <th>Acciones</th>
+                                   
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                      
+                         </table>
+                </div>
+            </div>
+        </div>
+    </div>
     <h3 class="mt-3  text-white  text-center">Productos Disponibles</h3>
 
     <div class="contenido-principal">
         <div class="container bg-secundary">
             <div class="form-group">
+                <button type="button" class="btn btn-primary mr-2" onclick="mostrarFormularioCrearCategoria()"data-toggle="modal"data-target="#formCrearCategoria">Categorías</button>
                 <button type="button" class="btn btn-primary mr-2" onclick="mostrarFormularioCrear()"data-toggle="modal"data-target="#formCrearProductos"><i class="fas fa-plus"></i></button>
                 <button type="button" onclick="generarPDFProductos()"  class="btn btn-primary"> <i class="fas fa-file-alt"></i></button>
+               
+                
             </div>
             <div class="form-group">
                 <table id="tablaProductos" class="table w-100">
                     <thead>
                         <tr>
-                            <th>Categoria </th>
+                            <th>Categoría</th>
                             <th>Nombre</th>
                             <th>Referencia </th>
                             <th>Stock</th>
@@ -188,6 +243,7 @@
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="js/productos.js"></script>
+<script src="js/categorias.js"></script>
 <script src="js/oAuthJwt.js"></script>
 <script src="js/validaciones.js"></script>
 <script src="js/mostrarFoto.js"></script>

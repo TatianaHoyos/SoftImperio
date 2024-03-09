@@ -68,7 +68,7 @@ namespace venta.Controllers
                 return NotFound();
             }
             var listaExistencias = await _context.Existencia.ToListAsync();
-            var listaProductos = await _context.Productos.ToListAsync();
+            var listaProductos = await _context.Productos.Include(p => p.Categoria).ToListAsync();
             // Usamos LINQ para agrupar por NombreProducto y crear una lista de ReferenciaProducto para cada grupo.
 
             var productosTransformados = listaProductos
@@ -76,6 +76,7 @@ namespace venta.Controllers
     .Select(grupoCategoria => new
     {
         IdCategoria = grupoCategoria.Key.ToString(),
+        NombreCategoria = grupoCategoria.First().Categoria?.NombreCategoria,
         Productos = grupoCategoria
             .GroupBy(producto => producto.NombreProducto)
             .Select(grupoProducto => new

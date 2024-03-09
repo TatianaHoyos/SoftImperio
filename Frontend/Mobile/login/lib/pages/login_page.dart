@@ -4,7 +4,8 @@ import 'package:login/components/my_text_field.dart';
 import 'package:login/pages/inicio_page.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
+import '../util/encrypt_util.dart';
+import '../util/auth_singleton.dart';
 import '../infraestructura/models/response.dart';
 import '../infraestructura/models/usuario.dart';
 
@@ -23,18 +24,18 @@ class _LoginPageState extends State<LoginPage> {
   Usuario? usuario;
   Response? response;
 
-  String? get _errorPasswordText {
-    final text = passwordController.value.text;
-    String pattern = r'^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8}$';
-    RegExp regExp = RegExp(pattern);
-    if (text.isEmpty) {
-      return "La contraseña es necesaria";
-    } else if (!regExp.hasMatch(text)) {
-      return "La contraseña debe tener al menos 8 caracteres, 1 letra mayúscula, 1 minúscula y 1 número. Además puede contener caracteres especiales.";
-    } else {
-      return null;
-    }
-  }
+  // String? get _errorPasswordText {
+  //   final text = passwordController.value.text;
+  //   String pattern = r'^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8}$';
+  //   RegExp regExp = RegExp(pattern);
+  //   if (text.isEmpty) {
+  //     return "La contraseña es necesaria";
+  //   } else if (!regExp.hasMatch(text)) {
+  //     return "La contraseña debe tener al menos 8 caracteres, 1 letra mayúscula, 1 minúscula y 1 número. Además puede contener caracteres especiales.";
+  //   } else {
+  //     return null;
+  //   }
+  // }
 
   @override
   void initState() {
@@ -71,9 +72,9 @@ class _LoginPageState extends State<LoginPage> {
               MyTextField(
                 controller: passwordController,
                 hintText: 'Ingresa tu Contraseña',
-                errorText: passwordController.value.text.isNotEmpty
-                    ? _errorPasswordText
-                    : null,
+                // errorText: passwordController.value.text.isNotEmpty
+                //     ? _errorPasswordText
+                //     : null,
                 secureText: true,
                 prefixIcon: Icon(Icons.remove_red_eye),
               ),
@@ -86,21 +87,21 @@ class _LoginPageState extends State<LoginPage> {
                       }
                     : null,
               ),
-              const SizedBox(height: 10),
-              const Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Recuperar contraseña',
-                      style: TextStyle(
-                          color: Colors.white,
-                          decoration: TextDecoration.underline),
-                    ),
-                  ],
-                ),
-              )
+              // const SizedBox(height: 10),
+              // const Padding(
+              //   padding: const EdgeInsets.symmetric(horizontal: 25.0),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.center,
+              //     children: [
+              //       Text(
+              //         'Recuperar contraseña',
+              //         style: TextStyle(
+              //             color: Colors.white,
+              //             decoration: TextDecoration.underline),
+              //       ),
+              //     ],
+              //   ),
+              // )
             ],
           ),
         ),
@@ -128,10 +129,12 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void onclickLogin(BuildContext context) {
-    if (_errorPasswordText == null) {
-      consumirApiLogin(usernameController.value.text,
+    // if (_errorPasswordText == null) {
+    //   consumirApiLogin(usernameController.value.text,
+    //       passwordController.value.text, context);
+    // }
+     consumirApiLogin(usernameController.value.text,
           passwordController.value.text, context);
-    }
   }
 
   Future<void> consumirApiLogin(
@@ -139,14 +142,15 @@ class _LoginPageState extends State<LoginPage> {
     setState(() {
       _isLoading = true;
     });
-    final url = Uri.parse('http://localhost:8080/api/login');
+    final url = Uri.parse('http://192.168.20.31:8081/edge-service/v1/authorization/login');
     final headers = {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
     };
+     var encrypted = EncryptUtil.encryptAes(passwordController.value.text);
     final body = jsonEncode({
-      'correo': usernameController.value.text,
-      'password': passwordController.value.text,
+      'correo': correo,
+      'password': encrypted,
     });
 
     try {
@@ -159,8 +163,13 @@ class _LoginPageState extends State<LoginPage> {
 
       if (response.statusCode == 200) {
         usuario = Usuario.fromJson(jsonDecode(response.body));
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => const Inicio()));
+
+        AuthSingleton().updateTokenData(accessToken: usuario!.authoritation.accessToken,
+         tokenType: usuario!.authoritation.tokenType,
+         refreshToken: usuario!.authoritation.refreshToken);
+
+       // Navega a la otra pantalla
+        Navigator.pushReplacementNamed(context, '/punto_venta');
       } else {
         this.response = Response.fromJson(jsonDecode(response.body));
         _mostrarAlerta(context, this.response);
