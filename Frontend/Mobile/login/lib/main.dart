@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:login/components/colors.dart';
 import 'package:login/pages/formulario_usuarios.dart';
 import 'package:login/pages/login_page.dart';
-import 'package:login/pages/mensaje_page.dart';
 import 'package:login/pages/inicio_page.dart';
+import 'package:login/pages/punto_de_venta_screen/punto_venta_screen.dart';
 import 'package:login/pages/usuarios.dart';
 import 'package:login/theme.dart';
 
@@ -16,12 +16,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return MaterialApp(
      debugShowCheckedModeBanner: false,
      theme: AppTheme().theme,
-      home: //LoginPage(),
-     //Formulario(title: 'Form',),
-     Inicio(),
+     initialRoute: "/",
+        routes: { '/': (context) => LoginPage(),//indica ruta principal
+          '/punto_venta': (context) => SellingPointScreen(),
+        //  '/screen_carrito': (context) => MyCart()
+          },
     );
   }
 }

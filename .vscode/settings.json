@@ -14,5 +14,6 @@
       ".git",
       "node_modules",
       "bower_components"
-    ]
+    ],
+    "liveServer.settings.multiRootWorkspaceName": "SoftImperio"
   }
