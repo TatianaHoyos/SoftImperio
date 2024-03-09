@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using venta.Data;
+using venta.DTO;
 using venta.Models;
 
 namespace venta.Controllers
@@ -38,9 +40,13 @@ namespace venta.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCategoria(int id, Categoria categoria)
         {
+            var responseError = new Response();
             if (id != categoria.IdCategoria)
             {
-                return BadRequest();
+                responseError.message = "Categoria no encontrada";
+                responseError.status = "Error";
+
+                return new JsonResult(responseError) { StatusCode = 404 };
             }
 
             _context.Entry(categoria).State = EntityState.Modified;
@@ -53,15 +59,24 @@ namespace venta.Controllers
             {
                 if (!CategoriaExists(id))
                 {
-                    return NotFound();
+                    responseError.message = "Categoria no encontrada";
+                    responseError.status = "Error";
+
+                    return new JsonResult(responseError) { StatusCode = 404 };
                 }
                 else
                 {
-                    throw;
+                    responseError.message = "Error Inesperado";
+                    responseError.status = "Error";
+
+                    return new JsonResult(responseError) { StatusCode = 500 };
                 }
             }
 
-            return NoContent();
+            responseError.message = "Categoria actualizada con exito";
+            responseError.status = "Exito";
+
+            return new JsonResult(responseError) { StatusCode = 200 };
         }
         // GET: api/categorias/1
         [HttpGet("{id}")]
@@ -115,13 +130,44 @@ namespace venta.Controllers
             var categoria = await _context.Categoria.FindAsync(id);
             if (categoria == null)
             {
-                return NotFound();
+                // Crear una instancia de Response para un error
+                var responseError = new Response
+                {
+                    message = "Categoria no encontrada",
+                    status = "Error"
+                };
+
+                // Serializar la instancia en formato JSON y retornarla como JsonResult
+                return new JsonResult(responseError) { StatusCode = 404 };
             }
 
-            _context.Categoria.Remove(categoria);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Categoria.Remove(categoria);
+                            await _context.SaveChangesAsync();
 
-            return NoContent();
+                            // Crear una instancia de Response para un error
+                            var response = new Response
+                            {
+                                message = "Categoria eliminada con exito",
+                                status = "Exito"
+                            };
+
+                            // Serializar la instancia en formato JSON y retornarla como JsonResult
+                            return new JsonResult(response) { StatusCode = 200 };
+            } catch (Exception e)
+            {
+                var responseError = new Response
+                {
+                    message = "La categoria tiene productos asociados",
+                    status = "Error"
+                };
+
+                // Serializar la instancia en formato JSON y retornarla como JsonResult
+                return new JsonResult(responseError) { StatusCode = 424 };
+            }
+
+
         }
         private bool CategoriaExists(int id)
         {

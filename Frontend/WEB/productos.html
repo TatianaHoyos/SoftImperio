@@ -153,13 +153,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div >
-                    <form id="formCrearRol" enctype="multipart/form-data" method="" action="">
                         <h4 id="tituloFomularioCategoria" class="mt-3  text-white  text-center">Crear una categoría</h4>
-                        <!-- <div class="form-row justify-content-center">
-                            <div class="form-group col-md-6">
-                                <div id="resultadoCrear" class="alert alert-danger" role="alert">Error</div>
-                            </div>
-                        </div> -->
 
                         <div class="form-row justify-content-center">
                             <div class="form-group col-md-6">
@@ -179,15 +173,16 @@
 
                         <div class="form-group text-center mt-3">
                             <input type="hidden" name="operacion" id="operacionCategoria" value="">
-                            <input type="hidden" name="operacion" id="idCategoriaActualizar" value="">
-                            <button id="btn-form" onclick="eventoFormularioCategoria()" type="button"
+                            <input type="hidden" id="idCategoriaActualizar" value="">
+                            <button id="btn-form-categoria" onclick="eventoFormularioCategoria()" type="button"
                                 class="col-md-2 form-control btn"><strong>Guardar</strong></button>
 
                             <button type="button" data-dismiss="modal"
                                 class="col-md-2 form-control btn"><strong>Cancelar</strong></button>
                             <!-- <p class="mt-4">¿Sin cuenta? <a id="login" href="v_registro.php">Registrate</a></p> -->
                         </div>
-                        <table id="tablaCategoria" class="table table-dark table-striped table-striped mx-auto mt-3">
+                        
+                        <table id="tablaCategoria" class="table w-100">
                             <thead class="text-center">
                                 <tr>
                                     <th>Id</th>
@@ -196,15 +191,11 @@
                                    
                                 </tr>
                             </thead>
-                            <tbody class="text-center">
-                                <tr>
-                                   
-                                </tr>
+                            <tbody>
 
                             </tbody>
                       
                          </table>
-                    </form>
                 </div>
             </div>
         </div>
@@ -214,7 +205,7 @@
     <div class="contenido-principal">
         <div class="container bg-secundary">
             <div class="form-group">
-                <button type="button" class="btn btn-primary mr-2" onclick="mostrarFormularioCrearCategoria()"data-toggle="modal"data-target="#formCrearCategoria">Crear Categoría</button>
+                <button type="button" class="btn btn-primary mr-2" onclick="mostrarFormularioCrearCategoria()"data-toggle="modal"data-target="#formCrearCategoria">Categorías</button>
                 <button type="button" class="btn btn-primary mr-2" onclick="mostrarFormularioCrear()"data-toggle="modal"data-target="#formCrearProductos"><i class="fas fa-plus"></i></button>
                 <button type="button" onclick="generarPDFProductos()"  class="btn btn-primary"> <i class="fas fa-file-alt"></i></button>
                

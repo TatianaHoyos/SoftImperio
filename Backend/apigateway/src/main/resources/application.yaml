@@ -198,7 +198,32 @@ spring:
               args:
                 modulo: Producto
                 accion: Crear
-            - RewritePath=/edge-service/v1/service/categorias/crear, /api/Categorias
+            - RewritePath=/edge-service/v1/service/categorias/crear, /api/Categorias/crear
+
+        - id: services-categoria-eliminar
+          uri: https://localhost:7084
+          predicates:
+            - Path=/edge-service/v1/service/categorias/eliminar/**
+            # - Header=scope, httpbin
+          filters:
+            - name: AuthenticationFilter
+              args:
+                modulo: Producto
+                accion: Eliminar
+            - RewritePath=/edge-service/v1/service/categorias/eliminar/(?<idcategoria>.*), /api/Categorias/$\{idcategoria}
+
+        - id: services-categoria-actualizar
+          uri: https://localhost:7084
+          predicates:
+            - Path=/edge-service/v1/service/categorias/actualizar/**
+            # - Header=scope, httpbin
+          filters:
+            - name: AuthenticationFilter
+              args:
+                modulo: Producto
+                accion: Editar
+            - RewritePath=/edge-service/v1/service/categorias/actualizar/(?<idcategoria>.*), /api/Categorias/$\{idcategoria}
+
 
         ##VENTAS##
         - id: services-venta-barra-crear
