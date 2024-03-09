@@ -9,9 +9,17 @@ function mostrarFormularioActualizarCrearUsuarioCreditos() {
     titulo.text("Actualizar un usuario crédito");
     var btnform = $("#btn-form");
     btnform.text("Actualizar");
-    btnform.off("click").click(function () {
+    // btnform.off("click").click(function () {
+    //     var idUsuarioCredito = $("#idUsuarioCredito").val();
+    //     actualizarUsuarioCredito(idUsuarioCredito);
+
+    // });
+
+    btnform.click(function () {
         var idUsuarioCredito = $("#idUsuarioCredito").val();
-        actualizarUsuarioCredito(idUsuarioCredito);
+        handleAjaxRequest(function (token) {
+            callApiActualizarUsuarioCredito(idUsuarioCredito);
+    });
     });
 }
 
@@ -48,12 +56,19 @@ function crearUsuarioCredito() {
         "totalCredito": 0
 
     });
-
+  
+    handleAjaxRequest(function (token) {
+        callApiCrearUsuarioCredito(token,formData);
+    });
+  
+}
+function callApiCrearUsuarioCredito(token,formData){
     $.ajax({
         type: "POST",
-        url: "https://localhost:7084/api/UsuarioCreditos",
+        url: "http://localhost:8081/edge-service/v1/service/usuario/credito/crear",
         "headers": {
             "accept": "application/json",
+            'Authorization': `Bearer ${token}`,
             "Content-Type": "application/json"
           },
         data: formData,
@@ -62,7 +77,6 @@ function crearUsuarioCredito() {
         error: onErrorusuariocreditocrear
     });
 }
-
 
 function onExitoCrearUsuariocredito(data) {
     var mensaje = $("#resultadoCrear");
@@ -96,10 +110,15 @@ function onErrorusuariocreditocrear(error) {
 }
 
 function consultarusuariocredito() {
+ handleAjaxRequest(callApiConsultarUsuarioCredito);
+}
+
+function callApiConsultarUsuarioCredito(token){
     $.ajax({
         type: "GET",
-        url: "https://localhost:7084/api/UsuarioCreditos",
+        url: "http://localhost:8081/edge-service/v1/service/usuario/credito/consultar",
         headers: {
+            'Authorization': `Bearer ${token}`,
             "Content-Type": "application/json"
         },
         success: onExitousuariocredito,
@@ -107,24 +126,6 @@ function consultarusuariocredito() {
     });
 }
 
-
-
-// function onExitousuariocredito(data) {
-
-//     $('#tablaUsuarioCredito > tbody').empty();
-//     $.each(data, function (id, usuariocredito) {
-//         var boton0 = "<button onclick='DetalleCredito(" + JSON.stringify(usuariocredito) + ")' class='btn btn-delete' data-id='1'><i class='fas fa-money-bill-wave'></i></button>";
-//         var boton1 = "<button onclick='AsociarCredito(" + JSON.stringify(usuariocredito) + ")' class='btn btn-delete' data-id='1'><i class='fas fa-plus'></i></button>";
-//         var boton2 = "<button onclick='EliminarUsuarioCredito(" + JSON.stringify(usuariocredito) + ")' class='btn btn-delete' data-id='1'><i class='fas fa-trash'></i></button>";
-//         var boton3 = "<button onclick='EditarUsuarioCredito(" + JSON.stringify(usuariocredito) + ")' class='btn btn-edit' data-toggle='modal' data-target='#formCrearUsuarioCredito'><i class='fas fa-edit'></i></button>";
-
-//         $('#tablaUsuarioCredito').append('<tr><td>' + usuariocredito.idUsuarioCredito +'</td><td>' + usuariocredito.nombre +
-//             '</td><td>' + usuariocredito.documento + '</td><td>' + usuariocredito.telefono + '</td><td>' + usuariocredito.totalCredito +
-//             '</td><td>'+boton1+' '+boton0+ '</td><td>'+ boton3 +' '+ boton2 + '</td></tr>');
-//         console.log(usuariocredito.idUsuarioCredito + ' '+ usuariocredito.nombre + ' ' + usuariocredito.documento
-//             + ' ' + usuariocredito.telefono + ' ' + usuariocredito.totalCredito );
-//     });
-// }
 
 
 function onExitousuariocredito(data) {
@@ -202,19 +203,21 @@ function onExitousuariocredito(data) {
         });
     }
 
-
-
-
-
-
-
     function DetalleCredito(usuariocredito){
+        
+        handleAjaxRequest(function (token) {
+            callApiDetalleCredito(usuariocredito,token);
+        });
+    }
+
+
+    function callApiDetalleCredito(usuariocredito,token){
         $.ajax({
             type: "GET",
-            url: "https://localhost:7084/api/creditos/" + usuariocredito.idUsuarioCredito,
+            url: "http://localhost:8081/edge-service/v1/service/usuario/credito/consultar/id/" + usuariocredito.idUsuarioCredito,
             "headers": {
                 "Content-Type": "application/json",
-        //        'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${token}`
             },
             success: function (data) {
 
@@ -262,12 +265,19 @@ function onExitousuariocredito(data) {
     }
 
     function DetalleAbono(usuariocredito){
+          
+        handleAjaxRequest(function (token) {
+            callApiDetalleAbono(usuariocredito,token);
+        });
+    }
+
+    function callApiDetalleAbono(usuariocredito,token){
         $.ajax({
             type: "GET",
-            url: "https://localhost:7084/api/AbonoCreditos/" + usuariocredito.idUsuarioCredito,
+            url: "http://localhost:8081/edge-service/v1/service/abono/creditos/consultar/id/" + usuariocredito.idUsuarioCredito,
             "headers": {
                 "Content-Type": "application/json",
-        //        'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${token}`
             },
             success: function (data) {
 
@@ -300,10 +310,6 @@ function onExitousuariocredito(data) {
         });
     }
 
-
-
-
-
 function EditarUsuarioCredito(usuariocredito) {
     mostrarFormularioActualizarCrearUsuarioCreditos();
     $("#idUsuarioCredito").val(usuariocredito.idUsuarioCredito);
@@ -311,7 +317,11 @@ function EditarUsuarioCredito(usuariocredito) {
     $("#documento").val(usuariocredito.documento);
     $("#telefono").val(usuariocredito.telefono);
     var btnform = $("#btn-form");
-    btnform.click(function(){ actualizarUsuarioCredito(); });
+    btnform.click(function(){
+        handleAjaxRequest(function (token) {
+            callApiActualizarUsuarioCredito(formData,token);
+        });
+     });
 }
 
 function actualizarUsuarioCredito() {
@@ -322,12 +332,19 @@ function actualizarUsuarioCredito() {
         "documento": $("#documento").val(),
         "telefono":  $("#telefono").val()
       });
+      handleAjaxRequest(function (token) {
+        callApiActualizarUsuarioCredito(formData,token);
+    });
+}
+
+function callApiActualizarUsuarioCredito(formData,token){
     $.ajax({
         type: "Put",
         enctype: 'multipart/form-data',
-        url: "https://localhost:7084/api/UsuarioCreditos/" + $("#idUsuarioCredito").val(),
+        url: "http://localhost:8081/edge-service/v1/service/usuario/credito/actualizar/id/" + $("#idUsuarioCredito").val(),
         "headers": {
             "accept": "application/json",
+            'Authorization': `Bearer ${token}`,
             "Content-Type": "application/json"
           }, // Asegúrate de que la URL sea correcta
         data: formData,
@@ -355,15 +372,10 @@ function onExitoActualizarUsuariocredito(data) {
     $("#formUsuarioCredito").trigger("reset");
     setTimeout(function () {
         $('#formCrearUsuarioCredito').modal('hide');// Utiliza el selector correcto
-        consultarusuariocredito();
+        handleAjaxRequest(consultarusuariocredito);
     }, 1700);
     
 }
-
-
-
-
-
 
 function EliminarUsuarioCredito(usuariocredito) {
     Swal.fire({
@@ -378,42 +390,57 @@ function EliminarUsuarioCredito(usuariocredito) {
     }).then((result) => {
         if (result.isConfirmed) {
             // Realizar la solicitud de eliminación AJAX
-            $.ajax({
-                url: 'https://localhost:7084/api/UsuarioCreditos/' + usuariocredito.idUsuarioCredito,
-                type: 'DELETE',
-                success: function (response) {
-                    // Mostrar un mensaje de éxito predeterminado
-                    Swal.fire('Eliminado', 'Usuario crédito eliminado correctamente', 'success');
-                    // Actualizar la tabla o realizar cualquier otra acción necesaria
-                    consultarusuariocredito();
-                },
-                error: function (xhr, status, error) {
-                    // Manejar los errores de la solicitud AJAX
-                    Swal.fire('Error', error.message, 'error');
-                }
+            handleAjaxRequest(function (token) {
+                callApiEliminarUsuarioCredito(usuariocredito,token);
             });
+        }
+    });
+}
+function callApiEliminarUsuarioCredito(usuariocredito,token){
+    $.ajax({
+        url: 'http://localhost:8081/edge-service/v1/service/usuario/credito/eliminar/id/' + usuariocredito.idUsuarioCredito,
+        'headers': {
+            'Authorization': `Bearer ${token}`
+         },
+        type: 'DELETE',
+        success: function (response) {
+            // Mostrar un mensaje de éxito predeterminado
+            Swal.fire('Eliminado', 'Usuario crédito eliminado correctamente', 'success');
+            // Actualizar la tabla o realizar cualquier otra acción necesaria
+            handleAjaxRequest(consultarusuariocredito);
+        },
+        error: function (xhr, status, error) {
+            // Manejar los errores de la solicitud AJAX
+            Swal.fire('Error', error.message, 'error');
         }
     });
 }
 
 
+
+function AsociarCredito(usuariocredito){
+    handleAjaxRequest(function (token) {
+        callApiAsociarCredito(token, usuariocredito);
+    });
+}
 var ultimoRegistroId;
 var totalVenta;
 var idUsuarioCredito;
-
-function AsociarCredito(usuariocredito) {
+function callApiAsociarCredito(token,usuariocredito) {
     // Realiza una solicitud adicional para obtener el último registro de la tabla Venta
     $.ajax({
         type: "GET",
-        url: "https://localhost:7084/api/Ventas",
+        url: "http://localhost:8081/edge-service/v1/service/venta/consultar",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "target": "consultar-venta",
+            'Authorization': `Bearer ${token}`
         },
         success: function(data) {
             // Ordenar los datos en forma descendente por el campo idVenta
             data.sort((a, b) => b.idVenta - a.idVenta);
 
-            console.log("Respuesta AJAX (ordenada descendentemente):", data); // Agregar este console.log para depurar
+           // console.log("Respuesta AJAX (ordenada descendentemente):", data); // Agregar este console.log para depurar
             if (data.length > 0) {
                 var ultimoRegistro = data[0];
 
@@ -459,12 +486,21 @@ function CrearCredito() {
 
     // Convertir a formato JSON
     var formDataCredito = JSON.stringify(creditoData);
-    console.log(formDataCredito);
+  
 
     // Realizar la solicitud para crear el crédito
+    handleAjaxRequest(function (token) {
+        callApicrearCredito(formDataCredito,token);
+    });
+}
+
+function callApicrearCredito(formDataCredito,token){
     $.ajax({
         type: "POST",
-        url: "https://localhost:7084/api/Creditos",
+        url: "http://localhost:8081/edge-service/v1/service/creditos/crear",
+        'headers': {
+            'Authorization': `Bearer ${token}`
+         },
         data: formDataCredito,
         contentType: "application/json", // Configura el tipo de medio adecuado
         success: function(data) {
@@ -482,5 +518,3 @@ function CrearCredito() {
         }
     });
 }
-
-
