@@ -83,6 +83,7 @@ namespace venta.Controllers
             }
             var oldDC = _context.DetalleCompra.Where(dc => dc.IdDetalleCompra == detalleCompra.IdDetalleCompra).First();
             var oldSubtotal = oldDC.PrecioCompra * oldDC.CantidadProducto;
+            var oldCantidad = oldDC.CantidadProducto;
 
             var updateCompra = _context.Compras.Where(c => c.IdCompra == detalleCompra.IdCompra).First();
             updateCompra.TotalCompra -= oldSubtotal;
@@ -113,6 +114,13 @@ namespace venta.Controllers
 
 
                     _context.Compras.Update(updateCompra);
+                    await _context.SaveChangesAsync();
+
+                    //actualizar cantidad de productos en la tabla existencias
+                    var existencia = _context.Existencia.Where(e => e.IdExistencias == detalleCompra.IdExistencias).First();
+                    existencia.Cantidad -= oldCantidad;
+                    existencia.Cantidad += detalleCompra.CantidadProducto;
+                    _context.Existencia.Update(existencia);
                     await _context.SaveChangesAsync();
                 }
 
@@ -176,6 +184,13 @@ namespace venta.Controllers
                     updateCompra.TotalCompra += detalleCompra.CantidadProducto * detalleCompra.PrecioCompra;
                     _context.Compras.Update(updateCompra);
                     await _context.SaveChangesAsync();
+
+                    //actualizar cantidad de productos en la tabla existencias
+                    var existencia = _context.Existencia.Where(e => e.IdExistencias == detalleCompra.IdExistencias).First();
+                    existencia.Cantidad += detalleCompra.CantidadProducto;
+                    _context.Existencia.Update(existencia);
+                    await _context.SaveChangesAsync();
+
                     return CreatedAtAction("GetDetalleCompra", new { id = detalleCompra.IdDetalleCompra }, detalleCompra);
 
                 }
@@ -240,6 +255,12 @@ namespace venta.Controllers
 
                 updateCompra.TotalCompra = updateCompra.TotalCompra - (detalleCompra.CantidadProducto * detalleCompra.PrecioCompra);
                 _context.Compras.Update(updateCompra);
+                await _context.SaveChangesAsync();
+
+                //actualizar cantidad de productos en la tabla existencias
+                var existencia = _context.Existencia.Where(e => e.IdExistencias == detalleCompra.IdExistencias).First();
+                existencia.Cantidad -= detalleCompra.CantidadProducto;
+                _context.Existencia.Update(existencia);
                 await _context.SaveChangesAsync();
 
                 return NoContent();
