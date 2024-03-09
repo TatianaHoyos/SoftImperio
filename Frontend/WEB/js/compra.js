@@ -1,14 +1,11 @@
 $(document).ready(function() {
   handleAjaxRequest(callApiConsultarCompra);
- 
-   
-   });
- 
+  });
 
 function addCompra() {
     //window.location.href = 'comprasDetail.html';
-    habilitarVistaDetalle("Nuevo");
-    //handleAjaxRequest(callApiAddCompra);
+    handleAjaxRequest(callApiAddCompra);
+    console.log("invoking API");
   }
 function callApiAddCompra(token){
   $.ajax({
@@ -33,14 +30,12 @@ function callApiAddCompra(token){
         confirmButtonColor: ' #ae9243 ',
         confirmButtonText: 'Confirmar',
     }).then((result) => {
-       
     });
     }
   });
 }
 
   function deleteCompra(idCompra) {
-   
     // Display a confirmation dialog using SweetAlert
     Swal.fire({
       title: 'Confirma Eliminación',
@@ -56,11 +51,11 @@ function callApiAddCompra(token){
         handleAjaxRequest(function (token) {
           callAPiDeleteCompra(idCompra,token);
   });
-      
+
       } else {
         // User clicked "Cancel" or closed the dialog, do nothing
       }
-   });
+  });
 }
 function callAPiDeleteCompra(idCompra,token){
   $.ajax({
@@ -72,12 +67,10 @@ function callAPiDeleteCompra(idCompra,token){
     contentType: 'application/json',
     success: function (response) {
       // Procesar la respuesta exitosa
-    
       window.location.reload();
     },
     error: function (error) {
       // Manejar el error
-     
       Swal.fire({
         title: 'Error',
         text: 'No es posible eliminar después de 24 horas.',
@@ -90,7 +83,6 @@ function callAPiDeleteCompra(idCompra,token){
 }
 function generarPDF(){
 handleAjaxRequest(callApiGenerarPdf);
- 
 }
 function callApiGenerarPdf(token){
   $.ajax({
@@ -124,7 +116,6 @@ function callApiGenerarPdf(token){
           URL.revokeObjectURL(blobURL);
         }, 5000); // 5000 milisegundos (5 segundos) como ejemplo
       } else {
-       
         Swal.fire({
           title: 'Error',
           text: `Error en la respuesta del servidor. Código de estado: ${xhr.status}`,
@@ -133,7 +124,6 @@ function callApiGenerarPdf(token){
           confirmButtonColor: ' #ae9243 ',
           confirmButtonText: 'Confirmar',
       }).then((result) => {
-         
       });
       }
     },
@@ -147,7 +137,6 @@ function callApiGenerarPdf(token){
         confirmButtonColor: ' #ae9243 ',
         confirmButtonText: 'Confirmar',
     }).then((result) => {
-       
     });
     }
   });
@@ -240,7 +229,6 @@ function callApiConsultarCompra(token){
           confirmButtonColor: ' #ae9243 ',
           confirmButtonText: 'Confirmar',
       }).then((result) => {
-         
       });
         //iniciarDataTables();
       }
@@ -254,67 +242,57 @@ function callApiConsultarCompra(token){
         confirmButtonColor: ' #ae9243 ',
         confirmButtonText: 'Confirmar',
     }).then((result) => {
-       
     });
-   
     }
   });
 }
 // Inicializar DataTables directamente después de la carga de la página
 function iniciarDataTables(data) {
-  
-       var dataTable = $('#miTabla').DataTable({
-         dom: '<"row"<"col-md-6"l><"col-md-6"f>>tip',
-         pageLength: 5,
-         lengthMenu: [5, 10, 25, 50],
-   
-         rowId: 'idCompra',
-       language: { /*language, parametro adicional para cambiar los texto del datatable */
-         "sProcessing": "Procesando...",
-         "sLengthMenu": "Mostrar _MENU_ registros",
-         "sZeroRecords": "No se encontraron resultados",
-         "sEmptyTable": "Ningún dato disponible en esta tabla",
-         "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-         "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-         "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-         "sInfoPostFix": "",
-         "sSearch": "Buscar:",
-         "sUrl": "",
-         "sInfoThousands": ",",
-         "sLoadingRecords": "Cargando...",
-         "oPaginate": {
-           "sFirst": "Primero",
-           "sLast": "Último",
-           "sNext": "Siguiente",
-           "sPrevious": "Anterior"
-         },
-         "oAria": {
+      var dataTable = $('#miTabla').DataTable({
+        dom: '<"row"<"col-md-6"l><"col-md-6"f>>tip',
+        pageLength: 5,
+        lengthMenu: [5, 10, 25, 50],
+        rowId: 'idCompra',
+        language: { /*language, parametro adicional para cambiar los texto del datatable */
+          "sProcessing": "Procesando...",
+          "sLengthMenu": "Mostrar _MENU_ registros",
+          "sZeroRecords": "No se encontraron resultados",
+          "sEmptyTable": "Ningún dato disponible en esta tabla",
+          "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+          "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+          "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+          "sInfoPostFix": "",
+          "sSearch": "Buscar:",
+          "sUrl": "",
+          "sInfoThousands": ",",
+          "sLoadingRecords": "Cargando...",
+          "oPaginate": {
+            "sFirst": "Primero",
+            "sLast": "Último",
+            "sNext": "Siguiente",
+            "sPrevious": "Anterior"
+          },
+          "oAria": {
           "sSortDescending": ": Activar para ordenar la columna de manera descendente",
-           "sSortAscending": ": Activar para ordenar la columna de manera ascendente"
-         }
-       },
-     });
-   
-       // Seleccionar el elemento de búsqueda
-       var inputSearch = $('#miTabla_filter input');
-       inputSearch.removeAttr('form-control'); // Asegurarse de que el input tenga la clase form-control
-       inputSearch.removeAttr('placeholder'); // Quitar el atributo placeholder si existe
-     
-       dataTable.clear();
-     
-       
-       $.each(data, function (id, proveedor) {
-     
-         var boton1 ='<button class="btn btn-editar" data-toggle="modal" data-target="#miModal" onclick="habilitarVistaDetalle(' + proveedor.idCompra + ')"><i class="fa-solid fa-eye"></i></button>';
-         var espacio = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-         var boton2 = '<button onclick="deleteCompra( ' + proveedor.idCompra + ')" class="btn btn-eliminar" > <i class="fa-solid fa-trash-can"></i></button>';
+          "sSortAscending": ": Activar para ordenar la columna de manera ascendente"
+          }
+        },
+      });
+      // Seleccionar el elemento de búsqueda
+      var inputSearch = $('#miTabla_filter input');
+        inputSearch.removeAttr('form-control'); // Asegurarse de que el input tenga la clase form-control
+        inputSearch.removeAttr('placeholder'); // Quitar el atributo placeholder si existe
+        dataTable.clear();
+      $.each(data, function (id, proveedor) {
+        var boton1 ='<button class="btn btn-editar" data-toggle="modal" data-target="#miModal" onclick="habilitarVistaDetalle(' + proveedor.idCompra + ')"><i class="fa-solid fa-eye"></i></button>';
+        var espacio = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+        var boton2 = '<button onclick="deleteCompra( ' + proveedor.idCompra + ')" class="btn btn-eliminar" > <i class="fa-solid fa-trash-can"></i></button>';
          // Agrega la fila a la DataTable
-         dataTable.row.add([
-             proveedor.idCompra,
-             proveedor.fechaCompra.slice(0,-9),
-             '$ '+proveedor.totalCompra.toLocaleString("es-CO"),
-             boton1 + espacio + boton2
-         ]).draw();
-   
-       });
-     }
+        dataTable.row.add([
+          proveedor.idCompra,
+          proveedor.fechaCompra.slice(0,-9),
+          '$ '+proveedor.totalCompra.toLocaleString("es-CO"),
+          boton1 + espacio + boton2
+        ]).draw();
+      });
+    }

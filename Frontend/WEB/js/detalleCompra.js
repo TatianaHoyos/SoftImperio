@@ -13,9 +13,8 @@ function asignarValor(data) {
 $(document).ready(function () {
   const idCompra = urlParams.get('idCompra');
   if(idCompra != "Nuevo"){
- handleAjaxRequest(ObtenerDetalleCompra);
-
- }
+  handleAjaxRequest(ObtenerDetalleCompra);
+}
 });
 
 function ObtenerDetalleCompra(){
@@ -53,7 +52,6 @@ function ObtenerDetalleCompra(){
     callApiObtenerDetalleCompra(token,miTabla);
 });
   // const apiUrl = `https://localhost:7084/api/DetalleCompra/ObtenerDetalleCompraPorIdCompra/${idCompra}`;
- 
 }
 function callApiObtenerDetalleCompra(token,miTabla){
   const idCompra = urlParams.get('idCompra');
@@ -61,7 +59,7 @@ function callApiObtenerDetalleCompra(token,miTabla){
     url: `http://localhost:8081/edge-service/v1/service/detalle-compras/consultar/id/${idCompra}`, // Reemplaza '2' con el ID que necesites
     "headers": {
       'Authorization': `Bearer ${token}`
-   },
+  },
     type: 'GET',
     dataType: 'json',
     success: function (data) {
@@ -94,12 +92,10 @@ function callApiObtenerDetalleCompra(token,miTabla){
         text: error.message,
         icon:"warning",
         showCancelButton: false,
-        confirmButtonColor: ' #d5c429 ',
+        confirmButtonColor: ' #ae9243 ',
         confirmButtonText: 'Confirmar',
     }).then((result) => {
-       
     });
-    
     }
   });
 }
@@ -113,10 +109,9 @@ function handleAPIError(error) {
     text: error.message,
     icon:"warning",
     showCancelButton: false,
-    confirmButtonColor: ' #d5c429 ',
+    confirmButtonColor: ' #ae9243 ',
     confirmButtonText: 'Confirmar',
 }).then((result) => {
-   
 });
 
 }
@@ -161,7 +156,7 @@ function callApiDeleteDetail(token,id){
     url: 'http://localhost:8081/edge-service/v1/service/detalle-compras/eliminar/'+id,
     "headers": {
       'Authorization': `Bearer ${token}`
-   },
+  },
     contentType: 'application/json',
     success: function (response) {
       window.location.reload();
@@ -213,7 +208,6 @@ function callApiDeleteDetail(token,id){
           showCancelButton: false,
           confirmButtonText: 'Confirmar',
       }).then((result) => {
-         
       });
       }
   }
@@ -268,12 +262,10 @@ function listExistenciaProductos(){
           text: error.message,
           icon:"warning",
           showCancelButton: false,
-          confirmButtonColor: ' #d5c429 ',
+          confirmButtonColor: ' #ae9243 ',
           confirmButtonText: 'Confirmar',
       }).then((result) => {
-         
       });
-      
     });
 
 }
@@ -299,7 +291,6 @@ function crearDetalleCompra(){
         };
 
     //console.log("rq ",request);
-   
     if (idCompra != null) {
       handleAjaxRequest(function (token) {
         ApiCallCrearDetalleCompra(token,request);
@@ -322,15 +313,25 @@ function ApiCallCrearDetalleCompra(token,request){
         // Procesar la respuesta exitosa
         limpiarFormulario();
         window.location.reload();
-    },
-    error: function(error) {
-          Swal.fire({
-            title: 'Error',
-            text: 'No es posible editar después de 24 horas.',
-            icon: 'error',
+                 // Mostrar ventana de confirmación después de guardar
+        Swal.fire({
+          title: 'Guardado exitoso',
+            text: 'Los cambios se han guardado correctamente.',
+            icon: 'success',
             showConfirmButton: false,
             timer: 1500
-          });
+        });
+    },
+    error: function(error) {
+      const message = error.responseText === "No puedes editar o eliminar una compra después de 24 horas."?
+      error.responseText : "Error con datos indicados";
+        Swal.fire({
+          title: 'Error',
+          text: message,
+          icon: 'error',
+          showConfirmButton: false,
+          timer: 1500
+        });
     }
     });
 }
@@ -374,8 +375,7 @@ function callApiUpdateDetalleCompra(request,token){
     contentType: "application/json",
     success: function(response) {
         // Procesar la respuesta exitosa
-       // console.log(response);
-
+        alert("rs"+JSON.stringify(response));s
         // Mostrar ventana de confirmación después de guardar
         Swal.fire({
           title: 'Guardado exitoso',
@@ -395,7 +395,6 @@ function callApiUpdateDetalleCompra(request,token){
           showCancelButton: false,
           confirmButtonText: 'Confirmar',
       }).then((result) => {
-         
       });
     }
     });
@@ -412,14 +411,7 @@ function confirmarYGuardarDetalleCliente() {
   }).then((result) => {
     if (result.isConfirmed) {
       crearDetalleCompra();
-        // Mostrar ventana de confirmación después de guardar
-        Swal.fire({
-          title: 'Guardado exitoso',
-          text: 'Los cambios se han guardado correctamente.',
-          icon: 'success',
-          showConfirmButton: false,
-          timer: 1500
-        });
+
     }else if(result.dismiss === Swal.DismissReason.cancel){
       Swal.fire({
         title: "Cancelado",
@@ -433,6 +425,8 @@ function confirmarYGuardarDetalleCliente() {
 //consultar productos
 
 function consultarProductos(token) {
+  console.log("esto se llama?");
+
   $.ajax({
       type: "GET",
       url: "http://localhost:8081/edge-service/v1/service/productos/existencias",
@@ -448,6 +442,7 @@ function consultarProductos(token) {
 function onExitoProductosList(data) {
 
   listaProductos= data;
+  console.log("productos: " + JSON.stringify(listaProductos));
 
   var select = $("#idExistencias");
     select.empty();
@@ -465,7 +460,6 @@ function onErrorProductosList(error) {
     showCancelButton: false,
     confirmButtonText: 'Confirmar',
 }).then((result) => {
-   
 });
 }
 
@@ -485,7 +479,7 @@ function consultarProveedores(token) {
 }
 
 function onExitoProveedorList(data) {
- listaProveedores =data;
+  listaProveedores =data;
 listarProveedor();
 }
 
@@ -497,7 +491,6 @@ function onErrorProveedorList(error) {
     showCancelButton: false,
     confirmButtonText: 'Confirmar',
 }).then((result) => {
-   
 });
 }
 

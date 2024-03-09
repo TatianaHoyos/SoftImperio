@@ -133,7 +133,7 @@ public class ControllerUsuarios {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                         .body(new Response("error", "Error al actualizar el usuario"));
             } else {
-                return ResponseEntity.ok(new Response("exito", "se actualizo el usuario con exito"));
+                return ResponseEntity.ok(new Response("exito", "se actualizó el usuario con exito"));
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
