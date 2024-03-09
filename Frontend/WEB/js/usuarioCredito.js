@@ -366,7 +366,18 @@ function onExitousuariocredito(data) {
                         ]).draw();
                     });
                 } else {
-                    mostrarFormularioAbonar()
+                    if(idUsuarioCreditoA.totalCredito<0){
+                        mostrarFormularioAbonar()
+                    }else{
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'El total credito del usuario credito esta en cero asi que no puede abonar.',
+                            showConfirmButton: false,
+                            timer: 2700
+                        });
+                        return;
+                    }
                 }
             },
             error:  function (error) {
@@ -386,17 +397,28 @@ function onExitousuariocredito(data) {
 
     var idUsuarioCreditoA;
 
+
     function mostrarFormularioAbonar(usuariocredito) {
         var idUsuarioCreditoSolo = idUsuarioCreditoA.idUsuarioCredito
-   
+
+        if(idUsuarioCreditoA.totalCredito>0){
         // Aquí abres la modal
-        consultarTotalCreditoUsuario(idUsuarioCreditoSolo)
-        $('#detalleAbono').modal('hide');
-        $('#formAbonarCreditos').modal('show');
-    
+            consultarTotalCreditoUsuario(idUsuarioCreditoSolo)
+            $('#detalleAbono').modal('hide');
+            $('#formAbonarCreditos').modal('show');
+        }else{
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'El total credito del usuario credito esta en cero asi que no puede abonar.',
+                showConfirmButton: false,
+                timer: 2700
+            });
+            return;
+        }
         // Puedes hacer cualquier otra cosa que necesites con el parámetro usuariocredito
         console.log('Valor de idUsuarioCreditoA:', idUsuarioCreditoSolo);
-        console.log('Usuario Crédito:', usuariocredito);
+        console.log('Usuario Crédito:', idUsuarioCreditoA);
     }
 
     function consultarTotalCreditoUsuario(idUsuarioCreditoSolo) {
@@ -417,6 +439,7 @@ function onExitousuariocredito(data) {
         // Muestra el totalCrédito en el formulario
         $('#totalCreditoUsuario').text(totalCredito+'$');
     }
+
     var totalAbonar
     function crearAbono() {
         var form = $('#formAbonarCredito')[0];
