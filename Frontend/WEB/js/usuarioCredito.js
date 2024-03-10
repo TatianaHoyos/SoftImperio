@@ -365,7 +365,7 @@ function onExitousuariocredito(data) {
                         ]).draw();
                     });
                 } else {
-                    if(idUsuarioCreditoA.totalCredito<0){
+                    if(idUsuarioCreditoA.totalCredito!=0){
                         mostrarFormularioAbonar()
                     }else{
                         Swal.fire({
