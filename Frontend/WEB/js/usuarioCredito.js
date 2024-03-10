@@ -193,7 +193,7 @@ function onExitousuariocredito(data) {
                 usuariocredito.nombre,
                 usuariocredito.documento,
                 usuariocredito.telefono,
-                usuariocredito.totalCredito+'$',
+                '$'+usuariocredito.totalCredito,
                 boton0+' '+boton1+' '+boton2,
                 boton3+' '+boton4
             ]).draw();
@@ -270,8 +270,7 @@ function onExitousuariocredito(data) {
                         // Agrega la fila a la DataTable
                         dataTable.row.add([
                             (id+1),
-                            credito.idVenta,
-                            credito.precioCredito+'$',
+                            '$'+credito.precioCredito,
                             credito.fecha
                         ]).draw();
                     });
@@ -362,7 +361,7 @@ function onExitousuariocredito(data) {
                         dataTable.row.add([
                             (id+1),
                             abonocredito.fechaAbono,
-                            abonocredito.precioAbono+'$'
+                            '$'+abonocredito.precioAbono
                         ]).draw();
                     });
                 } else {
