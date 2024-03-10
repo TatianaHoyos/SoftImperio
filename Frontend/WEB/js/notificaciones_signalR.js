@@ -116,6 +116,7 @@ function consultarApiVentasPorNotificacion(idVenta, token){
         url: "http://localhost:8081/edge-service/v1/service/venta/consultar/" + idVenta,
         "headers": {
             "Content-Type": "application/json",
+            "target": "consultar-venta-id",
             'Authorization': `Bearer ${token}`
         },
         success: function (data) {

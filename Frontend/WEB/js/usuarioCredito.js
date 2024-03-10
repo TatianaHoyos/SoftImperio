@@ -985,5 +985,3 @@ function onErrorusuariocreditocrearA(error) {
     mensaje.text(error.message);
 
 }
-
-
