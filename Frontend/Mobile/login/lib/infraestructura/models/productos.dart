@@ -9,12 +9,12 @@ List<Productos> productosFromJson(String str) => List<Productos>.from(json.decod
 String productosToJson(List<Productos> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Productos {
-    final String idCategoria;
-    final List<Producto> productos;
+    late String? idCategoria;
+    late List<Producto>? productos;
 
     Productos({
-        required this.idCategoria,
-        required this.productos,
+        this.idCategoria,
+        this.productos,
     });
 
     factory Productos.fromJson(Map<String, dynamic> json) => Productos(
@@ -24,7 +24,7 @@ class Productos {
 
     Map<String, dynamic> toJson() => {
         "idCategoria": idCategoria,
-        "productos": List<dynamic>.from(productos.map((x) => x.toJson())),
+        "productos": List<dynamic>.from(productos!.map((x) => x.toJson())),
     };
 }
 

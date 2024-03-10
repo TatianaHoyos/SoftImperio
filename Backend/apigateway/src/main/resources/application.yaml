@@ -464,7 +464,7 @@ spring:
           filters:
             - name: AuthenticationFilter
               args:
-                modulo: Venta
+                modulo: Credito
                 accion: Crear
             - RewritePath=/edge-service/v1/service/usuario/credito/crear, /api/UsuarioCreditos
 
@@ -475,7 +475,7 @@ spring:
           filters:
             - name: AuthenticationFilter
               args:
-                modulo: Venta
+                modulo: Credito
                 accion: Crear
             - RewritePath=/edge-service/v1/service/usuario/credito/crear/id/(?<idusuariocredito>.*), /api/UsuarioCreditos/$\{idusuariocredito}
 
@@ -486,7 +486,7 @@ spring:
           filters:
             - name: AuthenticationFilter
               args:
-                modulo: Venta
+                modulo: Credito
                 accion: Consultar
             - RewritePath=/edge-service/v1/service/usuario/credito/consultar, /api/UsuarioCreditos
 
@@ -497,7 +497,7 @@ spring:
           filters:
             - name: AuthenticationFilter
               args:
-                modulo: Venta
+                modulo: Credito
                 accion: Consultar
             - RewritePath=/edge-service/v1/service/usuario/credito/consultar/id/(?<idusuariocredito>.*), /api/UsuarioCreditos/$\{idusuariocredito}
 
@@ -508,7 +508,7 @@ spring:
           filters:
             - name: AuthenticationFilter
               args:
-                modulo: Venta
+                modulo: Credito
                 accion: Editar
             - RewritePath=/edge-service/v1/service/usuario/credito/actualizar/id/(?<idusuariocredito>.*), /api/UsuarioCreditos/$\{idusuariocredito}
 
@@ -519,7 +519,7 @@ spring:
           filters:
             - name: AuthenticationFilter
               args:
-                modulo: Venta
+                modulo: Credito
                 accion: Eliminar
             - RewritePath=/edge-service/v1/service/usuario/credito/eliminar/id/(?<idusuariocredito>.*), /api/UsuarioCreditos/$\{idusuariocredito}
 
@@ -532,7 +532,7 @@ spring:
           filters:
             - name: AuthenticationFilter
               args:
-                modulo: Venta
+                modulo: Credito
                 accion: Consultar
             - RewritePath=/edge-service/v1/service/creditos/ultimo-mes/consultar, /api/Creditos/creditos-ultimo-mes
 
@@ -543,7 +543,7 @@ spring:
           filters:
             - name: AuthenticationFilter
               args:
-                modulo: Venta
+                modulo: Credito
                 accion: Consultar
             - RewritePath=/edge-service/v1/service/abono/creditos/consultar/id/(?<idabonocredito>.*), /api/AbonoCreditos/$\{idabonocredito}
 
@@ -554,7 +554,7 @@ spring:
           filters:
             - name: AuthenticationFilter
               args:
-                modulo: Venta
+                modulo: Credito
                 accion: Crear
             - RewritePath=/edge-service/v1/service/abono/creditos/crear, /api/AbonoCreditos
 
@@ -566,7 +566,7 @@ spring:
           filters:
             - name: AuthenticationFilter
               args:
-                modulo: Venta
+                modulo: Credito
                 accion: Crear
             - RewritePath=/edge-service/v1/service/creditos/crear, /api/Creditos
 
@@ -577,7 +577,7 @@ spring:
           filters:
             - name: AuthenticationFilter
               args:
-                modulo: Venta
+                modulo: Credito
                 accion: Consultar
             - RewritePath=/edge-service/v1/service/creditos/consultar, /api/Creditos
 

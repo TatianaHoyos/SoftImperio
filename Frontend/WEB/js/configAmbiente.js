@@ -2,12 +2,15 @@ var modulo = {
     "venta" : {
         "p_barra" : "./PuntoVentaBarra.html",
         "p_mesa" : "./puntoVentaMesa.html",
-        "reporte" : "./ventas.html",
-        "credito" : "./creditos.html"
+        "reporte" : "./ventas.html"
+    },
+    "credito" : {
+        "credito" : "./creditos.html",
+        "usuario_credito": "./usuarioCreditos.html",
+        "nuevo_usuario_credito": "./nuevoCredito.html"
     },
     "producto" : {
-        "producto" : "./productos.html",
-        "existencia" : "./Existencias.html"
+        "producto" : "./productos.html"
     },
     "usuario" : {
         "usuario" : "./Usuarios.html"        

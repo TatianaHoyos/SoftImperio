@@ -418,7 +418,7 @@ function onExitoProductosList(data) {
     select.empty();
     select.append('<option value="">Seleccione...</option>');
     listaProductos.forEach(function(producto) {
-        select.append('<option value="' + producto.idExistencias + '">' + producto.nombreProducto + '</option>');
+        select.append('<option value="' + producto.idExistencias + '">' + producto.nombreProducto + " - "+ producto.referenciaProducto+ '</option>');
     });
 }
 
