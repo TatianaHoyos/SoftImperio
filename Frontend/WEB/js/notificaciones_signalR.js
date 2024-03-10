@@ -114,7 +114,8 @@ function consultarApiVentasPorNotificacion(idVenta, token){
     $.ajax({
         type: "GET",
         url: "http://localhost:8081/edge-service/v1/service/venta/consultar/" + idVenta,
-        "headers": {
+        headers: {
+            "accept": "application/json",
             "Content-Type": "application/json",
             "target": "consultar-venta-id",
             'Authorization': `Bearer ${token}`

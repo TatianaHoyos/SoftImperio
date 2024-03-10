@@ -1,7 +1,6 @@
 $(document).ready(function () {
     $("#resultadoCrear").hide();
     consultarusuariocredito();
-    buscarUsuarioCreditoTabla();
 });
 
 function mostrarFormularioActualizarCrearUsuarioCreditos() {
@@ -76,11 +75,18 @@ function crearUsuarioCredito() {
 
     });
 
+    handleAjaxRequest(function (token) {
+        callApiCrearUsuarioCredito(token,formData);
+    });
+}
+
+function callApiCrearUsuarioCredito(token,formData){
     $.ajax({
         type: "POST",
-        url: "https://localhost:7084/api/UsuarioCreditos",
+        url: "http://localhost:8081/edge-service/v1/service/usuario/credito/crear",
         "headers": {
             "accept": "application/json",
+            'Authorization': `Bearer ${token}`,
             "Content-Type": "application/json"
           },
         data: formData,
@@ -91,14 +97,12 @@ function crearUsuarioCredito() {
 }
 
 
-
 function onExitoCrearUsuariocredito(data) {
     $("#formCrearUsuarioCredito").modal("hide");
 
     const swalOptions = {
         title: 'Éxito',
         text: data.message,
-        type: 'success',
         icon: 'success',
         showCancelButton: false,
         confirmButtonColor: '#d5c429',
@@ -113,7 +117,7 @@ function onExitoCrearUsuariocredito(data) {
 
     swalInstance.then((result) => {
         $("#formUsuarioCredito").trigger("reset");
-        handleAjaxRequest(consultarusuariocredito);
+        consultarusuariocredito();
     });
 }
 
@@ -126,16 +130,21 @@ function onErrorusuariocreditocrear(error) {
 }
 
 function consultarusuariocredito() {
-    $.ajax({
-        type: "GET",
-        url: "https://localhost:7084/api/UsuarioCreditos",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        success: onExitousuariocredito,
-        error: onErrorusuariocredito
-    });
-}
+    handleAjaxRequest(callApiConsultarUsuarioCredito);
+   }
+   
+   function callApiConsultarUsuarioCredito(token){
+       $.ajax({
+           type: "GET",
+           url: "http://localhost:8081/edge-service/v1/service/usuario/credito/consultar",
+           headers: {
+               'Authorization': `Bearer ${token}`,
+               "Content-Type": "application/json"
+           },
+           success: onExitousuariocredito,
+           error: onErrorusuariocredito
+       });
+   }
 
 
 
@@ -213,15 +222,21 @@ function onExitousuariocredito(data) {
         }).then((result) => {
         });
     }
-
-
     function DetalleCredito(usuariocredito){
+        
+        handleAjaxRequest(function (token) {
+            callApiDetalleCredito(usuariocredito,token);
+        });
+    }
+
+
+    function callApiDetalleCredito(usuariocredito,token){
         $.ajax({
             type: "GET",
-            url: "https://localhost:7084/api/creditos/" + usuariocredito.idUsuarioCredito,
+            url: "http://localhost:8081/edge-service/v1/service/usuario/credito/consultar/id/" + usuariocredito.idUsuarioCredito,
             "headers": {
                 "Content-Type": "application/json",
-                //       'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${token}`
             },
             success: function (data) {
 
@@ -306,13 +321,20 @@ function onExitousuariocredito(data) {
 
     var idUsuarioCreditoA;
     function DetalleAbono(usuariocredito){
+          
+        handleAjaxRequest(function (token) {
+            callApiDetalleAbono(usuariocredito,token);
+        });
+    }
+
+    function callApiDetalleAbono(usuariocredito,token){
         idUsuarioCreditoA = usuariocredito
         $.ajax({
             type: "GET",
-            url: "https://localhost:7084/api/AbonoCreditos/" + usuariocredito.idUsuarioCredito,
+            url: "http://localhost:8081/edge-service/v1/service/abono/creditos/consultar/id/" + usuariocredito.idUsuarioCredito,
             "headers": {
                 "Content-Type": "application/json",
-        //        'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${token}`
             },
             success: function (data) {
 
@@ -415,15 +437,23 @@ function onExitousuariocredito(data) {
             });
             return;
         }
-        // Puedes hacer cualquier otra cosa que necesites con el parámetro usuariocredito
-        console.log('Valor de idUsuarioCreditoA:', idUsuarioCreditoSolo);
-        console.log('Usuario Crédito:', idUsuarioCreditoA);
     }
 
-    function consultarTotalCreditoUsuario(idUsuarioCreditoSolo) {
+    function consultarTotalCreditoUsuario(idUsuarioCreditoSolo){
+          
+        handleAjaxRequest(function (token) {
+            callApiconsultarTotalCreditoUsuario(idUsuarioCreditoSolo,token);
+        });
+    }
+
+
+    function callApiconsultarTotalCreditoUsuario(idUsuarioCreditoSolo,token) {
         $.ajax({
             type: "GET",
-            url: "https://localhost:7084/api/UsuarioCreditos/" + idUsuarioCreditoSolo,
+            url: "http://localhost:8081/edge-service/v1/service/usuario/credito/consultar/id/" + idUsuarioCreditoSolo,
+            "headers": {
+                'Authorization': `Bearer ${token}`,
+            },
             success: function(data) {
                 // Actualiza el totalCrédito en el formulario
                 mostrarTotalCreditoEnFormulario(data.totalCredito);
@@ -444,11 +474,8 @@ function onExitousuariocredito(data) {
         var form = $('#formAbonarCredito')[0];
         var idUsuarioCreditoSolo = idUsuarioCreditoA.idUsuarioCredito
         var total = idUsuarioCreditoA.totalCredito
-        console.log('Valor de idUsuarioCreditoA:', idUsuarioCreditoSolo);
-        console.log('total:', total);
 
         totalAbonar= $("#abonar").val();
-        console.log('totalAbonar:', totalAbonar);
         if (validarCampoVacio(totalAbonar.length, 'Por favor ingrese el monto a abonar.')) {
             return false;
         }
@@ -468,12 +495,21 @@ function onExitousuariocredito(data) {
             "precioAbono": totalAbonar
 
         });
+       
+          
+            handleAjaxRequest(function (token) {
+                callApiCrearAbono(formData,token);
+            });
+        
+    }
+    function callApiCrearAbono(formData,token){
 
         $.ajax({
             type: "POST",
-            url: "https://localhost:7084/api/AbonoCreditos",
+            url: "http://localhost:8081/edge-service/v1/service/abono/creditos/crear",
             "headers": {
                 "accept": "application/json",
+                'Authorization': `Bearer ${token}`,
                 "Content-Type": "application/json"
             },
             data: formData,
@@ -489,7 +525,6 @@ function onExitousuariocredito(data) {
         const swalOptions = {
             title: 'Éxito',
             text: data.message,
-            type: 'success',
             icon: 'success',
             showCancelButton: false,
             confirmButtonColor: '#d5c429',
@@ -530,38 +565,76 @@ function onExitousuariocredito(data) {
         });
     }
 
-    function actualizarUsuarioCreditoAbonar() {
+    function actualizarUsuarioCreditoAbonar(){
+          
+        handleAjaxRequest(function (token) {
+            callApiactualizarUsuarioCreditoAbonar(token);
+        });
+    }
+    function callApiPutUsuarioCreditoAbonar(idUsuarioCreditoSolo,usuarioCredito,token){
+        $.ajax({
+            type: "PUT",
+            enctype: 'multipart/form-data',
+            url: "http://localhost:8081/edge-service/v1/service/usuario/credito/actualizar/id/" + idUsuarioCreditoSolo,
+            "headers": {
+                "accept": "application/json",
+                "Content-Type": "application/json",
+                'Authorization': `Bearer ${token}`
+            },
+            data: JSON.stringify(usuarioCredito),
+            processData: false,
+            success: onExitoActualizarUsuariocreditoAbono,
+            error: onErrorusuariocreditocrearAbono
+        });        
+    }
+
+    function callApiPutUsuarioCredito(formData,token){
+      
+          $.ajax({
+        type: "Put",
+        enctype: 'multipart/form-data',
+        url: "http://localhost:8081/edge-service/v1/service/usuario/credito/actualizar/id/" + $("#idUsuarioCredito").val(),
+        "headers": {
+            "accept": "application/json",
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`
+          }, // Asegúrate de que la URL sea correcta
+        data: formData,
+        processData: false,
+        success: onExitoActualizarUsuariocredito,
+        error: onErrorusuariocreditocrear
+    });
+        
+    }
+
+    function callApiactualizarUsuarioCreditoAbonar(token) {
         var idUsuarioCreditoSolo = idUsuarioCreditoA.idUsuarioCredito;
-        console.log('Valor de idUsuarioCreditoAbonar:', idUsuarioCreditoSolo);
         // Llamada AJAX para obtener el UsuarioCredito actual
         $.ajax({
             type: "GET",
-            url: "https://localhost:7084/api/UsuarioCreditos/" + idUsuarioCreditoSolo,
+            url: "http://localhost:8081/edge-service/v1/service/usuario/credito/consultar/id/" + idUsuarioCreditoSolo,
             "headers": {
                 "accept": "application/json",
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                'Authorization': `Bearer ${token}`
             },
             success: function(usuarioCredito) {
                 // Sumar totalVenta al totalCredito actual del UsuarioCredito
                 usuarioCredito.totalCredito -= totalAbonar;
 
                 // Llamada AJAX para actualizar el UsuarioCredito con el nuevo totalCredito
-                $.ajax({
-                    type: "PUT",
-                    enctype: 'multipart/form-data',
-                    url: "https://localhost:7084/api/UsuarioCreditos/" + idUsuarioCreditoSolo,
-                    "headers": {
-                        "accept": "application/json",
-                        "Content-Type": "application/json"
-                    },
-                    data: JSON.stringify(usuarioCredito),
-                    processData: false,
-                    success: onExitoActualizarUsuariocreditoAbono,
-                    error: onErrorusuariocreditocrearAbono
+                handleAjaxRequest(function (token) {
+                    callApiPutUsuarioCreditoAbonar(idUsuarioCreditoSolo,usuarioCredito,token);
                 });
             },
             error: function(error) {
-                console.error("Error al obtener el UsuarioCredito:", error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error inesperado',
+                    showConfirmButton: false,
+                    timer: 2700
+                });
             }
         });
     }
@@ -643,18 +716,8 @@ function actualizarUsuarioCredito() {
         "documento": documento,
         "telefono": telefono,
       });
-    $.ajax({
-        type: "Put",
-        enctype: 'multipart/form-data',
-        url: "https://localhost:7084/api/UsuarioCreditos/" + $("#idUsuarioCredito").val(),
-        "headers": {
-            "accept": "application/json",
-            "Content-Type": "application/json"
-          }, // Asegúrate de que la URL sea correcta
-        data: formData,
-        processData: false,
-        success: onExitoActualizarUsuariocredito,
-        error: onErrorusuariocreditocrear
+      handleAjaxRequest(function (token) {
+        callApiactualizarUsuarioCredito(formData, token);
     });
 }
 
@@ -667,7 +730,6 @@ function onExitoActualizarUsuariocredito(data) {
     Swal.fire({
         title: 'Éxito',
         text: data.message,
-        type: 'success',
         icon: 'success',
         showCancelButton: false,
         confirmButtonColor: '#d5c429',
@@ -699,33 +761,41 @@ function EliminarUsuarioCredito(usuariocredito) {
     }).then((result) => {
         if (result.isConfirmed) {
             // Realizar la solicitud de eliminación AJAX
-            $.ajax({
-                url: 'https://localhost:7084/api/UsuarioCreditos/' + usuariocredito.idUsuarioCredito,
-                type: 'DELETE',
-                success: function (response) {
-                    // Mostrar un mensaje de éxito predeterminado
-                    Swal.fire('Eliminado', 'Usuario crédito eliminado correctamente', 'success');
-                    // Actualizar la tabla o realizar cualquier otra acción necesaria
-                    consultarusuariocredito();
-                },
-                error: function (xhr, status, error) {
-                    // Manejar los errores de la solicitud AJAX
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'Oops',
-                        text:'El usuario crédito ya tiene créditos o abonos asociados asi que no es posible eliminarlo.',
-                        timer:3500,
-                        customClass: {
-                            popup: 'tamanio-custom'
-                        }
-                    });
-                    return false;
-                }
+            handleAjaxRequest(function (token) {
+                callApiEliminarUsuarioCredito(usuariocredito,token);
             });
         }
     });
 }
 
+function callApiEliminarUsuarioCredito(usuariocredito,token){
+    $.ajax({
+        url: 'http://localhost:8081/edge-service/v1/service/usuario/credito/eliminar/id/' + usuariocredito.idUsuarioCredito,
+        type: 'DELETE',
+        "header":{
+            'Authorization': `Bearer ${token}`
+        },        
+        success: function (response) {
+            // Mostrar un mensaje de éxito predeterminado
+            Swal.fire('Eliminado', 'Usuario crédito eliminado correctamente', 'success');
+            // Actualizar la tabla o realizar cualquier otra acción necesaria
+            consultarusuariocredito();
+        },
+        error: function (xhr, status, error) {
+            // Manejar los errores de la solicitud AJAX
+            Swal.fire({
+                icon: 'warning',
+                title: 'Oops',
+                text:'El usuario crédito ya tiene créditos o abonos asociados asi que no es posible eliminarlo.',
+                timer:3500,
+                customClass: {
+                    popup: 'tamanio-custom'
+                }
+            });
+            return false;
+        }
+    });
+}
 
 var totalVenta;
 var idUsuarioCredito;
@@ -740,25 +810,28 @@ function abrirModal(usuariocredito) {
     idUsuarioCredito = usuariocredito;
     // Aquí abres la modal
     $('#formAsociarCreditos').modal('show');
-
-    // Puedes hacer cualquier otra cosa que necesites con el parámetro usuariocredito
-    console.log('Usuario Crédito:', usuariocredito);
 }
 
 // Función para buscar ventas
-function buscarVentasLogica(usuariocredito) {
+function buscarVentasLogica() {
     var form = $('#formAsociarCredito')[0];
     var buscarVenta = $("#buscarVenta").val();
     if (validarCampoVacio(buscarVenta.length, 'Por favor ingrese el Id de la venta.')) {
         return false;
     }
+    handleAjaxRequest(function (token) {
+        callApiBuscarVentaLogica(buscarVenta,token);
+    });
+}
 
+function callApiBuscarVentaLogica(buscarVenta,token){
     $.ajax({
         type: "GET",
-        url: "https://localhost:7084/api/DetalleVentas/ByVenta/" + buscarVenta,
+        url: "http://localhost:8081/edge-service/v1/service/venta/consultar/ByVenta/" + buscarVenta,
         "headers": {
+            "target": "consultar-venta-ByVenta",
             "Content-Type": "application/json",
-            //       'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${token}`
         },
         success: function (data) {
             if (data.length > 0) {
@@ -801,7 +874,6 @@ function buscarVentasLogica(usuariocredito) {
         }
     });
 }
-
 // Configura el evento hidden.bs.modal para la modal formAsociarCreditos
 $(document).ready(function () {
     $('#formAsociarCreditos').on('hidden.bs.modal', function (e) {
@@ -817,33 +889,30 @@ $(document).ready(function () {
 });
 
 
-
-
-
-function CrearCredito() {
-    var form = $('#formAsociarCredito')[0];
-    var buscarVenta= $("#buscarVenta").val();
-    // Validar que se tengan los valores necesarios
-    if (!totalVenta || totalVenta === 0) {
-        // Agregar alerta para totalVenta 0 o nulo
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'El total de la venta es 0 o nulo. Por favor, dele en el boton buscar despues de aver ingresado el id para ver si es la venta correcta .',
-            showConfirmButton: false,
-            timer: 2700
-        });
-        return;
-    }
-    var idUsuarioCreditoSolo = idUsuarioCredito.idUsuarioCredito;
-
-    // Realizar la solicitud para verificar si el idVenta ya está asociado a otro UsuarioCredito
+function callApiCrearCreditos(formDataCredito, token) {
     $.ajax({
-        type: "GET",
-        url: "https://localhost:7084/api/Creditos/ByVenta/" + buscarVenta,
+        type: "POST",
+        url: "http://localhost:8081/edge-service/v1/service/creditos/crear",
         headers: {
             "accept": "application/json",
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`
+        },
+        data: formDataCredito,
+        processData: false,
+        success: onExitoAsociarcredito,
+        error: onErrorAsociarcredito
+    });
+}
+
+function callApiCreditosByVenta(buscarVenta, token){
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8081/edge-service/v1/service/venta/consultar/ByVenta/" + buscarVenta,
+        "headers": {
+            "target": "consultar-venta-ByVenta",
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`
         },
         success: function (result) {
             if (result.length > 0) {
@@ -865,27 +934,51 @@ function CrearCredito() {
 
                 // Convertir a formato JSON
                 var formDataCredito = JSON.stringify(creditoData);
-                console.log(formDataCredito);
 
                 // Realizar la solicitud para crear el crédito
-                $.ajax({
-                    type: "POST",
-                    url: "https://localhost:7084/api/Creditos",
-                    headers: {
-                        "accept": "application/json",
-                        "Content-Type": "application/json"
-                    },
-                    data: formDataCredito,
-                    processData: false,
-                    success: onExitoAsociarcredito,
-                    error: onErrorAsociarcredito
+                handleAjaxRequest(function (token) {
+                    callApiCrearCreditos(formDataCredito, token);
                 });
+                
+
             }
         },
         error: function (error) {
-            console.error("Error al verificar el idVenta:", error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Error',
+                showConfirmButton: false,
+                timer: 2700
+            });
         }
     });
+}
+
+
+function CrearCredito() {
+    var form = $('#formAsociarCredito')[0];
+    var buscarVenta= $("#buscarVenta").val();
+    // Validar que se tengan los valores necesarios
+    if (!totalVenta || totalVenta === 0) {
+        // Agregar alerta para totalVenta 0 o nulo
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'El total de la venta es 0 o nulo. Por favor, dele en el boton buscar despues de aver ingresado el id para ver si es la venta correcta .',
+            showConfirmButton: false,
+            timer: 2700
+        });
+        return;
+    }
+    var idUsuarioCreditoSolo = idUsuarioCredito.idUsuarioCredito;
+
+    // Realizar la solicitud para verificar si el idVenta ya está asociado a otro UsuarioCredito
+
+    handleAjaxRequest(function (token) {
+        callApiCreditosByVenta(buscarVenta, token);
+    });
+    
 }
 function onExitoAsociarcredito(data) {
     $("#formAsociarCreditos").modal("hide");
@@ -893,7 +986,6 @@ function onExitoAsociarcredito(data) {
     const swalOptions = {
         title: 'Éxito',
         text: data.message,
-        type: 'success',
         icon: 'success',
         showCancelButton: false,
         confirmButtonColor: '#d5c429',
@@ -909,7 +1001,7 @@ function onExitoAsociarcredito(data) {
     swalInstance.then((result) => {
         $("#formAsociarCredito").trigger("reset");
         $('#tablaDetalleVenta > tbody').empty();
-        actualizarUsuarioCreditoA();
+        handleAjaxRequest(actualizarUsuarioCreditoA);
         handleAjaxRequest(consultarusuariocredito);
 
     });
@@ -931,41 +1023,54 @@ function onErrorAsociarcredito(error) {
     });
 }
 
+function callApiCrearUsuarioXId(idUsuarioCreditoSolo, token){
+    $.ajax({
+        type: "PUT",
+        enctype: 'multipart/form-data',
+        url: "http://localhost:8081/edge-service/v1/service/usuario/credito/crear/id/" + idUsuarioCreditoSolo,
+        "headers": {
+            "accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+        data: JSON.stringify(usuarioCredito),
+        processData: false,
+        success: onExitoActualizarUsuariocreditoA,
+        error: onErrorusuariocreditocrearA
+    });
+}
 
 
-
-function actualizarUsuarioCreditoA() {
+function actualizarUsuarioCreditoA(token) {
     var idUsuarioCreditoSolo = idUsuarioCredito.idUsuarioCredito;
 
     // Llamada AJAX para obtener el UsuarioCredito actual
     $.ajax({
         type: "GET",
-        url: "https://localhost:7084/api/UsuarioCreditos/" + idUsuarioCreditoSolo,
+        url: "http://localhost:8081/edge-service/v1/service/usuario/credito/consultar/id/" + idUsuarioCreditoSolo,
         "headers": {
-            "accept": "application/json",
-            "Content-Type": "application/json"
-          },
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`
+        },
         success: function(usuarioCredito) {
             // Sumar totalVenta al totalCredito actual del UsuarioCredito
             usuarioCredito.totalCredito += totalVenta;
 
             // Llamada AJAX para actualizar el UsuarioCredito con el nuevo totalCredito
-            $.ajax({
-                type: "PUT",
-                enctype: 'multipart/form-data',
-                url: "https://localhost:7084/api/UsuarioCreditos/" + idUsuarioCreditoSolo,
-                "headers": {
-                    "accept": "application/json",
-                    "Content-Type": "application/json"
-                },
-                data: JSON.stringify(usuarioCredito),
-                processData: false,
-                success: onExitoActualizarUsuariocreditoA,
-                error: onErrorusuariocreditocrearA
+            handleAjaxRequest(function (token) {
+                callApiCrearUsuarioXId(idUsuarioCreditoSolo, token);
             });
+            
+            
         },
         error: function(error) {
-            console.error("Error al obtener el UsuarioCredito:", error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Error al obtener el UsuarioCredito',
+                showConfirmButton: false,
+                timer: 2700
+            });
         }
     });
 }

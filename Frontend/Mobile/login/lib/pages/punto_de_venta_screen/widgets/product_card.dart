@@ -24,6 +24,16 @@ class _ProductCardState extends State<ProductCard> {
   }
 
   @override
+  void didUpdateWidget(covariant ProductCard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    // Detectar cambios en las propiedades del widget y actualizar _selectedReferenceItem
+    if (widget.product != oldWidget.product) {
+      _selectedReferenceItem = widget.product.referencias[0].idProducto.toString();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Card(
       color: Colors.white.withOpacity(0.3),
@@ -62,9 +72,10 @@ class _ProductCardState extends State<ProductCard> {
                   // Units & price
                   Row(
                     children: [
-                      Text('${obtenerCantidadProductos(widget.product)} disponibles'),
-                      const SizedBox(width: 8.0),
                       Text(obtenerPrecioProductos(widget.product)),
+                     
+                      Text(" - "),
+                       Text('${obtenerCantidadProductos(widget.product)} Und')
                     ],
                   ),
                   const SizedBox(height: 4.0),
@@ -73,6 +84,11 @@ class _ProductCardState extends State<ProductCard> {
                     Row(
                       children: [
                         DropdownButton<String>(
+                           style: TextStyle(color: Colors.white), // Estilo del texto seleccionado
+                          underline: Container(
+                            height: 2,
+                            color: Colors.black, // Color del subrayado
+                          ),
                           value:
                               _selectedReferenceItem, // Use state variable for value
                           items: widget.product.referencias.map((item) {
@@ -116,13 +132,13 @@ class _ProductCardState extends State<ProductCard> {
     var referencia = producto.referencias.firstWhere(
       (r) => r.idProducto.toString() == _selectedReferenceItem);
 
-      return FormatCurrency.formatearMoneda(referencia.precio);
+      return referencia.existencia.cantidad.toString();
   }
 
   String obtenerPrecioProductos(Producto producto) {
-    var referencia = producto.referencias.firstWhere(
+      var referencia = producto.referencias.firstWhere(
       (r) => r.idProducto.toString() == _selectedReferenceItem);
 
-      return referencia.existencia.cantidad.toString();
+      return FormatCurrency.formatearMoneda(referencia.precio);
   }
 }

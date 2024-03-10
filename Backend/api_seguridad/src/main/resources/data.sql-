@@ -53,7 +53,13 @@ INSERT INTO permisos (IdAcciones, IdModulo) VALUES
 (1, 6), -- Consultar
 (2, 6), -- Editar
 (3, 6), -- Eliminar
-(4, 6); -- Crear
+(4, 6), -- Crear
+
+-- Combinaciones para Credito
+(1, 7), -- Consultar
+(2, 7), -- Editar
+(3, 7), -- Eliminar
+(4, 7); -- Crear
 
 
 -- Otras sentencias INSERT aquí...
