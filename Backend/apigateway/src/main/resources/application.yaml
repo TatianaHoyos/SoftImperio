@@ -260,6 +260,29 @@ spring:
                 accion: Consultar
             - RewritePath=/edge-service/v1/service/venta/consultar/(?<idventa>.*), /api/Ventas/$\{idventa}
 
+        - id: services-venta-consultar-ByVenta
+          uri: https://localhost:7084
+          predicates:
+            - Path=/edge-service/v1/service/venta/consultar/ByVenta/**
+          filters:
+            - name: AuthenticationFilter
+              args:
+                modulo: Venta
+                accion: Consultar
+            - RewritePath=/edge-service/v1/service/venta/consultar/ByVenta/(?<idventa>.*), /api/DetalleVentas/ByVenta/$\{idventa}
+
+        - id: services-venta-consultar-ByFecha
+          uri: https://localhost:7084
+          predicates:
+            - Path=/edge-service/v1/service/venta/consultar/ByFecha
+          filters:
+            - name: AuthenticationFilter
+              args:
+                modulo: Venta
+                accion: Consultar
+            - RewritePath=/edge-service/v1/service/venta/consultar/ByFecha, /api/Ventas/ByFecha
+
+
         - id: services-venta-consultar
           uri: https://localhost:7084
           predicates:
@@ -445,6 +468,17 @@ spring:
                 accion: Crear
             - RewritePath=/edge-service/v1/service/usuario/credito/crear, /api/UsuarioCreditos
 
+        - id: services-usuario-credito-crear-id
+          uri: https://localhost:7084
+          predicates:
+            - Path=/edge-service/v1/service/usuario/credito/crear/id/**
+          filters:
+            - name: AuthenticationFilter
+              args:
+                modulo: Venta
+                accion: Crear
+            - RewritePath=/edge-service/v1/service/usuario/credito/crear/id/(?<idusuariocredito>.*), /api/UsuarioCreditos/$\{idusuariocredito}
+
         - id: services-usuario-credito-consultar
           uri: https://localhost:7084
           predicates:
@@ -513,6 +547,18 @@ spring:
                 accion: Consultar
             - RewritePath=/edge-service/v1/service/abono/creditos/consultar/id/(?<idabonocredito>.*), /api/AbonoCreditos/$\{idabonocredito}
 
+        - id: services-abono-creditos-crear
+          uri: https://localhost:7084
+          predicates:
+            - Path=/edge-service/v1/service/abono/creditos/crear
+          filters:
+            - name: AuthenticationFilter
+              args:
+                modulo: Venta
+                accion: Crear
+            - RewritePath=/edge-service/v1/service/abono/creditos/crear, /api/AbonoCreditos
+
+
         - id: services-creditos-crear
           uri: https://localhost:7084
           predicates:
@@ -523,6 +569,17 @@ spring:
                 modulo: Venta
                 accion: Crear
             - RewritePath=/edge-service/v1/service/creditos/crear, /api/Creditos
+
+        - id: services-creditos-consultar
+          uri: https://localhost:7084
+          predicates:
+            - Path=/edge-service/v1/service/creditos/consultar
+          filters:
+            - name: AuthenticationFilter
+              args:
+                modulo: Venta
+                accion: Consultar
+            - RewritePath=/edge-service/v1/service/creditos/consultar, /api/Creditos
 
 
         ##USUARIOS##
