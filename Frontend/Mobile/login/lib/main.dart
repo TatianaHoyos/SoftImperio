@@ -36,7 +36,8 @@ class MyApp extends StatelessWidget {
      initialRoute: "/",
         routes: { '/': (context) => LoginPage(),//indica ruta principal
           '/punto_venta': (context) => SellingPointScreen(),
-          '/screen_carrito': (context) => MyCart()
+          '/screen_carrito': (context) => MyCart(),
+          '/inicio': (context) => Inicio()
           },
     )
     );

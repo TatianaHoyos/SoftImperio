@@ -161,7 +161,8 @@ class _LoginPageState extends State<LoginPage> {
          refreshToken: usuario!.authoritation.refreshToken);
 
        // Navega a la otra pantalla
-        Navigator.pushReplacementNamed(context, '/punto_venta');
+        //Navigator.pushReplacementNamed(context, '/punto_venta');
+        Navigator.pushReplacementNamed(context, '/inicio');
       } else {
         this.response = Response.fromJson(jsonDecode(response.body));
         _mostrarAlerta(context, this.response);

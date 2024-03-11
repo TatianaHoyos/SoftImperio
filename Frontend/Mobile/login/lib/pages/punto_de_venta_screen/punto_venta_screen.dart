@@ -53,13 +53,13 @@ class _MySellingPointPageState extends State<SellingPointScreen>
   NestedScrollView crearNestedScrollView() {
     return NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
-          SliverAppBar(title: const Text("Punto de Venta",
+          /*SliverAppBar(title: const Text("Punto de Venta",
                 style: TextStyle(fontWeight: FontWeight.bold)),
             expandedHeight: 140.0,
             floating: true,
             pinned: true,
             bottom: construirTabBar(),
-          ),
+          ),*/
         ],
         body: crearBody(),
       );
