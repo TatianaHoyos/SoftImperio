@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decode/jwt_decode.dart';
+import 'host_server.dart';
 
 // Asegúrate de importar AuthSingleton aquí
 import 'auth_singleton.dart'; // Actualiza con el path correcto
@@ -11,8 +12,9 @@ class Gateway {
   int intentos;
 
   Gateway({
-     this.baseUrl = "http://192.168.20.31:8081",
-     this.refreshTokenUrl = "http://192.168.20.31:8081/edge-service/v1/authorization/refreshToken",
+
+     this.baseUrl = host,
+     this.refreshTokenUrl = host + "/edge-service/v1/authorization/refreshToken",
      this.intentos = 3
   });
 
