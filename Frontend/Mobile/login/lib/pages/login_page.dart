@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:login/components/loading.dart';
 import 'package:login/components/my_button.dart';
 import 'package:login/components/my_text_field.dart';
 import 'package:login/pages/inicio_page.dart';
@@ -107,16 +108,7 @@ class _LoginPageState extends State<LoginPage> {
         ),
       )),
       floatingActionButton: _isLoading
-          ? const AlertDialog(
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  CircularProgressIndicator(),
-                  SizedBox(height: 16.0),
-                  Text('Cargando...'),
-                ],
-              ),
-            ) // Muestra el modal si isLoading es verdadero
+          ? Loading() // Muestra el modal si isLoading es verdadero
           : Container(), // Oculta el modal si isLoading es falso
     );
   }
@@ -169,7 +161,8 @@ class _LoginPageState extends State<LoginPage> {
          refreshToken: usuario!.authoritation.refreshToken);
 
        // Navega a la otra pantalla
-        Navigator.pushReplacementNamed(context, '/punto_venta');
+        //Navigator.pushReplacementNamed(context, '/punto_venta');
+        Navigator.pushReplacementNamed(context, '/inicio');
       } else {
         this.response = Response.fromJson(jsonDecode(response.body));
         _mostrarAlerta(context, this.response);
