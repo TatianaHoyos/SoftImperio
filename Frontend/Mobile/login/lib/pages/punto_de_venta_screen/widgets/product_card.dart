@@ -4,6 +4,7 @@ import 'package:login/infraestructura/models/productos.dart';
 import 'package:login/infraestructura/models/response.dart';
 import 'package:login/infraestructura/provider/cart_provider.dart';
 import 'package:login/util/format_currency.dart';
+import 'package:login/util/host_server.dart';
 import 'package:provider/provider.dart';
 //import 'package:login/provider/cart_provider.dart';
 
@@ -18,7 +19,7 @@ class ProductCard extends StatefulWidget {
 
 class _ProductCardState extends State<ProductCard> {
   String _selectedReferenceItem = ''; // Declare state variable
-  String hostFoto = "http://192.168.20.31:8080/";
+  String hostFoto = hostImage;
 
   @override
   void initState() {

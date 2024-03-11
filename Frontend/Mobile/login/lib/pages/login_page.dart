@@ -4,6 +4,7 @@ import 'package:login/components/my_button.dart';
 import 'package:login/components/my_text_field.dart';
 import 'package:login/pages/inicio_page.dart';
 import 'package:http/http.dart' as http;
+import 'package:login/util/host_server.dart';
 import 'dart:convert';
 import '../util/encrypt_util.dart';
 import '../util/auth_singleton.dart';
@@ -134,7 +135,7 @@ class _LoginPageState extends State<LoginPage> {
     setState(() {
       _isLoading = true;
     });
-    final url = Uri.parse('http://192.168.20.31:8081/edge-service/v1/authorization/login');
+    final url = Uri.parse(host +'/edge-service/v1/authorization/login');
     final headers = {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
