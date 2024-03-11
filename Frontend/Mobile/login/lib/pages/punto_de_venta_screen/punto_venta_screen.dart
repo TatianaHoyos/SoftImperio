@@ -4,12 +4,14 @@ import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:login/components/loading.dart';
 import 'package:login/infraestructura/models/productos.dart';
+import 'package:login/infraestructura/provider/cart_provider.dart';
 /*import 'package:provider/provider.dart';
 import 'package:login/models/product.dart';
 import 'package:login/provider/cart_provider.dart';
 import 'package:login/provider/products_provider.dart';*/
 import 'package:login/pages/punto_de_venta_screen/widgets/product_card.dart';
 import 'package:login/util/gateway.dart';
+import 'package:provider/provider.dart';
 import '../../infraestructura/models/response.dart';
 import '../../infraestructura/models/categorias.dart';
 
@@ -43,9 +45,8 @@ class _MySellingPointPageState extends State<SellingPointScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        color: Color(0xFF1E1D1D),
-        child: _isLoading ? mostrarCargando() : crearNestedScrollView()
+    return Scaffold(
+        body: _isLoading ? mostrarCargando() : crearNestedScrollView()
         );
   }
 
@@ -129,8 +130,7 @@ Widget _mostrarWidgetVacio() {
               ),
               child: Center(
                 child: Text(
-                  "",
-                  //Provider.of<CartProvider>(context, listen: true).products.length.toString(), // Reemplaza '2' con la cantidad de elementos
+                  Provider.of<CartProvider>(context, listen: true).products.length.toString(), // Reemplaza '2' con la cantidad de elementos
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18.0,

@@ -44,6 +44,7 @@ dependencies:
   jwt_decode: ^0.3.0
   font_awesome_flutter: ^10.7.0
   intl: ^0.17.0
+  provider: ^6.1.2
   
 dev_dependencies:
   flutter_test:

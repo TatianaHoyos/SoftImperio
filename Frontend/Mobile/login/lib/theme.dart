@@ -8,7 +8,7 @@ class AppTheme {
       brightness: Brightness.light,
       primaryColor: Color(0xFF7bbabb),
       primaryColorLight: Color(0XFFFB925C),
-      appBarTheme: AppBarTheme(backgroundColor: Color(0xffe9b689)),
+      appBarTheme: AppBarTheme(backgroundColor: Colors.white.withOpacity(0.2)),
       // accentColor: Color(0xFF287a84),
       // Define the default font family.
       // fontFamily: 'steady',
