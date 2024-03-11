@@ -251,14 +251,14 @@ spring:
         - id: services-venta-consultar-id
           uri: https://localhost:7084
           predicates:
-            - Path=/edge-service/v1/service/venta/consultar/**
-            - Header=target, consultar-venta-id
+            - Path=/edge-service/v1/service/venta/consultar/id/**
+            #- Header=target, consultar-venta-id
           filters:
             - name: AuthenticationFilter
               args:
                 modulo: Venta
                 accion: Consultar
-            - RewritePath=/edge-service/v1/service/venta/consultar/(?<idventa>.*), /api/Ventas/$\{idventa}
+            - RewritePath=/edge-service/v1/service/venta/consultar/id/(?<idventa>.*), /api/Ventas/$\{idventa}
 
         - id: services-venta-consultar-ByVenta
           uri: https://localhost:7084
