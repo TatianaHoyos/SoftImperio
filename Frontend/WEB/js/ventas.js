@@ -91,16 +91,20 @@ function actualizarTablaVentas(ventas, pagina) {
 
   // Iteramos solo las ventas de la página actual
   ventas.slice(inicio, fin).forEach((venta) => {
+    // Formatea el campo totalVenta con el símbolo de pesos y la separación por puntos
+    const totalVentaFormateado = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(venta.totalVenta);
+
     const fila = `<tr>
       <td>${venta.idVenta}</td>
       <td>${venta.fechaVenta}</td>
-      <td>${venta.totalVenta}</td>
+      <td>${totalVentaFormateado}</td>
       <td>
         <button class="btn btn-detalles" onclick="verDetalles(${venta.idVenta})">Detalles</button>
       </td>
     </tr>`;
     tablaVentas.innerHTML += fila;
   });
+
 
   // Actualizamos el número de página actual
   document.getElementById('paginaActual').innerText = `Página ${pagina}`;
@@ -177,11 +181,18 @@ function mostrarDetallesEnModal(idVenta, detallesVenta) {
   let totalVenta = 0;
 
   detallesVenta.forEach((detalle, index) => {
-    tableHtml += `<tr><td>${index + 1}</td><td>${detalle.nombreProducto}</td><td>${detalle.cantidadProducto}</td><td>${detalle.subTotalAPagar}</td></tr>`;
-    totalVenta += detalle.subTotalAPagar;
+      // Formatear valores numéricos
+      const cantidadFormateada = new Intl.NumberFormat('es-Co').format(detalle.cantidadProducto);
+      const subTotalFormateado = new Intl.NumberFormat('es-Co', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(detalle.subTotalAPagar);
+
+      tableHtml += `<tr><td>${index + 1}</td><td>${detalle.nombreProducto}</td><td>${cantidadFormateada}</td><td>${subTotalFormateado}</td></tr>`;
+      totalVenta += detalle.subTotalAPagar;
   });
 
-  tableHtml += `<tr><td colspan="3" style="text-align: right;">Total Venta:</td><td>${totalVenta}</td></tr>`;
+  // Formatear el total de la venta
+  const totalVentaFormateado = new Intl.NumberFormat('es-Co', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(totalVenta);
+
+  tableHtml += `<tr><td colspan="3" style="text-align: right;">Total Venta:</td><td>${totalVentaFormateado}</td></tr>`;
   tableHtml += '</tbody></table>';
 
   modalBody.innerHTML = `<p>ID Venta: ${idVenta}</p>${tableHtml}`;
