@@ -292,6 +292,7 @@ namespace venta.Controllers
                 return File(stream, "aplication/pdf", "Compras.pdf");
             }
 
+
         }
 
         //GET: api/compras/ultimo-mes
