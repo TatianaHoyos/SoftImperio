@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductoService {
@@ -23,12 +24,21 @@ public class ProductoService {
 
     }
 
+    public List<ProductoEntity> obtenerProductoDuplicado(String nombre, String referencia){
+        return  productoRepository.findByNombreProductoAndReferenciaProducto(nombre, referencia);
+
+    }
+
+    public Optional<ProductoEntity> obtenerProductoPorId(int id) {
+        return productoRepository.findById(id);
+    }
+
     public List<ProductoEntity> obtenerProductos(){
         return productoRepository.findAll();
     }
 
     public  List<ProductoResponse> obtenerProductosCantidades(){
-        return productoRepository.obtenerProductosConExistencias();
+        return productoRepository.obtenerProductosConExistenciasYCategoria();
     }
 
     public void eliminarProductos(int idProducto){

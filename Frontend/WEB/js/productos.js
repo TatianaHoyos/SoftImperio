@@ -1,24 +1,22 @@
 $(document).ready(function () {
     $("#resultadoCrear").hide();
     handleAjaxRequest(consultarProductos);
-    handleAjaxRequest(consultarCategorias);
-    
     buscarProductosTabla();
-   
 });
 
 
 function mostrarFormularioCrear() {
     var titulo = $("#tituloFomularioProducto");
-    titulo.text("Crear un nuevo productos");
+    titulo.text("Crear un nuevo producto");
     var btnform = $("#btn-form");
-    // btnform.text("Guardar");
-    // var product=  btnform.click(crearProducto);
-    handleAjaxRequest(function (token) {
+    
         btnform.click(function () {
+             
+            handleAjaxRequest(function (token) {
             crearProducto(token);
         });
-    });
+        });
+   
    
     
 }
@@ -30,49 +28,24 @@ function mostrarFormularioActualizar() {
 
 }
 
-function consultarCategorias(token) {
-    $("#textCargando").text("Cargando Categorias");
-    $.ajax({
-        type: "GET",
-        url: "http://localhost:8081/edge-service/v1/service/categorias/consultar",
-        "headers": {
-            "Content-Type": "application/json",
-            'Authorization': `Bearer ${token}`
-        },
-        success: onExitoCategorias,
-        error: onErrorCategorias
-    });
-}
 
-function onExitoCategorias(data) {
-    categorias = data;
-    var $dropdown = $("#idCategoria");
-    // $dropdown.append($("<option />").val("-1").text("Todos"));
-    $.each(data, function () {
-        $dropdown.append($("<option />").val(this.idCategoria).text(this.nombreCategoria));
-    });
-
-}
-function onErrorCategorias(error) {
-    
-    $("#cargando").modal("hide");
-    Swal.fire({
-        title: 'Error',
-        text: error.responseJSON.message,
-        icon:"warning",
-        showCancelButton: false,
-        confirmButtonColor: ' #d5c429 ',
-        confirmButtonText: 'Confirmar',
-    }).then((result) => {
-       
-    });
-}
 
 function crearProducto(token) {
-    var form = $('#formCrearProducto')[0];
+    var idCategoria = $('#idCategoria').val();
+    var nombreProducto = $('#nombre').val();
+    var referenciaProducto = $('#referencia').val();
+    var stockMinimo = $('#stockMinimo').val();
+    var precioProducto = $('#precio').val();
+    var fotoInput = $('#fotos')[0];
+    var foto = fotoInput.files[0];
 
-    // Create an FormData object 
-    var formData = new FormData(form);
+    var formData = new FormData();
+    formData.append('idCategoria', idCategoria);
+    formData.append('nombreProducto', nombreProducto);
+    formData.append('referenciaProducto', referenciaProducto);
+    formData.append('stockMinimo', stockMinimo);
+    formData.append('precioProducto', precioProducto);
+    formData.append('foto', foto);
 
     $.ajax({
         type: "POST",
@@ -87,29 +60,39 @@ function crearProducto(token) {
         success: onExitoCrearProducto,
         error: onErrorCrearProducto
     });
-
 }
 
 function onExitoCrearProducto(data) {
-    var mensaje = $("#resultadoCrear");
-    mensaje.addClass("alert-success");
-    mensaje.removeClass("alert-danger");
-    mensaje.show();
-    mensaje.text(data.message);
-    
-    
-    $("#formCrearProducto").trigger("reset");
-    $("#foto-preview").attr('src', '');
-    handleAjaxRequest(consultarProductos);
+    $("#formCrearProductos").modal("hide");
+    Swal.fire({
+        title: 'Exito',
+        text: data.message,
+        type: 'success',
+        icon:"success",
+        showCancelButton: false,
+        confirmButtonColor: ' #d5c429 ',
+        confirmButtonText: 'Confirmar',
+    }).then((result) => {
+        $("#formCrearProducto").trigger("reset");
+        $("#foto-preview").attr('src', '');
+        handleAjaxRequest(consultarProductos);
+    });
 
-   
+    // console.log(data);
+
 }
 function onErrorCrearProducto(error) {
-    var mensaje = $("#resultadoCrear");
-    mensaje.addClass("alert-danger");
-    mensaje.removeClass("alert-success");
-    mensaje.show();
-    mensaje.text(error.message);
+    $("#formCrearProductos").modal("hide");
+    Swal.fire({
+        title: 'Error',
+        text: error.responseJSON.message,
+        icon:"warning",
+        showCancelButton: false,
+        confirmButtonColor: ' #d5c429 ',
+        confirmButtonText: 'Confirmar',
+    }).then((result) => {
+       
+    });
 
 
 }
@@ -127,6 +110,7 @@ function consultarProductos(token) {
         error: onErrorProductos
     });
 }
+
 
 function onExitoProductos(data) {
 // Destruir la DataTable existente si ya ha sido inicializada
@@ -171,23 +155,16 @@ function onExitoProductos(data) {
 
     // Recorre los datos y agrega las filas
     $.each(data, function (id, productos) {
-        var nombreCategoria = "";
-        if (productos.idCategoria == 1) {
-            nombreCategoria = "cervezas";
-        } else if (productos.idCategoria == 2) {
-            nombreCategoria = "wiskey";
-        } else if (productos.idCategoria == 3) {
-            nombreCategoria = "aguardiente";
-        }
 
         var boton1 = "<button onclick='EliminarProducto(" + JSON.stringify(productos) + ")' class='btn btn-eliminar' data-id='1'><i class='fas fa-trash'></i></button>";
         var boton2 = "<button onclick='EditarProducto(" + JSON.stringify(productos) + ")' class='btn btn-editar' data-toggle='modal' data-target='#formCrearProductos'><i class='fas fa-edit'></i></button>";
 
         // Agrega la fila a la DataTable
         dataTable.row.add([
-            nombreCategoria,
+           productos.nombreCategoria,
             productos.nombreProducto,
             productos.referenciaProducto,
+            productos.existencia.stock,
             productos.existencia.cantidad,
             productos.precioProducto,
             boton1 +
@@ -198,9 +175,15 @@ function onExitoProductos(data) {
 
 
 function onErrorProductos(error) {
+    var message = "";
+    if (error.responseJSON.hasOwnProperty('errors')) {
+        message = error.responseJSON.errors[0].message;
+    } else {
+        message = error.responseJSON.message;
+    }
     Swal.fire({
         title: 'Error',
-        text: error.responseJSON.message,
+        text: message,
         icon:"warning",
         showCancelButton: false,
         confirmButtonColor: ' #d5c429 ',
@@ -235,7 +218,7 @@ function callApiEliminarProducto(Producto,token){
         url: "http://localhost:8081/edge-service/v1/service/productos/eliminar/" + Producto.idProductos,
         type: 'DELETE',
         "headers": {
-            
+   
            'Authorization': `Bearer ${token}`
         },
         success: function (response) {
@@ -246,7 +229,7 @@ function callApiEliminarProducto(Producto,token){
         },
         error: function (xhr, status, error) {
             // Manejar los errores de la solicitud AJAX
-            Swal.fire('Error', error.message, 'error');
+            Swal.fire('Error', xhr.responseJSON.message, 'error');
         }
     });
 }
@@ -257,24 +240,28 @@ function EditarProducto(producto) {
     $("#proveedor option[value=" + producto.idProveedores + "]").attr("selected", true);
     $("#nombre").val(producto.nombreProducto);
     $("#referencia").val(producto.referenciaProducto);
+    $("#stockMinimo").val(producto.existencia.stock);
     $("#precio").val(producto.precioProducto);
     var preview = document.getElementById("foto-preview");
     preview.src = "http://localhost:8080/" + producto.fotoProducto;
     preview.style.display = "block";
     var btnform = $("#btn-form");
-    handleAjaxRequest(function (token) {
-        btnform.click(function () {
+    
+        btnform.click(function (event) {
+            event.preventDefault();  
+            handleAjaxRequest(function (token) {
             actualizarProducto(producto.idProductos,token);
+            return false;
         });
-    });
+        });
+    
     // btnform.click(function () { actualizarProducto(producto.idProductos); });
 
 }
 
 function actualizarProducto(idProductos,token) {
     var form = $('#formCrearProducto')[0];
-
-    // Create an FormData object
+    // Create an FormData object 
     var formData = new FormData(form);
 
     $.ajax({
@@ -303,3 +290,70 @@ function buscarProductosTabla() {
         });
     });
 }
+
+function generarPDFProductos(){
+    handleAjaxRequest(callApiGenerarPdf);
+}
+
+
+function callApiGenerarPdf(token){
+      $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/api/producto/generar/pdf",
+        "headers": {
+          'Authorization': `Bearer ${token}`,
+          'target' : 'pdf'
+      },
+        xhrFields: {
+          responseType: 'arraybuffer' // Indica que esperamos un array de bytes como respuesta
+        },
+        success: function (response, status, xhr) {
+          if (xhr.status === 200) {
+            // Crea un objeto Blob con la respuesta y tipo de contenido PDF
+            
+            const blob = new Blob([response], { type: 'application/pdf' });
+    
+            // Crea una URL de objeto para el blob
+            const blobURL = URL.createObjectURL(blob);
+    
+            // Crea un enlace invisible para descargar el PDF
+            const link = document.createElement('a');
+            link.href = blobURL;
+            link.download = 'Productos.pdf'; // Puedes cambiar el nombre del archivo si es necesario
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+    
+            // Libera la URL de objeto después de unos segundos (puedes ajustar el tiempo)
+            setTimeout(() => {
+              URL.revokeObjectURL(blobURL);
+            }, 5000); // 5000 milisegundos (5 segundos) como ejemplo
+          } else {
+           
+            Swal.fire({
+              title: 'Error',
+              text: `Error en la respuesta del servidor. Código de estado: ${xhr.status}`,
+              icon:"warning",
+              showCancelButton: false,
+              confirmButtonColor: ' #ae9243 ',
+              confirmButtonText: 'Confirmar',
+          }).then((result) => {
+             
+          });
+          }
+        },
+        error: function (error) {
+          // Manejar el error
+          Swal.fire({
+            title: 'Error',
+            text: 'Error en la respuesta',
+            icon:"warning",
+            showCancelButton: false,
+            confirmButtonColor: ' #ae9243 ',
+            confirmButtonText: 'Confirmar',
+        }).then((result) => {
+           
+        });
+        }
+      });
+    }

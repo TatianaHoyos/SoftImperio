@@ -35,6 +35,16 @@ namespace venta.Controllers
             _productoService = productoService;
 
         }
+        // GET: api/Ventas
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Venta>>> Getcreditos()
+        {
+            if (_context.Venta == null)
+            {
+                return NotFound();
+            }
+            return await _context.Venta.ToListAsync();
+        }
 
         // GET: api/Ventas/ByFecha
         [HttpGet("ByFecha")]
@@ -138,6 +148,7 @@ namespace venta.Controllers
 
         //para hacer la consulta de el pedido
         [HttpGet("{id}")]
+        [Produces("application/json")]
         public async Task<ActionResult<IEnumerable<VentaDetalleResponseDto>>> ObtenerDetalleVenta(int id)
         {
             var ventaExistente = await _context.Venta.AnyAsync(v => v.idVenta == id);

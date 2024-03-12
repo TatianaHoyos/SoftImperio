@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using venta.Data;
 using venta.Repository;
 using venta.SignalR;
@@ -36,7 +36,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 });
 
 
-// Registro de IProductoRepository con ProductoService como implementaci�n
+// Registro de IProductoRepository con ProductoService como implementación
 builder.Services.AddScoped<IProductoRepository, ProductoService>();
 
 

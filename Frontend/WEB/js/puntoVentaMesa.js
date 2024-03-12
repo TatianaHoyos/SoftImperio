@@ -188,8 +188,14 @@ function seleccionarProducto(producto, button) {
         referencia.precio, seleccion);
 
         //agregar valor de primer registro
-        var venta=  parseInt($("#totalVenta").text());
-        $("#totalVenta").text(referencia.precio + venta);
+        const totalVentaTexto = $("#totalVenta").text();
+        // Eliminar el formato de moneda y convertirlo a un número
+        const venta = parseInt(totalVentaTexto.replace(/[^0-9.-]+/g, '').replace('.', ''));
+  
+        var totalV = referencia.precio + venta;
+        const total = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(totalV);
+
+        $("#totalVenta").text(total);
 }
 
 function existeIdEnTabla(id) {
@@ -229,8 +235,14 @@ function contadorCantidad() {
         total.text(parseInt(precio.text()) * cantidad);
 
   //agregar valor de primer registro
-        var venta=  parseInt($("#totalVenta").text());
-        $("#totalVenta").text( venta+ parseInt( precio.text()));
+  const totalVentaTexto = $("#totalVenta").text();
+  // Eliminar el formato de moneda y convertirlo a un número
+  const venta = parseInt(totalVentaTexto.replace(/[^0-9.-]+/g, '').replace('.', ''));
+
+  var totalV = venta+ parseInt( precio.text());
+  const totall = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(totalV);
+
+        $("#totalVenta").text(totall);
 
     });
 
@@ -247,8 +259,14 @@ function contadorCantidad() {
         if (cantidad > 0) {
             total.text(parseInt(total.text()) - parseInt(precio.text()));
              //agregar valor de primer registro
-        var venta=  parseInt($("#totalVenta").text());
-        $("#totalVenta").text( venta- parseInt( precio.text()));
+             const totalVentaTexto = $("#totalVenta").text();
+             // Eliminar el formato de moneda y convertirlo a un número
+             const venta = parseInt(totalVentaTexto.replace(/[^0-9.-]+/g, '').replace('.', ''));
+           
+             var totalV =  venta- parseInt( precio.text());
+             const totall = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(totalV);
+           
+        $("#totalVenta").text(totall);
         }
 
 
@@ -284,8 +302,14 @@ function cancelarPedido() {
 function eliminarRegistroPedido(button) {
       //agregar valor de primer registro
       var total = $(button).closest('tr').find('.total');
-      var venta=  parseInt($("#totalVenta").text());
-      $("#totalVenta").text( venta - parseInt( total.text()));
+      const totalVentaTexto = $("#totalVenta").text();
+             // Eliminar el formato de moneda y convertirlo a un número
+             const venta = parseInt(totalVentaTexto.replace(/[^0-9.-]+/g, '').replace('.', ''));
+           
+             var totalV =  venta - parseInt( total.text());
+             const totall = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(totalV);
+
+      $("#totalVenta").text(totall);
 
       // Encuentra la fila (tr) a la que pertenece el botón y elimínala
     $(button).closest('tr').remove();

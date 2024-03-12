@@ -7,7 +7,7 @@
     <title>Nuestros Proveedores</title>
     <!-- estilos generales-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap4.min.css"> -->
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap4.min.css">
@@ -36,7 +36,7 @@
 
     <div class="form-group ">
         <div class="form-row">
-            <button  type="button" class="btn btn-primary mr-2"onclick="mostrarFormularioCrearProveedor()" data-toggle="modal" data-target="#formCrearProveedor"><i class="fas fa-plus"></i></button>
+            <button  type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#formCrearProveedor"><i class="fas fa-plus"></i></button>
         </div>
 
         <div class="modal fade" id="formCrearProveedor" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -116,7 +116,7 @@
                         <div class="form-group text-center mt-3">
 
                             <input type="hidden" name="operacion" value="login">
-                            <button id="btn-form" type="button" onclick="crearUsuario()" class="col-md-3 btn" >
+                            <button id="btn-form" type="button" onclick="crearUsuarioProveedor()" class="col-md-3 btn" >
                                 <i class="fas fa-save"></i> <strong>Guardar</strong>
                             </button>
 
@@ -140,7 +140,7 @@
                 <th>Email</th>
                 <th>Teléfono</th>
                 <th>Dirección</th>
-                <th >Acciones</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody id="tbodyProveedores">
@@ -190,6 +190,7 @@
                                         </span>
                                     </div>
                                     <input type="text" class="form-control" id="documentoE" name="documentoE" onkeypress="return validarDocumento(event)">
+                                    <span id="mensajeError"></span>
                                 </div>
                             </div>
                         </div>
@@ -266,7 +267,7 @@
     <script src="js/oAuthJwt.js"></script>
     <script src="js/validaciones.js"></script>
     <script src="js/funciones.js"></script>
-    <script src="js/proveedores/proveedores.js"></script>
+    <script src="js/proveedores.js"></script>
     <script>
         $(document).ready(function () {
             $("#menu-container").load("menu.html");

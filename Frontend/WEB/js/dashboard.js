@@ -1,7 +1,18 @@
 // Función para obtener las ventas del ultimo mes
-async function obtenerVentasUltimoMes() {
+async function obtenerVentasUltimoMes(token) {
     try {
-        const respuesta = await fetch('https://localhost:7084/api/Ventas/ventas-ultimo-mes');
+        var apiUrl = 'http://localhost:8081/edge-service/v1/service/venta/ultimo-mes/consultar';
+
+        var myHeaders = new Headers();
+        myHeaders.append('Authorization', `Bearer ${token}`);
+
+        var requestOptions = {
+            method: 'GET',
+            headers: myHeaders
+        };
+
+        const respuesta = await fetch(apiUrl, requestOptions);
+
         if (!respuesta.ok) {
             throw new Error('Error al obtener las ventas del último mes. Estado de la respuesta: ' + respuesta.status);
         }
@@ -16,6 +27,8 @@ async function obtenerVentasUltimoMes() {
             // Actualiza el contenido del dashboard con los datos formateados
             document.getElementById('ventasTotales').innerHTML = totalVentaFormateado;
         } else {
+            const totalVentaFormateado = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(0);
+            document.getElementById('ventasTotales').innerHTML = totalVentaFormateado;
             console.warn('La respuesta de la API no contiene los datos esperados para las ventas del último mes.');
         }
     } catch (error) {
@@ -38,9 +51,18 @@ async function obtenerVentasUltimoMes() {
 
 
 
-async function obtenerComprasUltimoMes() {
+async function obtenerComprasUltimoMes(token) {
     try {
-        const respuesta = await fetch('https://localhost:7084/api/Compra/compras-ultimo-mes');
+        var apiUrl = 'http://localhost:8081/edge-service/v1/service/compras/ultimo-mes/consultar';
+
+        var myHeaders = new Headers();
+        myHeaders.append('Authorization', `Bearer ${token}`);
+
+        var requestOptions = {
+            method: 'GET',
+            headers: myHeaders
+        };
+        const respuesta = await fetch(apiUrl, requestOptions);
         if (!respuesta.ok) {
             throw new Error('Error al obtener las compras del último mes. Estado de la respuesta: ' + respuesta.status);
         }
@@ -53,6 +75,9 @@ async function obtenerComprasUltimoMes() {
 
             document.getElementById('comprasTotales').innerHTML = totalCompraFormateado;
         } else {
+            const totalCompraFormateado = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(0);
+
+            document.getElementById('comprasTotales').innerHTML = totalCompraFormateado;
             console.warn('La respuesta de la API no contiene los datos esperados para las compras del último mes.');
         }
     } catch (error) {
@@ -70,9 +95,19 @@ async function obtenerComprasUltimoMes() {
     }
 }
 
-async function obtenerCreditosUltimoMes() {
+async function obtenerCreditosUltimoMes(token) {
     try {
-        const respuesta = await fetch('https://localhost:7084/api/Creditos/creditos-ultimo-mes');
+        var apiUrl = 'http://localhost:8081/edge-service/v1/service/creditos/ultimo-mes/consultar';
+
+        var myHeaders = new Headers();
+        myHeaders.append('Authorization', `Bearer ${token}`);
+
+        var requestOptions = {
+            method: 'GET',
+            headers: myHeaders
+        };
+        const respuesta = await fetch(apiUrl, requestOptions);
+       
         if (!respuesta.ok) {
             throw new Error('Error al obtener los créditos del último mes. Estado de la respuesta: ' + respuesta.status);
         }
@@ -85,6 +120,9 @@ async function obtenerCreditosUltimoMes() {
 
             document.getElementById('creditosTotales').innerHTML = totalCreditoFormateado;
         } else {
+            const totalCreditoFormateado = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(0);
+
+            document.getElementById('creditosTotales').innerHTML = totalCreditoFormateado;
             console.warn('La respuesta de la API no contiene los datos esperados para los créditos del último mes.');
         }
     } catch (error) {
@@ -94,8 +132,15 @@ async function obtenerCreditosUltimoMes() {
 
 
 // Función para realizar solicitudes HTTP usando fetch
-async function fetchData(url) {
-    const response = await fetch(url);
+async function fetchData(url, token) {
+    var myHeaders = new Headers();
+        myHeaders.append('Authorization', `Bearer ${token}`);
+
+        var requestOptions = {
+            method: 'GET',
+            headers: myHeaders
+        };
+    const response = await fetch(url, requestOptions);
     if (!response.ok) {
         throw new Error(`Error al obtener los datos. Estado de la respuesta: ${response.status}`);
     }
@@ -127,9 +172,11 @@ function obtenerDatosCompletos(datos) {
 }
 
 
-async function obtenerDatosGraficoVentas() {
+async function obtenerDatosGraficoVentas(token) {
     try {
-        const datos = await fetchData('https://localhost:7084/api/Ventas/ventas-por-mes');
+        var apiUrl = 'http://localhost:8081/edge-service/v1/service/venta/por-mes/consultar';
+
+        const datos = await fetchData(apiUrl, token);
         //console.log('Datos completos de la API (Ventas):', datos);
         return datos;
     } catch (error) {
@@ -148,9 +195,9 @@ async function obtenerDatosGraficoVentas() {
     }
 }
 
-async function obtenerDatosGraficoCompras() {
+async function obtenerDatosGraficoCompras(token) {
     try {
-        const datos = await fetchData('https://localhost:7084/api/Compra/compras-por-mes');
+        const datos = await fetchData('http://localhost:8081/edge-service/v1/service/compras/por-mes/consultar', token);
         //console.log('Datos completos de la API (Compras):', datos);
         return datos;
     } catch (error) {
@@ -194,10 +241,10 @@ function obtenerDatosCompletos(datos) {
 }
 
 // Función para mostrar el gráfico de Ventas y Compras combinadas
-async function mostrarGraficoVentasYCompras() {
+async function mostrarGraficoVentasYCompras(token) {
     try {
-        const datosGraficoVentas = await obtenerDatosGraficoVentas();
-        const datosGraficoCompras = await obtenerDatosGraficoCompras();
+        const datosGraficoVentas = await obtenerDatosGraficoVentas(token);
+        const datosGraficoCompras = await obtenerDatosGraficoCompras(token);
 
         if (datosGraficoVentas && datosGraficoVentas.length > 0 && datosGraficoCompras && datosGraficoCompras.length > 0) {
             const datosPorMesVentas = obtenerDatosCompletos(datosGraficoVentas);
@@ -267,21 +314,23 @@ async function mostrarGraficoVentasYCompras() {
 }
 
 
-
-
-
-
-
-
-async function obtenerDatosGraficoProductos() {
+// Función para obtener datos de la API de Productos
+async function obtenerDatosGraficoProductos(token) {
     try {
-        const respuesta = await fetch('https://localhost:7084/api/Productos/productos-con-existencias');
+        var myHeaders = new Headers();
+        myHeaders.append('Authorization', `Bearer ${token}`);
+
+        var requestOptions = {
+            method: 'GET',
+            headers: myHeaders
+        };
+        const respuesta = await fetch('http://localhost:8081/edge-service/v1/service/productos/con/existencias', requestOptions);
         if (!respuesta.ok) {
             throw new Error('Error al obtener los datos de productos. Estado de la respuesta: ' + respuesta.status);
         }
 
         const datos = await respuesta.json();
-        console.log('Datos de la API (Productos):', datos);
+        // console.log('Datos de la API (Productos):', datos);
 
         if (datos && datos.length > 0) {
             // Extrae los nombres de productos, referencias y cantidades
@@ -351,9 +400,10 @@ async function obtenerDatosGraficoProductos() {
 
 
 window.onload = function () {
-    obtenerVentasUltimoMes();
-    obtenerComprasUltimoMes();
-    obtenerCreditosUltimoMes();
-    mostrarGraficoVentasYCompras();
-    obtenerDatosGraficoProductos();
+    handleAjaxRequest(obtenerVentasUltimoMes);
+    
+    handleAjaxRequest(obtenerComprasUltimoMes);
+    handleAjaxRequest(obtenerCreditosUltimoMes);
+    handleAjaxRequest(mostrarGraficoVentasYCompras);
+    handleAjaxRequest(obtenerDatosGraficoProductos);
 };

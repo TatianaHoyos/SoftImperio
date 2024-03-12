@@ -3,16 +3,26 @@ const urlParams = new URLSearchParams(queryString);
 let listData;
 let listaProveedores;
 let listaProductos;
-consultarProductos();
-consultarProveedores();//consulta proveedores y lo asigna a variable listaProveedores
+handleAjaxRequest(consultarProductos);
+handleAjaxRequest(consultarProveedores);//consulta proveedores y lo asigna a variable listaProveedores
 
 function asignarValor(data) {
     listData = data;
 }
+
 $(document).ready(function () {
+  const idCompra = urlParams.get('idCompra');
+  if(idCompra != "Nuevo"){
+  handleAjaxRequest(ObtenerDetalleCompra);
+}
+});
+
+function ObtenerDetalleCompra(){
   var miTabla = $('#miTabla').DataTable({
     // ... otras opciones ...
     dom: '<"row"<"col-md-6"l><"col-md-6"f>>tip',
+    pageLength: 5,
+    lengthMenu: [5, 10, 25, 50],
     language: {
       "sProcessing": "Procesando...",
       "sLengthMenu": "Mostrar _MENU_ registros",
@@ -38,11 +48,17 @@ $(document).ready(function () {
       }
     }
   });
-
+  handleAjaxRequest(function (token) {
+    callApiObtenerDetalleCompra(token,miTabla);
+});
+}
+function callApiObtenerDetalleCompra(token,miTabla){
   const idCompra = urlParams.get('idCompra');
-  const apiUrl = `https://localhost:7084/api/DetalleCompra/ObtenerDetalleCompraPorIdCompra/${idCompra}`;
   $.ajax({
-    url: apiUrl, // Reemplaza '2' con el ID que necesites
+    url: `http://localhost:8081/edge-service/v1/service/detalle-compras/consultar/id/${idCompra}`, // Reemplaza '2' con el ID que necesites
+    "headers": {
+      'Authorization': `Bearer ${token}`
+  },
     type: 'GET',
     dataType: 'json',
     success: function (data) {
@@ -50,8 +66,9 @@ $(document).ready(function () {
       miTabla.clear();
       // Itera a través de los datos y agrégalos a la tabla
       $.each(data, function (index, item) {
-        var acciones = '<div class="btn-group" role="group">';
+        var acciones = '';
         acciones += '<button class="btn btn-editar" onclick="editDetail(' + item.idDetalleCompra + ')"><i class="fas fa-edit"></i></button>';
+        acciones += '&nbsp;&nbsp;&nbsp;&nbsp'; // Agrega un espacio en blanco
         acciones += '<button class="btn btn-eliminar" onclick="deleteDetail(' + item.idDetalleCompra + ')"><i class="fas fa-trash"></i></button>';
         acciones += '</div>';
 
@@ -61,30 +78,46 @@ $(document).ready(function () {
           item.categoria,
           item.proveedor,
           item.cantidadProducto,
-          item.precio,
-          item.subtotal,
+          '$ ' + item.precio.toLocaleString('es-CO'),
+          '$ ' + item.subtotal.toLocaleString('es-CO'),
           acciones
         ]).draw();
       });
       asignarValor(data);
     },
     error: function (error) {
-      console.error('Error al obtener los datos de la API:', error);
+      Swal.fire({
+        title: 'Error',
+        text: error.message,
+        icon:"warning",
+        showCancelButton: false,
+        confirmButtonColor: ' #ae9243 ',
+        confirmButtonText: 'Confirmar',
+    }).then((result) => {
+    });
     }
   });
-});
-
-
+}
 // Resto del código y funciones se mantienen igual
 
 // Función para manejar errores de la llamada a la API
 function handleAPIError(error) {
-  console.error('Error al obtener los datos de la API:', error);
+  // console.error('Error al obtener los datos de la API:', error);
+  Swal.fire({
+    title: 'Error',
+    text: error.message,
+    icon:"warning",
+    showCancelButton: false,
+    confirmButtonColor: ' #ae9243 ',
+    confirmButtonText: 'Confirmar',
+}).then((result) => {
+});
+
 }
 
 // Función para redirigir a la página de compras
 function redirectToComprasPage() {
-  const destinationURL = 'http://127.0.0.1:5500/Frontend/WEB/compras.html';
+  const destinationURL = 'http://127.0.0.1:5500/compras.html';
   window.location.href = destinationURL;
 }
 
@@ -104,35 +137,41 @@ function createButton(action, id) {
       text: 'Estas seguro de eliminar este detalle de la compra?',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
+      confirmButtonColor: '#ae9243',
       cancelButtonText: 'Cancelar',
       confirmButtonText: 'Si, eliminar!'
     }).then((result) => {
       if (result.isConfirmed) {
-        $.ajax({
-          type: 'DELETE',
-          url: 'https://localhost:7084/api/DetalleCompra/'+id,
-          contentType: 'application/json',
-          success: function (response) {
-            window.location.reload();
-          },
-          error: function (error) {
-            // Handle the error
-            Swal.fire({
-              title: 'Error',
-              text: 'No es posible eliminar después de 24 horas.',
-              icon: 'error',
-              showConfirmButton: false,
-              timer: 1500
-            });
-          }
-        });
+        handleAjaxRequest(function (token) {
+          callApiDeleteDetail(token,id);
+      });
       } else {
       }
     });
   }
-
+function callApiDeleteDetail(token,id){
+  $.ajax({
+    type: 'DELETE',
+    url: 'http://localhost:8081/edge-service/v1/service/detalle-compras/eliminar/'+id,
+    "headers": {
+      'Authorization': `Bearer ${token}`
+  },
+    contentType: 'application/json',
+    success: function (response) {
+      window.location.reload();
+    },
+    error: function (error) {
+      // Handle the error
+      Swal.fire({
+        title: 'Error',
+        text: 'No es posible eliminar después de 24 horas.',
+        icon: 'error',
+        showConfirmButton: false,
+        timer: 1500
+      });
+    }
+  });
+}
   function editDetail(id) {
     if (listData !== undefined) {
         listData.forEach(function(item) {
@@ -166,10 +205,8 @@ function createButton(action, id) {
           text: 'La variable aún no tiene un valor asignado.',
           icon:"warning",
           showCancelButton: false,
-          confirmButtonColor: ' #d5c429 ',
           confirmButtonText: 'Confirmar',
       }).then((result) => {
-         
       });
       }
   }
@@ -194,32 +231,12 @@ function nuevoDetalleCompra(){
     const idCompra = urlParams.get('idCompra');
     //console.log("nuevo detalle "+urlParams.get('idCompra'));
     if (idCompra != null) {
-        const destinationURL = `http://127.0.0.1:5500/Frontend/nuevaCompra.html?idCompra=${idCompra}`;
+        const destinationURL = `http://127.0.0.1:5500/nuevaCompra.html?idCompra=${idCompra}`;
         window.location.href = destinationURL;
     }else{
-      const destinationURL = `http://127.0.0.1:5500/Frontend/WEB/compras.html`;
+      const destinationURL = `http://127.0.0.1:5500/compras.html`;
       window.location.href = destinationURL;
     }
-
-}
-
-function listExistenciaProductos(){
-    const selectElement = document.getElementById("idExistencias");
-
-    fetch("https://localhost:7084/Compras/listProducts")
-    .then((response) => response.json())
-    .then((data) => {
-        // Iterate over the data and create <option> elements
-        data.forEach((item) => {
-        const option = document.createElement("option");
-        option.value = item.idExistencias;
-        option.textContent = item.nombreProducto;
-        selectElement.appendChild(option); // Append the option to the <select>
-        });
-    })
-    .catch((error) => {
-        console.error("Error fetching data:", error);
-    });
 
 }
 
@@ -233,7 +250,7 @@ function crearDetalleCompra(){
     const idCompra = urlParams.get('idCompra');
     const idDetalleCompra = document.getElementById("idDetalleCompra");
 
-    var request= JSON.stringify( {
+    var request=  {
         idCompra: idCompra,
         idExistencias: idExistencias.value,
         idProveedores: idProveedores.value,
@@ -241,38 +258,53 @@ function crearDetalleCompra(){
         precioCompra: precio.value,
         accion: accion.value,
         idDetalleCompra: idDetalleCompra.value=="" ? "0" : idDetalleCompra.value
-        });
+        };
 
     //console.log("rq ",request);
-   
     if (idCompra != null) {
-        $.ajax({
-        type: accion.value=="edit"?"PUT":"POST",
-        url: accion.value=="edit"?"https://localhost:7084/api/DetalleCompra/"+idDetalleCompra.value :"https://localhost:7084/api/DetalleCompra",
-        data: request,
-        contentType: "application/json",
-        success: function(response) {
-            // Procesar la respuesta exitosa
-
-            limpiarFormulario();
-            window.location.reload();
-        },
-        error: function(error) {
-              Swal.fire({
-                title: 'Error',
-                text: 'No es posible editar después de 24 horas.',
-                icon: 'error',
-                showConfirmButton: false,
-                timer: 1500
-              });
-        }
-        });
+      handleAjaxRequest(function (token) {
+        ApiCallCrearDetalleCompra(token,request);
+    });
     }else{
-        const destinationURL = `http://127.0.0.1:5500/Frontend/WEB/compras.html`;
+        const destinationURL = `http://127.0.0.1:5500/compras.html`;
         window.location.href = destinationURL;
     }
 }
-
+function ApiCallCrearDetalleCompra(token,request){
+  $.ajax({
+    type:request.accion=="edit"?"PUT":"POST",
+    url:request.accion=="edit"?"http://localhost:8081/edge-service/v1/service/detalle-compras/actualizar/"+request.idDetalleCompra :"http://localhost:8081/edge-service/v1/service/detalle-compras/actualizar",
+    "headers": {
+      'Authorization': `Bearer ${token}`
+  },
+    data:JSON.stringify(request),
+    contentType: "application/json",
+    success: function(response) {
+        // Procesar la respuesta exitosa
+        limpiarFormulario();
+        window.location.reload();
+                 // Mostrar ventana de confirmación después de guardar
+        Swal.fire({
+          title: 'Guardado exitoso',
+            text: 'Los cambios se han guardado correctamente.',
+            icon: 'success',
+            showConfirmButton: false,
+            timer: 1500
+        });
+    },
+    error: function(error) {
+      const message = error.responseText === "No puedes editar o eliminar una compra después de 24 horas."?
+      error.responseText : "Error con datos indicados";
+        Swal.fire({
+          title: 'Error',
+          text: message,
+          icon: 'error',
+          showConfirmButton: false,
+          timer: 1500
+        });
+    }
+    });
+}
 function updateDetalleCompra(){
 
     const idProveedores = document.getElementById("proveedor");
@@ -294,66 +326,62 @@ function updateDetalleCompra(){
     //console.log("rq ",request);
 
     if (idCompra != null) {
-        $.ajax({
-        type: "POST",
-        url: "https://localhost:7084/api/DetalleCompra",
-        data: request,
-        contentType: "application/json",
-        success: function(response) {
-            // Procesar la respuesta exitosa
-           // console.log(response);
-
-            // Mostrar ventana de confirmación después de guardar
-            Swal.fire({
-              title: 'Guardado exitoso',
-              text: 'Los cambios se han guardado correctamente.',
-              icon: 'success',
-              timer: 1500
-            });
-
-            limpiarFormulario();
-            window.location.reload();
-        },
-        error: function(error) {
-            Swal.fire({
-              title: 'Error',
-              text: error.message,
-              icon:"warning",
-              showCancelButton: false,
-              confirmButtonColor: ' #d5c429 ',
-              confirmButtonText: 'Confirmar',
-          }).then((result) => {
-             
-          });
-        }
-        });
+      handleAjaxRequest(function (token) {
+        callApiUpdateDetalleCompra(request,token);
+    });
     }else{
-        const destinationURL = `http://127.0.0.1:5500/Frontend/WEB/compras.html`;
+        const destinationURL = `http://127.0.0.1:5500/compras.html`;
         window.location.href = destinationURL;
     }
 }
+function callApiUpdateDetalleCompra(request,token){
+  $.ajax({
+    type: "POST",
+    url: "http://localhost:8081/edge-service/v1/service/detalle-compras/actualizar",
+    "headers": {
+      'Authorization': `Bearer ${token}`
+  },
+    data: request,
+    contentType: "application/json",
+    success: function(response) {
+        // Procesar la respuesta exitosa
+        alert("rs"+JSON.stringify(response));s
+        // Mostrar ventana de confirmación después de guardar
+        Swal.fire({
+          title: 'Guardado exitoso',
+          text: 'Los cambios se han guardado correctamente.',
+          icon: 'success',
+          timer: 1500
+        });
 
+        limpiarFormulario();
+        window.location.reload();
+    },
+    error: function(error) {
+        Swal.fire({
+          title: 'Error',
+          text: error.message,
+          icon:"warning",
+          showCancelButton: false,
+          confirmButtonText: 'Confirmar',
+      }).then((result) => {
+      });
+    }
+    });
+}
 function confirmarYGuardarDetalleCliente() {
   Swal.fire({
     title: 'Confirmación',
     text: '¿Estás seguro de que deseas guardar los cambios?',
     icon: 'question',
     showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
+    confirmButtonColor: '#ae9243',
     cancelButtonText: 'Cancelar',
     confirmButtonText: 'Sí, guardar'
   }).then((result) => {
     if (result.isConfirmed) {
       crearDetalleCompra();
-        // Mostrar ventana de confirmación después de guardar
-        Swal.fire({
-          title: 'Guardado exitoso',
-          text: 'Los cambios se han guardado correctamente.',
-          icon: 'success',
-          showConfirmButton: false,
-          timer: 1500
-        });
+
     }else if(result.dismiss === Swal.DismissReason.cancel){
       Swal.fire({
         title: "Cancelado",
@@ -366,12 +394,15 @@ function confirmarYGuardarDetalleCliente() {
 
 //consultar productos
 
-function consultarProductos() {
+function consultarProductos(token) {
+  console.log("esto se llama?");
+
   $.ajax({
       type: "GET",
-      url: "https://localhost:7084/api/Productos/ObtenerProductosExistencia",
+      url: "http://localhost:8081/edge-service/v1/service/productos/existencias",
       "headers": {
-          "Content-Type": "application/json"
+        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json"
         },
       success: onExitoProductosList,
       error: onErrorProductosList
@@ -381,12 +412,13 @@ function consultarProductos() {
 function onExitoProductosList(data) {
 
   listaProductos= data;
+  console.log("productos: " + JSON.stringify(listaProductos));
 
   var select = $("#idExistencias");
     select.empty();
     select.append('<option value="">Seleccione...</option>');
     listaProductos.forEach(function(producto) {
-        select.append('<option value="' + producto.idExistencias + '">' + producto.nombreProducto + '</option>');
+        select.append('<option value="' + producto.idExistencias + '">' + producto.nombreProducto + " - "+ producto.referenciaProducto+ '</option>');
     });
 }
 
@@ -396,20 +428,19 @@ function onErrorProductosList(error) {
     text: error.message,
     icon:"warning",
     showCancelButton: false,
-    confirmButtonColor: ' #d5c429 ',
     confirmButtonText: 'Confirmar',
 }).then((result) => {
-   
 });
 }
 
 
 //consulta proveedores
-function consultarProveedores() {
+function consultarProveedores(token) {
   $.ajax({
       type: "GET",
-      url: "http://localhost:8080/api/proveedorconsultar",
+      url: "http://localhost:8081/edge-service/v1/service/proveedor/consultar",
       "headers": {
+        'Authorization': `Bearer ${token}`,
           "Content-Type": "application/json"
         },
       success: onExitoProveedorList,
@@ -418,7 +449,7 @@ function consultarProveedores() {
 }
 
 function onExitoProveedorList(data) {
- listaProveedores =data;
+  listaProveedores =data;
 listarProveedor();
 }
 
@@ -428,10 +459,8 @@ function onErrorProveedorList(error) {
     text: error.message,
     icon:"warning",
     showCancelButton: false,
-    confirmButtonColor: ' #d5c429 ',
     confirmButtonText: 'Confirmar',
 }).then((result) => {
-   
 });
 }
 
