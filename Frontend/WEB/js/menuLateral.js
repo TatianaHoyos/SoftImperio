@@ -55,18 +55,42 @@ function habilitarOpciones(){
     $("#configuracion").remove();
     $("#ventaPuntos").remove();
     $("#configuracionInicio").remove();
-}if(!usuario.rol.permisos.hasOwnProperty('Venta')){
+  }
+  if(!usuario.rol.permisos.hasOwnProperty('Credito')){
+    $("#credito").remove();
+}
+
+if(!usuario.rol.permisos.hasOwnProperty('Venta')){
   $("#venta").remove();
   $("#ventaPuntos").remove();
   $("#ventaPuntosMesa").remove();
-}if(!usuario.rol.permisos.hasOwnProperty('Producto')){
+} else {
+  if (usuario.rol.permisos.Venta.permisos.length == 2) {
+  const permisosConsultar = usuario.rol.permisos.Venta.permisos.filter(permiso => permiso.nombrePermiso === "Consultar" && permiso.nombrePermiso === "Crear");
+    if (permisosConsultar.length == 0) {
+      $("#venta").remove();
+      $("#ventaPuntos").remove();
+    }
+ }
+}
+
+if(!usuario.rol.permisos.hasOwnProperty('Compra')){
+  $("#compras").remove();
+}
+if(!usuario.rol.permisos.hasOwnProperty('Proveedor')){
+  $("#proveedores").remove();
+}
+if(!usuario.rol.permisos.hasOwnProperty('Usuario')){
+  $("#usuarios").remove();
+}
+if(!usuario.rol.permisos.hasOwnProperty('Producto')){
   $("#productos").remove();
   $("#productosExistencias").remove();
-}if(!usuario.rol.permisos.hasOwnProperty('Compra')){
-  $("#compras").remove();
-}if(!usuario.rol.permisos.hasOwnProperty('Proveedor')){
-  $("#proveedores").remove();
-}if(!usuario.rol.permisos.hasOwnProperty('Usuario')){
-  $("#usuarios").remove();
+}else {
+  if (usuario.rol.permisos.Producto.permisos.length == 1 &&
+     usuario.rol.permisos.Producto.permisos[0].nombrePermiso === "Consultar") {
+      $("#productos").remove();
+  }
+
 }
 }

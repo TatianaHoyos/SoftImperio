@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:login/infraestructura/models/producto_seleccionado.dart';
 import 'package:login/infraestructura/models/productos.dart';
+import 'package:login/infraestructura/models/response.dart';
+import 'package:login/infraestructura/provider/cart_provider.dart';
 import 'package:login/util/format_currency.dart';
+import 'package:login/util/host_server.dart';
+import 'package:provider/provider.dart';
 //import 'package:login/provider/cart_provider.dart';
 
 class ProductCard extends StatefulWidget {
@@ -14,13 +19,23 @@ class ProductCard extends StatefulWidget {
 
 class _ProductCardState extends State<ProductCard> {
   String _selectedReferenceItem = ''; // Declare state variable
-  String hostFoto = "http://192.168.20.31:8080/";
+  String hostFoto = hostImage;
 
   @override
   void initState() {
     super.initState();
     _selectedReferenceItem =
         widget.product.referencias[0].idProducto.toString(); // Set initial value
+  }
+
+  @override
+  void didUpdateWidget(covariant ProductCard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    // Detectar cambios en las propiedades del widget y actualizar _selectedReferenceItem
+    if (widget.product != oldWidget.product) {
+      _selectedReferenceItem = widget.product.referencias[0].idProducto.toString();
+    }
   }
 
   @override
@@ -62,9 +77,9 @@ class _ProductCardState extends State<ProductCard> {
                   // Units & price
                   Row(
                     children: [
-                      Text('${obtenerCantidadProductos(widget.product)} disponibles'),
-                      const SizedBox(width: 8.0),
-                      Text(obtenerPrecioProductos(widget.product)),
+                      Text(obtenerPrecioProductos(widget.product)),                     
+                      Text(" - "),
+                       Text('${obtenerCantidadProductos(widget.product)} Und')
                     ],
                   ),
                   const SizedBox(height: 4.0),
@@ -73,6 +88,11 @@ class _ProductCardState extends State<ProductCard> {
                     Row(
                       children: [
                         DropdownButton<String>(
+                           style: TextStyle(color: Colors.white), // Estilo del texto seleccionado
+                          underline: Container(
+                            height: 2,
+                            color: Colors.black, // Color del subrayado
+                          ),
                           value:
                               _selectedReferenceItem, // Use state variable for value
                           items: widget.product.referencias.map((item) {
@@ -100,10 +120,25 @@ class _ProductCardState extends State<ProductCard> {
               color: Color(0xFFAE9243),
               onPressed: () {
                 // Lógica para agregar al carrito y notificar al usuario
-                //Provider.of<CartProvider>(context,listen: false).addProduct(widget.product);
-                print("se agrego producto a pedido");
-                //int total = Provider.of<CartProvider>(context, listen: false).products.length;
-                print("productos en mi pedido ::::pendiente");
+                /*var referencia = widget.product.referencias.firstWhere(
+                      (r) => r.idProducto.toString() == _selectedReferenceItem);*/
+                 var productoExistente = Provider.of<CartProvider>(context,listen: false).products.any(
+                  (element) => element.idProducto == int.parse(_selectedReferenceItem));
+
+                if (!productoExistente) {
+                    var productoSeleccionado = ProductoSeleccionado(cantidad: 0, 
+                idProducto: int.parse(_selectedReferenceItem),
+                imageUrl: hostFoto+ widget.product.foto,
+                name: widget.product.nombreProducto,
+                price: obtenerPrecioProductos(widget.product));
+                Provider.of<CartProvider>(context,listen: false).addProduct(productoSeleccionado);
+                }else{
+                   _mostrarAlerta(
+          context,
+          Response(
+              message: "Producto ya seleccionado", status: "Error"));
+                }
+                
               },
             ),
           ],
@@ -116,13 +151,34 @@ class _ProductCardState extends State<ProductCard> {
     var referencia = producto.referencias.firstWhere(
       (r) => r.idProducto.toString() == _selectedReferenceItem);
 
-      return FormatCurrency.formatearMoneda(referencia.precio);
+      return referencia.existencia.cantidad.toString();
   }
 
   String obtenerPrecioProductos(Producto producto) {
-    var referencia = producto.referencias.firstWhere(
+      var referencia = producto.referencias.firstWhere(
       (r) => r.idProducto.toString() == _selectedReferenceItem);
 
-      return referencia.existencia.cantidad.toString();
+      return FormatCurrency.formatearMoneda(referencia.precio);
+  }
+
+  void _mostrarAlerta(BuildContext context, Response? response) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(response!.status),
+          content: Text(response.message),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                // Cierra la alerta cuando se presiona "Aceptar"
+                Navigator.of(context).pop();
+              },
+              child: Text('Aceptar'),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

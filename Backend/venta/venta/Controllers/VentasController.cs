@@ -148,6 +148,7 @@ namespace venta.Controllers
 
         //para hacer la consulta de el pedido
         [HttpGet("{id}")]
+        [Produces("application/json")]
         public async Task<ActionResult<IEnumerable<VentaDetalleResponseDto>>> ObtenerDetalleVenta(int id)
         {
             var ventaExistente = await _context.Venta.AnyAsync(v => v.idVenta == id);

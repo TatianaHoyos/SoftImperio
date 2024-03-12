@@ -4,12 +4,14 @@ import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:login/components/loading.dart';
 import 'package:login/infraestructura/models/productos.dart';
+import 'package:login/infraestructura/provider/cart_provider.dart';
 /*import 'package:provider/provider.dart';
 import 'package:login/models/product.dart';
 import 'package:login/provider/cart_provider.dart';
 import 'package:login/provider/products_provider.dart';*/
 import 'package:login/pages/punto_de_venta_screen/widgets/product_card.dart';
 import 'package:login/util/gateway.dart';
+import 'package:provider/provider.dart';
 import '../../infraestructura/models/response.dart';
 import '../../infraestructura/models/categorias.dart';
 
@@ -43,22 +45,21 @@ class _MySellingPointPageState extends State<SellingPointScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        color: Color(0xFF1E1D1D),
-        child: _isLoading ? mostrarCargando() : crearNestedScrollView()
+    return Scaffold(
+        body: _isLoading ? mostrarCargando() : crearNestedScrollView()
         );
   }
 
   NestedScrollView crearNestedScrollView() {
     return NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
-          SliverAppBar(title: const Text("Punto de Venta",
+          /*SliverAppBar(title: const Text("Punto de Venta",
                 style: TextStyle(fontWeight: FontWeight.bold)),
             expandedHeight: 140.0,
             floating: true,
             pinned: true,
             bottom: construirTabBar(),
-          ),
+          ),*/
         ],
         body: crearBody(),
       );
@@ -79,15 +80,36 @@ class _MySellingPointPageState extends State<SellingPointScreen>
       left: 0.0,
       right: 0.0,
       bottom: 0.0,
-      child: ListView.builder(
-        itemCount: _productosPorCategoria.productos.length,
-        itemBuilder: (context, index) {
-          Producto product = _productosPorCategoria.productos[index]; // Get the current product
-          return ProductCard(product: product); // Pass the product to the widget
-        },
-      ),
+      child: _productosPorCategoria.productos == null
+        ? _mostrarWidgetVacio() // Mostrar un widget diferente si no hay productos
+        : ListView.builder(
+            itemCount: _productosPorCategoria.productos!.length,
+            itemBuilder: (context, index) {
+              Producto product = _productosPorCategoria.productos![index];
+              return ProductCard(product: product);
+            },
+          ),
     );
   }
+Widget _mostrarWidgetVacio() {
+  // Aquí puedes personalizar el widget que se mostrará cuando no haya productos
+  return Center(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Image.asset( 'assets/images/logo.png',
+        fit: BoxFit.cover, ), // Ruta de la imagen que deseas mostrar
+       Text(
+        'No hay productos disponibles',
+        style: TextStyle(
+          color: Colors.white, // Color blanco
+          fontWeight: FontWeight.bold, // Texto en negrilla
+          fontSize: 18.0, // Tamaño del texto
+        )),
+      ],
+    ),
+  );
+}
 
   Positioned crearBotonFlotanteCarrito() {
     return Positioned(
@@ -108,8 +130,7 @@ class _MySellingPointPageState extends State<SellingPointScreen>
               ),
               child: Center(
                 child: Text(
-                  "",
-                  //Provider.of<CartProvider>(context, listen: true).products.length.toString(), // Reemplaza '2' con la cantidad de elementos
+                  Provider.of<CartProvider>(context, listen: true).products.length.toString(), // Reemplaza '2' con la cantidad de elementos
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18.0,
@@ -126,17 +147,6 @@ class _MySellingPointPageState extends State<SellingPointScreen>
 
   Widget mostrarCargando() {
     return const Loading();
-
-    /*return const AlertDialog(
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          CircularProgressIndicator(),
-          SizedBox(height: 16.0),
-          Text('Cargando...'),
-        ],
-      ),
-    );*/
   }
 
   TabBar construirTabBar() {
@@ -182,6 +192,9 @@ class _MySellingPointPageState extends State<SellingPointScreen>
           _productosPorCategoria = _productos.firstWhere(
             (producto) => producto.idCategoria == categoriaSeleccionada.idCategoria.toString());
 
+          _tabController = TabController(length: _categorias.length, vsync: this);
+          // Añadir un listener para escuchar cambios de tabs
+          _tabController.addListener(_handleTabChange);
 
          _isLoading = false;
         });
@@ -204,10 +217,10 @@ Future<bool> consumirApiProductos() async {
           method: 'GET',
           headers: headers);
       if (response.statusCode == 200) {
-        setState(() {
+        //setState(() {
           _productos = productosFromJson(response.body);
          // _isLoading = false;
-        });
+        //});
         return true;
       } else {
         return false;
@@ -233,15 +246,15 @@ Future<bool> consumirApiProductos() async {
           method: 'GET',
           headers: headers);
       if (response.statusCode == 200) {
-        setState(() {
+        //setState(() {
           _categoriasFromApis = categoriaFromJson(response.body);
           _categorias = _categoriasFromApis.map((c) => c.nombreCategoria).toList();
           _selectedCategoria = _categorias.first;
-          _tabController = TabController(length: _categorias.length, vsync: this);
+          //_tabController = TabController(length: _categorias.length, vsync: this);
           // Añadir un listener para escuchar cambios de tabs
-          _tabController.addListener(_handleTabChange);
+          //_tabController.addListener(_handleTabChange);
           //_isLoading = false;
-        });
+        //});
         return true;
       } else {
         return false;
@@ -258,8 +271,15 @@ Future<bool> consumirApiProductos() async {
     // Esta función se llama cada vez que se cambia de tab
     setState(() {
       _selectedCategoria = _categorias[_tabController.index];
+      var categoriaSeleccionada = _categoriasFromApis.firstWhere(
+            (categoria) => categoria.nombreCategoria == _selectedCategoria);
+
+      _productosPorCategoria = _productos.firstWhere(
+        (producto) => producto.idCategoria == categoriaSeleccionada.idCategoria.toString(),
+        orElse: () => Productos(), // Devuelve null si no se encuentra ningún producto
+      );
+      //cambie contenido
     });
-    print("Tab cambiada: ${_tabController.index}");
   }
 
   void mostrarError(e, response) {

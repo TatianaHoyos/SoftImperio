@@ -51,7 +51,6 @@ function ObtenerDetalleCompra(){
   handleAjaxRequest(function (token) {
     callApiObtenerDetalleCompra(token,miTabla);
 });
-  // const apiUrl = `https://localhost:7084/api/DetalleCompra/ObtenerDetalleCompraPorIdCompra/${idCompra}`;
 }
 function callApiObtenerDetalleCompra(token,miTabla){
   const idCompra = urlParams.get('idCompra');
@@ -241,35 +240,6 @@ function nuevoDetalleCompra(){
 
 }
 
-function listExistenciaProductos(){
-    const selectElement = document.getElementById("idExistencias");
-
-    fetch("https://localhost:7084/Compras/listProducts")
-    .then((response) => response.json())
-    .then((data) => {
-        // Iterate over the data and create <option> elements
-        data.forEach((item) => {
-        const option = document.createElement("option");
-        option.value = item.idExistencias;
-        option.textContent = item.nombreProducto;
-        selectElement.appendChild(option); // Append the option to the <select>
-        });
-    })
-    .catch((error) => {
-        // console.error("Error fetching data:", error);
-        Swal.fire({
-          title: 'Error',
-          text: error.message,
-          icon:"warning",
-          showCancelButton: false,
-          confirmButtonColor: ' #ae9243 ',
-          confirmButtonText: 'Confirmar',
-      }).then((result) => {
-      });
-    });
-
-}
-
 function crearDetalleCompra(){
 
     const idProveedores = document.getElementById("proveedor");
@@ -448,7 +418,7 @@ function onExitoProductosList(data) {
     select.empty();
     select.append('<option value="">Seleccione...</option>');
     listaProductos.forEach(function(producto) {
-        select.append('<option value="' + producto.idExistencias + '">' + producto.nombreProducto + '</option>');
+        select.append('<option value="' + producto.idExistencias + '">' + producto.nombreProducto + " - "+ producto.referenciaProducto+ '</option>');
     });
 }
 

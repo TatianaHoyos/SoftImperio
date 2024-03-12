@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decode/jwt_decode.dart';
+import 'host_server.dart';
 
 // Asegúrate de importar AuthSingleton aquí
 import 'auth_singleton.dart'; // Actualiza con el path correcto
@@ -8,10 +9,13 @@ import 'auth_singleton.dart'; // Actualiza con el path correcto
 class Gateway {
   final String baseUrl;
   final String refreshTokenUrl;
+  int intentos;
 
   Gateway({
-     this.baseUrl = "http://192.168.20.31:8081",
-     this.refreshTokenUrl = "http://192.168.20.31:8081/edge-service/v1/authorization/refreshToken"
+
+     this.baseUrl = host,
+     this.refreshTokenUrl = host + "/edge-service/v1/authorization/refreshToken",
+     this.intentos = 3
   });
 
   // Verificar la validez del JWT
@@ -42,12 +46,14 @@ class Gateway {
   );
 
     if (response.statusCode == 200) {
+      intentos = 0;
       final data = json.decode(response.body);
       // Asegúrate de actualizar tanto el accessToken como el refreshToken si es necesario
       AuthSingleton().authoritation.accessToken = data['accessToken']; // Ajusta según tu API
       AuthSingleton().authoritation.refreshToken = data['refreshToken'];
       AuthSingleton().authoritation.tokenType = data['tokenType'];
     } else {
+      intentos--;
       // Manejar errores o token de refresh inválido
       throw Exception('Failed to refresh token');
     }
@@ -59,6 +65,7 @@ class Gateway {
     required String method,
     Map<String, String>? headers,
     dynamic body,
+    bool isLogout = false
   }) async {
     var accessToken = AuthSingleton().authoritation.accessToken;
 
@@ -68,10 +75,16 @@ class Gateway {
     }
 
     final Uri url = Uri.parse('$baseUrl$endpoint');
-    final Map<String, String> defaultHeaders = {
+    Map<String, String> defaultHeaders = {};
+    if (isLogout) {
+      body["accessToken"] = accessToken;
+    } else {
+    defaultHeaders = {
       'Authorization': 'Bearer $accessToken',
     };
 
+    }
+    
     http.Response response;
 
     // Combinar headers por defecto con los headers personalizados
@@ -80,7 +93,11 @@ class Gateway {
     // Realizar la solicitud HTTP según el método
     switch (method.toUpperCase()) {
       case 'POST':
-        response = await http.post(url, headers: combinedHeaders, body: json.encode(body));
+        if (isLogout) {
+          response = await http.post(url, headers: combinedHeaders, body: body);
+        } else {
+          response = await http.post(url, headers: combinedHeaders, body: json.encode(body));
+        }
         break;
       case 'GET':
         response = await http.get(url, headers: combinedHeaders);
@@ -96,10 +113,10 @@ class Gateway {
     }
 
     // Verificar si el accessToken fue rechazado y repetir la solicitud si es necesario
-    if (response.statusCode == 401) {
+    if (response.statusCode == 401 && intentos != 0) {
       await _refreshToken();
       accessToken = AuthSingleton().authoritation.accessToken; // Obtener el nuevo accessToken
-      return makeRequest(endpoint: endpoint, method: method, headers: headers, body: body); // Reintentar con el nuevo token
+      return makeRequest(endpoint: endpoint, method: method, headers: headers, body: body, isLogout: isLogout); // Reintentar con el nuevo token
     }
 
     return response;

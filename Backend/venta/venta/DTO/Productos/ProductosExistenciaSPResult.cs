@@ -8,5 +8,7 @@ namespace venta.DTO.Productos
         public int IdProductos { get; set; }
         public int IdExistencias { get; set; }
         public string NombreProducto { get; set; }
+
+        public string ReferenciaProducto { get; set; }
     }
 }
