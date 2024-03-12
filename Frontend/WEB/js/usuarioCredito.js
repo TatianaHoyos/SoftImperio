@@ -592,15 +592,21 @@ function EditarUsuarioCredito(usuariocredito) {
     $("#nombre").val(usuariocredito.nombre);
     $("#documento").val(usuariocredito.documento);
     $("#telefono").val(usuariocredito.telefono);
+    $("#totalCredito").val(usuariocredito.totalCredito);
+    console.log('Valor de idUsuarioCreditoAbonar:',usuariocredito);
     var btnform = $("#btn-form");
-    btnform.click(function(){ actualizarUsuarioCredito(); });
+    btnform.click(function(){ actualizarUsuarioCredito(usuariocredito); });
 }
 
-function actualizarUsuarioCredito() {
+function actualizarUsuarioCredito(usuariocredito) {
     var form = $('#formUsuarioCredito')[0];
+    var idUsuarioCredito=usuariocredito.idUsuarioCredito;
     var nombre= $("#nombre").val();
     var documento= $("#documento").val();
     var telefono=  $("#telefono").val();
+    var totalCredito=usuariocredito.totalCredito;
+    console.log('cabio:',usuariocredito);
+
     if (validarCampoVacio(nombre.length, 'Por favor ingrese un nombre')) {
         return false;
     }
@@ -638,15 +644,16 @@ function actualizarUsuarioCredito() {
         return false;
     }
     var formData =  JSON.stringify({
-        "idUsuarioCredito":  $("#idUsuarioCredito").val(),
         "nombre": nombre,
         "documento": documento,
         "telefono": telefono,
-      });
+        "totalCredito": totalCredito,
+    });
+    console.log('resivo:',usuariocredito);
     $.ajax({
         type: "Put",
         enctype: 'multipart/form-data',
-        url: "https://localhost:7084/api/UsuarioCreditos/" + $("#idUsuarioCredito").val(),
+        url: "https://localhost:7084/api/UsuarioCreditos/" +idUsuarioCredito,
         "headers": {
             "accept": "application/json",
             "Content-Type": "application/json"
