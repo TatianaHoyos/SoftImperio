@@ -143,7 +143,7 @@ function callApiGenerarPdf(token){
 }
 
   function habilitarVistaDetalle(idCompra){
-    const destinationURL = `http://127.0.0.1:5500/comprasDetail.html?idCompra=${idCompra}`;
+    const destinationURL = `comprasDetail.html?idCompra=${idCompra}`;
     window.location.href = destinationURL;
   }
 
