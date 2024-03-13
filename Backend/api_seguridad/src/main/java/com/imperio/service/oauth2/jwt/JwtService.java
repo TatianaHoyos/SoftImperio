@@ -28,8 +28,8 @@ public class JwtService implements IJwtService{
     @Value("${jwt.secret}")
     private String jwtSecret;
 
-    @Value("${jwt.expiration.ms}")
-    private int jwtExpirationMs;
+    @Value("${jwt.expiration.seconds}")
+    private int jwtExpirationSeconds;
 
     @Autowired
     private OAuthService oAuthService;
@@ -78,7 +78,7 @@ public class JwtService implements IJwtService{
                 .claims(extraClaims)
                 .subject(user.getNombre())
                 .issuedAt((new Date(System.currentTimeMillis())))
-                .expiration(new Date(new Date().getTime() + jwtExpirationMs))
+                .expiration(new Date(System.currentTimeMillis() + (jwtExpirationSeconds * 1000))) // Convertir segundos a milisegundos
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
