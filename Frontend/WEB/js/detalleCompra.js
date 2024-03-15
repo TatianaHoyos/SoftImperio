@@ -117,7 +117,7 @@ function handleAPIError(error) {
 
 // Función para redirigir a la página de compras
 function redirectToComprasPage() {
-  const destinationURL = 'http://127.0.0.1:5500/compras.html';
+  const destinationURL = 'compras.html';
   window.location.href = destinationURL;
 }
 
@@ -231,10 +231,10 @@ function nuevoDetalleCompra(){
     const idCompra = urlParams.get('idCompra');
     //console.log("nuevo detalle "+urlParams.get('idCompra'));
     if (idCompra != null) {
-        const destinationURL = `http://127.0.0.1:5500/nuevaCompra.html?idCompra=${idCompra}`;
+        const destinationURL = `nuevaCompra.html?idCompra=${idCompra}`;
         window.location.href = destinationURL;
     }else{
-      const destinationURL = `http://127.0.0.1:5500/compras.html`;
+      const destinationURL = `compras.html`;
       window.location.href = destinationURL;
     }
 
@@ -266,7 +266,7 @@ function crearDetalleCompra(){
         ApiCallCrearDetalleCompra(token,request);
     });
     }else{
-        const destinationURL = `http://127.0.0.1:5500/compras.html`;
+        const destinationURL = `compras.html`;
         window.location.href = destinationURL;
     }
 }
@@ -330,7 +330,7 @@ function updateDetalleCompra(){
         callApiUpdateDetalleCompra(request,token);
     });
     }else{
-        const destinationURL = `http://127.0.0.1:5500/compras.html`;
+        const destinationURL = `compras.html`;
         window.location.href = destinationURL;
     }
 }

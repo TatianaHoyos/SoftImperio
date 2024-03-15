@@ -1,7 +1,7 @@
 //import { modulo } from "./configAmbiente";
 
 $(document).ready(function () {
-    $("#resultadoLogin").hide();
+   
 });
 
 function decrypt(encryptedText) {
@@ -110,9 +110,12 @@ function agruparPorModulo(permisos) {
   }
 function onError(error) {
 
-    var mensaje = $("#resultadoLogin");
-    mensaje.show();
-    mensaje.text(error.responseJSON.message);
+    Swal.fire({
+        icon: 'warning',
+        title:'Oops',
+        text: error.responseJSON.message
+    });
+  
 }
 
 function logout() {

@@ -143,6 +143,7 @@ class QuantityEditionCell extends StatelessWidget {
     super.key,
     required this.product,
   });
+  
 
   final ProductoSeleccionado product;
 
@@ -186,4 +187,41 @@ class QuantityEditionCell extends StatelessWidget {
       ],
     );
   }
-}
+
+
+ }
+// class CounterWidget extends StatefulWidget {
+//   @override
+//   _CounterWidgetState createState() => _CounterWidgetState();
+// }
+
+// class _CounterWidgetState extends State<CounterWidget> {
+//   int cantidad = 1;
+//   int precio = 10; // Reemplaza esto con el precio real del producto
+//   int totalVenta = 0;
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     calcularTotalVenta();
+//   }
+
+//   void calcularTotalVenta() {
+//     setState(() {
+//       totalVenta = cantidad * precio;
+//     });
+//   }
+
+//   void restarCantidad() {
+//     setState(() {
+//       cantidad = cantidad - 1 <= 0 ? 1 : cantidad - 1;
+//       calcularTotalVenta();
+//     });
+//   }
+
+//   void sumarCantidad() {
+//     setState(() {
+//       cantidad = cantidad + 1;
+//       calcularTotalVenta();
+//     });
+//   }

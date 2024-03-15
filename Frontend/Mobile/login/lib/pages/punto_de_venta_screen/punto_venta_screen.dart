@@ -53,13 +53,11 @@ class _MySellingPointPageState extends State<SellingPointScreen>
   NestedScrollView crearNestedScrollView() {
     return NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
-          /*SliverAppBar(title: const Text("Punto de Venta",
-                style: TextStyle(fontWeight: FontWeight.bold)),
-            expandedHeight: 140.0,
+          SliverAppBar(expandedHeight: 10.0,
             floating: true,
             pinned: true,
             bottom: construirTabBar(),
-          ),*/
+          ),
         ],
         body: crearBody(),
       );
@@ -246,15 +244,15 @@ Future<bool> consumirApiProductos() async {
           method: 'GET',
           headers: headers);
       if (response.statusCode == 200) {
-        //setState(() {
+       setState(() {
           _categoriasFromApis = categoriaFromJson(response.body);
           _categorias = _categoriasFromApis.map((c) => c.nombreCategoria).toList();
           _selectedCategoria = _categorias.first;
           //_tabController = TabController(length: _categorias.length, vsync: this);
-          // Añadir un listener para escuchar cambios de tabs
+         // Añadir un listener para escuchar cambios de tabs
           //_tabController.addListener(_handleTabChange);
-          //_isLoading = false;
-        //});
+        //  _isLoading = false;
+        });
         return true;
       } else {
         return false;
