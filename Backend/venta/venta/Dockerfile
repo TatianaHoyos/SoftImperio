@@ -6,7 +6,7 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["venta.csproj", "venta"]
+COPY ["venta/venta.csproj", "venta/"]
 
 RUN dotnet restore "venta/venta.csproj"
 COPY . .
