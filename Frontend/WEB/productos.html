@@ -55,9 +55,9 @@
                                         <span class="input-group-text"><i class="fas fa-beer"></i></span>
                                     </div>
                                     <input type="text" class="form-control" id="nombre" name="nombreProducto"
-                                        placeholder="Nombre Producto" onkeypress="return sololetras(event)">
+                                        placeholder="Nombre Producto" onkeypress="return validarNombre(event)">
                                 </div>
-                                <span id="mensajeLetras"></span>
+                                <span id="mensajeReferencia" class="text-danger"></span>
 
                             </div>
 
@@ -166,7 +166,7 @@
                                         <span class="input-group-text" style="background-color: #e5c850"><i class="fas fa-beer"></i></span>
                                     </div>
                                     <input type="text" class="form-control" id="nombreCategoria" name="nombreCategoria"
-                                        placeholder="Nombre Categoría" onkeypress="return sololetras(event)">
+                                        placeholder="Nombre Categoría" onkeypress="return validarNombre(event)">
                                 </div>
                             </div>
                             
