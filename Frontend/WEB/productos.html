@@ -55,9 +55,9 @@
                                         <span class="input-group-text"><i class="fas fa-beer"></i></span>
                                     </div>
                                     <input type="text" class="form-control" id="nombre" name="nombreProducto"
-                                        placeholder="Nombre Producto" onkeypress="return sololetras(event)">
+                                        placeholder="Nombre Producto" onkeypress="return validarNombre(event)">
                                 </div>
-                                <span id="mensajeLetras"></span>
+                                <span id="mensajeReferencia" class="text-danger"></span>
 
                             </div>
 
@@ -73,8 +73,9 @@
                                         <span class="input-group-text"><i class="fas fa-align-justify"></i></span>
                                     </div>
                                     <input type="text" class="form-control" id="referencia" name="referenciaProducto"
-                                        placeholder="Referencia Producto">  
+                                        placeholder="Referencia Producto" onkeypress="return validarReferencia(event)">  
                                     </div>
+                                    <span id="mensajeReferencia" class="text-danger"></span>
                             </div>
                         </div>
 
@@ -103,7 +104,7 @@
                                         <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
                                     </div>
                                     <input type="text" class="form-control" id="precio" name="precioProducto"
-                                        placeholder="Precio Producto" onkeypress="return validarNumero(event)">
+                                        placeholder="Precio Producto" onkeypress="return validarPrecio(event)">
                                 </div>
                               
                             </div>
@@ -165,7 +166,7 @@
                                         <span class="input-group-text" style="background-color: #e5c850"><i class="fas fa-beer"></i></span>
                                     </div>
                                     <input type="text" class="form-control" id="nombreCategoria" name="nombreCategoria"
-                                        placeholder="Nombre Categoría">
+                                        placeholder="Nombre Categoría" onkeypress="return validarNombre(event)">
                                 </div>
                             </div>
                             
@@ -174,7 +175,7 @@
                         <div class="form-group text-center mt-3">
                             <input type="hidden" name="operacion" id="operacionCategoria" value="">
                             <input type="hidden" id="idCategoriaActualizar" value="">
-                            <button id="btn-form-categoria" onclick="eventoFormularioCategoria()" type="button"
+                            <button id="btn-form-categoria"  onclick="eventoFormularioCategoria()" type="button"
                                 class="col-md-2 form-control btn"><strong>Guardar</strong></button>
 
                             <button type="button" data-dismiss="modal"
@@ -207,7 +208,7 @@
             <div class="form-group">
                 <button type="button" class="btn btn-primary mr-2" onclick="mostrarFormularioCrearCategoria()"data-toggle="modal"data-target="#formCrearCategoria">Categorías</button>
                 <button type="button" class="btn btn-primary mr-2" onclick="mostrarFormularioCrear()"data-toggle="modal"data-target="#formCrearProductos"><i class="fas fa-plus"></i></button>
-                <button type="button" onclick="generarPDFProductos()"  class="btn btn-primary"> <i class="fas fa-file-alt"></i></button>
+                <button type="button" onclick="generarPDFProductos()"  class="btn btn-primary"> <i class="fa-solid fa-file-pdf"></i></button>
                
                 
             </div>

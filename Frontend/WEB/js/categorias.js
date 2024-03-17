@@ -118,6 +118,7 @@ function mostrarFormularioCrearCategoria(){
    $("#operacionCategoria").val("crearCategoria");
    $("#idCategoriaActualizar").val("");
   // btnform.click(function(){ crearRol(); });
+  
 }
 
 function crearCategoria(){
@@ -127,6 +128,9 @@ function crearCategoria(){
      handleAjaxRequest(function (token) {
          callApiCrearCategoria(formData, token);
      });
+     if (validarCampoVacio($("#nombreCategoria").val().length, 'Por favor ingrese un nombre a la categoría')) {
+        return false;
+    }
 }
 
 function callApiCrearCategoria(formData,token){
@@ -176,6 +180,7 @@ function eventoFormularioCategoria(){
     var operacion=$("#operacionCategoria").val();
     if(operacion=="crearCategoria"){
         crearCategoria();
+       
     }else{
         actualizarCategoria();
     }
@@ -229,6 +234,7 @@ function mostrarFormularioActualizar(){
     titulo.text("Actualizar categoria");
     var btnform = $("#btn-form-categoria");
     btnform.text("Actualizar");
+    
    
 }
 

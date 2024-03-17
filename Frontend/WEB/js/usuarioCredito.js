@@ -670,8 +670,7 @@ function EditarUsuarioCredito(usuariocredito) {
     var btnform = $("#btn-form");
     btnform.click(function(){ actualizarUsuarioCredito(usuariocredito); });
 }
-
-function actualizarUsuarioCredito(usuariocredito) {
+function actualizarUsuarioCredito() {
     var form = $('#formUsuarioCredito')[0];
     var idUsuarioCredito=usuariocredito.idUsuarioCredito;
     var nombre= $("#nombre").val();
@@ -722,9 +721,10 @@ function actualizarUsuarioCredito(usuariocredito) {
         "telefono": telefono,
       });
       handleAjaxRequest(function (token) {
-        callApiactualizarUsuarioCredito(formData, token);
+        callApiPutUsuarioCredito(formData,token);
     });
 }
+
 
 function onExitoActualizarUsuariocredito(data) {
     var mensaje = $("#resultadoCrear");
