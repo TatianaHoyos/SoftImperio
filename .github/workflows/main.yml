@@ -33,19 +33,17 @@ jobs:
         registry: public.ecr.aws/u8j8i3w5
 
     - name: Build Docker image
-      env:
-        IMAGE_TAG: ${{ github.sha }}
-      run: docker build -t public.ecr.aws/u8j8i3w5/imperio-public-registry:$IMAGE_TAG -f Backend/venta/Dockerfile Backend/venta/  # Build image
+      run: docker build -t public.ecr.aws/u8j8i3w5/imperio-public-registry:latest -f Backend/venta/Dockerfile Backend/venta/  # Build image
 
     - name: Tag Docker image (avoid ':latest' for production)
       env:
         IMAGE_TAG: ${{ github.sha }}  # Use commit SHA for tag (avoid ':latest')
-      run: docker tag imperio-public-registry:$IMAGE_TAG public.ecr.aws/u8j8i3w5/imperio-public-registry:$IMAGE_TAG
+      run: docker tag imperio-public-registry:latest public.ecr.aws/u8j8i3w5/imperio-public-registry:latest
 
     - name: Push Docker image to ECR
       env:
         IMAGE_TAG: ${{ github.sha }}
-      run: docker push public.ecr.aws/u8j8i3w5/imperio-public-registry:$IMAGE_TAG
+      run: docker push public.ecr.aws/u8j8i3w5/imperio-public-registry:latest
       
 #    - name: Build, tag, and push image to Amazon ECR
 #      env:
