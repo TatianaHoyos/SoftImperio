@@ -126,11 +126,11 @@ class _ProductCardState extends State<ProductCard> {
                   (element) => element.idProducto == int.parse(_selectedReferenceItem));
 
                 if (!productoExistente) {
-                    var productoSeleccionado = ProductoSeleccionado(cantidad: 0, 
+                    var productoSeleccionado = ProductoSeleccionado(cantidad: 1, 
                 idProducto: int.parse(_selectedReferenceItem),
                 imageUrl: hostFoto+ widget.product.foto,
                 name: widget.product.nombreProducto,
-                price: obtenerPrecioProductos(widget.product));
+                price: obtenerPrecioNumProductos(widget.product));
                 Provider.of<CartProvider>(context,listen: false).addProduct(productoSeleccionado);
                 }else{
                    _mostrarAlerta(
@@ -159,6 +159,13 @@ class _ProductCardState extends State<ProductCard> {
       (r) => r.idProducto.toString() == _selectedReferenceItem);
 
       return FormatCurrency.formatearMoneda(referencia.precio);
+  }
+
+  num obtenerPrecioNumProductos(Producto producto) {
+      var referencia = producto.referencias.firstWhere(
+      (r) => r.idProducto.toString() == _selectedReferenceItem);
+
+      return referencia.precio;
   }
 
   void _mostrarAlerta(BuildContext context, Response? response) {

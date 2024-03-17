@@ -1,20 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:login/components/loading.dart';
+import 'package:login/infraestructura/models/response.dart';
+import 'package:login/util/format_currency.dart';
+import 'package:login/util/gateway.dart';
 import 'package:provider/provider.dart';
 import 'package:login/infraestructura/provider/cart_provider.dart';
 import 'package:login/infraestructura/models/producto_seleccionado.dart';
 
-class MyCart extends StatelessWidget {
+class MyCart extends StatefulWidget {
+  const MyCart({Key? key}) : super(key: key);
+
+  @override
+  State<MyCart> createState() => _MyCartState();
+}
+
+class _MyCartState extends State<MyCart> {
+  bool _isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-                title: const Text('Pedido'),
+        title: const Text('Pedido'),
       ),
       body: Container(
-                child: Column(
-          //crossAxisAlignment: CrossAxisAlignment.stretch,
+        child: Column(
           children: [
-            // Access CartProvider directly within build method
             Expanded(
               child: Consumer<CartProvider>(
                 builder: (context, cartProvider, child) {
@@ -25,17 +36,30 @@ class MyCart extends StatelessWidget {
                           color: const Color(0xFFAE9243),
                           width: double.infinity,
                           child: DataTable(
-                            dataRowColor: MaterialStateProperty.resolveWith((Set states) {
-                              if (states.contains(MaterialState.selected)) {
-                                return Theme.of(context).colorScheme.primary.withOpacity(0.08);
-                              }
-                              return Theme.of(context).colorScheme.secondary.withOpacity(0.2);
-                            }),
+                            dataRowColor: MaterialStateProperty.resolveWith(
+                              (Set states) {
+                                if (states.contains(MaterialState.selected)) {
+                                  return Theme.of(context)
+                                      .colorScheme
+                                      .primary
+                                      .withOpacity(0.08);
+                                }
+                                return Theme.of(context)
+                                    .colorScheme
+                                    .secondary
+                                    .withOpacity(0.2);
+                              },
+                            ),
                             columns: [
-                              DataColumn(label: Text('Producto', textAlign: TextAlign.center)),
-                                    DataColumn(label: Text('Precio', textAlign: TextAlign.center)),
-                              DataColumn(label: Text('Cantidad', textAlign: TextAlign.center)),
-                            //  const DataColumn(label: Text('Total', textAlign: TextAlign.start)),
+                              DataColumn(
+                                label: Text('Producto', textAlign: TextAlign.center),
+                              ),
+                              DataColumn(
+                                label: Text('Precio', textAlign: TextAlign.center),
+                              ),
+                              DataColumn(
+                                label: Text('Cantidad', textAlign: TextAlign.center),
+                              ),
                             ],
                             rows: List.generate(cartProvider.products.length, (index) {
                               final product = cartProvider.products[index];
@@ -43,41 +67,40 @@ class MyCart extends StatelessWidget {
                                 DataCell(
                                   Row(
                                     children: [
-                                    Image.network(
-                                    product.imageUrl!, // Reemplaza con la URL real de tu imagen
-                                    width: 24,
-                                    height: 24,
-fit: BoxFit.cover, 
-                                    loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-                                      if (loadingProgress == null) {
-                                        return child;
-                                      } else {
-                                        return CircularProgressIndicator();
-                                      }
-                                    },
-                                  ),
-Text(product.name!, ), // Display price here
-                                        
+                                      Image.network(
+                                        product.imageUrl!, // Reemplaza con la URL real de tu imagen
+                                        width: 24,
+                                        height: 24,
+                                        fit: BoxFit.cover,
+                                        loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                                          if (loadingProgress == null) {
+                                            return child;
+                                          } else {
+                                            return CircularProgressIndicator();
+                                          }
+                                        },
+                                      ),
+                                      Text(product.name!),
                                     ],
                                   ),
                                 ),
-DataCell(Row(
-                                  children: [
-                                    Text(product.price!, textAlign: TextAlign.center),
-                                  ],
-                                )),
-                                // Celda con iconos de suma y resta
+                                DataCell(
+                                  Row(
+                                    children: [
+                                      Text(
+                                        FormatCurrency.formatearMoneda(product.price! * product.cantidad!),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ],
+                                  ),
+                                ),
                                 DataCell(
                                   QuantityEditionCell(product: product),
                                 ),
-
-                              //  DataCell(Text("\$${(product.price * product.quantity).toStringAsFixed(2)}")),
                               ]);
-
                             }),
                           ),
                         ),
-                        // Calculate total price dynamically based on updated quantities
                       ],
                     ),
                   );
@@ -85,48 +108,47 @@ DataCell(Row(
               ),
             ),
             Container(
-                            color: const Color(0xFFAE9243),
+              color: const Color(0xFFAE9243),
               width: MediaQuery.of(context).size.width,
               child: Padding(
-                padding:  EdgeInsets.symmetric(vertical: 2.5, horizontal: MediaQuery.of(context).size.width / 20),
+                padding: EdgeInsets.symmetric(vertical: 2.5, horizontal: MediaQuery.of(context).size.width / 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Column(
                       children: [
                         const Text("Total: ", style: TextStyle(fontWeight: FontWeight.bold)),
-                        Text('\$ ${Provider.of<CartProvider>(context).total}'),
+                        Text(FormatCurrency.formatearMoneda(Provider.of<CartProvider>(context).total)),
                       ],
                     ),
-
-                    //botones
-Column(
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                    Container(
-                      margin: EdgeInsets.only(left: 30),
-                      child: ElevatedButton(
-                        onPressed: (){
-                          //Lógica para enviar a barra
-                        },
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(Colors.black)
+                        Container(
+                          margin: const EdgeInsets.only(left: 30),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              consumirApiCrearPedido(Provider.of<CartProvider>(context,listen: false));
+                            },
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
+                            ),
+                            child: const Text('Enviar a barra'),
+                          ),
                         ),
-                        child: const Text('Enviar a barra'),
-                      ),
-                    ),
-                    const SizedBox(width: 10),//espacio entre botones
-                    ElevatedButton(
-                      onPressed: (){
-                        //Lógica para cancelar
-                      },
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(Colors.black)
-                      ),
-                      child: const Text('Cancelar'),
-),
+                        const SizedBox(width: 10),
+                        ElevatedButton(
+                          onPressed: () {
+                           Provider.of<CartProvider>(context,listen: false).clearProducts();
+        Navigator.of(context).pop();
+                          },
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
+                          ),
+                          child: const Text('Cancelar'),
+                        ),
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -134,16 +156,120 @@ Column(
           ],
         ),
       ),
+      floatingActionButton: _isLoading
+          ? Loading() // Muestra el modal si isLoading es verdadero
+          : Container(), // Oculta el modal si isLoading es falso
+    );
+  }
+
+  Future<bool> consumirApiCrearPedido(CartProvider cartProvider) async {
+     setState(() {
+          _isLoading = true;
+        });
+    final gateway = Gateway();
+    try {
+      final headers = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      };
+      List<Map<String, dynamic>> pedido = [];
+      for (var producto in cartProvider.products) {
+        if (producto.cantidad! > 0) {
+          Map<String, dynamic> productoMap = {
+            "idProducto": producto.idProducto,
+            "cantidad": producto.cantidad,
+          };
+          pedido.add(productoMap);
+        }
+      }
+      Map<String, dynamic> pedidoTotal = {"pedido": pedido};
+
+      final response = await gateway.makeRequest(
+        endpoint: "/edge-service/v1/service/venta/mesa/crear",
+        method: 'POST',
+        headers: headers,
+        body: pedidoTotal,
+      );
+      setState(() {
+          _isLoading = false;
+        });
+      if (response.statusCode == 200) {
+        final responseObject = responseFromJson(response.body);
+        _mostrarAlerta(
+          context,
+          responseObject,
+          () {
+            cartProvider.clearProducts();
+        Navigator.of(context).pop();
+        Navigator.of(context).pop();
+          },
+        );
+        return true;
+      } else {
+          final response = Response(
+          message: "Error al consumir el api de crear pedido",
+          status: "Error",
+        );
+        mostrarError("", response);
+          return false;
+        }
+    } catch (e) {
+      setState(() {
+          _isLoading = false;
+        });
+      final response = Response(
+        message: "Error al consumir el api de Categorias",
+        status: "Error",
+      );
+      mostrarError(e, response);
+      return false;
+    }
+  }
+
+  void mostrarError(e, response) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(response.status),
+          content: Text(response.message),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Aceptar'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+    void _mostrarAlerta(
+      BuildContext context, Response? response, Function() onPressed) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(response!.status),
+          content: Text(response.message),
+          actions: [
+            ElevatedButton(
+              onPressed: onPressed,
+              child: Text('Aceptar'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
 
 class QuantityEditionCell extends StatelessWidget {
   const QuantityEditionCell({
-    super.key,
+    Key? key,
     required this.product,
-  });
-  
+  }) : super(key: key);
 
   final ProductoSeleccionado product;
 
@@ -154,74 +280,21 @@ class QuantityEditionCell extends StatelessWidget {
       children: [
         GestureDetector(
           onTap: () {
-            // Lógica para restar la cantidad
-            // Puedes agregar tu lógica aquí
+            Provider.of<CartProvider>(context, listen: false).restarProduct(product);
           },
           child: const Icon(Icons.remove),
         ),
-
-        // Espacio entre los iconos y la cantidad
         const SizedBox(width: 8),
-
-        Text(product.cantidad.toString()),  // Valor de la cantidad
-
-        // Espacio entre la cantidad y los iconos
+        Text(product.cantidad.toString()),
         const SizedBox(width: 8),
-
         GestureDetector(
           onTap: () {
-            // Lógica para sumar la cantidad
-            // Puedes agregar tu lógica aquí
+            Provider.of<CartProvider>(context, listen: false).sumarProduct(product);
           },
           child: const Icon(Icons.add),
         ),
         const SizedBox(width: 8),
-
-        // GestureDetector(
-          //   onTap: () {
-            //     // Lógica para sumar la cantidad
-            //     // Puedes agregar tu lógica aquí
-          //   },
-          //   child: const Icon(Icons.delete, color: Colors.redAccent,),
-        // ),
       ],
     );
   }
-
-
- }
-// class CounterWidget extends StatefulWidget {
-//   @override
-//   _CounterWidgetState createState() => _CounterWidgetState();
-// }
-
-// class _CounterWidgetState extends State<CounterWidget> {
-//   int cantidad = 1;
-//   int precio = 10; // Reemplaza esto con el precio real del producto
-//   int totalVenta = 0;
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     calcularTotalVenta();
-//   }
-
-//   void calcularTotalVenta() {
-//     setState(() {
-//       totalVenta = cantidad * precio;
-//     });
-//   }
-
-//   void restarCantidad() {
-//     setState(() {
-//       cantidad = cantidad - 1 <= 0 ? 1 : cantidad - 1;
-//       calcularTotalVenta();
-//     });
-//   }
-
-//   void sumarCantidad() {
-//     setState(() {
-//       cantidad = cantidad + 1;
-//       calcularTotalVenta();
-//     });
-//   }
+}

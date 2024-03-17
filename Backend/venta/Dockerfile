@@ -6,6 +6,7 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 ARG BUILD_CONFIGURATION=Release
+ARG ASPNETCORE_ENVIRONMENT=Production
 WORKDIR /src
 COPY ["venta/venta.csproj", "venta/"]
 #RUN dotnet restore "./venta/./venta.csproj"

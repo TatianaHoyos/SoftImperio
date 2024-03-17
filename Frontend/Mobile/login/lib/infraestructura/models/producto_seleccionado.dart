@@ -4,7 +4,7 @@ class ProductoSeleccionado {
   int? cantidad;
   String? imageUrl;
   String? name;
-  String? price;
+  num? price;
 
   ProductoSeleccionado({
       this.idProducto,
