@@ -5,12 +5,14 @@ class ProductoSeleccionado {
   String? imageUrl;
   String? name;
   num? price;
+  String? referencia;
 
   ProductoSeleccionado({
       this.idProducto,
       this.cantidad,
       this.imageUrl,
       this.name,
-      this.price
+      this.price,
+      this.referencia,
     });
 }

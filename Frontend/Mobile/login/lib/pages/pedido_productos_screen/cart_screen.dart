@@ -80,19 +80,18 @@ class _MyCartState extends State<MyCart> {
                                           }
                                         },
                                       ),
-                                      Text(product.name!),
+                                      Text(product.name! + "\n" + product.referencia!),
                                     ],
                                   ),
                                 ),
                                 DataCell(
-                                  Row(
-                                    children: [
-                                      Text(
+                                  FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    child: Text(
                                         FormatCurrency.formatearMoneda(product.price! * product.cantidad!),
                                         textAlign: TextAlign.center,
                                       ),
-                                    ],
-                                  ),
+                                  )
                                 ),
                                 DataCell(
                                   QuantityEditionCell(product: product),
