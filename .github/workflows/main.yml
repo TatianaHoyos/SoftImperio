@@ -56,11 +56,6 @@ jobs:
         IMAGE_TAG: ${{ github.sha }}
       run: docker tag public.ecr.aws/u8j8i3w5/imperio-public-registry:latest public.ecr.aws/u8j8i3w5/imperio-public-registry:latest
 
-    - name: Remove Docker image in ECR
-      env:
-        IMAGE_TAG: ${{ github.sha }}
-      run: docker image rm -f public.ecr.aws/u8j8i3w5/imperio-public-registry:latest
-
     - name: Push Docker image to ECR
       env:
         IMAGE_TAG: ${{ github.sha }}
