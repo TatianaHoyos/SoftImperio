@@ -160,6 +160,8 @@ class _LoginPageState extends State<LoginPage> {
         AuthSingleton().updateTokenData(accessToken: usuario!.authoritation.accessToken,
          tokenType: usuario!.authoritation.tokenType,
          refreshToken: usuario!.authoritation.refreshToken);
+         List<String> nombrePorPartes = usuario!.nombre.split(' ');
+         AuthSingleton().updateUserData(nombre: nombrePorPartes.first, foto: usuario!.foto, rol:  usuario!.rol.nombreRol);
 
        // Navega a la otra pantalla
         //Navigator.pushReplacementNamed(context, '/punto_venta');

@@ -21,7 +21,7 @@ class _MyCartState extends State<MyCart> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Pedido'),
+        title: const Text('Pedido', style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFFAE9243))),
       ),
       body: Container(
         child: Column(

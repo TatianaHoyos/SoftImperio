@@ -120,9 +120,8 @@ class _ProductCardState extends State<ProductCard> {
               color: Color(0xFFAE9243),
               onPressed: () {
                 // Lógica para agregar al carrito y notificar al usuario
-                /*var referencia = widget.product.referencias.firstWhere(
-                      (r) => r.idProducto.toString() == _selectedReferenceItem);*/
-                 var productoExistente = Provider.of<CartProvider>(context,listen: false).products.any(
+                
+                  var productoExistente = Provider.of<CartProvider>(context,listen: false).products.any(
                   (element) => element.idProducto == int.parse(_selectedReferenceItem));
 
                 if (!productoExistente) {
@@ -134,13 +133,13 @@ class _ProductCardState extends State<ProductCard> {
                 price: obtenerPrecioNumProductos(widget.product),
                 referencia: obtenerReferenciaProductos(widget.product));
                 Provider.of<CartProvider>(context,listen: false).addProduct(productoSeleccionado);
-                }else{
+                } else {
                    _mostrarAlerta(
-          context,
-          Response(
-              message: "Producto ya seleccionado", status: "Error"));
-                }
-                
+                  context,
+                  Response(
+                      message: "Producto ya seleccionado", status: "Error"));
+                    } 
+                          
               },
             ),
           ],

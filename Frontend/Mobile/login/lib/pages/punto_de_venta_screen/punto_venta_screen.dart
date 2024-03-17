@@ -144,7 +144,7 @@ Widget _mostrarWidgetVacio() {
   }
 
   Widget mostrarCargando() {
-    return const Loading();
+    return Loading();
   }
 
   TabBar construirTabBar() {
@@ -168,7 +168,14 @@ Widget _mostrarWidgetVacio() {
       backgroundColor: Color(0xFFAE9243),
       onPressed: () {
         // Navega a la otra pantalla
-        Navigator.pushNamed(context, '/screen_carrito');
+        if (Provider.of<CartProvider>(context,listen: false).products.isNotEmpty) {
+         Navigator.pushNamed(context, '/screen_carrito');
+        } else {
+                  _mostrarAlerta(
+                  context,
+                  Response(
+                      message: "No hay productos en el carrito", status: "Informativo"));
+                } 
       },
       child: Icon(Icons.shopping_cart),
     );

@@ -2,10 +2,15 @@ import 'package:flutter/material.dart';
 
 class Loading extends StatelessWidget {
 
-  const Loading({super.key});
+  BuildContext? context;
+
+  Loading({super.key});
+
+
 
   @override
   Widget build(BuildContext context) {
+    this.context = context;
     return AlertDialog(
       shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(
@@ -33,5 +38,13 @@ class Loading extends StatelessWidget {
                     )
       )
     );
+  }
+
+  
+
+
+  // to hide our current dialog
+  void hideLoadingDialog() {
+    Navigator.of(context!).pop();
   }
 }
