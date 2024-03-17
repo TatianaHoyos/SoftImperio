@@ -6,6 +6,10 @@ on:
     branches:
       - main
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   
   build:
@@ -17,20 +21,23 @@ jobs:
     steps:
 
     - name: Check out code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     
     - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
+      uses: aws-actions/configure-aws-credentials@v2.2.0
       with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        #aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        #aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
         aws-region: us-east-2
+
+    #- name: Login to Amazon ECR
+    #  id: login-ecr
+    #  uses: aws-actions/amazon-ecr-login@v2
 
     - name: Login to Amazon ECR
       id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v2
-      #with:
-      #  registry: public.ecr.aws/u8j8i3w5
+      uses: aws-actions/amazon-ecr-login@v1.6.2
 
     - name: Build Docker image
       run: docker build -t public.ecr.aws/u8j8i3w5/imperio-public-registry:latest -f Backend/venta/Dockerfile Backend/venta/  # Build image
