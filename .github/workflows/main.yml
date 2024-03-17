@@ -29,8 +29,8 @@ jobs:
     - name: Login to Amazon ECR
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v2
-      with:
-        registries: public.ecr.aws/u8j8i3w5
+      #with:
+      #  registry: public.ecr.aws/u8j8i3w5
 
     - name: Build Docker image
       run: docker build -t public.ecr.aws/u8j8i3w5/imperio-public-registry:latest -f Backend/venta/Dockerfile Backend/venta/  # Build image
