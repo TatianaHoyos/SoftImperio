@@ -23,19 +23,19 @@ jobs:
     - name: Check out code
       uses: actions/checkout@v3
     
-    - name: Login to Public ECR
-      uses: docker/login-action@v3
-      with:
-        registry: public.ecr.aws
-        username: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        password: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      env:
-        AWS_REGION: us-east-1
-    #- name: Configure AWS credentials
-    #  uses: aws-actions/amazon-ecr-login@v2
+    #- name: Login to Public ECR
+    #  uses: docker/login-action@v3
     #  with:
-    #    role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
-    #    aws-region: us-east-1
+    #    registry: public.ecr.aws
+    #    username: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    #    password: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    #  env:
+    #    AWS_REGION: us-east-1
+    - name: Configure AWS credentials
+      uses: aws-actions/amazon-ecr-login@v2
+      with:
+        role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+        aws-region: us-east-1
         #aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         #aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         
@@ -55,6 +55,11 @@ jobs:
       env:
         IMAGE_TAG: ${{ github.sha }}
       run: docker tag public.ecr.aws/u8j8i3w5/imperio-public-registry:latest public.ecr.aws/u8j8i3w5/imperio-public-registry:latest
+
+    - name: Remove Docker image in ECR
+      env:
+        IMAGE_TAG: ${{ github.sha }}
+      run: docker image rm -f public.ecr.aws/u8j8i3w5/imperio-public-registry:latest
 
     - name: Push Docker image to ECR
       env:
