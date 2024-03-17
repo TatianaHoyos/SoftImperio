@@ -38,5 +38,5 @@ jobs:
         REGISTRY_ALIAS: alias
         IMAGE_TAG: latest
       run: |
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f Backend/venta/Dockerfile Backend/venta/
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        docker build -t public.ecr.aws/u8j8i3w5/$ECR_REPOSITORY:$IMAGE_TAG -f Backend/venta/Dockerfile Backend/venta/
+        docker push public.ecr.aws/u8j8i3w5/$ECR_REPOSITORY:$IMAGE_TAG
