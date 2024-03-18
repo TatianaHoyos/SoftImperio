@@ -10,7 +10,7 @@ class FormatCurrency {
   return formatoMoneda.format(valor);
 }
 
-  num parsearMoneda(String valorMoneda) {
+  static num parsearMoneda(String valorMoneda) {
   var formatoMoneda = NumberFormat.currency(locale: 'es_CO', 
   symbol: '\$',
   decimalDigits: 0, 

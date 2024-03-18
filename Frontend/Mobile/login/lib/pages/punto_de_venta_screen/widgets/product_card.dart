@@ -3,6 +3,7 @@ import 'package:login/infraestructura/models/producto_seleccionado.dart';
 import 'package:login/infraestructura/models/productos.dart';
 import 'package:login/infraestructura/models/response.dart';
 import 'package:login/infraestructura/provider/cart_provider.dart';
+import 'package:login/util/alterts.dart';
 import 'package:login/util/format_currency.dart';
 import 'package:login/util/host_server.dart';
 import 'package:provider/provider.dart';
@@ -120,25 +121,27 @@ class _ProductCardState extends State<ProductCard> {
               color: Color(0xFFAE9243),
               onPressed: () {
                 // Lógica para agregar al carrito y notificar al usuario
-                /*var referencia = widget.product.referencias.firstWhere(
-                      (r) => r.idProducto.toString() == _selectedReferenceItem);*/
-                 var productoExistente = Provider.of<CartProvider>(context,listen: false).products.any(
+                
+                  var productoExistente = Provider.of<CartProvider>(context,listen: false).products.any(
                   (element) => element.idProducto == int.parse(_selectedReferenceItem));
 
                 if (!productoExistente) {
-                    var productoSeleccionado = ProductoSeleccionado(cantidad: 0, 
+                    var productoSeleccionado = ProductoSeleccionado(
+                      cantidad: 1, 
                 idProducto: int.parse(_selectedReferenceItem),
                 imageUrl: hostFoto+ widget.product.foto,
                 name: widget.product.nombreProducto,
-                price: obtenerPrecioProductos(widget.product));
+                price: obtenerPrecioNumProductos(widget.product),
+                referencia: obtenerReferenciaProductos(widget.product));
                 Provider.of<CartProvider>(context,listen: false).addProduct(productoSeleccionado);
-                }else{
-                   _mostrarAlerta(
-          context,
-          Response(
-              message: "Producto ya seleccionado", status: "Error"));
-                }
-                
+                } else {
+                   Alert.mostrarAlerta(
+                  context,
+                  Response(
+                      message: "Producto ya seleccionado", status: "Informativo"),
+                      () {Navigator.of(context).pop();});
+                    } 
+                          
               },
             ),
           ],
@@ -159,6 +162,20 @@ class _ProductCardState extends State<ProductCard> {
       (r) => r.idProducto.toString() == _selectedReferenceItem);
 
       return FormatCurrency.formatearMoneda(referencia.precio);
+  }
+
+    String obtenerReferenciaProductos(Producto producto) {
+      var referencia = producto.referencias.firstWhere(
+      (r) => r.idProducto.toString() == _selectedReferenceItem);
+
+      return referencia.nombreReferencia;
+  }
+
+  num obtenerPrecioNumProductos(Producto producto) {
+      var referencia = producto.referencias.firstWhere(
+      (r) => r.idProducto.toString() == _selectedReferenceItem);
+
+      return referencia.precio;
   }
 
   void _mostrarAlerta(BuildContext context, Response? response) {
