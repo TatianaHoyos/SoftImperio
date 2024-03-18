@@ -240,7 +240,7 @@ function onExitousuariocredito(data) {
             },
             success: function (data) {
 
-                if (data.length > 0) {
+                if (data.length>0) {
                         $('#detalleCredito').modal('show');
                     if ($.fn.DataTable.isDataTable('#tablaDetalleCredito')) {
                         $('#tablaDetalleCredito').DataTable().destroy();
@@ -466,7 +466,7 @@ function onExitousuariocredito(data) {
     }
     function mostrarTotalCreditoEnFormulario(totalCredito) {
         // Muestra el totalCrédito en el formulario
-        $('#totalCreditoUsuario').text(totalCredito+'$');
+        $('#totalCreditoUsuario').text('$'+totalCredito);
     }
 
     var totalAbonar
@@ -588,12 +588,76 @@ function onExitousuariocredito(data) {
         });        
     }
 
-    function callApiPutUsuarioCredito(formData,token){
-      
-          $.ajax({
+function EditarUsuarioCredito(usuariocredito) {
+    mostrarFormularioActualizarCrearUsuarioCreditos();
+    $("#idUsuarioCredito").val(usuariocredito.idUsuarioCredito);
+    $("#nombre").val(usuariocredito.nombre);
+    $("#documento").val(usuariocredito.documento);
+    $("#telefono").val(usuariocredito.telefono);
+    $("#totalCredito").val(usuariocredito.totalCredito);
+    console.log('Valor de usuariocredito:',usuariocredito);
+    var btnform = $("#btn-form");
+    btnform.click(function(){ actualizarUsuarioCredito(usuariocredito); });
+}
+
+    function actualizarUsuarioCredito(usuariocredito) {
+        var form = $('#formUsuarioCredito')[0];
+        var nombre= $("#nombre").val();
+        var documento= $("#documento").val();
+        var telefono=  $("#telefono").val();
+        // var totalCredito=usuariocredito.totalCredito;
+        console.log('cabio:',usuariocredito);
+
+        if (validarCampoVacio(nombre.length, 'Por favor, introduzca un nombre.')) {
+            return false;
+        }
+        if (validarCampoVacio(documento.length, 'Por favor, introduzca un número de documento.')) {
+            return false;
+        }
+        if (documento.length < 7) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Oops',
+                text: 'El número de documento no puede contener menos de 7 caracteres.',
+                showConfirmButton: false,
+                timer: 1700,
+                customClass: {
+                    popup: 'tamanio-custom'
+                }
+            });
+            return false;
+        }
+        if (documento && documento.startsWith('0')) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Oops',
+                text: 'El número de documento no puede empezar con 0.',
+                showConfirmButton: false,
+                timer: 2000,
+                customClass: {
+                    popup: 'tamanio-custom'
+                }
+            });
+            return false;
+        }
+
+        if (validarCampoVacio(telefono.length, 'Por favor, introduzca un número de teléfono.')) {
+            return false;
+        }
+        var formData =  JSON.stringify({
+            "nombre": nombre,
+            "documento": documento,
+            "telefono": telefono,
+        });
+        handleAjaxRequest(function (token) {
+            callApiPutUsuarioCredito(formData,usuariocredito,token);
+        });
+    }
+    function callApiPutUsuarioCredito(formData,usuariocredito,token){
+        $.ajax({
         type: "Put",
         enctype: 'multipart/form-data',
-        url: "http://localhost:8081/edge-service/v1/service/usuario/credito/actualizar/id/" + $("#idUsuarioCredito").val(),
+        url: "http://localhost:8081/edge-service/v1/service/usuario/credito/actualizar/id/" +usuariocredito.idUsuarioCredito,
         "headers": {
             "accept": "application/json",
             "Content-Type": "application/json",
@@ -604,8 +668,10 @@ function onExitousuariocredito(data) {
         success: onExitoActualizarUsuariocredito,
         error: onErrorusuariocreditocrear
     });
-        
     }
+
+
+
 
     function callApiactualizarUsuarioCreditoAbonar(token) {
         var idUsuarioCreditoSolo = idUsuarioCreditoA.idUsuarioCredito;
@@ -654,76 +720,6 @@ function onExitousuariocredito(data) {
         mensaje.text(error.message);
 
     }
-
-
-
-
-
-function EditarUsuarioCredito(usuariocredito) {
-    mostrarFormularioActualizarCrearUsuarioCreditos();
-    $("#idUsuarioCredito").val(usuariocredito.idUsuarioCredito);
-    $("#nombre").val(usuariocredito.nombre);
-    $("#documento").val(usuariocredito.documento);
-    $("#telefono").val(usuariocredito.telefono);
-    $("#totalCredito").val(usuariocredito.totalCredito);
-    console.log('Valor de idUsuarioCreditoAbonar:',usuariocredito);
-    var btnform = $("#btn-form");
-    btnform.click(function(){ actualizarUsuarioCredito(usuariocredito); });
-}
-function actualizarUsuarioCredito() {
-    var form = $('#formUsuarioCredito')[0];
-    var idUsuarioCredito=usuariocredito.idUsuarioCredito;
-    var nombre= $("#nombre").val();
-    var documento= $("#documento").val();
-    var telefono=  $("#telefono").val();
-    var totalCredito=usuariocredito.totalCredito;
-    console.log('cabio:',usuariocredito);
-
-    if (validarCampoVacio(nombre.length, 'Por favor, introduzca un nombre.')) {
-        return false;
-    }
-    if (validarCampoVacio(documento.length, 'Por favor, introduzca un número de documento.')) {
-        return false;
-    }
-    if (documento.length < 7) {
-        Swal.fire({
-            icon: 'warning',
-            title: 'Oops',
-            text: 'El número de documento no puede contener menos de 7 caracteres.',
-            showConfirmButton: false,
-            timer: 1700,
-            customClass: {
-                popup: 'tamanio-custom'
-            }
-        });
-        return false;
-    }
-    if (documento && documento.startsWith('0')) {
-        Swal.fire({
-            icon: 'warning',
-            title: 'Oops',
-            text: 'El número de documento no puede empezar con 0.',
-            showConfirmButton: false,
-            timer: 2000,
-            customClass: {
-                popup: 'tamanio-custom'
-            }
-        });
-        return false;
-    }
-
-    if (validarCampoVacio(telefono.length, 'Por favor, introduzca un número de teléfono.')) {
-        return false;
-    }
-    var formData =  JSON.stringify({
-        "nombre": nombre,
-        "documento": documento,
-        "telefono": telefono,
-      });
-      handleAjaxRequest(function (token) {
-        callApiPutUsuarioCredito(formData,token);
-    });
-}
 
 
 function onExitoActualizarUsuariocredito(data) {
@@ -910,7 +906,7 @@ function callApiCrearCreditos(formDataCredito, token) {
     });
 }
 
-function callApiCreditosByVenta(buscarVenta, token){
+function callApiCreditosByVenta(buscarVenta,idUsuarioCreditoSolo, token){
     $.ajax({
         type: "GET",
         url: "http://localhost:8081/edge-service/v1/service/venta/consultar/ByVenta/" + buscarVenta,
@@ -981,7 +977,7 @@ function CrearCredito() {
     // Realizar la solicitud para verificar si el idVenta ya está asociado a otro UsuarioCredito
 
     handleAjaxRequest(function (token) {
-        callApiCreditosByVenta(buscarVenta, token);
+        callApiCreditosByVenta(buscarVenta,idUsuarioCreditoSolo, token);
     });
     
 }
@@ -1028,7 +1024,7 @@ function onErrorAsociarcredito(error) {
     });
 }
 
-function callApiCrearUsuarioXId(idUsuarioCreditoSolo, token){
+function callApiCrearUsuarioXId(idUsuarioCreditoSolo,usuarioCredito, token){
     $.ajax({
         type: "PUT",
         enctype: 'multipart/form-data',
@@ -1063,10 +1059,9 @@ function actualizarUsuarioCreditoA(token) {
 
             // Llamada AJAX para actualizar el UsuarioCredito con el nuevo totalCredito
             handleAjaxRequest(function (token) {
-                callApiCrearUsuarioXId(idUsuarioCreditoSolo, token);
+                callApiCrearUsuarioXId(idUsuarioCreditoSolo,usuarioCredito, token);
             });
-            
-            
+
         },
         error: function(error) {
             Swal.fire({
@@ -1088,10 +1083,10 @@ function onExitoActualizarUsuariocreditoA(error) {
     consultarusuariocredito();
 }
 function onErrorusuariocreditocrearA(error) {
-    // var mensaje = $("#resultadoCrear");
-    // mensaje.addClass("alert-danger");
-    // mensaje.removeClass("alert-success");
-    // mensaje.show();
-    // mensaje.text(error.message);
+    var mensaje = $("#resultadoCrear");
+    mensaje.addClass("alert-danger");
+    mensaje.removeClass("alert-success");
+    mensaje.show();
+    mensaje.text(error.message);
 
 }
