@@ -10,7 +10,9 @@ import 'package:login/models/product.dart';
 import 'package:login/provider/cart_provider.dart';
 import 'package:login/provider/products_provider.dart';*/
 import 'package:login/pages/punto_de_venta_screen/widgets/product_card.dart';
+import 'package:login/util/alterts.dart';
 import 'package:login/util/gateway.dart';
+import 'package:login/util/unauthorized_exception.dart';
 import 'package:provider/provider.dart';
 import '../../infraestructura/models/response.dart';
 import '../../infraestructura/models/categorias.dart';
@@ -171,10 +173,11 @@ Widget _mostrarWidgetVacio() {
         if (Provider.of<CartProvider>(context,listen: false).products.isNotEmpty) {
          Navigator.pushNamed(context, '/screen_carrito');
         } else {
-                  _mostrarAlerta(
+                  Alert.mostrarAlerta(
                   context,
                   Response(
-                      message: "No hay productos en el carrito", status: "Informativo"));
+                      message: "No hay productos en el carrito", status: "Informativo"),
+                      () {Navigator.of(context).pop();});
                 } 
       },
       child: Icon(Icons.shopping_cart),
@@ -230,7 +233,14 @@ Future<bool> consumirApiProductos() async {
       } else {
         return false;
       }
-    } catch (e) {
+    } on UnauthorizedExcepcion catch(e) {
+      Alert.mostrarAlerta(
+          context,
+          Response(
+              message: "Su sesión a caducado", status: "Error"), 
+              () {Navigator.pushReplacementNamed(context, '/');});
+      return false;
+    }  catch (e) {
       final response = Response(
           message: "Error al consumir el api de Categorias", status: "Error");
       mostrarError(e, response);
@@ -264,7 +274,15 @@ Future<bool> consumirApiProductos() async {
       } else {
         return false;
       }
-    } catch (e) {
+    } on UnauthorizedExcepcion catch(e) {
+      Alert.mostrarAlerta(
+          context,
+          Response(
+              message: "Su sesión a caducado", status: "Error"), 
+              () {Navigator.pushReplacementNamed(context, '/');});
+      return false;
+    } 
+    catch (e) {
       final response = Response(
           message: "Error al consumir el api de Categorias", status: "Error");
       mostrarError(e, response);
@@ -292,28 +310,7 @@ Future<bool> consumirApiProductos() async {
       _isLoading = false;
     });
     // Manejo de errores de red u otros
-    _mostrarAlerta(context, response);
+    Alert.mostrarAlerta(context, response, () {Navigator.of(context).pop();});
     print('Error: $e');
-  }
-
-  void _mostrarAlerta(BuildContext context, Response? response) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(response!.status),
-          content: Text(response.message),
-          actions: [
-            ElevatedButton(
-              onPressed: () {
-                // Cierra la alerta cuando se presiona "Aceptar"
-                Navigator.of(context).pop();
-              },
-              child: Text('Aceptar'),
-            ),
-          ],
-        );
-      },
-    );
   }
 }

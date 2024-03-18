@@ -3,6 +3,7 @@ import 'package:login/infraestructura/models/producto_seleccionado.dart';
 import 'package:login/infraestructura/models/productos.dart';
 import 'package:login/infraestructura/models/response.dart';
 import 'package:login/infraestructura/provider/cart_provider.dart';
+import 'package:login/util/alterts.dart';
 import 'package:login/util/format_currency.dart';
 import 'package:login/util/host_server.dart';
 import 'package:provider/provider.dart';
@@ -134,10 +135,11 @@ class _ProductCardState extends State<ProductCard> {
                 referencia: obtenerReferenciaProductos(widget.product));
                 Provider.of<CartProvider>(context,listen: false).addProduct(productoSeleccionado);
                 } else {
-                   _mostrarAlerta(
+                   Alert.mostrarAlerta(
                   context,
                   Response(
-                      message: "Producto ya seleccionado", status: "Error"));
+                      message: "Producto ya seleccionado", status: "Informativo"),
+                      () {Navigator.of(context).pop();});
                     } 
                           
               },

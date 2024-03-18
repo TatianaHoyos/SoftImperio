@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:login/components/loading.dart';
 import 'package:login/infraestructura/models/response.dart';
+import 'package:login/util/alterts.dart';
 import 'package:login/util/format_currency.dart';
 import 'package:login/util/gateway.dart';
+import 'package:login/util/unauthorized_exception.dart';
 import 'package:provider/provider.dart';
 import 'package:login/infraestructura/provider/cart_provider.dart';
 import 'package:login/infraestructura/models/producto_seleccionado.dart';
@@ -194,7 +196,7 @@ class _MyCartState extends State<MyCart> {
         });
       if (response.statusCode == 200) {
         final responseObject = responseFromJson(response.body);
-        _mostrarAlerta(
+       Alert.mostrarAlerta(
           context,
           responseObject,
           () {
@@ -209,10 +211,18 @@ class _MyCartState extends State<MyCart> {
           message: "Error al consumir el api de crear pedido",
           status: "Error",
         );
-        mostrarError("", response);
+        Alert.mostrarAlerta(context, response, () {Navigator.of(context).pop();});
           return false;
         }
-    } catch (e) {
+    } on UnauthorizedExcepcion catch (e) {
+          Alert.mostrarAlerta(
+          context,
+          Response(
+              message: "Su sesión a caducado", status: "Error"), 
+              () {Navigator.pushReplacementNamed(context, '/');});
+              return false;
+    } 
+    catch (e) {
       setState(() {
           _isLoading = false;
         });
@@ -220,48 +230,11 @@ class _MyCartState extends State<MyCart> {
         message: "Error al consumir el api de Categorias",
         status: "Error",
       );
-      mostrarError(e, response);
+      Alert.mostrarAlerta(context, response, () {Navigator.of(context).pop();});
       return false;
     }
   }
 
-  void mostrarError(e, response) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(response.status),
-          content: Text(response.message),
-          actions: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Aceptar'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-    void _mostrarAlerta(
-      BuildContext context, Response? response, Function() onPressed) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(response!.status),
-          content: Text(response.message),
-          actions: [
-            ElevatedButton(
-              onPressed: onPressed,
-              child: Text('Aceptar'),
-            ),
-          ],
-        );
-      },
-    );
-  }
 }
 
 class QuantityEditionCell extends StatelessWidget {

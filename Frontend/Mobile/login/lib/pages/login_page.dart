@@ -4,6 +4,7 @@ import 'package:login/components/my_button.dart';
 import 'package:login/components/my_text_field.dart';
 import 'package:login/pages/inicio_page.dart';
 import 'package:http/http.dart' as http;
+import 'package:login/util/alterts.dart';
 import 'package:login/util/host_server.dart';
 import 'dart:convert';
 import '../util/encrypt_util.dart';
@@ -168,7 +169,7 @@ class _LoginPageState extends State<LoginPage> {
         Navigator.pushReplacementNamed(context, '/inicio');
       } else {
         this.response = Response.fromJson(jsonDecode(response.body));
-        _mostrarAlerta(context, this.response);
+        Alert.mostrarAlerta(context, this.response!, () {Navigator.of(context).pop();});
       }
     } catch (e) {
       // Oculta el modal cuando se recibe la respuesta de la API
@@ -176,32 +177,12 @@ class _LoginPageState extends State<LoginPage> {
         _isLoading = false;
       });
       // Manejo de errores de red u otros
-      _mostrarAlerta(
+      Alert.mostrarAlerta(
           context,
           Response(
-              message: "Error al consumir el API de login", status: "Error"));
+              message: "Error al consumir el API de login", status: "Error"),
+              () {Navigator.of(context).pop();});
       print('Error: $e');
     }
-  }
-
-  void _mostrarAlerta(BuildContext context, Response? response) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(response!.status),
-          content: Text(response.message),
-          actions: [
-            ElevatedButton(
-              onPressed: () {
-                // Cierra la alerta cuando se presiona "Aceptar"
-                Navigator.of(context).pop();
-              },
-              child: Text('Aceptar'),
-            ),
-          ],
-        );
-      },
-    );
   }
 }

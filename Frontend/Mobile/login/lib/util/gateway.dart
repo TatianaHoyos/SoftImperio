@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decode/jwt_decode.dart';
+import 'package:login/util/unauthorized_exception.dart';
 import 'host_server.dart';
 
 // Asegúrate de importar AuthSingleton aquí
@@ -58,7 +59,9 @@ final authSingleton = AuthSingleton();
     } else {
       intentos--;
       // Manejar errores o token de refresh inválido
-      throw Exception('Failed to refresh token');
+      if (intentos == 0) {
+        throw UnauthorizedExcepcion('Failed to refresh token');
+      }
     }
   }
 

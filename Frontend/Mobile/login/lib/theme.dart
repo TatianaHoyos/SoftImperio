@@ -12,7 +12,8 @@ class AppTheme {
 
     // Define the default brightness and colors.
     colorScheme: ColorScheme.fromSeed(
-      seedColor: Colors.blueGrey,
+      seedColor: Color(0xFFAE9243),
+      secondary: Colors.black87,
       primary: Colors.white,
       brightness: Brightness.light,
     ),
@@ -27,13 +28,14 @@ class AppTheme {
       visualDensity: VisualDensity.adaptivePlatformDensity,
        elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          elevation: 5.0,
+          elevation: 3.0,
           /*shadowColor: Colors.green,
           backgroundColor: Colors.green,
           disabledBackgroundColor: Colors.green.withOpacity(0.4),
           disabledForegroundColor: Colors.grey,
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),*/
-          textStyle: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold, color: Colors.white),
+          backgroundColor: Color(0xFF2e3037),
+          textStyle: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold,),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
         ),
       )

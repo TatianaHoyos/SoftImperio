@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:login/components/loading.dart';
 import 'package:login/infraestructura/models/response.dart';
+import 'package:login/util/alterts.dart';
 import 'package:login/util/auth_singleton.dart';
 import 'package:login/util/gateway.dart';
 import 'package:login/util/host_server.dart';
+import 'package:login/util/unauthorized_exception.dart';
 
 class Menu extends StatefulWidget {
   const Menu({super.key});
@@ -149,43 +151,31 @@ class _MenuState extends State<Menu> {
       if (response.statusCode == 200) {
         Navigator.pushReplacementNamed(context, '/');
       } else {
-        _mostrarAlerta(context, Response(
-              message: "Error al consumir el API de logout", status: "Error"));
+        Alert.mostrarAlerta(context, Response(
+              message: "Error al consumir el API de logout", status: "Error"),
+               () {Navigator.of(context).pop();});
       }
-    } catch (e) {
+    } on UnauthorizedExcepcion catch (e) {
+Alert.mostrarAlerta(
+          context,
+          Response(
+              message: "Su sesión a caducado", status: "Error"), 
+              () {Navigator.pushReplacementNamed(context, '/');});
+    }
+    catch (e) {
       // Oculta el modal cuando se recibe la respuesta de la API
       /*setState(() {
         _isLoading = false;
       });*/
       loading.hideLoadingDialog();
       // Manejo de errores de red u otros
-      _mostrarAlerta(
+      Alert.mostrarAlerta(
           context,
           Response(
-              message: "Error al consumir el API de logout", status: "Error"));
+              message: "Error al consumir el API de logout", status: "Error"), 
+              () {Navigator.of(context).pop();});
       print('Error: $e');
     }
-  }
-
-  void _mostrarAlerta(BuildContext context, Response? response) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(response!.status),
-          content: Text(response.message),
-          actions: [
-            ElevatedButton(
-              onPressed: () {
-                // Cierra la alerta cuando se presiona "Aceptar"
-                Navigator.of(context).pop();
-              },
-              child: Text('Aceptar'),
-            ),
-          ],
-        );
-      },
-    );
   }
 
 }
