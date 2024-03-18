@@ -280,7 +280,7 @@ spring:
               args:
                 modulo: Venta
                 accion: Consultar
-            - RewritePath=/edge-service/v1/service/venta/consultar/ByVenta/(?<idventa>.*), api/Creditos/ByVenta/$\{idventa}
+            - RewritePath=/edge-service/v1/service/venta/consultar/ByVenta/(?<idventa>.*), /api/Creditos/ByVenta/$\{idventa}
 
 
         - id: services-venta-consultar-ByFecha
