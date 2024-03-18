@@ -260,6 +260,17 @@ spring:
                 accion: Consultar
             - RewritePath=/edge-service/v1/service/venta/consultar/id/(?<idventa>.*), /api/Ventas/$\{idventa}
 
+        - id: services-venta-detalle-consultar-ByVenta
+          uri: https://localhost:7084
+          predicates:
+            - Path=/edge-service/v1/service/venta/detalle/consultar/ByVenta/**
+          filters:
+            - name: AuthenticationFilter
+              args:
+                modulo: Venta
+                accion: Consultar
+            - RewritePath=/edge-service/v1/service/venta/detalle/consultar/ByVenta/(?<idventa>.*), /api/DetalleVentas/ByVenta/$\{idventa}
+
         - id: services-venta-consultar-ByVenta
           uri: https://localhost:7084
           predicates:
@@ -269,7 +280,8 @@ spring:
               args:
                 modulo: Venta
                 accion: Consultar
-            - RewritePath=/edge-service/v1/service/venta/consultar/ByVenta/(?<idventa>.*), /api/DetalleVentas/ByVenta/$\{idventa}
+            - RewritePath=/edge-service/v1/service/venta/consultar/ByVenta/(?<idventa>.*), /api/Creditos/ByVenta/$\{idventa}
+
 
         - id: services-venta-consultar-ByFecha
           uri: https://localhost:7084

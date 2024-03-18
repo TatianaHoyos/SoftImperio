@@ -1,9 +1,8 @@
-name: Desplegar a ECR contenedor de c#
+name: Compilar y desplegar Api .Net como contenedor
 
 on:
-
-  pull_request:
-    branches:
+  push:
+    tags:
       - main
 
 permissions:
@@ -11,7 +10,6 @@ permissions:
   contents: read
 
 jobs:
-  
   build:
     
     name: Build Image
@@ -50,13 +48,13 @@ jobs:
     #  uses: aws-actions/amazon-ecr-login@v1.6.2
 
     - name: Replace token for appsettings.Production.json
-        uses: cschleiden/replace-tokens@v1.1
-        with:
-          tokenPrefix: '#{'
-          tokenSuffix: '}#'
-          files: '["Backend/venta/venta/appsettings.Production.json"]'
-        env:
-          ConnectionString: ${{secrets.CONNECTION_STRING}}
+      uses: cschleiden/replace-tokens@v1.1
+      with:
+        tokenPrefix: '#{'
+        tokenSuffix: '}#'
+        files: '["Backend/venta/venta/appsettings.Production.json"]'
+      env:
+        ConnectionString: ${{secrets.CONNECTION_STRING}}
 
     - name: Build Docker image
       run: docker build -t public.ecr.aws/u8j8i3w5/imperio-public-registry:latest -f Backend/venta/Dockerfile Backend/venta/  # Build image

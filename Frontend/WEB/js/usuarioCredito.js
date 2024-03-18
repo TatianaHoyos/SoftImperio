@@ -827,7 +827,7 @@ function buscarVentasLogica() {
 function callApiBuscarVentaLogica(buscarVenta,token){
     $.ajax({
         type: "GET",
-        url: "http://localhost:8081/edge-service/v1/service/venta/consultar/ByVenta/" + buscarVenta,
+        url: "http://localhost:8081/edge-service/v1/service/venta/detalle/consultar/ByVenta/" + buscarVenta,
         "headers": {
             "target": "consultar-venta-ByVenta",
             "Content-Type": "application/json",
