@@ -30,17 +30,17 @@ function crearUsuarioCredito() {
     var documento= $("#documento").val();
     var telefono=  $("#telefono").val();
 
-    if (validarCampoVacio(nombre.length, 'Por favor, introduzca un nombre.')) {
+    if (validarCampoVacio(nombre.length, 'Por favor ingrese un nombre')) {
         return false;
     }
-    if (validarCampoVacio(documento.length, 'Por favor, introduzca un número de documento.')) {
+    if (validarCampoVacio(documento.length, 'Por favor ingrese documento')) {
         return false;
     }
     if (documento.length < 7) {
         Swal.fire({
             icon: 'warning',
             title: 'Oops',
-            text: 'El número de documento no puede contener menos de 7 caracteres.',
+            text: 'El numero de documento no puede contener menos de 7 caracteres',
             showConfirmButton: false,
             timer: 1700,
             customClass: {
@@ -63,7 +63,7 @@ function crearUsuarioCredito() {
         return false;
     }
 
-    if (validarCampoVacio(telefono.length, 'Por favor, introduzca un número de teléfono.')) {
+    if (validarCampoVacio(telefono.length, 'Por favor ingrese telefono')) {
         return false;
     }
 
@@ -88,7 +88,7 @@ function callApiCrearUsuarioCredito(token,formData){
             "accept": "application/json",
             'Authorization': `Bearer ${token}`,
             "Content-Type": "application/json"
-        },
+          },
         data: formData,
         processData: false, 
         success: onExitoCrearUsuariocredito,
@@ -131,20 +131,20 @@ function onErrorusuariocreditocrear(error) {
 
 function consultarusuariocredito() {
     handleAjaxRequest(callApiConsultarUsuarioCredito);
-}
-
-function callApiConsultarUsuarioCredito(token){
-    $.ajax({
-        type: "GET",
-        url: "http://localhost:8081/edge-service/v1/service/usuario/credito/consultar",
-        headers: {
-            'Authorization': `Bearer ${token}`,
-            "Content-Type": "application/json"
-        },
-        success: onExitousuariocredito,
-        error: onErrorusuariocredito
-    });
-}
+   }
+   
+   function callApiConsultarUsuarioCredito(token){
+       $.ajax({
+           type: "GET",
+           url: "http://localhost:8081/edge-service/v1/service/usuario/credito/consultar",
+           headers: {
+               'Authorization': `Bearer ${token}`,
+               "Content-Type": "application/json"
+           },
+           success: onExitousuariocredito,
+           error: onErrorusuariocredito
+       });
+   }
 
 
 
@@ -292,7 +292,7 @@ function onExitousuariocredito(data) {
                 } else {
                     Swal.fire({
                         title: 'Exito',
-                        text: 'El usuario no tiene créditos asociados.',
+                        text: 'El usuario no tiene creditos asociados',
                         icon: 'success',
                         showCancelButton: false,
                         confirmButtonColor: '#d33',
@@ -393,7 +393,7 @@ function onExitousuariocredito(data) {
                         Swal.fire({
                             icon: 'error',
                             title: 'Error',
-                            text: 'El total crédito del usuario crédito está en cero, por lo que no puede abona.',
+                            text: 'El total credito del usuario credito esta en cero asi que no puede abonar.',
                             showConfirmButton: false,
                             timer: 2700
                         });
@@ -431,7 +431,7 @@ function onExitousuariocredito(data) {
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'El total crédito del usuario crédito está en cero, por lo que no puede abonar.',
+                text: 'El total credito del usuario credito esta en cero asi que no puede abonar.',
                 showConfirmButton: false,
                 timer: 2700
             });
@@ -459,7 +459,7 @@ function onExitousuariocredito(data) {
                 mostrarTotalCreditoEnFormulario(data.totalCredito);
             },
             error: function(error) {
-                console.error("Se ha producido un error al consultar el totalCrédito:", error);
+                console.error("Error al consultar el totalCrédito:", error);
                 // Puedes manejar el error según tus necesidades
             }
         });
@@ -476,14 +476,14 @@ function onExitousuariocredito(data) {
         var total = idUsuarioCreditoA.totalCredito
 
         totalAbonar= $("#abonar").val();
-        if (validarCampoVacio(totalAbonar.length, 'Por favor, indique el monto que desea abonar.')) {
+        if (validarCampoVacio(totalAbonar.length, 'Por favor ingrese el monto a abonar.')) {
             return false;
         }
         if (total<totalAbonar){
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'El monto a abonar no puede ser mayor al total del crédito.',
+                text: 'El moto a abonar no puene ser mayor al total crédito .',
                 showConfirmButton: false,
                 timer: 2700
             });
@@ -513,7 +513,7 @@ function onExitousuariocredito(data) {
                 "Content-Type": "application/json"
             },
             data: formData,
-            processData: false,
+            processData: false, 
             success: onExitoCrearAbono,
             error: onErrorCrearAbono
         });
@@ -559,7 +559,7 @@ function onExitousuariocredito(data) {
         Swal.fire({
             icon: 'error',
             title: 'Error',
-            text: 'No se pudo confirmar el abono. Verifique el monto a abonar e intente de nuevo.',
+            text: 'Nose pudo confirmar el abono verifique en monto a abonar y intenta de nuevo.',
             showConfirmButton: false,
             timer: 2700
         });
@@ -665,31 +665,25 @@ function EditarUsuarioCredito(usuariocredito) {
     $("#nombre").val(usuariocredito.nombre);
     $("#documento").val(usuariocredito.documento);
     $("#telefono").val(usuariocredito.telefono);
-    $("#totalCredito").val(usuariocredito.totalCredito);
-    console.log('Valor de idUsuarioCreditoAbonar:',usuariocredito);
     var btnform = $("#btn-form");
-    btnform.click(function(){ actualizarUsuarioCredito(usuariocredito); });
+    btnform.click(function(){ actualizarUsuarioCredito(); });
 }
 function actualizarUsuarioCredito() {
     var form = $('#formUsuarioCredito')[0];
-    var idUsuarioCredito=usuariocredito.idUsuarioCredito;
     var nombre= $("#nombre").val();
     var documento= $("#documento").val();
     var telefono=  $("#telefono").val();
-    var totalCredito=usuariocredito.totalCredito;
-    console.log('cabio:',usuariocredito);
-
-    if (validarCampoVacio(nombre.length, 'Por favor, introduzca un nombre.')) {
+    if (validarCampoVacio(nombre.length, 'Por favor ingrese un nombre')) {
         return false;
     }
-    if (validarCampoVacio(documento.length, 'Por favor, introduzca un número de documento.')) {
+    if (validarCampoVacio(documento.length, 'Por favor ingrese documento')) {
         return false;
     }
     if (documento.length < 7) {
         Swal.fire({
             icon: 'warning',
             title: 'Oops',
-            text: 'El número de documento no puede contener menos de 7 caracteres.',
+            text: 'El numero de documento no puede contener menos de 7 caracteres',
             showConfirmButton: false,
             timer: 1700,
             customClass: {
@@ -712,10 +706,11 @@ function actualizarUsuarioCredito() {
         return false;
     }
 
-    if (validarCampoVacio(telefono.length, 'Por favor, introduzca un número de teléfono.')) {
+    if (validarCampoVacio(telefono.length, 'Por favor ingrese telefono')) {
         return false;
     }
     var formData =  JSON.stringify({
+        "idUsuarioCredito":  $("#idUsuarioCredito").val(),
         "nombre": nombre,
         "documento": documento,
         "telefono": telefono,
@@ -791,7 +786,7 @@ function callApiEliminarUsuarioCredito(usuariocredito,token){
             Swal.fire({
                 icon: 'warning',
                 title: 'Oops',
-                text:'El usuario crédito ya tiene créditos o abonos asociados, por lo que no es posible eliminarlo.',
+                text:'El usuario crédito ya tiene créditos o abonos asociados asi que no es posible eliminarlo.',
                 timer:3500,
                 customClass: {
                     popup: 'tamanio-custom'
@@ -853,7 +848,7 @@ function callApiBuscarVentaLogica(buscarVenta,token){
             } else {
                 Swal.fire({
                     title: 'Oops',
-                    text: 'El idVenta suministrado no se encuentra.',
+                    text: 'El idVenta suministrado no se encuentra ',
                     icon: 'success',
                     showCancelButton: false,
                     confirmButtonColor: '#d33',
@@ -970,7 +965,7 @@ function CrearCredito() {
         Swal.fire({
             icon: 'error',
             title: 'Error',
-            text: 'El total de la venta es 0 o nulo. Por favor, haga clic en el botón Buscar después de haber ingresado el ID para verificar si es la venta correct.',
+            text: 'El total de la venta es 0 o nulo. Por favor, dele en el boton buscar despues de aver ingresado el id para ver si es la venta correcta .',
             showConfirmButton: false,
             timer: 2700
         });
@@ -1022,7 +1017,7 @@ function onErrorAsociarcredito(error) {
     Swal.fire({
         icon: 'error',
         title: 'Error',
-        text: 'Ocurrió un error al asociar el crédito. Por favor, inténtalo de nuevo y verifica que todo esté completo.',
+        text: 'Ocurrió un error al asociar el crédito. Por favor, inténtalo de nuevo y verifique que esta todo completo.',
         showConfirmButton: false,
         timer: 2700
     });
@@ -1072,7 +1067,7 @@ function actualizarUsuarioCreditoA(token) {
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'Error al obtener el UsuarioCredito.',
+                text: 'Error al obtener el UsuarioCredito',
                 showConfirmButton: false,
                 timer: 2700
             });
@@ -1088,10 +1083,10 @@ function onExitoActualizarUsuariocreditoA(error) {
     consultarusuariocredito();
 }
 function onErrorusuariocreditocrearA(error) {
-    // var mensaje = $("#resultadoCrear");
-    // mensaje.addClass("alert-danger");
-    // mensaje.removeClass("alert-success");
-    // mensaje.show();
-    // mensaje.text(error.message);
+    var mensaje = $("#resultadoCrear");
+    mensaje.addClass("alert-danger");
+    mensaje.removeClass("alert-success");
+    mensaje.show();
+    mensaje.text(error.message);
 
 }
