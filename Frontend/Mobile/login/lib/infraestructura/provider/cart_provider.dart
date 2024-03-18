@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:login/infraestructura/models/producto_seleccionado.dart';
+import 'package:login/util/format_currency.dart';
 
 import '../models/productos.dart';
 import 'package:provider/provider.dart';
@@ -8,28 +9,45 @@ import 'package:provider/provider.dart';
 
 class CartProvider with ChangeNotifier {
   List<ProductoSeleccionado> products = [];
-  double total = 0;
+  num total = 0;
 
   void addProduct(ProductoSeleccionado product) {
     products.add(product);
-    //total += product. * product.quantity;
+    calcularTotal();
     notifyListeners();
   }
 
   void removeProduct(ProductoSeleccionado product) {
     products.remove(product);
-    //total -= product.price * product.quantity;
+    calcularTotal();
     notifyListeners();
   }
 
-  void updateProduct(ProductoSeleccionado product, int newQuantity) {
-    //total -= product.price * product.quantity;
-    product.cantidad = newQuantity;
-    //total += product.price * product.quantity;
+  void sumarProduct(ProductoSeleccionado product) {
+    
+    product.cantidad = product.cantidad! + 1;
+     calcularTotal();
     notifyListeners();
   }
 
-  double calculateTotalPrice() {
-    return total;
+void restarProduct(ProductoSeleccionado product) {
+    
+    if (product.cantidad! > 0) {
+      product.cantidad = product.cantidad! - 1;
+      calcularTotal();
+    }
+    notifyListeners();
+  }
+
+  calcularTotal() {
+    total = 0;
+    for (var producto in products) {
+      total += producto.price! * producto.cantidad!;
+    }
+}
+  void clearProducts() {
+    products.clear(); // Elimina todos los productos del provider
+    total = 0; // También puedes restablecer el total a cero si es necesario
+    notifyListeners();
   }
 }

@@ -64,8 +64,6 @@ public class ControllerOAuth2 {
     @Value("${security.clientSecret}")
     private String clientSecret;
 
-    private String urlServer = "http://localhost:8080/";
-
     @Operation(summary = "Autenticación de usuario", responses = {
             @ApiResponse(description = "Autenticación exitosa", responseCode = "200",
                     content = @Content(mediaType = "application/json",
@@ -85,7 +83,7 @@ public class ControllerOAuth2 {
                     LoginResponse response = new LoginResponse();
                     response.setDocumento(usuariodb.getDocumento());
                     response.setNombre(usuariodb.getNombre());
-                    response.setFoto(urlServer + usuariodb.getFoto());
+                    response.setFoto(usuariodb.getFoto());
                     response.setRol(usuariodb.getRol());
                    // response.setRol(usuariodb.getIdRol());
 

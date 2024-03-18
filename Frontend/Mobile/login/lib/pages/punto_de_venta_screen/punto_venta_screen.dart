@@ -5,12 +5,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:login/components/loading.dart';
 import 'package:login/infraestructura/models/productos.dart';
 import 'package:login/infraestructura/provider/cart_provider.dart';
-/*import 'package:provider/provider.dart';
-import 'package:login/models/product.dart';
-import 'package:login/provider/cart_provider.dart';
-import 'package:login/provider/products_provider.dart';*/
 import 'package:login/pages/punto_de_venta_screen/widgets/product_card.dart';
+import 'package:login/util/alterts.dart';
 import 'package:login/util/gateway.dart';
+import 'package:login/util/unauthorized_exception.dart';
 import 'package:provider/provider.dart';
 import '../../infraestructura/models/response.dart';
 import '../../infraestructura/models/categorias.dart';
@@ -23,6 +21,7 @@ class SellingPointScreen extends StatefulWidget {
 class _MySellingPointPageState extends State<SellingPointScreen>
     with SingleTickerProviderStateMixin {
   bool _isLoading = true;
+  bool _isSuccessfull = false;
   List<String> _categorias = [];
   List<Categoria> _categoriasFromApis = [];
   List<Productos> _productos = [];
@@ -46,20 +45,21 @@ class _MySellingPointPageState extends State<SellingPointScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: _isLoading ? mostrarCargando() : crearNestedScrollView()
+        body: _isLoading ?
+         mostrarCargando() : 
+          _isSuccessfull ? crearNestedScrollView() :
+          Container()
         );
   }
 
   NestedScrollView crearNestedScrollView() {
     return NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
-          /*SliverAppBar(title: const Text("Punto de Venta",
-                style: TextStyle(fontWeight: FontWeight.bold)),
-            expandedHeight: 140.0,
+          SliverAppBar(expandedHeight: 10.0,
             floating: true,
             pinned: true,
             bottom: construirTabBar(),
-          ),*/
+          ),
         ],
         body: crearBody(),
       );
@@ -146,7 +146,7 @@ Widget _mostrarWidgetVacio() {
   }
 
   Widget mostrarCargando() {
-    return const Loading();
+    return Loading();
   }
 
   TabBar construirTabBar() {
@@ -170,7 +170,15 @@ Widget _mostrarWidgetVacio() {
       backgroundColor: Color(0xFFAE9243),
       onPressed: () {
         // Navega a la otra pantalla
-        Navigator.pushNamed(context, '/screen_carrito');
+        if (Provider.of<CartProvider>(context,listen: false).products.isNotEmpty) {
+         Navigator.pushNamed(context, '/screen_carrito');
+        } else {
+                  Alert.mostrarAlerta(
+                  context,
+                  Response(
+                      message: "No hay productos en el carrito", status: "Informativo"),
+                      () {Navigator.of(context).pop();});
+                } 
       },
       child: Icon(Icons.shopping_cart),
     );
@@ -197,6 +205,7 @@ Widget _mostrarWidgetVacio() {
           _tabController.addListener(_handleTabChange);
 
          _isLoading = false;
+         _isSuccessfull = true;
         });
     } else {
       final response = Response(
@@ -225,7 +234,14 @@ Future<bool> consumirApiProductos() async {
       } else {
         return false;
       }
-    } catch (e) {
+    } on UnauthorizedExcepcion catch(e) {
+      Alert.mostrarAlerta(
+          context,
+          Response(
+              message: "Su sesión a caducado", status: "Error"), 
+              () {Navigator.pushReplacementNamed(context, '/');});
+      return false;
+    }  catch (e) {
       final response = Response(
           message: "Error al consumir el api de Categorias", status: "Error");
       mostrarError(e, response);
@@ -246,20 +262,28 @@ Future<bool> consumirApiProductos() async {
           method: 'GET',
           headers: headers);
       if (response.statusCode == 200) {
-        //setState(() {
+       setState(() {
           _categoriasFromApis = categoriaFromJson(response.body);
           _categorias = _categoriasFromApis.map((c) => c.nombreCategoria).toList();
           _selectedCategoria = _categorias.first;
           //_tabController = TabController(length: _categorias.length, vsync: this);
-          // Añadir un listener para escuchar cambios de tabs
+         // Añadir un listener para escuchar cambios de tabs
           //_tabController.addListener(_handleTabChange);
-          //_isLoading = false;
-        //});
+        //  _isLoading = false;
+        });
         return true;
       } else {
         return false;
       }
-    } catch (e) {
+    } on UnauthorizedExcepcion catch(e) {
+      Alert.mostrarAlerta(
+          context,
+          Response(
+              message: "Su sesión a caducado", status: "Error"), 
+              () {Navigator.pushReplacementNamed(context, '/');});
+      return false;
+    } 
+    catch (e) {
       final response = Response(
           message: "Error al consumir el api de Categorias", status: "Error");
       mostrarError(e, response);
@@ -287,28 +311,7 @@ Future<bool> consumirApiProductos() async {
       _isLoading = false;
     });
     // Manejo de errores de red u otros
-    _mostrarAlerta(context, response);
+    Alert.mostrarAlerta(context, response, () {Navigator.of(context).pop();});
     print('Error: $e');
-  }
-
-  void _mostrarAlerta(BuildContext context, Response? response) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(response!.status),
-          content: Text(response.message),
-          actions: [
-            ElevatedButton(
-              onPressed: () {
-                // Cierra la alerta cuando se presiona "Aceptar"
-                Navigator.of(context).pop();
-              },
-              child: Text('Aceptar'),
-            ),
-          ],
-        );
-      },
-    );
   }
 }

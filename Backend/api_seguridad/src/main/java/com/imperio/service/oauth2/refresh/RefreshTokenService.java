@@ -16,8 +16,8 @@ import java.util.UUID;
 @Slf4j
 @Service
 public class RefreshTokenService implements IRefreshTokenService {
-    @Value("${jwt.refresh.expiration.ms}")
-    private int refreshTokenDuration;
+    @Value("${jwt.refresh.expiration.seconds}")
+    private int refreshTokenDurationSeconds;
 
     @Autowired
     private UsuariosService usuariosService;
@@ -29,7 +29,7 @@ public class RefreshTokenService implements IRefreshTokenService {
     public OAuthEntity crearRefreshToken(int idUser, String token) {
         OAuthEntity oAuth = new OAuthEntity();
         oAuth.setUsuariosEntity(usuariosService.obtenerUsuarioId(idUser).get());
-        oAuth.setExpiryDate(Instant.now().plusMillis(refreshTokenDuration));
+        oAuth.setExpiryDate(Instant.now().plusSeconds(refreshTokenDurationSeconds));
         oAuth.setTokenRefresh(UUID.randomUUID().toString());
         oAuth.setToken(token);
 
@@ -38,12 +38,12 @@ public class RefreshTokenService implements IRefreshTokenService {
     @Transactional
     @Override
     public OAuthEntity crearRefreshToken(UsuariosEntity usuarios, String token) {
+        deletePreviousToken(usuarios);
         OAuthEntity oAuth = new OAuthEntity();
         oAuth.setUsuariosEntity(usuarios);
-        oAuth.setExpiryDate(Instant.now().plusMillis(refreshTokenDuration));
+        oAuth.setExpiryDate(Instant.now().plusSeconds(refreshTokenDurationSeconds));
         oAuth.setTokenRefresh(UUID.randomUUID().toString());
         oAuth.setToken(token);
-        deletePreviousToken(usuarios);
         return oAuthService.guardarToken(oAuth);
     }
 
@@ -59,7 +59,12 @@ public class RefreshTokenService implements IRefreshTokenService {
 
     @Override
     public Optional<OAuthEntity> encontrarTokenRefresh(String token) {
-        return oAuthService.encontrarTokenRefresh(token);
+        try {
+            return oAuthService.encontrarTokenRefresh(token);
+        } catch (Exception e) {
+            log.error("Encontrar Token", e);
+            throw e;
+        }
     }
 
     @Override
