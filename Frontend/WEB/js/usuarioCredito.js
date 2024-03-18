@@ -1088,10 +1088,10 @@ function onExitoActualizarUsuariocreditoA(error) {
     consultarusuariocredito();
 }
 function onErrorusuariocreditocrearA(error) {
-    var mensaje = $("#resultadoCrear");
-    mensaje.addClass("alert-danger");
-    mensaje.removeClass("alert-success");
-    mensaje.show();
-    mensaje.text(error.message);
+    // var mensaje = $("#resultadoCrear");
+    // mensaje.addClass("alert-danger");
+    // mensaje.removeClass("alert-success");
+    // mensaje.show();
+    // mensaje.text(error.message);
 
 }
