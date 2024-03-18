@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decode/jwt_decode.dart';
+import 'package:login/util/unauthorized_exception.dart';
 import 'host_server.dart';
 
 // Asegúrate de importar AuthSingleton aquí
@@ -49,13 +50,18 @@ class Gateway {
       intentos = 0;
       final data = json.decode(response.body);
       // Asegúrate de actualizar tanto el accessToken como el refreshToken si es necesario
-      AuthSingleton().authoritation.accessToken = data['accessToken']; // Ajusta según tu API
-      AuthSingleton().authoritation.refreshToken = data['refreshToken'];
-      AuthSingleton().authoritation.tokenType = data['tokenType'];
+final authSingleton = AuthSingleton();
+      authSingleton.updateTokenData(
+  accessToken: data['accessToken'], 
+  tokenType: data['tokenType'], 
+  refreshToken: data['refreshToken'],
+);
     } else {
       intentos--;
       // Manejar errores o token de refresh inválido
-      throw Exception('Failed to refresh token');
+      if (intentos == 0) {
+        throw UnauthorizedExcepcion('Failed to refresh token');
+      }
     }
   }
 
@@ -67,11 +73,12 @@ class Gateway {
     dynamic body,
     bool isLogout = false
   }) async {
-    var accessToken = AuthSingleton().authoritation.accessToken;
-
+    final authSingleton = AuthSingleton();
+    var accessToken = authSingleton.authoritation.accessToken;
     if (_isTokenExpired(accessToken)) {
       await _refreshToken();
-      accessToken = AuthSingleton().authoritation.accessToken; // Obtener el nuevo accessToken
+     final authSingleton = AuthSingleton();
+       accessToken = authSingleton.authoritation.accessToken;
     }
 
     final Uri url = Uri.parse('$baseUrl$endpoint');
@@ -86,7 +93,6 @@ class Gateway {
     }
     
     http.Response response;
-
     // Combinar headers por defecto con los headers personalizados
     final combinedHeaders = {...?headers, ...defaultHeaders};
 
