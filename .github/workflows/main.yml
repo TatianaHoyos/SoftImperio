@@ -1,9 +1,8 @@
-name: Desplegar a ECR contenedor de c#
+name: Compilar y desplegar Api .Net como contenedor
 
 on:
-
-  pull_request:
-    branches:
+  push:
+    tags:
       - main
 
 permissions:
@@ -11,7 +10,6 @@ permissions:
   contents: read
 
 jobs:
-  
   build:
     
     name: Build Image
