@@ -5,10 +5,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:login/components/loading.dart';
 import 'package:login/infraestructura/models/productos.dart';
 import 'package:login/infraestructura/provider/cart_provider.dart';
-/*import 'package:provider/provider.dart';
-import 'package:login/models/product.dart';
-import 'package:login/provider/cart_provider.dart';
-import 'package:login/provider/products_provider.dart';*/
 import 'package:login/pages/punto_de_venta_screen/widgets/product_card.dart';
 import 'package:login/util/alterts.dart';
 import 'package:login/util/gateway.dart';
@@ -25,6 +21,7 @@ class SellingPointScreen extends StatefulWidget {
 class _MySellingPointPageState extends State<SellingPointScreen>
     with SingleTickerProviderStateMixin {
   bool _isLoading = true;
+  bool _isSuccessfull = false;
   List<String> _categorias = [];
   List<Categoria> _categoriasFromApis = [];
   List<Productos> _productos = [];
@@ -48,7 +45,10 @@ class _MySellingPointPageState extends State<SellingPointScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: _isLoading ? mostrarCargando() : crearNestedScrollView()
+        body: _isLoading ?
+         mostrarCargando() : 
+          _isSuccessfull ? crearNestedScrollView() :
+          Container()
         );
   }
 
@@ -205,6 +205,7 @@ Widget _mostrarWidgetVacio() {
           _tabController.addListener(_handleTabChange);
 
          _isLoading = false;
+         _isSuccessfull = true;
         });
     } else {
       final response = Response(
