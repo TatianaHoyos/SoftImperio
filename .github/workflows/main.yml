@@ -2,8 +2,8 @@ name: Compilar y desplegar Api .Net como contenedor
 
 on:
   push:
-    tags:
-      - main
+    branches:
+      - tatiana2
 
 permissions:
   id-token: write
