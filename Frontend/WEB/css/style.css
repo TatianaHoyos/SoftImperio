@@ -1,14 +1,11 @@
 body{
-  /* background-image: linear-gradient(to top, #051937, #2a1429, #30171b, #2b1e16, #25231c); */
-  /* background: rgb(174,146,67);
-  background: radial-gradient(circle, rgba(174,146,67,1) 0%, rgba(9,9,9,1) 100%); */
   background-color: #1e1d1d;
   font-family:"Baskerville", serif;
-} 
+}
 
 .login{
   background-image: url("../img/login/f3.jpg");
-}   
+}
 #fondo{
     background-color: #1e2020;
 }
@@ -21,13 +18,6 @@ body{
 .swal2-confirm {
   background-color: black !important;
   color: white !important;
-}
-
-/* Estilo para el botón de cancelar (Cancelar) */
-.swal2-cancel {
-  background-color: transparent !important;
-  color: yellow !important;
-  border: 1px solid yellow !important;
 }
 
 /* Estilo para la flecha arriba del botón */
@@ -68,7 +58,6 @@ body{
     .logo {
       height: 120; /* Tamaño del logo*/
     }
-    
     /* Estilos para el menú */
     .colornavbar {
       background-color: transparent;
