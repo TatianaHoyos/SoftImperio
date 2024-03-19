@@ -1,25 +1,19 @@
-// function validarNumero(e){
-//     tecla = (document.all) ? e.keyCode : e.which;
-//     if (tecla==8) return true;
-//     patron =/[0-9]/;
-//     te = String.fromCharCode(tecla);
-//     return patron.test(te)
-// }
 
-// function validarNumeroUC(e) {
-//     tecla = (document.all) ? e.keyCode : e.which;
-//     if (tecla == 8) return true;
-//     patron = /[0-9]/;
-//     te = String.fromCharCode(tecla);
-    
-//     // Verifica si la longitud actual del campo es menor o igual a 14 (ya que se permiten 15 caracteres)
-//     if (e.target.value.length <= 14) {
-//       return patron.test(te);
-//     } else {
-//       // Si ya hay 15 caracteres, no se permite ingresar más
-//       return false;
-//     }
-//   }
+function validarNumeroUC(e) {
+    tecla = (document.all) ? e.keyCode : e.which;
+    if (tecla == 8) return true;
+    patron = /[0-9]/;
+    te = String.fromCharCode(tecla);
+    // Verifica si la longitud actual del campo es menor o igual a 14 (ya que se permiten 15 caracteres)
+    if (e.target.value.length <= 14) {
+    return patron.test(te);
+    } else {
+      // Si ya hay 15 caracteres, no se permite ingresar más
+    return false;
+    }
+}
+
+
 
 function soloNumeros(e) {
     key = e.keyCode || e.which;
@@ -125,70 +119,17 @@ function sololetrasnombre(e) {
         return false;
     }
 }
-
-
-// function sololetras(e){
-//     key= e.keyCode || e.which;
-//     tecla = String.fromCharCode(key).toLowerCase();
-//     letras = "àèìòùabcdefghijklmnñopqrstuvwxyz";
-//     tecla_especial = false
-//     for(var i in especiales){
-//         if(key == especiales[i]){
-//             tecla_especial = true;
-//             break;
-//         }
-//     }
-
-//     if(letras.indexOf(tecla)==-1 && !tecla_especial){
-//         return false;
-//     }
-
-// }
-
-// function sololetras(e){
-//     key= e.keyCode || e.which;
-//     tecla = String.fromCharCode(key).toLowerCase();
-//     letras = "àèìòùabcdefghijklmnñopqrstuvwxyz";
-//     especiales = "8-37-38-46-164";
-
-//     tecla_especial = false
-//     for(var i in especiales){
-//         if(key == especiales[i]){
-//             tecla_especial = true;
-//             break;
-//         }
-//     }
-
-//     if(letras.indexOf(tecla)==-1 && !tecla_especial){
-//         return false;
-//     }
-// }
-
-
-
-//esto so
-function sololetras(e) {
-    key = e.keyCode || e.which;
-    tecla = String.fromCharCode(key).toLowerCase();
-    letras = "àèìòùabcdefghijklmnñopqrstuvwxyz";
-    especiales = "8-37-38-46-164";
-
-    tecla_especial = false
-    for (var i in especiales) {
-        if (key == especiales[i]) {
-            tecla_especial = true;
-            break;
+function validarNombre() {
+   
+        var charCode = event.which ? event.which : event.keyCode;
+        if ((charCode < 65 || charCode > 90) && (charCode < 97 || charCode > 122)) {
+            event.preventDefault();
+            return false;
         }
-    }
-
-    if (letras.indexOf(tecla) === -1 && !tecla_especial) {
-        mostrarMensaje('Solo se permiten letras', 'red', '#mensajeLetras');
-        return false;
-    } else {
-        // Limpiar el mensaje si la tecla ingresada es válida
-        $('#mensajeLetras').text('');
-    }
+        return true;
 }
+
+
 
 function mostrarMensaje(mensaje, color, elemento) {
     $(elemento).text(mensaje);
@@ -243,3 +184,17 @@ function validarCampoVacio(longitudCampo,mensaje) {
     }
 }
 
+function validarReferencia() {
+    var referencia = document.getElementById("referencia").value;
+    var mensajeReferencia = document.getElementById("mensajeReferencia");
+    
+    // Eliminar caracteres no permitidos
+    var referenciaLimpia = referencia.replace(/[^A-Za-z0-9\s]/g, '');
+    document.getElementById("referencia").value = referenciaLimpia;
+
+    if (referencia !== referenciaLimpia) {
+        mensajeReferencia.textContent = "Solo se permiten letras, números y espacios."; // Mostrar mensaje de error
+    } else {
+        mensajeReferencia.textContent = ""; // Limpiar mensaje de error
+    }
+}

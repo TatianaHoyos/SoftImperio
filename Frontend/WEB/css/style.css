@@ -4,8 +4,9 @@ body{
 }
 
 .login{
-  background-image: url("../img/login/f3.jpg");
-}
+  /* background-image: url("../img/login/f3.jpg"); */
+  background-color: #0d0b0c;
+}   
 #fondo{
     background-color: #1e2020;
 }

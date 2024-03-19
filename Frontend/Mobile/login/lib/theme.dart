@@ -5,17 +5,19 @@ import 'package:login/components/colors.dart';
 class AppTheme {
   get theme {
     return ThemeData(
+      primaryColor: Colors.black,
+      primaryColorLight: Color(0xFFAE9243),
+      appBarTheme: AppBarTheme(backgroundColor: Colors.white.withOpacity(0.2)),
+      useMaterial3: true,
+
+    // Define the default brightness and colors.
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: Color(0xFFAE9243),
+      secondary: Colors.black87,
+      primary: Colors.white,
       brightness: Brightness.light,
-      primaryColor: Color(0xFF7bbabb),
-      primaryColorLight: Color(0XFFFB925C),
-      appBarTheme: AppBarTheme(backgroundColor: Color(0xffe9b689)),
-      // accentColor: Color(0xFF287a84),
-      // Define the default font family.
-      // fontFamily: 'steady',
-      // backgroundColor: Colors.grey,
-      //#aecdcf
-      //#6cb3b2
-      scaffoldBackgroundColor: Color(0xFF2e3037),
+    ),
+      scaffoldBackgroundColor: Color(0xFF2e3037),//2E3037
 
       // Define the default TextTheme. Use this to specify the default
       // text styling for headlines, titles, bodies of text, and more.
@@ -24,6 +26,19 @@ class AppTheme {
       canvasColor: Color(0xFF2e3037),
 
       visualDensity: VisualDensity.adaptivePlatformDensity,
+       elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          elevation: 3.0,
+          /*shadowColor: Colors.green,
+          backgroundColor: Colors.green,
+          disabledBackgroundColor: Colors.green.withOpacity(0.4),
+          disabledForegroundColor: Colors.grey,
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),*/
+          backgroundColor: Color(0xFF2e3037),
+          textStyle: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold,),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+        ),
+      )
     );
   }
 }

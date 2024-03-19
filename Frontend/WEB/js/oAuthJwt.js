@@ -1,6 +1,22 @@
+$(document).ready(function() {
+    var objetoRecuperado = localStorage.getItem('miObjeto');
+    if (objetoRecuperado == null) {
+        if (!window.location.href.includes("iniciosesion.html")) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Oops',
+            text: 'La sesión ha expirado. Por favor, vuelve a iniciar sesión.',
+            showCancelButton: false,
+            confirmButtonColor: ' #d5c429 ',
+            confirmButtonText: 'Confirmar',
+        }).then((result) => {
+            window.location.href = "./iniciosesion.html";
+        });
+    }
+    }
+});
+
 // Uso de la función para manejar una solicitud Ajax
-
-
 function isTokenExpired(token) {
     if (!token) {
         // El token no está presente
@@ -37,21 +53,28 @@ function parseJwt(token) {
         return null;
     }
 }
+let isRefreshingToken = false;
 
 function handleAjaxRequest(ajaxRequestFunction) {
+    if (isRefreshingToken) {
+        // Si ya hay una actualización de token en curso, espera y reintenta después de un tiempo
+        setTimeout(() => handleAjaxRequest(ajaxRequestFunction), 500); // Espera 1 segundo y reintenta
+        return;
+    }
+
+    isRefreshingToken = true;
     var objetoRecuperado = JSON.parse(localStorage.getItem('miObjeto'));
     if (isTokenExpired(objetoRecuperado.authoritation.accessToken)) {
-        // El token ha expirado, invocar la función para refrescar el token
         refreshAccessToken().then(newToken => {
-            // Usar el nuevo token para realizar la solicitud
             ajaxRequestFunction(newToken);
+            isRefreshingToken = false;
         }).catch(error => {
             console.error('Error al intentar refrescar el token:', error);
-            // Manejar el error de actualización del token
+            isRefreshingToken = false;
         });
     } else {
-        // El token aún es válido, realizar la solicitud Ajax
         ajaxRequestFunction(objetoRecuperado.authoritation.accessToken);
+        isRefreshingToken = false;
     }
 }
 
@@ -92,8 +115,6 @@ function refreshAccessToken() {
                 resolve(objetoRecuperado.authoritation.accessToken);
             })
             .catch(error => {
-                //console.log('error al recuperar el refresh token', error);
-                $("#cargando").modal("hide");
                 if (error.message.includes('401')) {
 
                     // Aquí puedes manejar el código 401, por ejemplo, redirigir a la página de inicio de sesión
@@ -107,7 +128,6 @@ function refreshAccessToken() {
                     }).then((result) => {
                         localStorage.removeItem('miObjeto');
                         window.location.href = "./iniciosesion.html";
-                       
                     });
                    
 

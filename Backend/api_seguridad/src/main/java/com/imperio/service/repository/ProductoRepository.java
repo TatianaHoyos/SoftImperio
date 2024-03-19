@@ -13,6 +13,7 @@ public interface ProductoRepository extends JpaRepository<ProductoEntity,Integer
 
     //consulta sql SELECT p.* , e.Cantidad FROM productos p INNER JOIN existencia e ON p.IdProductos = e.IdProductos WHERE e.Cantidad IS NOT NULL;
 
+
     @Query("SELECT new com.imperio.service.model.dto.producto.ProductoResponse(p.idProductos, p.categoria.idCategoria, p.nombreProducto, " +
             "p.fotoProducto, p.precioProducto, p.referenciaProducto, c.nombreCategoria, " +
             "new com.imperio.service.model.dto.existencias.ExistenciaDto(e.idExistencias, e.stock, e.cantidad, e.estado)) " +

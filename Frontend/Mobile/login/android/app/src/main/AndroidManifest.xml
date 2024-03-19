@@ -2,7 +2,7 @@
 <!--Permiso de internet-->
 <uses-permission android:name="android.permission.INTERNET" />
     <application
-        android:label="login"
+        android:label="Imperio"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
 
