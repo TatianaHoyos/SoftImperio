@@ -1,9 +1,16 @@
 name: Compilar y desplegar Api .Net como contenedor
 
 on:
+  pull_request:
+    branches: [ tatiana2 ]
+    paths:
+      - 'Backend/api_seguridad/src/**'
+      - '.github/workflows/api-seguridad-workflow.yaml'
   push:
-    branches:
-      - tatiana2
+    branches: [ tatiana2 ]
+    paths:
+      - 'Backend/api_seguridad/src/**'
+      - '.github/workflows/api-seguridad-workflow.yaml'
 
 permissions:
   id-token: write
