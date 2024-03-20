@@ -74,7 +74,7 @@ jobs:
           gradle-version: 7.6.1
       - name: Make gradlew executable
         run: chmod +x ./gradlew  
-      - name: Execute Gradle "cleanTest test"
+      - name: Execute Gradle build
         run: ./gradlew bootJar
 
       - name: Login to Public ECR
@@ -87,7 +87,7 @@ jobs:
           AWS_REGION: us-east-1
 
       - name: Build Docker image
-        run: docker build -t public.ecr.aws/u8j8i3w5/imperio-public-registry:api-java-latest -f Backend/api_seguridad/Dockerfile Backend/api_seguridad/  # Build image
+        run: docker build -t public.ecr.aws/u8j8i3w5/imperio-public-registry:api-java-latest .
 
       - name: Tag Docker image
         env:
