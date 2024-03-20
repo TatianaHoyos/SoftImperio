@@ -34,21 +34,6 @@ jobs:
         with:
           java-version: '17'
           distribution: 'corretto'
-
-      - name: Write value to Properties-file
-        uses: christian-draeger/write-properties@1.1.0
-        with:
-          path: './Backend/api_seguridad/src/main/resources/application.properties'
-          property: |
-            'spring.datasource.driver-class-name'
-            'spring.datasource.url'
-            'spring.datasource.username'
-            'spring.datasource.password'
-          value: |
-            'com.mysql.cj.jdbc.Driver'
-            'jdbc:mysql://localhost:3306/alexa'
-            'prueba'
-            'prueba'
       
       - name: Setup Gradle 7
         uses: gradle/actions/setup-gradle@v3
@@ -56,6 +41,12 @@ jobs:
           gradle-version: 7.6.1
       - name: Make gradlew executable
         run: chmod +x ./gradlew
+      - name: Establecer variables de entorno
+        env:
+          SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+          SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/alexa
+          SPRING_DATASOURCE_USERNAME: prueba
+          SPRING_DATASOURCE_PASSWORD: prueba
       - name: Execute Gradle "cleanTest test"
         run: ./gradlew cleanTest test
 
@@ -83,14 +74,6 @@ jobs:
       
       - name: Execute Gradle "cleanTest test"
         run: ./gradlew bootJar
-
-      - name: Build and push
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          file: Dockerfile-app
-          push: true
-          tags: tericcabrel/bmi:latest
 
       - name: Login to Public ECR
         uses: docker/login-action@v3
