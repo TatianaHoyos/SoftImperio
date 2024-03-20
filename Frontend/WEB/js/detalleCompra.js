@@ -86,6 +86,8 @@ function callApiObtenerDetalleCompra(token,miTabla){
       asignarValor(data);
     },
     error: function (error) {
+      console.log("error detail "+JSON.stringify(error));
+      /*
       Swal.fire({
         title: 'Error',
         text: error.message,
@@ -95,6 +97,7 @@ function callApiObtenerDetalleCompra(token,miTabla){
         confirmButtonText: 'Confirmar',
     }).then((result) => {
     });
+      */
     }
   });
 }

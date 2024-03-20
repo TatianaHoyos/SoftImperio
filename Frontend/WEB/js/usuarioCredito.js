@@ -16,7 +16,7 @@ function mostrarFormularioActualizarCrearUsuarioCreditos() {
 
 function mostrarFormularioCrearUsuarioCreditos() {
     var titulo = $("#tituloFormularioUsuarioCredito");
-    titulo.text("Crear un nuevo usuario crédito");
+    titulo.text("Nuevo usuario crédito");
     var btnform = $("#btn-form");
     btnform.text("Guardar");
     btnform.off("click").click(crearUsuarioCredito);
@@ -90,7 +90,7 @@ function callApiCrearUsuarioCredito(token,formData){
             "Content-Type": "application/json"
         },
         data: formData,
-        processData: false, 
+        processData: false,
         success: onExitoCrearUsuariocredito,
         error: onErrorusuariocreditocrear
     });
@@ -105,7 +105,7 @@ function onExitoCrearUsuariocredito(data) {
         text: data.message,
         icon: 'success',
         showCancelButton: false,
-        confirmButtonColor: '#d5c429',
+        confirmButtonColor: '#ae9243',
         confirmButtonText: 'Confirmar',
     };
 
@@ -190,11 +190,11 @@ function onExitousuariocredito(data) {
         // Recorre los datos y agrega las filas
         $.each(data, function (id, usuariocredito) {
 
-            var boton0= "<button onclick='abrirModal(" + JSON.stringify(usuariocredito) + ")' class='btn btn-delete' data-id='1'><i class='fas fa-plus'></i></button>";
-            var boton1= "<button onclick='DetalleAbono(" + JSON.stringify(usuariocredito) + ")' class='btn btn-delete' data-id='1'><i class='fas fa-hand-holding-usd'></i></button>";
-            var boton2 = "<button onclick='DetalleCredito(" + JSON.stringify(usuariocredito) + ")' class='btn btn-delete' data-id='1'><i class='fas fa-money-bill-wave'></i></button>";
-            var boton3 = "<button onclick='EliminarUsuarioCredito(" + JSON.stringify(usuariocredito) + ")' class='btn btn-delete' data-id='1'><i class='fas fa-trash'></i></button>";
-            var boton4 = "<button onclick='EditarUsuarioCredito(" + JSON.stringify(usuariocredito) + ")' class='btn btn-edit' data-toggle='modal' data-target='#formCrearUsuarioCredito'><i class='fas fa-edit'></i></button>";
+            var boton0= "<button onclick='abrirModal(" + JSON.stringify(usuariocredito) + ")' class='btn btn-eliminar' data-id='1'><i class='fas fa-plus'></i></button>";
+            var boton1= "<button onclick='DetalleAbono(" + JSON.stringify(usuariocredito) + ")' class='btn btn-eliminar' data-id='1'><i class='fas fa-hand-holding-usd'></i></button>";
+            var boton2 = "<button onclick='DetalleCredito(" + JSON.stringify(usuariocredito) + ")' class='btn btn-eliminar' data-id='1'><i class='fas fa-money-bill-wave'></i></button>";
+            var boton3 = "<button onclick='EliminarUsuarioCredito(" + JSON.stringify(usuariocredito) + ")' class='btn btn-eliminar' data-id='1'><i class='fa-solid fa-trash-can'></i></button>";
+            var boton4 = "<button onclick='EditarUsuarioCredito(" + JSON.stringify(usuariocredito) + ")' class='btn btn-editar' data-toggle='modal' data-target='#formCrearUsuarioCredito'><i class='fas fa-edit'></i></button>";
 
             // Agrega la fila a la DataTable
             dataTable.row.add([
@@ -202,7 +202,7 @@ function onExitousuariocredito(data) {
                 usuariocredito.nombre,
                 usuariocredito.documento,
                 usuariocredito.telefono,
-                '$'+usuariocredito.totalCredito,
+                '$ '+usuariocredito.totalCredito.toLocaleString('es-CO'),
                 boton0+' '+boton1+' '+boton2,
                 boton3+' '+boton4
             ]).draw();
@@ -217,13 +217,12 @@ function onExitousuariocredito(data) {
             text: error.responseJSON.message,
             icon:"warning",
             showCancelButton: false,
-            confirmButtonColor: ' #d5c429 ',
+            confirmButtonColor: ' #ae9243 ',
             confirmButtonText: 'Confirmar',
         }).then((result) => {
         });
     }
     function DetalleCredito(usuariocredito){
-        
         handleAjaxRequest(function (token) {
             callApiDetalleCredito(usuariocredito,token);
         });
@@ -291,12 +290,11 @@ function onExitousuariocredito(data) {
                     });
                 } else {
                     Swal.fire({
-                        title: 'Exito',
+                        icon: 'warning',
+                        title: 'Oops',
                         text: 'El usuario no tiene créditos asociados.',
-                        icon: 'success',
                         showCancelButton: false,
-                        confirmButtonColor: '#d33',
-                        cancelButtonColor: '#3085d6',
+                        confirmButtonColor: '#ae9243',
                         confirmButtonText: 'Aceptar'
                     }).then((result) => {
                     });
@@ -308,8 +306,7 @@ function onExitousuariocredito(data) {
                 text: error.message,
                 icon: 'error',
                 showCancelButton: false,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
+                confirmButtonColor: '#ae9243',
                 confirmButtonText: 'Aceptar'
             }).then((result) => {
             });
@@ -321,7 +318,6 @@ function onExitousuariocredito(data) {
 
     var idUsuarioCreditoA;
     function DetalleAbono(usuariocredito){
-          
         handleAjaxRequest(function (token) {
             callApiDetalleAbono(usuariocredito,token);
         });
@@ -383,7 +379,7 @@ function onExitousuariocredito(data) {
                         dataTable.row.add([
                             (id+1),
                             abonocredito.fechaAbono,
-                            '$'+abonocredito.precioAbono
+                            '$ '+abonocredito.precioAbono.toLocaleString('es-CO'),
                         ]).draw();
                     });
                 } else {
@@ -393,7 +389,7 @@ function onExitousuariocredito(data) {
                         Swal.fire({
                             icon: 'error',
                             title: 'Error',
-                            text: 'El total crédito del usuario crédito está en cero, por lo que no puede abona.',
+                            text: 'El total crédito del usuario está en cero.',
                             showConfirmButton: false,
                             timer: 2700
                         });
@@ -407,8 +403,7 @@ function onExitousuariocredito(data) {
                     text: error.message,
                     icon: 'error',
                     showCancelButton: false,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
+                    confirmButtonColor: '#ae9243',
                     confirmButtonText: 'Aceptar'
                 }).then((result) => {
                 });
@@ -431,7 +426,7 @@ function onExitousuariocredito(data) {
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'El total crédito del usuario crédito está en cero, por lo que no puede abonar.',
+                text: 'El total crédito del usuario está en cero.',
                 showConfirmButton: false,
                 timer: 2700
             });
@@ -440,7 +435,6 @@ function onExitousuariocredito(data) {
     }
 
     function consultarTotalCreditoUsuario(idUsuarioCreditoSolo){
-          
         handleAjaxRequest(function (token) {
             callApiconsultarTotalCreditoUsuario(idUsuarioCreditoSolo,token);
         });
@@ -466,7 +460,7 @@ function onExitousuariocredito(data) {
     }
     function mostrarTotalCreditoEnFormulario(totalCredito) {
         // Muestra el totalCrédito en el formulario
-        $('#totalCreditoUsuario').text('$'+totalCredito);
+        $('#totalCreditoUsuario').text('$ '+totalCredito.toLocaleString('es-CO'));
     }
 
     var totalAbonar
@@ -483,7 +477,7 @@ function onExitousuariocredito(data) {
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'El monto a abonar no puede ser mayor al total del crédito.',
+                text: 'El monto a abonar es mayor al total del crédito.',
                 showConfirmButton: false,
                 timer: 2700
             });
@@ -495,12 +489,9 @@ function onExitousuariocredito(data) {
             "precioAbono": totalAbonar
 
         });
-       
-          
             handleAjaxRequest(function (token) {
                 callApiCrearAbono(formData,token);
             });
-        
     }
     function callApiCrearAbono(formData,token){
 
@@ -527,7 +518,7 @@ function onExitousuariocredito(data) {
             text: data.message,
             icon: 'success',
             showCancelButton: false,
-            confirmButtonColor: '#d5c429',
+            confirmButtonColor: '#ae9243',
             confirmButtonText: 'Confirmar',
         };
     
@@ -733,7 +724,7 @@ function onExitoActualizarUsuariocredito(data) {
         text: data.message,
         icon: 'success',
         showCancelButton: false,
-        confirmButtonColor: '#d5c429',
+        confirmButtonColor: '#ae9243',
         confirmButtonText: 'Confirmar',
         timer: 1700,
     });
@@ -744,19 +735,13 @@ function onExitoActualizarUsuariocredito(data) {
     }, 1700);
 }
 
-
-
-
-
-
 function EliminarUsuarioCredito(usuariocredito) {
     Swal.fire({
-        title: '¿Estás seguro?',
+        title: 'Advertencia',
         text: '¿Estás seguro de eliminar el usuario crédito ' + usuariocredito.nombre + '?',
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
+        confirmButtonColor: '#ae9243',
         confirmButtonText: 'Eliminar',
         cancelButtonText: 'Cancelar'
     }).then((result) => {
@@ -787,7 +772,7 @@ function callApiEliminarUsuarioCredito(usuariocredito,token){
             Swal.fire({
                 icon: 'warning',
                 title: 'Oops',
-                text:'El usuario crédito ya tiene créditos o abonos asociados, por lo que no es posible eliminarlo.',
+                text:'No es posible eliminarlo. El usuario crédito tiene créditos o abonos asociados.',
                 timer:3500,
                 customClass: {
                     popup: 'tamanio-custom'
@@ -842,19 +827,18 @@ function callApiBuscarVentaLogica(buscarVenta,token){
                 $.each(data, function (id, detalleVenta) {
                     sumaSubtotal += detalleVenta.subTotalAPagar;
                     $('#tablaDetalleVenta').append('<tr><td>' + (id + 1) + '</td><td>' + detalleVenta.nombreProducto + '</td><td>' + detalleVenta.cantidadProducto +
-                        '</td><td>' + detalleVenta.subTotalAPagar + '$' + '</td></tr>');
+                        '</td><td>' +'$ ' + detalleVenta.subTotalAPagar.toLocaleString('es-CO'), '</td></tr>');
                 });
-                $('#tablaDetalleVenta').append('<tr><td colspan="3" class="text-center">TOTAL DE LA VENTA:</td><td>' + sumaSubtotal + '$</td></tr>');
+                $('#tablaDetalleVenta').append('<tr><td colspan="3" class="text-center">TOTAL DE LA VENTA:</td><td>' + '$ ' +sumaSubtotal.toLocaleString('es-CO'), '</td></tr>');
                 totalVenta = sumaSubtotal;
             } else {
                 Swal.fire({
                     title: 'Oops',
                     text: 'El idVenta suministrado no se encuentra.',
-                    icon: 'success',
+                    icon: 'error',
                     showCancelButton: false,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'ok',
+                    confirmButtonColor: '#ae9243',
+                    confirmButtonText: 'Aceptar',
                     timer: 1700,
                 }).then((result) => {
                 });
@@ -866,8 +850,7 @@ function callApiBuscarVentaLogica(buscarVenta,token){
                 text: 'error',
                 icon: 'error',
                 showCancelButton: false,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
+                confirmButtonColor: '#ae9243',
                 confirmButtonText: 'Aceptar',
                 timer: 1700,
             }).then((result) => {
@@ -940,7 +923,6 @@ function callApiCreditosByVenta(buscarVenta,idUsuarioCreditoSolo, token){
                 handleAjaxRequest(function (token) {
                     callApiCrearCreditos(formDataCredito, token);
                 });
-                
 
             }
         },
@@ -979,7 +961,6 @@ function CrearCredito() {
     handleAjaxRequest(function (token) {
         callApiCreditosByVenta(buscarVenta,idUsuarioCreditoSolo, token);
     });
-    
 }
 function onExitoAsociarcredito(data) {
     $("#formAsociarCreditos").modal("hide");
@@ -989,7 +970,7 @@ function onExitoAsociarcredito(data) {
         text: data.message,
         icon: 'success',
         showCancelButton: false,
-        confirmButtonColor: '#d5c429',
+        confirmButtonColor: '#ae9243',
         confirmButtonText: 'Confirmar',
     };
 
