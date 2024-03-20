@@ -4,13 +4,13 @@ on:
   pull_request:
     branches: [ tatiana2 ]
     paths:
-      - 'Backend/api_seguridad/src/**'
-      - '.github/workflows/api-seguridad-workflow.yaml'
+      - 'Backend/venta/**'
+      - '.github/workflows/main.yaml'
   push:
     branches: [ tatiana2 ]
     paths:
-      - 'Backend/api_seguridad/src/**'
-      - '.github/workflows/api-seguridad-workflow.yaml'
+      - 'Backend/venta/**'
+      - '.github/workflows/main.yaml'
 
 permissions:
   id-token: write
