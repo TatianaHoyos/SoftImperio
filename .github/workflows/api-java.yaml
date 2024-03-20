@@ -72,7 +72,8 @@ jobs:
         uses: gradle/actions/setup-gradle@v3
         with:
           gradle-version: 7.6.1
-      
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew  
       - name: Execute Gradle "cleanTest test"
         run: ./gradlew bootJar
 
