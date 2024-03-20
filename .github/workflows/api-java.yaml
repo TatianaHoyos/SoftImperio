@@ -32,6 +32,21 @@ jobs:
           java-version: '17'
           distribution: 'corretto'
 
+      - name: Write value to Properties-file
+        uses: christian-draeger/write-properties@1.1.0
+        with:
+          path: './src/main/resources/application.properties'
+          property: |
+            'spring.datasource.driver-class-name'
+            'spring.datasource.url'
+            'spring.datasource.username'
+            'spring.datasource.password'
+          value: |
+            'com.mysql.cj.jdbc.Driver'
+            'jdbc:mysql://localhost:3306/alexa'
+            'prueba'
+            'prueba'
+      
       - name: Setup Gradle 7
         uses: gradle/actions/setup-gradle@v3
         with:
