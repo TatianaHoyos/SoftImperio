@@ -42,17 +42,14 @@ jobs:
           gradle-version: 7.6.1
           
       - name: Make gradlew executable
-        run: chmod +x ./gradlew
-        
-      - name: Establecer variables de entorno
+        run: chmod +x ./gradlew    
+      - name: Execute Gradle "cleanTest test"
+        run: ./gradlew cleanTest test
         env:
           SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
           SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/alexa
           SPRING_DATASOURCE_USERNAME: prueba
           SPRING_DATASOURCE_PASSWORD: prueba
-          
-      - name: Execute Gradle "cleanTest test"
-        run: ./gradlew cleanTest test
 
   docker-build:
     if: ${{ github.ref == 'refs/heads/tatiana2' }}
