@@ -1,10 +1,16 @@
 name: Subir Front a EC2
 
 on:
+  pull_request:
+    branches: [ deploy ]
+    paths:
+      - 'Frontend/WEB/**'
+      - '.github/workflows/upload-front.yaml'
   push:
-    branches:
-      - tatiana2
-
+    branches: [ deploy ]
+    paths:
+      - 'Frontend/WEB/**'
+      - '.github/workflows/upload-front.yaml'
 jobs:
   build:
     
@@ -17,6 +23,15 @@ jobs:
 
     - name: Check out code
       uses: actions/checkout@v3
+
+    - name: Replace token for configAmbientes
+      uses: cschleiden/replace-tokens@v1.1
+      with:
+        tokenPrefix: '${'
+        tokenSuffix: '}'
+        files: '["Frontend/WEB/js/configAmbiente.js"]'
+      env:
+        DOMAIN-EC2: ec2-3-83-184-42.compute-1.amazonaws.com
 
 #    - name: 📂 Set working directory
 #      run: cd Frontend/WEB/
