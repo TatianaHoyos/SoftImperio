@@ -25,10 +25,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      
-      - name: show folder tree
-        run: |
-          ls
 
       - name: Set up JDK 17
         uses: actions/setup-java@v3
@@ -97,6 +93,10 @@ jobs:
           SPRING_DATASOURCE_URL: ${{secrets.SPRING_DATASOURCE_URL}}
           SPRING_DATASOURCE_USERNAME: ${{secrets.SPRING_DATASOURCE_USERNAME}}
           SPRING_DATASOURCE_PASSWORD: ${{secrets.SPRING_DATASOURCE_PASSWORD}}
+
+      - name: show folder tree
+        run: |
+          cat Dockerfile
 
       - name: Build Docker image
         run: docker build -t public.ecr.aws/u8j8i3w5/imperio-public-registry:api-java-latest .
