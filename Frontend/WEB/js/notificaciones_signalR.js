@@ -1,5 +1,5 @@
 const connection = new signalR.HubConnectionBuilder()
-    .withUrl("https://localhost:7084/NotificarPedido")
+    .withUrl(hostDomainNotificaciones+"/NotificarPedido")
     .configureLogging(signalR.LogLevel.Information)
     .build();
 
