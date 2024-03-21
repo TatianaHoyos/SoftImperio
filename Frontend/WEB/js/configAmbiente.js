@@ -30,6 +30,5 @@ var modulo = {
 };
 
 let domainEC2 = "${DOMAIN-EC2}";
-
-var hostDomain = domainEC2 == "${DOMAIN-EC2}" ? "http://localhost:8081" : domainEC2;
-var hostDomainNotificaciones = domainEC2 == "${DOMAIN-EC2}" ? "https://localhost:7084" : domainEC2;
+var hostDomain = !domainEC2.includes("compute-1.amazonaws.com") ? "http://localhost:8081" : domainEC2;
+var hostDomainNotificaciones = !domainEC2.includes("compute-1.amazonaws.com") ? "https://localhost:7084" : domainEC2;
