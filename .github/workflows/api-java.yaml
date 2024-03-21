@@ -67,7 +67,7 @@ jobs:
         with:
           tokenPrefix: '${'
           tokenSuffix: '}'
-          files: '["src/main/resources/application.properties"]'
+          files: '["Backend/api_seguridad/src/main/resources/application.properties"]'
         env:
           SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
           SPRING_DATASOURCE_URL: ${{secrets.SPRING_DATASOURCE_URL}}
