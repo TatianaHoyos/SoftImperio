@@ -4,7 +4,6 @@ $(document).ready(function() {
 
     handleAjaxRequest(function (token) {
       buscarDatos(idProveedor,token);
-  
   });
     // buscarDatos(idProveedor);
   });
@@ -32,7 +31,6 @@ function buscarDatos(idProveedor, token) {
         confirmButtonColor: ' #ae9243 ',
         confirmButtonText: 'Confirmar',
     }).then((result) => {
-       
     });
     }
   });
@@ -43,14 +41,11 @@ function alertaEliminarEditar(action,idProveedor) {
     if (action=="eliminar"){
       handleAjaxRequest(function (token) {
         eliminarProveedor(idProveedor,token);
-    
     });
       // eliminarProveedor(idProveedor);
     }else if (action=="editar"){
-      
     handleAjaxRequest(function (token) {
       consultarProveedor(idProveedor,token);
-  
   });
       // consultarProveedor(idProveedor);
     }
@@ -82,7 +77,6 @@ function consultarProveedor(idProveedor, token) {
         }
     });
 }
-
 
 //Ajax para eliminar proveedor
 function eliminarProveedor(idProveedor, token) {
@@ -134,7 +128,6 @@ function editarProveedor() {
       };
       handleAjaxRequest(function (token) {
         callApiEditarProveedor(data,token);
-    
     });
 }
 
@@ -208,14 +201,13 @@ function callApiConsultarProveedor(token) {
             confirmButtonColor: ' #ae9243 ',
             confirmButtonText: 'Confirmar',
         }).then((result) => {
-          
-        });
+      });
     }
   });
 }
 
  // Inicializar DataTables directamente después de la carga de la página
- function iniciarDataTables(data) {
+function iniciarDataTables(data) {
   if ($.fn.DataTable.isDataTable('#miTabla')) {
     $('#miTabla').DataTable().destroy();
   }
@@ -353,7 +345,6 @@ function onExitoCrearProveedor(data) {
 }
 
   function onErrorProv(error) {
-  
       // Display the error using SweetAlert2
       Swal.fire({
           icon: 'error',

@@ -99,7 +99,7 @@ function actualizarTablaVentas(ventas, pagina) {
       <td>${venta.fechaVenta}</td>
       <td>${totalVentaFormateado}</td>
       <td>
-        <button class="btn btn-detalles" onclick="verDetalles(${venta.idVenta})">Detalles</button>
+        <button class="btn btn-editar" onclick="verDetalles(${venta.idVenta})"><i class="far fa-eye"></i></button>
       </td>
     </tr>`;
     tablaVentas.innerHTML += fila;

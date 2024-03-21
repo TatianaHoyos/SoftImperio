@@ -24,6 +24,9 @@
     color: #090909;
 }
 
+.custom_btn{
+    background-color: #090909;
+}
 /* Estilo para las celdas de la tabla */
 .table tbody td {
     color: #959292;
