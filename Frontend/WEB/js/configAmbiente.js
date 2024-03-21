@@ -28,3 +28,7 @@ var modulo = {
     }
 
 };
+
+let domainEC2 = "${DOMAIN-EC2}";
+
+var hostDomain = domainEC2 == "${DOMAIN-EC2}" ? "http://localhost:8081" : domainEC2;

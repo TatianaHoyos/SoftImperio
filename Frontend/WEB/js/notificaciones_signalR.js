@@ -44,7 +44,7 @@ startApp();
 function consultarApiVentasPendientes(token){
     $.ajax({
         type: "GET",
-        url: "http://localhost:8081/edge-service/v1/service/venta/pendiente/consultar",
+        url: hostDomain+"/edge-service/v1/service/venta/pendiente/consultar",
         "headers": {
             "Content-Type": "application/json",
             'Authorization': `Bearer ${token}`
@@ -113,7 +113,7 @@ function onExitoVentasPendientes(data){
 function consultarApiVentasPorNotificacion(idVenta, token){
     $.ajax({
         type: "GET",
-        url: "http://localhost:8081/edge-service/v1/service/venta/consultar/id/" + idVenta,
+        url: hostDomain+"/edge-service/v1/service/venta/consultar/id/" + idVenta,
         headers: {
             "accept": "application/json",
             "Content-Type": "application/json",

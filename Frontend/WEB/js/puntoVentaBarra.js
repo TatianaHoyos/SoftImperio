@@ -55,7 +55,7 @@ function consultarCategorias(token) {
     $("#textCargando").text("Cargando Categorias");
     $.ajax({
         type: "GET",
-        url: "http://localhost:8081/edge-service/v1/service/categorias/consultar",
+        url: hostDomain+"/edge-service/v1/service/categorias/consultar",
         "headers": {
             "Content-Type": "application/json",
             'Authorization': `Bearer ${token}`
@@ -97,7 +97,7 @@ function consultarProductosAgrupados(categorias,token) {
     $("#textCargando").text("Cargando Productos");
       $.ajax({
         type: "GET",
-        url: "http://localhost:8081/edge-service/v1/service/productos/consultar/agrupados",
+        url: hostDomain+"/edge-service/v1/service/productos/consultar/agrupados",
         "headers": {
             "Content-Type": "application/json",
             'Authorization': `Bearer ${token}`
@@ -433,7 +433,7 @@ function confirmarVenta(){
 function callApiVentaBarra(pedidoTotal,token){
     $.ajax({
         type: "POST",
-        url:"http://localhost:8081/edge-service/v1/service/venta/barra/crear",
+        url:hostDomain+"/edge-service/v1/service/venta/barra/crear",
         "headers": {
             "Content-Type": "application/json",
             'Authorization': `Bearer ${token}`
@@ -446,7 +446,7 @@ function callApiVentaBarra(pedidoTotal,token){
 function confirmarVentaNotificacion(idPedido,token){
     $.ajax({
         type: "POST",
-        url:"http://localhost:8081/edge-service/v1/service/venta/barra/crear/"+idPedido,
+        url:hostDomain+"/edge-service/v1/service/venta/barra/crear/"+idPedido,
         "headers": {
             "Content-Type": "application/json",
             'Authorization': `Bearer ${token}`
