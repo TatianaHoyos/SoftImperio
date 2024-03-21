@@ -41,8 +41,8 @@ function mostrarListaRolesyPermisos(roles) {
 
     roles.forEach(function (rol) {
         var boton1 = "<button onclick='EliminarRol("+ JSON.stringify(rol) +")' class='btn btn-delete' data-id='1'><i class='fas fa-trash'></i></button>";
-        var boton2 = "<button onclick='EditarRol("+ JSON.stringify(rol) +")' class='btn btn-edit' data-toggle='modal' data-target='#modalRoles'><i class='fas fa-edit'></i></button>";
-        var boton3 = "<button onclick='mostrarListaRolyPermisos("+ JSON.stringify(rol) +")' class='btn btn-edit' data-toggle='modal' data-target='#modalRolesYPermisos'><i class='fas fa-wrench'></i></button>";
+        var boton2 = "<button onclick='EditarRol("+ JSON.stringify(rol) +")' class='btn btn-editar' data-toggle='modal' data-target='#modalRoles'><i class='fa-solid fa-edit'></i></button>";
+        var boton3 = "<button onclick='mostrarListaRolyPermisos("+ JSON.stringify(rol) +")' class='btn btn-editar' data-toggle='modal' data-target='#modalRolesYPermisos'><i class='fas fa-wrench'></i></button>";
 
         var fila = $('<tr>').appendTo(tbody);
         $('<td>').text(rol.idRol).appendTo(fila);
@@ -78,13 +78,13 @@ function mostrarListaRolesyPermisos(roles) {
 
         // Añadir botones a la columna de acciones
         var accionesCell = $('<td>').appendTo(fila);
-        var boton1 = $("<button>").addClass('btn btn-delete').attr('data-id', '1').html('<i class="fas fa-trash"></i>').click(function () {
+        var boton1 = $("<button>").addClass('btn btn-eliminar').attr('data-id', '1').html('<i class="fas fa-trash"></i>').click(function () {
             EliminarRol(rol);
         });
-        var boton2 = $("<button>").addClass('btn btn-edit').attr('data-toggle', 'modal').attr('data-target', '#modalRoles').html('<i class="fas fa-edit"></i>').click(function () {
+        var boton2 = $("<button>").addClass('btn btn-eliminar').attr('data-toggle', 'modal').attr('data-target', '#modalRoles').html('<i class="fas fa-edit"></i>').click(function () {
             EditarRol(rol);
         });
-        var boton3 = $("<button>").addClass('btn btn-edit').attr('data-toggle', 'modal').attr('data-target', '#modalRolesYPermisos').html('<i class="fas fa-wrench"></i>').click(function () {
+        var boton3 = $("<button>").addClass('btn btn-eliminar').attr('data-toggle', 'modal').attr('data-target', '#modalRolesYPermisos').html('<i class="fas fa-wrench"></i>').click(function () {
             mostrarListaRolyPermisos(rol);
         });
 
@@ -98,8 +98,7 @@ function mostrarListaRolesyPermisos(roles) {
     $('#tablaPrincipal').DataTable({
         dom: '<"row"<"col-md-6"l><"col-md-6"f>>tip',
         pageLength: 5,
-        lengthMenu: [5, 10, 25, 50], 
-       
+        lengthMenu: [5, 10, 25, 50],
         language: {
             "sProcessing": "Procesando...",
             "sLengthMenu": "Mostrar _MENU_ registros",
@@ -210,7 +209,7 @@ function onErrorRoles(error) {
         text: error.responseJSON.message,
         icon:"warning",
         showCancelButton: false,
-        confirmButtonColor: ' #d5c429 ',
+        confirmButtonColor: ' #ae9243 ',
         confirmButtonText: 'Confirmar',
     }).then((result) => {
        
@@ -295,8 +294,7 @@ Swal.fire({
         text: 'Desea eliminar el rol: '+ rol.nombreRol,
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
+        confirmButtonColor: '#ae9243',
         confirmButtonText: 'Eliminar',
         cancelButtonText: 'Cancelar'
     }).then((result) => {
@@ -397,7 +395,7 @@ function consultarPermiso(token) {
         "headers": {
             "Content-Type": "application/json",
             'Authorization': `Bearer ${token}`
-          },
+        },
         success: onExitoPermisos,
         error: onErrorPermisos
     });
@@ -415,15 +413,11 @@ function onErrorPermisos(error) {
         text: error.responseJSON.message,
         icon:"warning",
         showCancelButton: false,
-        confirmButtonColor: ' #d5c429 ',
+        confirmButtonColor: ' #ae9243 ',
         confirmButtonText: 'Confirmar',
     }).then((result) => {
-       
     });
 }
-
-
-
 
 function downloadBackup() {
     $.get("http://localhost:8080/api/backup/download", function(response) {

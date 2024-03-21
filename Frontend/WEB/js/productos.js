@@ -9,16 +9,11 @@ function mostrarFormularioCrear() {
     var titulo = $("#tituloFomularioProducto");
     titulo.text("Crear un nuevo producto");
     var btnform = $("#btn-form");
-    
         btnform.click(function () {
-             
             handleAjaxRequest(function (token) {
             crearProducto(token);
         });
         });
-   
-   
-    
 }
 function mostrarFormularioActualizar() {
     var titulo = $("#tituloFomularioProducto");
@@ -27,8 +22,6 @@ function mostrarFormularioActualizar() {
     btnform.text("Actualizar");
 
 }
-
-
 
 function crearProducto(token) {
     var idCategoria = $('#idCategoria').val();
@@ -52,7 +45,7 @@ function crearProducto(token) {
         enctype: 'multipart/form-data',
         url: "http://localhost:8081/edge-service/v1/service/productos/crear",
         'headers': {
-           'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${token}`
         },
         data: formData,
         processData: false,
@@ -70,7 +63,7 @@ function onExitoCrearProducto(data) {
         type: 'success',
         icon:"success",
         showCancelButton: false,
-        confirmButtonColor: ' #d5c429 ',
+        confirmButtonColor: ' #ae9243',
         confirmButtonText: 'Confirmar',
     }).then((result) => {
         $("#formCrearProducto").trigger("reset");
@@ -88,15 +81,11 @@ function onErrorCrearProducto(error) {
         text: error.responseJSON.message,
         icon:"warning",
         showCancelButton: false,
-        confirmButtonColor: ' #d5c429 ',
+        confirmButtonColor: ' #ae9243',
         confirmButtonText: 'Confirmar',
     }).then((result) => {
-       
     });
-
-
 }
-
 
 function consultarProductos(token) {
     $.ajax({
@@ -121,7 +110,7 @@ function onExitoProductos(data) {
     var dataTable = $('#tablaProductos').DataTable({
         dom: '<"row"<"col-md-6"l><"col-md-6"f>>tip',
         pageLength: 5,
-        lengthMenu: [5, 10, 25, 50], 
+        lengthMenu: [5, 10, 25, 50],
         language: {
             "sProcessing": "Procesando...",
             "sLengthMenu": "Mostrar _MENU_ registros",
@@ -149,26 +138,25 @@ function onExitoProductos(data) {
         lengthMenu: [5, 10, 25, 50],
         pageLength: 5, // Número de registros por página
     });
-    
     // Limpia la tabla
     dataTable.clear();
 
     // Recorre los datos y agrega las filas
     $.each(data, function (id, productos) {
 
-        var boton1 = "<button onclick='EliminarProducto(" + JSON.stringify(productos) + ")' class='btn btn-eliminar' data-id='1'><i class='fas fa-trash'></i></button>";
+        var boton1 = "<button onclick='EliminarProducto(" + JSON.stringify(productos) + ")' class='btn btn-eliminar' data-id='1'><i class='fa-solid fa-trash-can'></i></button>";
+        var espacio = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
         var boton2 = "<button onclick='EditarProducto(" + JSON.stringify(productos) + ")' class='btn btn-editar' data-toggle='modal' data-target='#formCrearProductos'><i class='fas fa-edit'></i></button>";
 
         // Agrega la fila a la DataTable
         dataTable.row.add([
-           productos.nombreCategoria,
+            productos.nombreCategoria,
             productos.nombreProducto,
             productos.referenciaProducto,
             productos.existencia.stock,
             productos.existencia.cantidad,
             productos.precioProducto,
-            boton1 +
-            boton2
+            boton1 + espacio+boton2
         ]).draw();
     });
 }
@@ -186,10 +174,9 @@ function onErrorProductos(error) {
         text: message,
         icon:"warning",
         showCancelButton: false,
-        confirmButtonColor: ' #d5c429 ',
+        confirmButtonColor: ' #ae9243',
         confirmButtonText: 'Confirmar',
     }).then((result) => {
-       
     });
 }
 
@@ -199,8 +186,7 @@ function EliminarProducto(Producto) {
         text: 'Esta seguro de eliminar el producto ' + Producto.nombreProducto,
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
+        confirmButtonColor: '#ae9243',
         confirmButtonText: 'Eliminar',
         cancelButtonText: 'Cancelar'
     }).then((result) => {
@@ -218,8 +204,7 @@ function callApiEliminarProducto(Producto,token){
         url: "http://localhost:8081/edge-service/v1/service/productos/eliminar/" + Producto.idProductos,
         type: 'DELETE',
         "headers": {
-   
-           'Authorization': `Bearer ${token}`
+        'Authorization': `Bearer ${token}`
         },
         success: function (response) {
             // Manejar la respuesta de eliminación exitosa
@@ -245,37 +230,36 @@ function EditarProducto(producto) {
     var preview = document.getElementById("foto-preview");
     preview.src = "http://localhost:8080/" + producto.fotoProducto;
     preview.style.display = "block";
-    var btnform = $("#btn-form");
-    
+
         btnform.click(function (event) {
-            event.preventDefault();  
+            event.preventDefault();
             handleAjaxRequest(function (token) {
             actualizarProducto(producto.idProductos,token);
             return false;
         });
         });
-    
+
     // btnform.click(function () { actualizarProducto(producto.idProductos); });
 
 }
 
 function actualizarProducto(idProductos,token) {
     var form = $('#formCrearProducto')[0];
-    // Create an FormData object 
+    // Create an FormData object
     var formData = new FormData(form);
 
     $.ajax({
         type: "Put",
         enctype: 'multipart/form-data',
         url: "http://localhost:8081/edge-service/v1/service/productos/actualizar/" + idProductos,
-          "headers": {
+        "headers": {
             'Authorization': `Bearer ${token}`
         },
         data: formData,
         processData: false,
         contentType: false,
-         success: onExitoCrearProducto,
-         error: onErrorCrearProducto
+            success: onExitoCrearProducto,
+            error: onErrorCrearProducto
     });
 }
 function buscarProductosTabla() {
@@ -297,25 +281,22 @@ function generarPDFProductos(){
 
 
 function callApiGenerarPdf(token){
-      $.ajax({
+    $.ajax({
         type: "GET",
         url: "http://localhost:8080/api/producto/generar/pdf",
         "headers": {
-          'Authorization': `Bearer ${token}`,
-          'target' : 'pdf'
-      },
+            'Authorization': `Bearer ${token}`,
+            'target' : 'pdf'
+    },
         xhrFields: {
           responseType: 'arraybuffer' // Indica que esperamos un array de bytes como respuesta
         },
         success: function (response, status, xhr) {
-          if (xhr.status === 200) {
+            if (xhr.status === 200) {
             // Crea un objeto Blob con la respuesta y tipo de contenido PDF
-            
             const blob = new Blob([response], { type: 'application/pdf' });
-    
             // Crea una URL de objeto para el blob
             const blobURL = URL.createObjectURL(blob);
-    
             // Crea un enlace invisible para descargar el PDF
             const link = document.createElement('a');
             link.href = blobURL;
@@ -323,28 +304,25 @@ function callApiGenerarPdf(token){
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-    
             // Libera la URL de objeto después de unos segundos (puedes ajustar el tiempo)
             setTimeout(() => {
-              URL.revokeObjectURL(blobURL);
+                URL.revokeObjectURL(blobURL);
             }, 5000); // 5000 milisegundos (5 segundos) como ejemplo
-          } else {
-           
+            } else {
             Swal.fire({
-              title: 'Error',
-              text: `Error en la respuesta del servidor. Código de estado: ${xhr.status}`,
-              icon:"warning",
-              showCancelButton: false,
-              confirmButtonColor: ' #ae9243 ',
-              confirmButtonText: 'Confirmar',
-          }).then((result) => {
-             
-          });
-          }
+                title: 'Error',
+                text: `Error en la respuesta del servidor. Código de estado: ${xhr.status}`,
+                icon:"warning",
+                showCancelButton: false,
+                confirmButtonColor: ' #ae9243 ',
+                confirmButtonText: 'Confirmar',
+            }).then((result) => {
+        });
+            }
         },
         error: function (error) {
           // Manejar el error
-          Swal.fire({
+        Swal.fire({
             title: 'Error',
             text: 'Error en la respuesta',
             icon:"warning",
@@ -352,8 +330,7 @@ function callApiGenerarPdf(token){
             confirmButtonColor: ' #ae9243 ',
             confirmButtonText: 'Confirmar',
         }).then((result) => {
-           
         });
         }
-      });
+    });
     }

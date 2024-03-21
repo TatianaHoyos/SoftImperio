@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title></title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="css/tablas.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
@@ -22,7 +22,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div >
-                   <form id="formCrearProducto" enctype="multipart/form-data" onsubmit="return false;">
+                    <form id="formCrearProducto" enctype="multipart/form-data" onsubmit="return false;">
                         <h4 id="tituloFomularioProducto" class="mt-3  text-white  text-center"></h4>
                         <div class="form-row justify-content-center">
                             <div class="form-group col-md-6">
@@ -44,7 +44,6 @@
                                 </div>
                             </div>
                         </div>
-                    
                         <div class="form-row justify-content-center">
                             <div class="form-group col-md-6">
                                 <label for="nombre" class="text-white">
@@ -89,7 +88,7 @@
                                         <span class="input-group-text"><i class="fas fa-box"></i></span>
                                     </div>
                                     <input type="text" class="form-control" id="stockMinimo" name="stockMinimo"
-                                        placeholder="Stock minimo" onkeypress="return validarNumero(event)">  
+                                        placeholder="Stock minimo" onkeypress="return validarNumero(event)">
                                     </div>
                             </div>
                         </div>
@@ -106,7 +105,6 @@
                                     <input type="text" class="form-control" id="precio" name="precioProducto"
                                         placeholder="Precio Producto" onkeypress="return validarPrecio(event)">
                                 </div>
-                              
                             </div>
 
                         </div>
@@ -151,7 +149,7 @@
     </div>
 
     <div class="modal fade" id="formCrearCategoria" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-md modal-dialog-centered">
             <div class="modal-content">
                 <div >
                         <h4 id="tituloFomularioCategoria" class="mt-3  text-white  text-center">Crear una categoría</h4>
@@ -159,17 +157,15 @@
                         <div class="form-row justify-content-center">
                             <div class="form-group col-md-6">
                                 <label for="nombreCategoria" class="text-white">
-                                    Nombre de la Categoría
                                 </label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" style="background-color: #e5c850"><i class="fas fa-beer"></i></span>
+                                        <span class="input-group-text"><i class="fas fa-beer"></i></span>
                                     </div>
                                     <input type="text" class="form-control" id="nombreCategoria" name="nombreCategoria"
                                         placeholder="Nombre Categoría" onkeypress="return validarNombre(event)">
                                 </div>
                             </div>
-                            
                         </div>
 
                         <div class="form-group text-center mt-3">
@@ -182,21 +178,18 @@
                                 class="col-md-2 form-control btn"><strong>Cancelar</strong></button>
                             <!-- <p class="mt-4">¿Sin cuenta? <a id="login" href="v_registro.php">Registrate</a></p> -->
                         </div>
-                        
                         <table id="tablaCategoria" class="table w-100">
                             <thead class="text-center">
                                 <tr>
                                     <th>Id</th>
                                     <th>Categoría</th>
                                     <th>Acciones</th>
-                                   
                                 </tr>
                             </thead>
                             <tbody>
 
                             </tbody>
-                      
-                         </table>
+                        </table>
                 </div>
             </div>
         </div>
@@ -209,8 +202,6 @@
                 <button type="button" class="btn btn-primary mr-2" onclick="mostrarFormularioCrearCategoria()"data-toggle="modal"data-target="#formCrearCategoria">Categorías</button>
                 <button type="button" class="btn btn-primary mr-2" onclick="mostrarFormularioCrear()"data-toggle="modal"data-target="#formCrearProductos"><i class="fas fa-plus"></i></button>
                 <button type="button" onclick="generarPDFProductos()"  class="btn btn-primary"> <i class="fa-solid fa-file-pdf"></i></button>
-               
-                
             </div>
             <div class="form-group">
                 <table id="tablaProductos" class="table w-100">
@@ -237,19 +228,18 @@
 
 
     </div>
-    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
-   <!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>-->
+<script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
-    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="js/productos.js"></script>
 <script src="js/categorias.js"></script>
 <script src="js/oAuthJwt.js"></script>
 <script src="js/validaciones.js"></script>
 <script src="js/mostrarFoto.js"></script>
 
- <script>
+<script>
         $(document).ready(function () {
             $("#menu-container").load("menu.html");
         });
