@@ -8,6 +8,11 @@ $(document).ready(function () {
 function mostrarFormularioCrear() {
     var titulo = $("#tituloFomularioProducto");
     titulo.text("Crear un nuevo producto");
+    $('#formCrearProducto')[0].reset();
+    var imgPreview = document.getElementById("foto-preview");
+
+// Limpiar la propiedad src de la etiqueta de imagen
+imgPreview.src = "";
     var btnform = $("#btn-form");
     
         btnform.click(function () {
