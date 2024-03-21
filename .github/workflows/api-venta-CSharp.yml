@@ -1,9 +1,16 @@
-name: Compilar y desplegar Api .Net como contenedor
+name: Build & Push image Docker
 
 on:
+  pull_request:
+    branches: [ tatiana2 ]
+    paths:
+      - 'Backend/venta/**'
+      - '.github/workflows/api-venta-CSharp.yaml'
   push:
-    tags:
-      - main
+    branches: [ tatiana2 ]
+    paths:
+      - 'Backend/venta/**'
+      - '.github/workflows/api-venta-CSharp.yaml'
 
 permissions:
   id-token: write

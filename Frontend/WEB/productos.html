@@ -56,8 +56,7 @@
                                     <input type="text" class="form-control" id="nombre" name="nombreProducto"
                                         placeholder="Nombre Producto" onkeypress="return validarNombre(event)">
                                 </div>
-                                <span id="mensajeReferencia" class="text-danger"></span>
-
+                                <div id="mensajeError" class="text-danger mt-2"></div> 
                             </div>
 
                         </div>
@@ -74,7 +73,7 @@
                                     <input type="text" class="form-control" id="referencia" name="referenciaProducto"
                                         placeholder="Referencia Producto" onkeypress="return validarReferencia(event)">  
                                     </div>
-                                    <span id="mensajeReferencia" class="text-danger"></span>
+                                  
                             </div>
                         </div>
 
@@ -103,7 +102,7 @@
                                         <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
                                     </div>
                                     <input type="text" class="form-control" id="precio" name="precioProducto"
-                                        placeholder="Precio Producto" onkeypress="return validarPrecio(event)">
+                                        placeholder="Precio Producto" onkeypress="return validarNumeros(event)">
                                 </div>
                             </div>
 

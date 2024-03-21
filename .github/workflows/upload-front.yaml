@@ -1,0 +1,32 @@
+name: Subir Front a EC2
+
+on:
+  push:
+    branches:
+      - tatiana2
+
+jobs:
+  build:
+    
+    name: Deploy front
+    runs-on: ubuntu-latest
+    environment: Production
+
+   
+    steps:
+
+    - name: Check out code
+      uses: actions/checkout@v3
+
+#    - name: 📂 Set working directory
+#      run: cd Frontend/WEB/
+
+    - name: 📂 rsync Upload front
+      uses: burnett01/rsync-deployments@5.1
+      with:
+        switches: -avzr --delete
+        path: Frontend/WEB/*
+        remote_path: /var/www/html/
+        remote_host: ec2-44-204-22-206.compute-1.amazonaws.com
+        remote_user: ubuntu
+        remote_key: "${{ secrets.SSH_PRIVATE_KEY_EC2 }}"
