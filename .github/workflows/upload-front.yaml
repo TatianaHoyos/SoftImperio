@@ -33,8 +33,8 @@ jobs:
       env:
         DOMAIN-EC2: ec2-3-83-184-42.compute-1.amazonaws.com
 
-#    - name: 📂 Set working directory
-#      run: cd Frontend/WEB/
+    - name: 📂 Set working directory
+      run: cd Frontend/WEB/js/configAmbiente.js
 
     - name: 📂 rsync Upload front
       uses: burnett01/rsync-deployments@5.1
