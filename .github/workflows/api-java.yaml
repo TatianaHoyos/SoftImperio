@@ -15,6 +15,9 @@ on:
     branches:
       - tatiana2
 
+permissions:
+  id-token: write
+  contents: read
 
 jobs:
   project-build:
