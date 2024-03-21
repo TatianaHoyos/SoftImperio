@@ -86,7 +86,7 @@ function onExitoCategoriasTable(data){
 function onExitoCategorias(data) {
     onExitoCategoriasDropDown(data);
     onExitoCategoriasTable(data);
-        
+
 }
 function onErrorCategorias(error) {
   // $("#cargando").modal("hide");
@@ -118,19 +118,20 @@ function mostrarFormularioCrearCategoria(){
    $("#operacionCategoria").val("crearCategoria");
    $("#idCategoriaActualizar").val("");
   // btnform.click(function(){ crearRol(); });
-  
+ 
 }
 
 function crearCategoria(){
     var formData = {
         nombreCategoria:$("#nombreCategoria").val(),
      };
-     handleAjaxRequest(function (token) {
-         callApiCrearCategoria(formData, token);
-     });
      if (validarCampoVacio($("#nombreCategoria").val().length, 'Por favor ingrese un nombre a la categoría')) {
         return false;
     }
+     handleAjaxRequest(function (token) {
+         callApiCrearCategoria(formData, token);
+     });
+    
 }
 
 function callApiCrearCategoria(formData,token){
@@ -177,8 +178,10 @@ function onErrorCrearCategoria(error){
     });
 }
 function eventoFormularioCategoria(){
+
     var operacion=$("#operacionCategoria").val();
     if(operacion=="crearCategoria"){
+       
         crearCategoria();
        
     }else{
