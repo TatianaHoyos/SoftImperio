@@ -210,6 +210,19 @@ function crearUsuarios() {
         });
         return false; // Detener la creación del usuario si el correo no es válido
     }
+    if (email.length > 30) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Oops',
+            text: 'El email no puede contener mas de 30 caracteres',
+            showConfirmButton: false,
+            timer: 1700,
+            customClass: {
+                popup: 'tamanio-custom'
+            }
+        });
+        return false;
+    }
 
 	// Create an FormData object
     var formData = new FormData(form);
@@ -321,44 +334,251 @@ function mostrarFormularioActualizar(){
 }
 
 
-function EditarUsuario(usuarios){
+// function EditarUsuario(usuarios){
+//     mostrarFormularioActualizar();
+//     $("#roles option[value="+ usuarios.idRol +"]").attr("selected", true);
+//     $("#nombre").val(usuarios.nombre);
+//     $("#documento").val(usuarios.documento );
+//     $("#email").val(usuarios.email);
+//     $("#telefono").val(usuarios.telefono );
+//     $("#estado").val(usuarios.estado);
+//     var preview = document.getElementById("foto-previewActualizar");
+//     preview.src = "http://localhost:8080/"+usuarios.foto;
+//     preview.style.display = "block";
+//     var btnform = $("#btn-form");
+//     btnform.click(function () {
+//         handleAjaxRequest(function (token) {
+//             actualizarUsuario(usuarios.idUsuarios,token);
+//     });
+//     });
+//     // btnform.click(function(){ actualizarUsuario(usuarios.idUsuarios); });
+
+// }
+
+
+
+// const eEmailValidoA = (email) => {
+//     return email.match(
+//         /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+//     );
+//   };
+
+//   $(document).ready(function () {
+//     // Otro código...
+
+//     // Vincula la función validarEmailU al evento input del campo de correo electrónico
+//     $('#email').on('input', function () {
+//         validarEmailUA();
+//     });
+
+//     // Otro código...
+// });
+
+// function validarEmailUA() {
+//     const emailMensaje = $('#emailMensajeA');
+//     const email = $('#email').val();
+//     emailMensaje.text('');
+//     if (email.length === 0) {
+//         // Si el campo de correo electrónico está vacío, no se muestra ningún mensaje
+//         return;
+//     }
+//     if (eEmailValido(email)) {
+//         emailMensaje.text('correo valido');
+//         emailMensaje.css('color', 'green');
+//     } else {
+//         emailMensaje.text('el correo no es valido');
+//         emailMensaje.css('color', 'red');
+//     }
+// }
+
+// function actualizarUsuario(idUsuarios, token){
+//     var form = $('#formActualizarUsuario')[0];
+//     var documento= $("#documento").val();
+//     var nombre= $("#nombre").val();
+//     var telefono= $("#telefono").val();
+//     var email= $("#email").val();
+//     console.log('idUsuarios',idUsuarios)
+
+//     if (validarCampoVacio(documento.length, 'Por favor ingrese un numero de documento')) {
+//         return false;
+//     }
+
+//     if (documento.length < 7) {
+//         Swal.fire({
+//             icon: 'warning',
+//             title: 'Oops',
+//             text: 'El numero de documento no puede contener menos de 7 caracteres',
+//             showConfirmButton: false,
+//             timer: 1700,
+//             customClass: {
+//                 popup: 'tamanio-custom'
+//             }
+//         });
+//         return false;
+//     }
+//     if (documento && documento.startsWith('0')) {
+//         Swal.fire({
+//             icon: 'warning',
+//             title: 'Oops',
+//             text: 'El número de documento no puede empezar con 0.',
+//             showConfirmButton: false,
+//             timer: 2000,
+//             customClass: {
+//                 popup: 'tamanio-custom'
+//             }
+//         });
+//         return false;
+//     }
+
+
+//     if (validarCampoVacio(nombre.length, 'Por favor ingrese un nombre')) {
+//         return false;
+//     }
+//     if (validarCampoVacio(telefono.length, 'Por favor ingrese un numero telefono')) {
+//         return false;
+//     }
+//     if (validarCampoVacio(email.length, 'Por favor ingrese un correo electronico')) {
+//         return false;
+//     }
+
+//     if (!eEmailValido(email)) {
+//         Swal.fire({
+//             icon: 'error',
+//             title: 'Correo electrónico no válido',
+//             showConfirmButton: false,
+//             timer: 1700,
+//             customClass: {
+//                 popup: 'tamanio-custom'
+//             }
+//         });
+//         return false; // Detener la creación del usuario si el correo no es válido
+//     }
+//     if (email.length >30) {
+//         Swal.fire({
+//             icon: 'warning',
+//             title: 'Oops',
+//             text: 'El email no puede contener mas de 30 caracteres',
+//             showConfirmButton: false,
+//             timer: 1700,
+//             customClass: {
+//                 popup: 'tamanio-custom'
+//             }
+//         });
+//         return false;
+//     }
+
+// 	// Create an FormData object
+//     var formData = new FormData(form);
+
+//    $.ajax({
+//     type: "Put",
+//     enctype: 'multipart/form-data',
+//     url:"http://localhost:8081/edge-service/v1/service/usuario/actualizar/"+idUsuarios,
+//     "headers": {
+//         'Authorization': `Bearer ${token}`,
+//   },
+//     data: formData,
+//     processData: false,
+//     contentType: false,
+//     success: onExitoActualizarUsuario,
+//     error: onErrorActualizarUsuario
+// });
+// }
+
+// function onExitoActualizarUsuario(data) {
+//     $("#formActualizarUsuarios").modal("hide");
+
+//     const swalOptions = {
+//         title: 'Éxito',
+//         text: data.message,
+//         icon: 'success', // Utiliza 'icon' en lugar de 'type'
+//         showCancelButton: false,
+//         confirmButtonColor: '#d5c429',
+//         confirmButtonText: 'Confirmar',
+//     };
+
+//     const swalInstance = Swal.fire(swalOptions);
+
+//     setTimeout(() => {
+//         swalInstance.close();
+//     }, 2000);
+
+//     swalInstance.then((result) => {
+//         $("#formActualizarUsuario").trigger("reset");
+//         $("#foto-preview").attr('src', '');
+//         handleAjaxRequest(consultarUsuarios);
+//     });
+// }
+
+// function onErrorActualizarUsuario(error) {
+//     $("#formActualizarUsuarios").modal("hide");
+//     Swal.fire({
+//         title: 'Error',
+//         text: error.responseJSON.message,
+//         icon: "warning", // Utiliza 'icon' en lugar de 'type'
+//         showCancelButton: false,
+//         confirmButtonColor: ' #d5c429 ',
+//         confirmButtonText: 'Confirmar',
+//     }).then((result) => {
+//         // Manejar el error según sea necesario
+//     });
+// }
+
+
+
+// function onExitoActualizarUsuario(data){
+//     handleAjaxRequest(consultarUsuarios);
+//     var mensaje = $("#resultadoCrear");
+//     mensaje.addClass("alert-success");
+//     mensaje.removeClass("alert-danger");
+//     mensaje.show();
+//     mensaje.text(data.message);
+//     $("#formCrearUsuario").trigger("reset");
+//     $("#foto-preview").attr('src', '');
+// }
+// function onErrorActualizarUsuario(error){
+//     var mensaje = $("#resultadoCrear");
+//     mensaje.addClass("alert-danger");
+//     mensaje.removeClass("alert-success");
+//     mensaje.show();
+//     mensaje.text(error.message);
+// }
+
+function EditarUsuario(usuarios) {
     mostrarFormularioActualizar();
     $("#roles option[value="+ usuarios.idRol +"]").attr("selected", true);
     $("#nombre").val(usuarios.nombre);
-    $("#documento").val(usuarios.documento );
+    $("#documento").val(usuarios.documento);
     $("#email").val(usuarios.email);
-    $("#telefono").val(usuarios.telefono );
+    $("#telefono").val(usuarios.telefono);
     $("#estado").val(usuarios.estado);
     var preview = document.getElementById("foto-previewActualizar");
     preview.src = "http://localhost:8080/"+usuarios.foto;
     preview.style.display = "block";
     var btnform = $("#btn-form");
-    btnform.click(function () {
+    
+    // Asigna el evento click al botón de actualización con una función anónima que capture los datos del usuario actual
+    btnform.off("click").on("click", function () {
         handleAjaxRequest(function (token) {
-            actualizarUsuario(usuarios.idUsuarios,token);
+            actualizarUsuario(usuarios.idUsuarios, token);
+        });
     });
-    });
-    // btnform.click(function(){ actualizarUsuario(usuarios.idUsuarios); });
-   
+    
+    // Validación de email al cargar el usuario
+    validarEmailUA();
 }
-
-
 
 const eEmailValidoA = (email) => {
     return email.match(
         /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     );
-  };
+};
   
-  $(document).ready(function () {
-    // Otro código...
-
+$(document).ready(function () {
     // Vincula la función validarEmailU al evento input del campo de correo electrónico
     $('#email').on('input', function () {
         validarEmailUA();
     });
-
-    // Otro código...
 });
 
 function validarEmailUA() {
@@ -369,7 +589,7 @@ function validarEmailUA() {
         // Si el campo de correo electrónico está vacío, no se muestra ningún mensaje
         return;
     }
-    if (eEmailValido(email)) {
+    if (eEmailValidoA(email)) {
         emailMensaje.text('correo valido');
         emailMensaje.css('color', 'green');
     } else {
@@ -378,14 +598,14 @@ function validarEmailUA() {
     }
 }
 
-function actualizarUsuario(idUsuarios, token){
+function actualizarUsuario(idUsuarios, token) {
     var form = $('#formActualizarUsuario')[0];
     var documento= $("#documento").val();
     var nombre= $("#nombre").val();
     var telefono= $("#telefono").val();
     var email= $("#email").val();
-
-
+    var formData = new FormData(form);
+    
     if (validarCampoVacio(documento.length, 'Por favor ingrese un numero de documento')) {
         return false;
     }
@@ -417,7 +637,6 @@ function actualizarUsuario(idUsuarios, token){
         return false;
     }
 
-
     if (validarCampoVacio(nombre.length, 'Por favor ingrese un nombre')) {
         return false;
     }
@@ -428,7 +647,7 @@ function actualizarUsuario(idUsuarios, token){
         return false;
     }
 
-    if (!eEmailValido(email)) {
+    if (!eEmailValidoA(email)) {
         Swal.fire({
             icon: 'error',
             title: 'Correo electrónico no válido',
@@ -440,23 +659,33 @@ function actualizarUsuario(idUsuarios, token){
         });
         return false; // Detener la creación del usuario si el correo no es válido
     }
+    if (email.length > 30) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Oops',
+            text: 'El email no puede contener mas de 30 caracteres',
+            showConfirmButton: false,
+            timer: 1700,
+            customClass: {
+                popup: 'tamanio-custom'
+            }
+        });
+        return false;
+    }
 
-	// Create an FormData object
-    var formData = new FormData(form);
-
-   $.ajax({
-    type: "Put",
-    enctype: 'multipart/form-data',
-    url:"http://localhost:8081/edge-service/v1/service/usuario/actualizar/"+idUsuarios,
-    "headers": {
-        'Authorization': `Bearer ${token}`,
-  },
-    data: formData,
-    processData: false,
-    contentType: false,
-    success: onExitoActualizarUsuario,
-    error: onErrorActualizarUsuario
-});
+    $.ajax({
+        type: "Put",
+        enctype: 'multipart/form-data',
+        url:"http://localhost:8081/edge-service/v1/service/usuario/actualizar/"+idUsuarios,
+        headers: {
+            'Authorization': `Bearer ${token}`,
+        },
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: onExitoActualizarUsuario,
+        error: onErrorActualizarUsuario
+    });
 }
 
 function onExitoActualizarUsuario(data) {
@@ -465,8 +694,7 @@ function onExitoActualizarUsuario(data) {
     const swalOptions = {
         title: 'Éxito',
         text: data.message,
-        type: 'success',
-        icon: 'success',
+        icon: 'success', // Utiliza 'icon' en lugar de 'type'
         showCancelButton: false,
         confirmButtonColor: '#d5c429',
         confirmButtonText: 'Confirmar',
@@ -479,47 +707,25 @@ function onExitoActualizarUsuario(data) {
     }, 2000);
 
     swalInstance.then((result) => {
-        $("#formActualizarUsuarios").trigger("reset");
+        $("#formActualizarUsuario").trigger("reset");
         $("#foto-preview").attr('src', '');
         handleAjaxRequest(consultarUsuarios);
     });
 }
 
-
-
-
-
 function onErrorActualizarUsuario(error) {
-    $("#formActualizarUsuario").modal("hide");
+    $("#formActualizarUsuarios").modal("hide");
     Swal.fire({
         title: 'Error',
         text: error.responseJSON.message,
-        icon:"warning",
+        icon: "warning", // Utiliza 'icon' en lugar de 'type'
         showCancelButton: false,
         confirmButtonColor: ' #d5c429 ',
         confirmButtonText: 'Confirmar',
     }).then((result) => {
+        // Manejar el error según sea necesario
     });
 }
-
-
-// function onExitoActualizarUsuario(data){
-//     handleAjaxRequest(consultarUsuarios);
-//     var mensaje = $("#resultadoCrear");
-//     mensaje.addClass("alert-success");
-//     mensaje.removeClass("alert-danger");
-//     mensaje.show();
-//     mensaje.text(data.message);
-//     $("#formCrearUsuario").trigger("reset");
-//     $("#foto-preview").attr('src', '');
-// }
-// function onErrorActualizarUsuario(error){
-//     var mensaje = $("#resultadoCrear");
-//     mensaje.addClass("alert-danger");
-//     mensaje.removeClass("alert-success");
-//     mensaje.show();
-//     mensaje.text(error.message);
-// }
 
 
 
