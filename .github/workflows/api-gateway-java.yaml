@@ -90,17 +90,17 @@ jobs:
           AWS_REGION: us-east-1
 
       - name: Build Docker image
-        run: docker build -t public.ecr.aws/u8j8i3w5/imperio-public-registry:api-java-latest .
+        run: docker build -t public.ecr.aws/u8j8i3w5/imperio-public-registry:api-gateway-latest .
 
       - name: Tag Docker image
         env:
           IMAGE_TAG: ${{ github.sha }}
-        run: docker tag public.ecr.aws/u8j8i3w5/imperio-public-registry:api-java-latest public.ecr.aws/u8j8i3w5/imperio-public-registry:api-java-latest
+        run: docker tag public.ecr.aws/u8j8i3w5/imperio-public-registry:api-gateway-latest public.ecr.aws/u8j8i3w5/imperio-public-registry:api-gateway-latest
 
       - name: Push Docker image to ECR
         env:
           IMAGE_TAG: ${{ github.sha }}
-        run: docker push public.ecr.aws/u8j8i3w5/imperio-public-registry:api-java-latest
+        run: docker push public.ecr.aws/u8j8i3w5/imperio-public-registry:api-gateway-latest
 
 #  deploy:
 #    if: ${{ github.ref == 'refs/heads/main' }}
