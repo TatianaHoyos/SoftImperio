@@ -42,6 +42,6 @@ jobs:
         switches: -avzr --delete
         path: Frontend/WEB/*
         remote_path: /var/www/html/
-        remote_host: ec2-44-204-22-206.compute-1.amazonaws.com
+        remote_host: ec2-3-83-184-42.compute-1.amazonaws.com
         remote_user: ubuntu
         remote_key: "${{ secrets.SSH_PRIVATE_KEY_EC2 }}"
