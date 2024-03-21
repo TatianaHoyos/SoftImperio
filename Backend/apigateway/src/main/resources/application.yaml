@@ -548,6 +548,17 @@ spring:
                 accion: Consultar
             - RewritePath=/edge-service/v1/service/creditos/ultimo-mes/consultar, /api/Creditos/creditos-ultimo-mes
 
+        - id: services- credito-consultar
+          uri: https://localhost:7084
+          predicates:
+            - Path=/edge-service/v1/service/credito/consultar/id/**
+          filters:
+            - name: AuthenticationFilter
+              args:
+                modulo: Credito
+                accion: Consultar
+            - RewritePath=/edge-service/v1/service/credito/consultar/id/(?<idusuariocredito>.*), /api/Creditos/$\{idusuariocredito}
+
         - id: services-abono-creditos-consultar
           uri: https://localhost:7084
           predicates:
