@@ -63,7 +63,7 @@ jobs:
 
       - name: show folder tree
         run: |
-          cat src/main/resources/application.properties
+          cat src/main/resources/application.yaml
 
       - name: Set up JDK 17
         uses: actions/setup-java@v3
