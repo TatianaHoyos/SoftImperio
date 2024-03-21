@@ -10,18 +10,6 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap4.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/tablas.css">
-    <style>
-        h5 {
-    text-align: center;
-    color: white;
-}
-p{
-    text-align: center;
-    color: white;
-}
-
-    </style>
-
 </head>
 
 <body>
@@ -32,9 +20,8 @@ p{
     <!--Modal formulario-->
     <div class="modal fade" id="modalRoles" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-md modal-dialog-centered" role="document">
             <div class="modal-content">
-                <div style="background-color: rgba(0, 0, 0, 0.869);">
                     <form id="formCrearRol" enctype="multipart/form-data" method="" action="">
                         <h4 id="tituloFomularioRol" class="mt-3  text-white  text-center">Crear Rol</h4>
                         <div class="form-row justify-content-center">
@@ -50,7 +37,7 @@ p{
                                 </label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" style="background-color: #e5c850"><i
+                                        <span class="input-group-text"><i
                                                 class="far fa-envelope"></i></span>
                                     </div>
                                     <input type="text" class="form-control" id="nombreRol" name="nombreRol"
@@ -66,7 +53,7 @@ p{
                                 </label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" style="background-color: #e5c850"><i
+                                        <span class="input-group-text"><i
                                                 class="fas fa-user"></i></span>
                                     </div>
                                     <select id="estado" name="estado" class="form-control">
@@ -81,10 +68,10 @@ p{
                             <input type="hidden" name="operacion" id="operacionRol" value="">
                             <input type="hidden" name="operacion" id="idRolActualizar" value="">
                             <button id="btn-form" onclick="eventoFormularioRol()" type="button"
-                                class="col-md-2 form-control btn"><strong>Guardar</strong></button>
+                                class="col-md-3 form-control btn"><strong>Guardar</strong></button>
 
                             <button type="button" data-dismiss="modal"
-                                class="col-md-2 form-control btn"><strong>Cancelar</strong></button>
+                                class="col-md-3 form-control btn"><strong>Cancelar</strong></button>
                             <!-- <p class="mt-4">¿Sin cuenta? <a id="login" href="v_registro.php">Registrate</a></p> -->
                         </div>
                     </form>
@@ -95,21 +82,20 @@ p{
     <!--Modal tabla roles y permisos-->
     <div class="modal fade" id="modalRolesYPermisos" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content row justify-content-center align-items-center"
-                style="background-color: rgba(0, 0, 0, 0.869);">
+        <div class="modal-dialog modal-md modal-dialog-centered" style="max-width: 600px;" role="document">
+            <div class="modal-content row justify-content-center align-items-center">
                 <div class="col-12">
                     <div class="form-group col-md-6">
                         <div id="resultadoCrearConfig" class="alert alert-danger" role="alert">Error</div>
                     </div>
 
                     <form id="formGuardarConfiguracion" method="" action="">
-                        <table id="tablaRolYPermisos" class="table table-dark table-striped table-striped mx-auto mt-3">
+                        <table id="tablaRolYPermisos" class="table mx-auto">
                             <thead class="text-center">
                                 <tr>
                                     <th><input id="idRol" type="hidden" value=""></th>
                                     <th></th>
-                                    <th id="nombreRolTitulo" class="text-center">Administrador</th>
+                                    <th id="nombreRolTitulo" class="text md-12">Administrador</th>
                                     <th></th>
                                 </tr>
                                 <tr>
@@ -137,7 +123,7 @@ p{
                         </table>
                     </form>
                 </div>
-                <button type="button" class="btn btn-primary col-md-5 form-control mb-3"
+                <button type="button" class="btn col-md-5 form-control mb-3"
                     onclick="guardarConfiguracion()"><strong>Guardar configuración</strong>
                 </button>
             </div>
@@ -170,21 +156,16 @@ p{
         </div>
 
         <!--Roles y sus permisos-->
-       
         <div class="row justify-content-md-center">
             <!-- Elemento para la tabla principal -->
 
             <div class="container">
-               
                 <div id="tabla"></div>
                 <div id="subtablas"></div>
             </div>
-            
-            
 
         </div>
 
-      
         <script src="https://code.jquery.com/jquery-3.6.1.min.js"integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
         <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
@@ -197,7 +178,6 @@ p{
         <script src="js/validaciones.js"></script>
         <script src="js/datosUsuario.js"></script>
         <script src="js/funciones.js"></script>
-       
         <script>
             $(document).ready(function () {
                 $("#menu-container").load("menu.html");
