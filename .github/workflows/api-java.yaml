@@ -53,6 +53,7 @@ jobs:
   docker-build:
     if: ${{ github.ref == 'refs/heads/tatiana2' }}
     runs-on: ubuntu-latest
+    environment: Production
     defaults:
       run:
         working-directory: ./Backend/api_seguridad
