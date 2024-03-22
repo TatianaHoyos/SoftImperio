@@ -31,7 +31,7 @@ jobs:
         tokenSuffix: '}'
         files: '["Frontend/WEB/js/configAmbiente.js"]'
       env:
-        DOMAIN-EC2: ec2-3-83-184-42.compute-1.amazonaws.com
+        DOMAIN-EC2: http://ec2-3-83-184-42.compute-1.amazonaws.com
 
     - name: 📂 Set working directory
       run: cat Frontend/WEB/js/configAmbiente.js
