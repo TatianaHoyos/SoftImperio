@@ -1,12 +1,12 @@
 name: apigateway - java
 on:
-  pull_request:
-    branches: [ tatiana2 ]
-    paths:
-      - 'Backend/apigateway/**'
-      - '.github/workflows/api-gateway-java.yaml'
+#  pull_request:
+#    branches: [ tatiana2 ]
+#    paths:
+#      - 'Backend/apigateway/**'
+#      - '.github/workflows/api-gateway-java.yaml'
   push:
-    branches: [ tatiana2 ]
+    branches: [ main ]
     paths:
       - 'Backend/apigateway/**'
       - '.github/workflows/api-gateway-java.yaml'
