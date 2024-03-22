@@ -2,6 +2,7 @@
 
 namespace venta.Model
 {
+    [Table("detallecompra")]
     public class DetalleCompra
     {
         [Key]
