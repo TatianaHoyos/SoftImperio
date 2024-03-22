@@ -1,11 +1,11 @@
 name: Build & Push image Docker
 
 on:
-  pull_request:
-    branches: [ main ]
-    paths:
-      - 'Backend/venta/**'
-      - '.github/workflows/api-venta-CSharp.yaml'
+#  pull_request:
+#    branches: [ main ]
+#    paths:
+#      - 'Backend/venta/**'
+#      - '.github/workflows/api-venta-CSharp.yaml'
   push:
     branches: [ main ]
     paths:
