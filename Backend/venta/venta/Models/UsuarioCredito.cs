@@ -2,6 +2,7 @@
 
 namespace venta.Models
 {
+    [Table("usuariocredito")]
     public class UsuarioCredito
     {
         [Key]

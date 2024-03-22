@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace venta.Models
 {
+    [Table("venta")]
     public class Venta
     {
         [Key]
