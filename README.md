@@ -1,5 +1,17 @@
 # Soft_Imperio
 
+### Flujo de despliegue
+
+![Flow](./Documentation/deploy-flow.png "Despliegue")
+
+[Archivo excalidraw editable](./Documentation/deploy-flow.png)
+
+### Api GateWay
+
+![Flow](./Documentation/api-gateway.png "Flow")
+
+[Archivo excalidraw editable](./Documentation/deploy-flow.excalidraw)
+
 ## Diagramas de secuencias
 
 ### Autenticación
@@ -14,6 +26,3 @@
 
 ![p.v.Barra](./Documentation/Diagrama_de_secuencia_p.v.Barra.png "p.v.Barra")
 
-### Api GateWay
-
-![Flow](./Documentation/api-gateway.png "Flow")
