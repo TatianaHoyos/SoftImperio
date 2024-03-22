@@ -5,9 +5,7 @@ var modulo = {
         "reporte" : "./ventas.html"
     },
     "credito" : {
-        "credito" : "./creditos.html",
-        "usuario_credito": "./usuarioCreditos.html",
-        "nuevo_usuario_credito": "./nuevoCredito.html"
+        "usuario_credito": "./usuariocreditos.html",
     },
     "producto" : {
         "producto" : "./productos.html"
@@ -23,8 +21,8 @@ var modulo = {
         "detalle" : "./comprasDetail.html"
     },
     "configuracion" : {
-        "permiso" : "./permisos.html",
-        "inicio" : "./inicio.html"
+        "permiso" : "./Permisos.html",
+        "inicio" : "./Inicio.html"
     }
 
 };
