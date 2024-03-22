@@ -31,7 +31,7 @@ jobs:
         tokenSuffix: '}'
         files: '["Frontend/WEB/js/configAmbiente.js"]'
       env:
-        DOMAIN-EC2: http://ec2-44-211-171-147.compute-1.amazonaws.com
+        DOMAIN-EC2: http://ec2-54-161-228-36.compute-1.amazonaws.com
 
     - name: 📂 Set working directory
       run: cat Frontend/WEB/js/configAmbiente.js
@@ -42,6 +42,6 @@ jobs:
         switches: -avzr --delete
         path: Frontend/WEB/*
         remote_path: /var/www/html/
-        remote_host: ec2-44-211-171-147.compute-1.amazonaws.com
+        remote_host: ec2-54-161-228-36.compute-1.amazonaws.com
         remote_user: ubuntu
         remote_key: "${{ secrets.SSH_PRIVATE_KEY_EC2 }}"
