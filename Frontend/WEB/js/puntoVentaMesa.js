@@ -13,7 +13,7 @@ $(document).ready(function () {
 function consultarCategorias(token) {
     $.ajax({
         type: "GET",
-        url: "http://localhost:8081/edge-service/v1/service/categorias/consultar",
+        url: hostDomain+"/edge-service/v1/service/categorias/consultar",
         "headers": {
             "Content-Type": "application/json",
             'Authorization': `Bearer ${token}`
@@ -53,7 +53,7 @@ function onErrorCategorias(error) {
 function consultarProductosAgrupados(categorias,token) {
     $.ajax({
         type: "GET",
-        url: "http://localhost:8081/edge-service/v1/service/productos/consultar/agrupados",
+        url: hostDomain+"/edge-service/v1/service/productos/consultar/agrupados",
         "headers": {
             "Content-Type": "application/json",
             'Authorization': `Bearer ${token}`
@@ -374,7 +374,7 @@ function confirmarVenta(){
 function callApiVentaMesa(pedidoTotal,token){
     $.ajax({
         type: "POST",
-        url:"http://localhost:8081/edge-service/v1/service/venta/mesa/crear",
+        url:hostDomain+"/edge-service/v1/service/venta/mesa/crear",
         "headers": {
             "Content-Type": "application/json",
             'Authorization': `Bearer ${token}`

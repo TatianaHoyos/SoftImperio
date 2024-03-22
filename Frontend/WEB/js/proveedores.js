@@ -13,7 +13,7 @@ function buscarDatos(idProveedor, token) {
   $.ajax({
     type: "GET",
     url: "http://localhost:8081/edge-service/v1/service/proveedor/consultar",
-    "headers": {
+    "headhostDomain+"
         'Authorization': `Bearer ${token}`,
   },
     data: { query: idProveedor },
@@ -60,7 +60,7 @@ function consultarProveedor(idProveedor, token) {
             "Content-Type": "application/json",
             'Authorization': `Bearer ${token}`
           },
-        success: function (data){
+        succhostDomain+"
           $("#documentoE").val(data.documento);
           $("#nombreE").val(data.nombre);
           $("#emailE").val(data.email);
@@ -98,7 +98,7 @@ function eliminarProveedor(idProveedor, token) {
             xhr.onload = function () {
               if (xhr.status === 200) {
               Swal.fire({
-                type: 'success',
+                type: 'success'hostDomain+"
                 icon:"success",
                 text: 'El proveedor ha sido eliminado. ',
                 showConfirmButton: false,
@@ -142,7 +142,7 @@ function callApiEditarProveedor(data,token){
     data: JSON.stringify(data),
     contentType: "application/json",
     success: function(response) {
-      Swal.fire({
+      SwahostDomain+"
         type: 'success',
         text: 'Registro actualizado',
         icon:"success",
@@ -395,5 +395,5 @@ function callApiCrearProveedor(formData,token){
     success: onExitoCrearProveedor,
     error: onErrorProv
 
-});
+});hostDomain+"
 }

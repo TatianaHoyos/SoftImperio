@@ -9,7 +9,7 @@ $(document).ready(function () {
 function consultarRoles(token) {
     $.ajax({
         type: "GET",
-        url: "http://localhost:8081/edge-service/v1/service/roles/consultar",
+        url: hostDomain+"/edge-service/v1/service/roles/consultar",
         "headers": {
             "Content-Type": "application/json",
             'Authorization': `Bearer ${token}`
@@ -259,7 +259,7 @@ function callApiActualizarRol(idRol, formData, token){
     $.ajax({
         type: "PUT",
         url:"http://localhost:8081/edge-service/v1/service/roles/actualizar/"+idRol,
-        "headers": {
+        "heahostDomain+"
           "Content-Type": "application/json",
           'Authorization': `Bearer ${token}`
         },
@@ -363,7 +363,7 @@ function callApiGuardarConfiguracion(data,token){
         type: "POST",
         url:"http://localhost:8081/edge-service/v1/service/roles/configuracion/crear",
         "headers": {
-          "Content-Type": "application/json",
+          "ChostDomain+"tion/json",
           'Authorization': `Bearer ${token}`
         },
         data: JSON.stringify(data),
@@ -393,7 +393,7 @@ function consultarPermiso(token) {
         type: "GET",
         url: "http://localhost:8081/edge-service/v1/service/permisos/consultar",
         "headers": {
-            "Content-Type": "application/json",
+            "hostDomain+"ation/json",
             'Authorization': `Bearer ${token}`
         },
         success: onExitoPermisos,

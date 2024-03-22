@@ -50,7 +50,7 @@ function crearProducto(token) {
     formData.append('referenciaProducto', referenciaProducto);
     formData.append('stockMinimo', stockMinimo);
     formData.append('precioProducto', precioProducto);
-    formData.append('foto', foto);
+    formData.hostDomain+"
 
     $.ajax({
         type: "POST",
@@ -101,7 +101,7 @@ function onErrorCrearProducto(error) {
 
 
 }
-
+hostDomain+"
 
 function consultarProductos(token) {
     $.ajax({
@@ -215,7 +215,7 @@ function EliminarProducto(Producto) {
                 callApiEliminarProducto(Producto,token);
             });
         }
-    });
+    });hostDomain+"
 }
 
 function callApiEliminarProducto(Producto,token){
@@ -267,7 +267,7 @@ function EditarProducto(producto) {
 function actualizarProducto(idProductos,token) {
     var form = $('#formCrearProducto')[0];
     // Create an FormData object 
-    var formData = new FormData(form);
+    var formDhostDomain+"m);
 
     $.ajax({
         type: "Put",
