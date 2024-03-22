@@ -1,11 +1,11 @@
 name: Subir Front a EC2
 
 on:
-  pull_request:
-    branches: [ main ]
-    paths:
-      - 'Frontend/WEB/**'
-      - '.github/workflows/upload-front.yaml'
+  # pull_request:
+  #   branches: [ main ]
+  #   paths:
+  #     - 'Frontend/WEB/**'
+  #     - '.github/workflows/upload-front.yaml'
   push:
     branches: [ main ]
     paths:
