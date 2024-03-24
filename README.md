@@ -4,7 +4,13 @@
 
 ![Flow](./Documentation/deploy-flow.png "Despliegue")
 
-[Archivo excalidraw editable](./Documentation/deploy-flow.png)
+[Archivo excalidraw editable](./Documentation/deploy-flow.excalidraw)
+
+### Diagrama de Arquitectura
+
+![Flow](./Documentation/Diagrama%20Arquitectura%20.png "Flow")
+
+[Archivo excalidraw editable](./Documentation/Diagrama%20Arquitectura%20.excalidraw)
 
 ### Api GateWay
 
