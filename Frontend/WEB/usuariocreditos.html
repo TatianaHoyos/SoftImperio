@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>usuarioCredito</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="css/tablas.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
@@ -13,29 +13,29 @@
 </head>
 
 <body>
-  <!-- Incluye el menú -->
-  <div id="menu-container"></div>
-  <!-- contenido propio de la pagina -->
+    <!-- Incluye el menú -->
+    <div id="menu-container"></div>
+    <!-- contenido propio de la pagina -->
 
     <div class="modal fade" id="formCrearUsuarioCredito" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-md modal-dialog-centered">
             <div class="modal-content">
-                <div style="background-color: rgba(0, 0, 0, 0.869);">
+                <div class="modal-header">
+                    <h3 id="tituloFormularioUsuarioCredito" class="mt-3 text-center"></h3>
+                </div>
                     <form id="formUsuarioCredito">
                         <input type="hidden" id="idUsuarioCredito">
-                        <h4 id="tituloFormularioUsuarioCredito" class="mt-3 text-white text-center"></h4>
-                        <div class="form-row justify-content-center">
+                            <div class="form-row justify-content-center">
                             <div class="form-group col-md-6">
                                 <!--<div id="resultadoCrear" class="alert alert-danger" role="alert">Error</div>-->
                             </div>
                         </div>
-
                         <div class="form-row justify-content-center">
                             <div class="form-group col-md-6">
-                                <label for="nombre" class="text-white">Ingrese el nombre</label>
+                                <label for="nombre" class="text">Ingrese el nombre</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" style="background-color: #e5c850"><i
+                                        <span class="input-group-text"><i
                                                 class="fas fa-user"></i></span>
                                     </div>
                                     <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre"
@@ -46,10 +46,10 @@
 
                         <div class="form-row justify-content-center">
                             <div class="form-group col-md-6">
-                                <label for="documento" class="text-white">Ingrese el documento</label>
+                                <label for="documento" class="text">Ingrese el documento</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" style="background-color: #e5c850"><i
+                                        <span class="input-group-text"><i
                                                 class="far fa-id-card"></i></span>
                                     </div>
                                     <input type="text" class="form-control" id="documento" name="documento"
@@ -60,11 +60,10 @@
 
                         <div class="form-row justify-content-center">
                             <div class="form-group col-md-6">
-                                <label for="telefono" class="text-white">Ingrese un teléfono</label>
+                                <label for="telefono" class="text">Ingrese un teléfono</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" style="background-color: #e5c850"><i
-                                                class="fas fa-phone"></i></span>
+                                        <span class="input-group-text"><i class="fas fa-phone"></i></span>
                                     </div>
                                     <input type="tel" class="form-control" id="telefono" name="telefono"
                                         placeholder="Teléfono de colaborador" onkeypress="return validarNumeroUC(event)">
@@ -74,8 +73,8 @@
 
                         <div class="form-group text-center mt-3">
                             <input type="hidden" name="operacion" value="login">
-                            <button id="btn-form" type="button" class="col-md-2 form-control btn"><strong>Guardar</strong></button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btnCancelar">Cerrar</button>
+                            <button id="btn-form" type="button" class="col-md-3 btn"><strong>Guardar</strong></button>
+                            <button type="button" class="col-md-3 btn" data-dismiss="modal" id="btnCancelar"><strong>Cerrar</strong></button>
                         </div>
                     </form>
                 </div>
@@ -85,14 +84,11 @@
 
 
     <div class="modal fade" id="detalleAbono" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-md modal-dialog-centered modal-lg">
             <div class="modal-content">
-                <div style="background-color: rgba(0, 0, 0, 0.869);">
-                    <h3 class="mt-3  text-white  text-center">Detalles de Abonos</h4>
-                    <!-- <button type="button" class="btn btn-primary col-md-2 form-control btn mt-1 m-2"onclick="mostrarFormularioAbonar()"><strong>Abonar</strong> </button> -->
-                    <button type="button" class="btn btn-primary col-md-2 form-control btn mt-1 m-2" onclick="mostrarFormularioAbonar(idUsuarioCreditoA)" data-toggle="modal"data-target=""><strong>Abonar</strong></button>
-
-                    <table id="tablaDetalleAbono" class="table table-dark table-striped mb-0 w-100">
+                    <h3 class="mt-3 text-white text-center">Detalles de Abonos</h3>
+                    <button type="button" class="btn btn-primary mx-5" onclick="mostrarFormularioAbonar(idUsuarioCreditoA)" data-toggle="modal"data-target=""><i class='fas fa-hand-holding-usd'></i><strong>  Abonar</strong></button>
+                    <table id="tablaDetalleAbono" class="table w-100">
                         <thead class="text-center">
                             <tr>
                             <th>#</th>
@@ -109,14 +105,12 @@
     </div>
 
     <div class="modal fade" id="formAbonarCreditos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index: 1050;">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-md modal-dialog-centered">
             <div class="modal-content">
-                <div style="background-color: rgba(0, 0, 0, 0.869);">
                     <form id="formAbonarCredito">
                         <input type="hidden" id="idUsuarioCredito">
-                        <h4 id="tituloFormularioAbonarCreditos" class="mt-3 text-white text-center"></h4>
-                        <div class="form-row justify-content-center">
-                            <h3 class="mt-3 text-white text-center">Abonar</h4>
+                        <div class="modal-header">
+                            <h3 class="mt-3 text-center">Abonar</h3>
                         </div>
                         <div class="form-row justify-content-center">
                             <div class="form-group col-md-6">
@@ -127,15 +121,15 @@
                             <div class="form-group col-md-6">
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" style="background-color: #e5c850"><i class="fas fa-dollar-sign"></i></span>
+                                        <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
                                     </div>
                                     <input type="text" class="form-control" id="abonar" name="abonar" placeholder="Ingrese el monto a abonar" onkeypress="return validarNumeroUC(event)">
                                 </div>
                             </div>
                         </div>
                         <div class="form-group text-center mt-3">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                            <button type="button" class="btn btn-success" onclick="crearAbono()">Abonar</button>
+                            <button type="button" class="col-md-3 btn" data-dismiss="modal">Cerrar</button>
+                            <button type="button" class="col-md-3 btn" onclick="crearAbono()">Abonar</button>
                         </div>
                     </form>
                 </div>
@@ -147,9 +141,8 @@
     <div class="modal fade" id="detalleCredito" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div style="background-color: rgba(0, 0, 0, 0.869);">
                     <h3 class="mt-3  text-white  text-center">Creditos Asociados</h4>
-                    <table id="tablaDetalleCredito" class="table table-dark table-striped mb-0 w-100">
+                    <table id="tablaDetalleCredito" class="table w-100">
                         <thead class="text-center">
                             <tr>
                             <th># Venta</th>
@@ -165,27 +158,20 @@
         </div>
     </div>
 
-
-
-
   <div class="modal fade" id="formAsociarCreditos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-md modal-dialog-centered">
         <div class="modal-content">
-            <div style="background-color: rgba(0, 0, 0, 0.869);">
                 <form id="formAsociarCredito">
                     <h4 id="tituloasociarCreditos" class="mt-3 text-white text-center"></h4>
-                    <h3 class="modal-title" style="text-align: center; color: white;">Asociar Pedido</h3>
-                    <div class="form-row justify-content-center">
+                    <h3 class="modal-title text-white mb-4" style="text-align:center;">Asociar Pedido</h3>
+                    <div class="row justify-content-center">
                         <div class="form-group col-md-4">
                                 <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" style="background-color: #e5c850"><i class="fas fa-search"></i></span>
-                                    </div>
-                                    <input type="" class="form-control" id="buscarVenta" name="buscarVenta" placeholder="Buscar" onkeypress="return validarNumeroUC(event)">
+                                    <input type="" class="form-control" id="buscarVenta" name="buscarVenta" placeholder="Id Venta" onkeypress="return validarNumeroUC(event)">
                                 </div>
                         </div>
-                        <div class="form-group col-md-4">
-                            <button type="button" class="btn btn-success" onclick="buscarVentasLogica()">Buscar</button>
+                        <div class="form-group col-md-2">
+                            <button type="button" class="btn btn-sm" onclick="buscarVentasLogica()"><i class="fas fa-search"></i></button>
                         </div>
                     </div>
                     <div class="contenido-principal">
@@ -207,8 +193,8 @@
                     </div>
 
                     <div class="form-group text-center mt-3">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        <button type="button" class="btn btn-success" onclick="CrearCredito()">Crear Crédito</button>
+                        <button type="button" class="col-md-2 btn" data-dismiss="modal"><strong>Cerrar</strong></button>
+                        <button type="button" class="col-md-2 btn" onclick="CrearCredito()"><strong>Crédito</strong></button>
                     </div>
                 </form>
             </div>
@@ -216,22 +202,13 @@
     </div>
 </div>
 
-
-
-
-
-
-
-
-
-
   <h3 class="mt-3  text-white  text-center">Nuestros usuarios Créditos</h4>
 
     <div class="contenido-principal">
         <div class="container bg-secundary">
             <div class="form-group">
                 <button type="button" class="btn btn-primary mr-2" onclick="mostrarFormularioCrearUsuarioCreditos()"data-toggle="modal"data-target="#formCrearUsuarioCredito"><i class="fas fa-plus"></i></button>
-                <button type="button" onclick=""  class="btn btn-primary"> <i class="fas fa-file-alt"></i></button>
+                <button type="button" onclick=""  class="btn btn-primary"> <i class="fa-solid fa-file-pdf"></i></button>
             </div>
 
             <div class="form-group">
@@ -243,8 +220,8 @@
                     <th>Nombre</th>
                     <th>Documento</th>
                     <th>Teléfono</th>
-                    <th>TotalCredito</th>
-                    <th>AccionesCreditos</th>
+                    <th>Total Crédito</th>
+                    <th>Acciones Créditos</th>
                     <th>Acciones</th>
 
                     </tr>
@@ -257,13 +234,12 @@
     </div>
 
 
-
-
     <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="js/configAmbiente.js"></script>
     <script src="js/oAuthJwt.js"></script>
     <script src="js/usuarioCredito.js"></script>
     <script src="js/validaciones.js"></script>
@@ -280,12 +256,10 @@
                 // Restablece el formulario a su estado inicial
                 $('#formUsuarioCredito')[0].reset();
             });
-    
             // Agrega un evento de clic para el botón de "Guardar"
             $('#btn-form').on('click', function () {
                 // Aquí puedes agregar la lógica para procesar el formulario
                 // ...
-    
                 // Después de procesar, cierra la modal si es necesario
                 $('#formCrearUsuarioCredito').modal('hide');
             });
@@ -298,14 +272,11 @@
                 // Restablece el formulario a su estado inicial
                 $('#formAsociarCredito')[0].reset();
                 $('#tablaDetalleVenta > tbody').empty();
-                
             });
-    
             // Agrega un evento de clic para el botón de "Guardar"
             $('#btn-form').on('click', function () {
                 // Aquí puedes agregar la lógica para procesar el formulario
                 // ...
-    
                 // Después de procesar, cierra la modal si es necesario
                 $('#formAsociarCreditos').modal('hide');
             });

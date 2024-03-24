@@ -86,6 +86,8 @@ function callApiObtenerDetalleCompra(token,miTabla){
       asignarValor(data);
     },
     error: function (error) {
+      console.log("error detail "+JSON.stringify(error));
+      /*
       Swal.fire({
         title: 'Error',
         text: error.message,
@@ -95,6 +97,7 @@ function callApiObtenerDetalleCompra(token,miTabla){
         confirmButtonText: 'Confirmar',
     }).then((result) => {
     });
+      */
     }
   });
 }
@@ -273,7 +276,7 @@ function crearDetalleCompra(){
 function ApiCallCrearDetalleCompra(token,request){
   $.ajax({
     type:request.accion=="edit"?"PUT":"POST",
-    url:request.accion=="edit"?"http://localhost:8081/edge-service/v1/service/detalle-compras/actualizar/"+request.idDetalleCompra :"http://localhost:8081/edge-service/v1/service/detalle-compras/actualizar",
+    url:request.accion=="edit"?hostDomain+"/edge-service/v1/service/detalle-compras/actualizar/"+request.idDetalleCompra :hostDomain+"/edge-service/v1/service/detalle-compras/actualizar",
     "headers": {
       'Authorization': `Bearer ${token}`
   },
@@ -337,7 +340,7 @@ function updateDetalleCompra(){
 function callApiUpdateDetalleCompra(request,token){
   $.ajax({
     type: "POST",
-    url: "http://localhost:8081/edge-service/v1/service/detalle-compras/actualizar",
+    url: hostDomain+"/edge-service/v1/service/detalle-compras/actualizar",
     "headers": {
       'Authorization': `Bearer ${token}`
   },
@@ -399,7 +402,7 @@ function consultarProductos(token) {
 
   $.ajax({
       type: "GET",
-      url: "http://localhost:8081/edge-service/v1/service/productos/existencias",
+      url: hostDomain+"/edge-service/v1/service/productos/existencias",
       "headers": {
         'Authorization': `Bearer ${token}`,
         "Content-Type": "application/json"
@@ -438,7 +441,7 @@ function onErrorProductosList(error) {
 function consultarProveedores(token) {
   $.ajax({
       type: "GET",
-      url: "http://localhost:8081/edge-service/v1/service/proveedor/consultar",
+      url: hostDomain+"/edge-service/v1/service/proveedor/consultar",
       "headers": {
         'Authorization': `Bearer ${token}`,
           "Content-Type": "application/json"

@@ -7,7 +7,7 @@ function consultarCategorias(token) {
     //$("#textCargando").text("Cargando Categorias");
     $.ajax({
         type: "GET",
-        url: "http://localhost:8081/edge-service/v1/service/categorias/consultar",
+        url: hostDomain+"/edge-service/v1/service/categorias/consultar",
         "headers": {
             "Content-Type": "application/json",
             'Authorization': `Bearer ${token}`
@@ -31,12 +31,11 @@ function onExitoCategoriasTable(data){
     if ($.fn.DataTable.isDataTable('#tablaCategoria')) {
         $('#tablaCategoria').DataTable().destroy();
     }
-    
     // Obtén una referencia a la DataTable de Categorías
     var dataTableCategorias = $('#tablaCategoria').DataTable({
         dom: '<"row"<"col-md-6"l><"col-md-6"f>>tip',
         pageLength: 3,
-        lengthMenu: [3, 5, 10, 25, 50], 
+        lengthMenu: [3, 5, 10, 25, 50],
         language: {
             "sProcessing": "Procesando...",
             "sLengthMenu": "Mostrar _MENU_ registros",
@@ -62,31 +61,26 @@ function onExitoCategoriasTable(data){
             }
         }
     });
-    
     // Limpia la tabla de Categorías
     dataTableCategorias.clear();
-    
     // Recorre los datos y agrega las filas
     $.each(data, function (id,categoria) {
-        
-        var boton1 = "<button onclick='EliminarCategoria(" + JSON.stringify(categoria) + ")' class='btn btn-eliminar' data-id='1'><i class='fas fa-trash'></i></button>";
+        var boton1 = "<button onclick='EliminarCategoria(" + JSON.stringify(categoria) + ")' class='btn btn-eliminar' data-id='1'><i class='fa-solid fa-trash-can'></i></button>";
+        var espacio = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
         var boton2 = "<button onclick='EditarCategoria(" + JSON.stringify(categoria) + ")' class='btn btn-editar' ><i class='fas fa-edit'></i></button>";
 
         // Agrega la fila a la DataTable de Categorías
         dataTableCategorias.row.add([
             categoria.idCategoria,
             categoria.nombreCategoria,
-            boton1 +
-            boton2
+            boton1 + espacio + boton2
         ]).draw();
-      
     });
 }
 
 function onExitoCategorias(data) {
     onExitoCategoriasDropDown(data);
     onExitoCategoriasTable(data);
-        
 }
 function onErrorCategorias(error) {
   // $("#cargando").modal("hide");
@@ -101,51 +95,49 @@ function onErrorCategorias(error) {
         text: message,
         icon:"warning",
         showCancelButton: false,
-        confirmButtonColor: ' #d5c429 ',
+        confirmButtonColor: ' #ae9243',
         confirmButtonText: 'Confirmar',
     }).then((result) => {
-       
     });
 }
 
 function mostrarFormularioCrearCategoria(){
-    
     var titulo = $("#tituloFomularioCategoria");
     titulo.text("Crear una nueva Categoría");
     var btnform = $("#btn-form-categoria");
     btnform.text("Guardar");
    //btnform.click(crearRol);
-   $("#operacionCategoria").val("crearCategoria");
-   $("#idCategoriaActualizar").val("");
+    $("#operacionCategoria").val("crearCategoria");
+    $("#idCategoriaActualizar").val("");
   // btnform.click(function(){ crearRol(); });
-  
 }
 
 function crearCategoria(){
     var formData = {
         nombreCategoria:$("#nombreCategoria").val(),
      };
-     handleAjaxRequest(function (token) {
-         callApiCrearCategoria(formData, token);
-     });
      if (validarCampoVacio($("#nombreCategoria").val().length, 'Por favor ingrese un nombre a la categoría')) {
         return false;
     }
+     handleAjaxRequest(function (token) {
+         callApiCrearCategoria(formData, token);
+     });
+    
 }
 
 function callApiCrearCategoria(formData,token){
 
     $.ajax({
         type: "POST",
-        url:"http://localhost:8081/edge-service/v1/service/categorias/crear",
+        url:hostDomain+"/edge-service/v1/service/categorias/crear",
         "headers": {
-          "Content-Type": "application/json",
-          'Authorization': `Bearer ${token}`
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`
         },
         data: JSON.stringify(formData),
         success: onExitoCrearCategoria,
         error: onErrorCrearCategoria
-   });
+    });
 }
 function onExitoCrearCategoria(data){
     $("#formCrearCategoria").modal("hide");
@@ -156,7 +148,7 @@ function onExitoCrearCategoria(data){
         type: 'success',
         icon:"success",
         showCancelButton: false,
-        confirmButtonColor: ' #d5c429 ',
+        confirmButtonColor: ' #ae9243 ',
         confirmButtonText: 'Confirmar',
     }).then((result) => {
        
@@ -170,17 +162,17 @@ function onErrorCrearCategoria(error){
         text: error.responseJSON.message,
         icon:"warning",
         showCancelButton: false,
-        confirmButtonColor: ' #d5c429 ',
+        confirmButtonColor: ' #ae9243 ',
         confirmButtonText: 'Confirmar',
     }).then((result) => {
-       
     });
 }
 function eventoFormularioCategoria(){
+
     var operacion=$("#operacionCategoria").val();
     if(operacion=="crearCategoria"){
-        crearCategoria();
        
+        crearCategoria();
     }else{
         actualizarCategoria();
     }
@@ -193,8 +185,7 @@ function EliminarCategoria(categoria) {
         text: 'Esta seguro de eliminar la categoria ' + categoria.nombreCategoria,
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
+        confirmButtonColor: '#ae9243',
         confirmButtonText: 'Eliminar',
         cancelButtonText: 'Cancelar'
     }).then((result) => {
@@ -209,10 +200,10 @@ function EliminarCategoria(categoria) {
 
 function callApiEliminarCategoria(categoria,token){
     $.ajax({
-        url: "http://localhost:8081/edge-service/v1/service/categorias/eliminar/" + categoria.idCategoria,
+        url: hostDomain+"/edge-service/v1/service/categorias/eliminar/" + categoria.idCategoria,
         type: 'DELETE',
         "headers": {
-           'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${token}`
         },
         success: function (response) {
             // Manejar la respuesta de eliminación exitosa
@@ -268,7 +259,7 @@ function actualizarCategoria() {
 function callApiActualizarCategoria(formData, token){
     $.ajax({
         type: "PUT",
-        url: "http://localhost:8081/edge-service/v1/service/categorias/actualizar/" + formData.idCategoria,
+        url: hostDomain+"/edge-service/v1/service/categorias/actualizar/" + formData.idCategoria,
           "headers": {
             "Content-Type": "application/json",
             'Authorization': `Bearer ${token}`

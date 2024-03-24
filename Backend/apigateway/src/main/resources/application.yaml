@@ -1,10 +1,10 @@
-
+#HOST_API_JAVA=http://localhost:8080;HOST_API_VENTA=https://localhost:7084
 
 server:
   port: 8081
 
 paths.auth:
-  basePath: http://localhost:8080
+  basePath: ${HOST_API_JAVA:http://localhost:8080}
   introspect: /api/introspectToken
 
 security.clientId: 562ed6c2-86f8-4846-96b7-1dc1faf73fb6
@@ -49,14 +49,14 @@ spring:
         #             OAUTH                     #
         #########################################
         - id: oauth-login
-          uri: http://localhost:8080
+          uri: ${HOST_API_JAVA:http://localhost:8080}
           predicates:
             - Path=/edge-service/v1/authorization/login
           filters:
             - RewritePath=/edge-service/v1/authorization/login, /api/login
 
         - id: oauth-refresh
-          uri: http://localhost:8080
+          uri: ${HOST_API_JAVA:http://localhost:8080}
           predicates:
             - Path=/edge-service/v1/authorization/refreshToken
           filters:
@@ -67,7 +67,7 @@ spring:
             - RewritePath=/edge-service/v1/authorization/refreshToken, /api/refreshToken
 
         - id: oauth-logout
-          uri: http://localhost:8080
+          uri: ${HOST_API_JAVA:http://localhost:8080}
           predicates:
             - Path=/edge-service/v1/authorization/logout
           filters:
@@ -83,7 +83,7 @@ spring:
 
         ##PRODUCTOS##
         - id: services-productos-consultar
-          uri: http://localhost:8080
+          uri: ${HOST_API_JAVA:http://localhost:8080}
           predicates:
             - Path=/edge-service/v1/service/productos/consultar
             # - Header=scope, httpbin
@@ -95,7 +95,7 @@ spring:
             - RewritePath=/edge-service/v1/service/productos/consultar, /api/producto/consultar
 
         - id: services-productos-pdf
-          uri: http://localhost:8080
+          uri: ${HOST_API_JAVA:http://localhost:8080}
           predicates:
             - Path=/edge-service/v1/service/productos/pdf
             - Header=target, pdf
@@ -108,7 +108,7 @@ spring:
 
 
         - id: services-productos-crear
-          uri: http://localhost:8080
+          uri: ${HOST_API_JAVA:http://localhost:8080}
           predicates:
             - Path=/edge-service/v1/service/productos/crear
             # - Header=scope, httpbin
@@ -120,7 +120,7 @@ spring:
             - RewritePath=/edge-service/v1/service/productos/crear, /api/producto/crear
 
         - id: services-productos-actualizar
-          uri: http://localhost:8080
+          uri: ${HOST_API_JAVA:http://localhost:8080}
           predicates:
             - Path=/edge-service/v1/service/productos/actualizar/**
           filters:
@@ -131,7 +131,7 @@ spring:
             - RewritePath=/edge-service/v1/service/productos/actualizar/(?<idproductos>.*), /api/producto/actualizar/$\{idproductos}
 
         - id: services-productos-eliminar
-          uri: http://localhost:8080
+          uri: ${HOST_API_JAVA:http://localhost:8080}
           predicates:
             - Path=/edge-service/v1/service/productos/eliminar/**
           filters:
@@ -143,7 +143,7 @@ spring:
 
 
         - id: services-productos-agrupados-consultar
-          uri: https://localhost:7084
+          uri: ${HOST_API_VENTA:https://localhost:7084}
           predicates:
             - Path=/edge-service/v1/service/productos/consultar/agrupados
           filters:
@@ -154,7 +154,7 @@ spring:
             - RewritePath=/edge-service/v1/service/productos/consultar/agrupados, /api/Productos/Agrupados
 
         - id: services-productos-existencias-consultar
-          uri: https://localhost:7084
+          uri: ${HOST_API_VENTA:https://localhost:7084}
           predicates:
             - Path=/edge-service/v1/service/productos/con/existencias
           filters:
@@ -165,7 +165,7 @@ spring:
             - RewritePath=/edge-service/v1/service/productos/con/existencias, /api/Productos/productos-con-existencias
 
         - id: services-productos-existencias-consultar
-          uri: https://localhost:7084
+          uri: ${HOST_API_VENTA:https://localhost:7084}
           predicates:
             - Path=/edge-service/v1/service/productos/existencias
           filters:
@@ -178,7 +178,7 @@ spring:
 
         ##CATEGORIAS##
         - id: services-categoria-consultar
-          uri: https://localhost:7084
+          uri: ${HOST_API_VENTA:https://localhost:7084}
           predicates:
             - Path=/edge-service/v1/service/categorias/consultar
           filters:
@@ -189,7 +189,7 @@ spring:
             - RewritePath=/edge-service/v1/service/categorias/consultar, /api/Categorias
 
         - id: services-categoria-crear
-          uri: https://localhost:7084
+          uri: ${HOST_API_VENTA:https://localhost:7084}
           predicates:
             - Path=/edge-service/v1/service/categorias/crear
             # - Header=scope, httpbin
@@ -201,7 +201,7 @@ spring:
             - RewritePath=/edge-service/v1/service/categorias/crear, /api/Categorias/crear
 
         - id: services-categoria-eliminar
-          uri: https://localhost:7084
+          uri: ${HOST_API_VENTA:https://localhost:7084}
           predicates:
             - Path=/edge-service/v1/service/categorias/eliminar/**
             # - Header=scope, httpbin
@@ -213,7 +213,7 @@ spring:
             - RewritePath=/edge-service/v1/service/categorias/eliminar/(?<idcategoria>.*), /api/Categorias/$\{idcategoria}
 
         - id: services-categoria-actualizar
-          uri: https://localhost:7084
+          uri: ${HOST_API_VENTA:https://localhost:7084}
           predicates:
             - Path=/edge-service/v1/service/categorias/actualizar/**
             # - Header=scope, httpbin
@@ -227,7 +227,7 @@ spring:
 
         ##VENTAS##
         - id: services-venta-barra-crear
-          uri: https://localhost:7084
+          uri: ${HOST_API_VENTA:https://localhost:7084}
           predicates:
             - Path=/edge-service/v1/service/venta/barra/crear
           filters:
@@ -238,7 +238,7 @@ spring:
             - RewritePath=/edge-service/v1/service/venta/barra/crear, /api/Ventas/Barra
 
         - id: services-venta-barra-notificacion
-          uri: https://localhost:7084
+          uri: ${HOST_API_VENTA:https://localhost:7084}
           predicates:
             - Path=/edge-service/v1/service/venta/barra/crear/**
           filters:
@@ -249,7 +249,7 @@ spring:
             - RewritePath=/edge-service/v1/service/venta/barra/crear/(?<idventa>.*), /api/Ventas/Barra/$\{idventa}
 
         - id: services-venta-consultar-id
-          uri: https://localhost:7084
+          uri: ${HOST_API_VENTA:https://localhost:7084}
           predicates:
             - Path=/edge-service/v1/service/venta/consultar/id/**
             #- Header=target, consultar-venta-id
@@ -261,7 +261,7 @@ spring:
             - RewritePath=/edge-service/v1/service/venta/consultar/id/(?<idventa>.*), /api/Ventas/$\{idventa}
 
         - id: services-venta-detalle-consultar-ByVenta
-          uri: https://localhost:7084
+          uri: ${HOST_API_VENTA:https://localhost:7084}
           predicates:
             - Path=/edge-service/v1/service/venta/detalle/consultar/ByVenta/**
           filters:
@@ -272,7 +272,7 @@ spring:
             - RewritePath=/edge-service/v1/service/venta/detalle/consultar/ByVenta/(?<idventa>.*), /api/DetalleVentas/ByVenta/$\{idventa}
 
         - id: services-venta-consultar-ByVenta
-          uri: https://localhost:7084
+          uri: ${HOST_API_VENTA:https://localhost:7084}
           predicates:
             - Path=/edge-service/v1/service/venta/consultar/ByVenta/**
           filters:
@@ -284,7 +284,7 @@ spring:
 
 
         - id: services-venta-consultar-ByFecha
-          uri: https://localhost:7084
+          uri: ${HOST_API_VENTA:https://localhost:7084}
           predicates:
             - Path=/edge-service/v1/service/venta/consultar/ByFecha
           filters:
@@ -296,7 +296,7 @@ spring:
 
 
         - id: services-venta-consultar
-          uri: https://localhost:7084
+          uri: ${HOST_API_VENTA:https://localhost:7084}
           predicates:
             - Path=/edge-service/v1/service/venta/consultar
             - Header=target, consultar-venta
@@ -308,7 +308,7 @@ spring:
             - RewritePath=/edge-service/v1/service/venta/consultar, /api/Ventas
 
         - id: services-venta-mesa-crear
-          uri: https://localhost:7084
+          uri: ${HOST_API_VENTA:https://localhost:7084}
           predicates:
             - Path=/edge-service/v1/service/venta/mesa/crear
           filters:
@@ -319,7 +319,7 @@ spring:
             - RewritePath=/edge-service/v1/service/venta/mesa/crear, /api/Ventas/Mesa
 
         - id: services-venta-pendientes-consultar
-          uri: https://localhost:7084
+          uri: ${HOST_API_VENTA:https://localhost:7084}
           predicates:
             - Path=/edge-service/v1/service/venta/pendiente/consultar
           filters:
@@ -330,7 +330,7 @@ spring:
             - RewritePath=/edge-service/v1/service/venta/pendiente/consultar, /api/Ventas/Pendientes
 
         - id: services-venta-ultimo-mes-consultar
-          uri: https://localhost:7084
+          uri: ${HOST_API_VENTA:https://localhost:7084}
           predicates:
             - Path=/edge-service/v1/service/venta/ultimo-mes/consultar
           filters:
@@ -341,7 +341,7 @@ spring:
             - RewritePath=/edge-service/v1/service/venta/ultimo-mes/consultar, /api/Ventas/ventas-ultimo-mes
 
         - id: services-venta-por-mes-consultar
-          uri: https://localhost:7084
+          uri: ${HOST_API_VENTA:https://localhost:7084}
           predicates:
             - Path=/edge-service/v1/service/venta/por-mes/consultar
           filters:
@@ -354,7 +354,7 @@ spring:
 
         ##COMPRAS##
         - id: services-compras-consultar
-          uri: https://localhost:7084
+          uri: ${HOST_API_VENTA:https://localhost:7084}
           predicates:
             - Path=/edge-service/v1/service/compras/consultar
           filters:
@@ -365,7 +365,7 @@ spring:
             - RewritePath=/edge-service/v1/service/compras/consultar, /api/Compra
 
         - id: services-compras-consultar
-          uri: https://localhost:7084
+          uri: ${HOST_API_VENTA:https://localhost:7084}
           predicates:
             - Path=/edge-service/v1/service/compras/consultar/pdf
             - Header=target, pdf
@@ -378,7 +378,7 @@ spring:
 
 
         - id: services-compras-consultar
-          uri: https://localhost:7084
+          uri: ${HOST_API_VENTA:https://localhost:7084}
           predicates:
             - Path=/edge-service/v1/service/compras/consultar/**
           filters:
@@ -389,7 +389,7 @@ spring:
             - RewritePath=/edge-service/v1/service/compras/consultar/(?<idcompra>.*), /api/Compra/$\{idcompra}
 
         - id: services-compras-consultar
-          uri: https://localhost:7084
+          uri: ${HOST_API_VENTA:https://localhost:7084}
           predicates:
             - Path=/edge-service/v1/service/compras/eliminar/**
           filters:
@@ -401,7 +401,7 @@ spring:
 
 
         - id: services-compras-ultimo-mes-consultar
-          uri: https://localhost:7084
+          uri: ${HOST_API_VENTA:https://localhost:7084}
           predicates:
             - Path=/edge-service/v1/service/compras/ultimo-mes/consultar
           filters:
@@ -412,7 +412,7 @@ spring:
             - RewritePath=/edge-service/v1/service/compras/ultimo-mes/consultar, /api/Compra/compras-ultimo-mes
 
         - id: services-compras-por-mes-consultar
-          uri: https://localhost:7084
+          uri: ${HOST_API_VENTA:https://localhost:7084}
           predicates:
             - Path=/edge-service/v1/service/compras/por-mes/consultar
           filters:
@@ -424,7 +424,7 @@ spring:
 
         ##DETALLE COMPRA##
         - id: services-detallecompras-actualizar
-          uri: https://localhost:7084
+          uri: ${HOST_API_VENTA:https://localhost:7084}
           predicates:
             - Path=/edge-service/v1/service/detalle-compras/actualizar
           filters:
@@ -435,7 +435,7 @@ spring:
             - RewritePath=/edge-service/v1/service/detalle-compras/actualizar, /api/DetalleCompra
 
         - id: services-detallecompras-actualizar-id
-          uri: https://localhost:7084
+          uri: ${HOST_API_VENTA:https://localhost:7084}
           predicates:
             - Path=/edge-service/v1/service/detalle-compras/actualizar/**
           filters:
@@ -446,7 +446,7 @@ spring:
             - RewritePath=/edge-service/v1/service/detalle-compras/actualizar/(?<idcompra>.*), /api/DetalleCompra/$\{idcompra}
 
         - id: services-detallecompras-eliminar-id
-          uri: https://localhost:7084
+          uri: ${HOST_API_VENTA:https://localhost:7084}
           predicates:
             - Path=/edge-service/v1/service/detalle-compras/eliminar/**
           filters:
@@ -457,7 +457,7 @@ spring:
             - RewritePath=/edge-service/v1/service/detalle-compras/eliminar/(?<idcompra>.*), /api/DetalleCompra/$\{idcompra}
 
         - id: services-detallecompras-consultar-id
-          uri: https://localhost:7084
+          uri: ${HOST_API_VENTA:https://localhost:7084}
           predicates:
             - Path=/edge-service/v1/service/detalle-compras/consultar/id/**
           filters:
@@ -470,7 +470,7 @@ spring:
         ##USUARIO CREDITO##
 
         - id: services-usuario-credito-crear
-          uri: https://localhost:7084
+          uri: ${HOST_API_VENTA:https://localhost:7084}
           predicates:
             - Path=/edge-service/v1/service/usuario/credito/crear
           filters:
@@ -481,7 +481,7 @@ spring:
             - RewritePath=/edge-service/v1/service/usuario/credito/crear, /api/UsuarioCreditos
 
         - id: services-usuario-credito-crear-id
-          uri: https://localhost:7084
+          uri: ${HOST_API_VENTA:https://localhost:7084}
           predicates:
             - Path=/edge-service/v1/service/usuario/credito/crear/id/**
           filters:
@@ -492,7 +492,7 @@ spring:
             - RewritePath=/edge-service/v1/service/usuario/credito/crear/id/(?<idusuariocredito>.*), /api/UsuarioCreditos/$\{idusuariocredito}
 
         - id: services-usuario-credito-consultar
-          uri: https://localhost:7084
+          uri: ${HOST_API_VENTA:https://localhost:7084}
           predicates:
             - Path=/edge-service/v1/service/usuario/credito/consultar
           filters:
@@ -503,7 +503,7 @@ spring:
             - RewritePath=/edge-service/v1/service/usuario/credito/consultar, /api/UsuarioCreditos
 
         - id: services-usuario-credito-consultar
-          uri: https://localhost:7084
+          uri: ${HOST_API_VENTA:https://localhost:7084}
           predicates:
             - Path=/edge-service/v1/service/usuario/credito/consultar/id/**
           filters:
@@ -514,7 +514,7 @@ spring:
             - RewritePath=/edge-service/v1/service/usuario/credito/consultar/id/(?<idusuariocredito>.*), /api/UsuarioCreditos/$\{idusuariocredito}
 
         - id: services-usuario-credito-actualizar
-          uri: https://localhost:7084
+          uri: ${HOST_API_VENTA:https://localhost:7084}
           predicates:
             - Path=/edge-service/v1/service/usuario/credito/actualizar/id/**
           filters:
@@ -525,7 +525,7 @@ spring:
             - RewritePath=/edge-service/v1/service/usuario/credito/actualizar/id/(?<idusuariocredito>.*), /api/UsuarioCreditos/$\{idusuariocredito}
 
         - id: services-usuario-credito-eliminar
-          uri: https://localhost:7084
+          uri: ${HOST_API_VENTA:https://localhost:7084}
           predicates:
             - Path=/edge-service/v1/service/usuario/credito/eliminar/id/**
           filters:
@@ -538,7 +538,7 @@ spring:
 
         ##Creditos##
         - id: services-creditos-ultimo-mes-consultar
-          uri: https://localhost:7084
+          uri: ${HOST_API_VENTA:https://localhost:7084}
           predicates:
             - Path=/edge-service/v1/service/creditos/ultimo-mes/consultar
           filters:
@@ -548,8 +548,19 @@ spring:
                 accion: Consultar
             - RewritePath=/edge-service/v1/service/creditos/ultimo-mes/consultar, /api/Creditos/creditos-ultimo-mes
 
+        - id: services- credito-consultar
+          uri: ${HOST_API_VENTA:https://localhost:7084}
+          predicates:
+            - Path=/edge-service/v1/service/credito/consultar/id/**
+          filters:
+            - name: AuthenticationFilter
+              args:
+                modulo: Credito
+                accion: Consultar
+            - RewritePath=/edge-service/v1/service/credito/consultar/id/(?<idusuariocredito>.*), /api/Creditos/$\{idusuariocredito}
+
         - id: services-abono-creditos-consultar
-          uri: https://localhost:7084
+          uri: ${HOST_API_VENTA:https://localhost:7084}
           predicates:
             - Path=/edge-service/v1/service/abono/creditos/consultar/id/**
           filters:
@@ -560,7 +571,7 @@ spring:
             - RewritePath=/edge-service/v1/service/abono/creditos/consultar/id/(?<idabonocredito>.*), /api/AbonoCreditos/$\{idabonocredito}
 
         - id: services-abono-creditos-crear
-          uri: https://localhost:7084
+          uri: ${HOST_API_VENTA:https://localhost:7084}
           predicates:
             - Path=/edge-service/v1/service/abono/creditos/crear
           filters:
@@ -572,7 +583,7 @@ spring:
 
 
         - id: services-creditos-crear
-          uri: https://localhost:7084
+          uri: ${HOST_API_VENTA:https://localhost:7084}
           predicates:
             - Path=/edge-service/v1/service/creditos/crear
           filters:
@@ -583,7 +594,7 @@ spring:
             - RewritePath=/edge-service/v1/service/creditos/crear, /api/Creditos
 
         - id: services-creditos-consultar
-          uri: https://localhost:7084
+          uri: ${HOST_API_VENTA:https://localhost:7084}
           predicates:
             - Path=/edge-service/v1/service/creditos/consultar
           filters:
@@ -596,7 +607,7 @@ spring:
 
         ##USUARIOS##
         - id: services-usuarios-consultar
-          uri: http://localhost:8080
+          uri: ${HOST_API_JAVA:http://localhost:8080}
           predicates:
             - Path=/edge-service/v1/service/usuario/consultar
           filters:
@@ -607,7 +618,7 @@ spring:
             - RewritePath=/edge-service/v1/service/usuario/consultar, /api/usuarios/consultar
 
         - id: services-usuarios-crear
-          uri: http://localhost:8080
+          uri: ${HOST_API_JAVA:http://localhost:8080}
           predicates:
             - Path=/edge-service/v1/service/usuario/crear
           filters:
@@ -618,7 +629,7 @@ spring:
             - RewritePath=/edge-service/v1/service/usuario/crear, /api/usuarios/crear
 
         - id: services-usuarios-actualizar
-          uri: http://localhost:8080
+          uri: ${HOST_API_JAVA:http://localhost:8080}
           predicates:
             - Path=/edge-service/v1/service/usuario/actualizar/**
           filters:
@@ -629,7 +640,7 @@ spring:
             - RewritePath=/edge-service/v1/service/usuario/actualizar/(?<idusuario>.*), /api/usuarios/actualizar/$\{idusuario}
 
         - id: services-usuarios-eliminar
-          uri: http://localhost:8080
+          uri: ${HOST_API_JAVA:http://localhost:8080}
           predicates:
             - Path=/edge-service/v1/service/usuario/eliminar/**
           filters:
@@ -641,7 +652,7 @@ spring:
 
         ##ROLES Y PERMISOS##
         - id: services-roles-consultar
-          uri: http://localhost:8080
+          uri: ${HOST_API_JAVA:http://localhost:8080}
           predicates:
             - Path=/edge-service/v1/service/roles/consultar
           filters:
@@ -652,7 +663,7 @@ spring:
             - RewritePath=/edge-service/v1/service/roles/consultar, /api/roles
 
         - id: services-roles-consultar
-          uri: http://localhost:8080
+          uri: ${HOST_API_JAVA:http://localhost:8080}
           predicates:
             - Path=/edge-service/v1/service/roles/consultar/id/**
             # - Header=scope, httpbin
@@ -664,7 +675,7 @@ spring:
             - RewritePath=/edge-service/v1/service/roles/consultar/id/(?<idrol>.*), /api/roles/api/roles/{id}/$\{idusuario}
 
         - id: services-roles-crear
-          uri: http://localhost:8080
+          uri: ${HOST_API_JAVA:http://localhost:8080}
           predicates:
             - Path=/edge-service/v1/service/roles/crear
             # - Header=scope, httpbin
@@ -676,7 +687,7 @@ spring:
             - RewritePath=/edge-service/v1/service/roles/crear, /api/rol/crear
 
         - id: services-roles-actualizar
-          uri: http://localhost:8080
+          uri: ${HOST_API_JAVA:http://localhost:8080}
           predicates:
             - Path=/edge-service/v1/service/roles/actualizar/**
           filters:
@@ -687,7 +698,7 @@ spring:
             - RewritePath=/edge-service/v1/service/roles/actualizar/(?<idrol>.*), /api/rol/actualizar/$\{idrol}
 
         - id: services-roles-eliminar
-          uri: http://localhost:8080
+          uri: ${HOST_API_JAVA:http://localhost:8080}
           predicates:
             - Path=/edge-service/v1/service/roles/eliminar/**
           filters:
@@ -698,7 +709,7 @@ spring:
             - RewritePath=/edge-service/v1/service/roles/eliminar/(?<idrol>.*), /api/rol/eliminar/$\{idrol}
 
         - id: services-roles-configuracion
-          uri: http://localhost:8080
+          uri: ${HOST_API_JAVA:http://localhost:8080}
           predicates:
             - Path=/edge-service/v1/service/roles/configuracion/crear
             # - Header=scope, httpbin
@@ -710,7 +721,7 @@ spring:
             - RewritePath=/edge-service/v1/service/roles/configuracion/crear, /api/configuracion/guardar
 
         - id: services-permisos-consultar
-          uri: http://localhost:8080
+          uri: ${HOST_API_JAVA:http://localhost:8080}
           predicates:
             - Path=/edge-service/v1/service/permisos/consultar
             # - Header=scope, httpbin
@@ -723,7 +734,7 @@ spring:
 
           ##Proveedor##
         - id: services-proveedor-crear
-          uri: http://localhost:8080
+          uri: ${HOST_API_JAVA:http://localhost:8080}
           predicates:
             - Path=/edge-service/v1/service/proveedor/crear
             # - Header=scope, httpbin
@@ -735,7 +746,7 @@ spring:
             - RewritePath=/edge-service/v1/service/proveedor/crear, /api/proveedor/crear
 
         - id: services-proveedor-consultar
-          uri: http://localhost:8080
+          uri: ${HOST_API_JAVA:http://localhost:8080}
           predicates:
             - Path=/edge-service/v1/service/proveedor/consultar
             # - Header=scope, httpbin
@@ -747,7 +758,7 @@ spring:
             - RewritePath=/edge-service/v1/service/proveedor/consultar, /api/proveedorconsultar
 
         - id: services-proveedor-consultar-id
-          uri: http://localhost:8080
+          uri: ${HOST_API_JAVA:http://localhost:8080}
           predicates:
             - Path=/edge-service/v1/service/proveedor/consultar/id/**
           filters:
@@ -758,7 +769,7 @@ spring:
             - RewritePath=/edge-service/v1/service/proveedor/consultar/id/(?<idproveedor>.*), /api/proveedorconsultar/$\{idproveedor}
 
         - id: services-proveedor-actualizar-id
-          uri: http://localhost:8080
+          uri: ${HOST_API_JAVA:http://localhost:8080}
           predicates:
             - Path=/edge-service/v1/service/proveedor/actualizar/id/**
           filters:
@@ -770,7 +781,7 @@ spring:
 
 
         - id: services-proveedor-eliminar-id
-          uri: http://localhost:8080
+          uri: ${HOST_API_JAVA:http://localhost:8080}
           predicates:
             - Path=/edge-service/v1/service/proveedor/eliminar/id/**
           filters:

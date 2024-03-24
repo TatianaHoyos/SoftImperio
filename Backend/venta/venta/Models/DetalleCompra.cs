@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace venta.Model
 {
+    [Table("detallecompra")]
     public class DetalleCompra
     {
         [Key]

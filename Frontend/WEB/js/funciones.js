@@ -47,7 +47,7 @@ function login() {
 function callApiLogin(formData){
     $.ajax({
         type: "POST",
-        url: "http://localhost:8081/edge-service/v1/authorization/login",
+        url: hostDomain+"/edge-service/v1/authorization/login",
         "headers": {
             "Content-Type": "application/json"
         },
@@ -137,7 +137,7 @@ function callApiLogout(token){
         redirect: 'follow'
     };
 
-    fetch("http://localhost:8081/edge-service/v1/authorization/logout", requestOptions)
+    fetch(hostDomain+"/edge-service/v1/authorization/logout", requestOptions)
         .then(response => response.text())
         .then(result => {
             $("#cargando").modal("hide");

@@ -11,7 +11,7 @@ $(document).ready(function () {
 
 
 // Consultar y mostrar Ventas
-const apiUrl = "http://localhost:8081/edge-service/v1/service/venta/consultar/ByFecha";
+const apiUrl = hostDomain+"/edge-service/v1/service/venta/consultar/ByFecha";
 
 function formatearFechaParaAPI(fecha) {
   const partes = fecha.split('-');
@@ -99,7 +99,7 @@ function actualizarTablaVentas(ventas, pagina) {
       <td>${venta.fechaVenta}</td>
       <td>${totalVentaFormateado}</td>
       <td>
-        <button class="btn btn-detalles" onclick="verDetalles(${venta.idVenta})">Detalles</button>
+        <button class="btn btn-editar" onclick="verDetalles(${venta.idVenta})"><i class="far fa-eye"></i></button>
       </td>
     </tr>`;
     tablaVentas.innerHTML += fila;

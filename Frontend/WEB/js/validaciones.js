@@ -15,33 +15,6 @@ function validarNumeroUC(e) {
 
 
 
-function soloNumeros(e) {
-    key = e.keyCode || e.which;
-    tecla = String.fromCharCode(key);
-    numeros = "0123456789";
-    especiales = "8-37-38-46";
-
-    tecla_especial = false
-    for (var i in especiales) {
-        if (key == especiales[i]) {
-            tecla_especial = true;
-            break;
-        }
-    }
-
-    if (numeros.indexOf(tecla) === -1 && !tecla_especial) {
-        mostrarMensaje('Solo se permiten números', 'red', '#mensajeNumeros');
-        return false;
-    } else {
-        // Limpiar el mensaje si la tecla ingresada es válida
-        $('#mensajeNumeros').text('');
-     
-        $('#mensajeNumerosPrecio').text('');
-     
-    }
-}
-
-
 function validarNumero(e){
     tecla = (document.all) ? e.keyCode : e.which;
     if (tecla==8) return true;
@@ -119,22 +92,6 @@ function sololetrasnombre(e) {
         return false;
     }
 }
-function validarNombre() {
-   
-        var charCode = event.which ? event.which : event.keyCode;
-        if ((charCode < 65 || charCode > 90) && (charCode < 97 || charCode > 122)) {
-            event.preventDefault();
-            return false;
-        }
-        return true;
-}
-
-
-
-function mostrarMensaje(mensaje, color, elemento) {
-    $(elemento).text(mensaje);
-    $(elemento).css('color', color);
-}
 
 
 function contrasena(e){
@@ -184,17 +141,68 @@ function validarCampoVacio(longitudCampo,mensaje) {
     }
 }
 
-function validarReferencia() {
-    var referencia = document.getElementById("referencia").value;
-    var mensajeReferencia = document.getElementById("mensajeReferencia");
+// function validarReferencia() {
+//     var referencia = document.getElementById("referencia").value;
+//     var mensajeReferencia = document.getElementById("mensajeReferencia");
     
-    // Eliminar caracteres no permitidos
-    var referenciaLimpia = referencia.replace(/[^A-Za-z0-9\s]/g, '');
-    document.getElementById("referencia").value = referenciaLimpia;
+//     // Eliminar caracteres no permitidos
+//     var referenciaLimpia = referencia.replace(/[^A-Za-z0-9\s]/g, '');
+//     document.getElementById("referencia").value = referenciaLimpia;
 
-    if (referencia !== referenciaLimpia) {
-        mensajeReferencia.textContent = "Solo se permiten letras, números y espacios."; // Mostrar mensaje de error
-    } else {
-        mensajeReferencia.textContent = ""; // Limpiar mensaje de error
+//     if (referencia !== referenciaLimpia) {
+//         mensajeReferencia.textContent = "Solo se permiten letras, números y espacios."; // Mostrar mensaje de error
+//     } else {
+//         mensajeReferencia.textContent = ""; // Limpiar mensaje de error
+//     }
+// }
+
+
+//validaciones para form de productos y categorias
+function validarNombre(event) {
+    const charCode = event.charCode;
+    const key = String.fromCharCode(charCode);
+    const regex = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]$/; // Expresión regular para permitir letras, espacios y caracteres especiales
+
+    if (!regex.test(key)) {
+        event.preventDefault();
+        return false;
     }
+
+    return true;
+}
+
+function mostrarError(mensaje) {
+    const errorSpan = document.getElementById('nombreError');
+    errorSpan.textContent = mensaje;
+}
+
+function ocultarError() {
+    const errorSpan = document.getElementById('nombreError');
+    errorSpan.textContent = '';
+}
+
+//referencia
+function validarReferencia(event) {
+    const charCode = event.charCode;
+    const key = String.fromCharCode(charCode);
+    const regex = /^[a-zA-Z0-9\s]$/; // Expresión regular para permitir letras, números y espacios
+
+    if (!regex.test(key)) {
+        event.preventDefault();
+        return false;
+    }
+
+    return true;
+}
+function validarNumeros(event) {
+    const charCode = event.charCode;
+    const key = String.fromCharCode(charCode);
+    const regex = /^[0-9]$/; // Expresión regular para permitir solo números
+
+    if (!regex.test(key)) {
+        event.preventDefault();
+        return false;
+    }
+
+    return true;
 }
