@@ -8,7 +8,7 @@ $(document).ready(function () {
 function consultarUsuarios(token) {
     $.ajax({
         type: "GET",
-        url: "http://localhost:8081/edge-service/v1/service/usuario/consultar",
+        url: hostDomain+"/edge-service/v1/service/usuario/consultar",
         "headers": {
             'Authorization': `Bearer ${token}`,
             "Content-Type": "application/json"
@@ -35,7 +35,7 @@ function onErrorUsuarios(error) {
 function consultarRoles(token) {
     $.ajax({
         type: "GET",
-        url: "http://localhost:8081/edge-service/v1/service/roles/consultar",
+        url: hostDomain+"/edge-service/v1/service/roles/consultar",
         "headers": {
             'Authorization': `Bearer ${token}`,
             "Content-Type": "application/json"
@@ -237,7 +237,7 @@ function callApiCrearUsuario(token,formData){
     $.ajax({
         type: "POST",
         enctype: 'multipart/form-data',
-        url:"http://localhost:8081/edge-service/v1/service/usuario/crear",
+        url:hostDomain+"/edge-service/v1/service/usuario/crear",
         "headers": {
             'Authorization': `Bearer ${token}`,
       },
@@ -473,7 +473,7 @@ function mostrarFormularioActualizar(){
 //    $.ajax({
 //     type: "Put",
 //     enctype: 'multipart/form-data',
-//     url:"http://localhost:8081/edge-service/v1/service/usuario/actualizar/"+idUsuarios,
+//     url:hostDomain+"/edge-service/v1/service/usuario/actualizar/"+idUsuarios,
 //     "headers": {
 //         'Authorization': `Bearer ${token}`,
 //   },
@@ -676,7 +676,7 @@ function actualizarUsuario(idUsuarios, token) {
     $.ajax({
         type: "Put",
         enctype: 'multipart/form-data',
-        url:"http://localhost:8081/edge-service/v1/service/usuario/actualizar/"+idUsuarios,
+        url:hostDomain+"/edge-service/v1/service/usuario/actualizar/"+idUsuarios,
         headers: {
             'Authorization': `Bearer ${token}`,
         },

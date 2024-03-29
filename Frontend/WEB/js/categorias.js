@@ -7,7 +7,7 @@ function consultarCategorias(token) {
     //$("#textCargando").text("Cargando Categorias");
     $.ajax({
         type: "GET",
-        url: "http://localhost:8081/edge-service/v1/service/categorias/consultar",
+        url: hostDomain+"/edge-service/v1/service/categorias/consultar",
         "headers": {
             "Content-Type": "application/json",
             'Authorization': `Bearer ${token}`
@@ -129,7 +129,7 @@ function callApiCrearCategoria(formData,token){
 
     $.ajax({
         type: "POST",
-        url:"http://localhost:8081/edge-service/v1/service/categorias/crear",
+        url:hostDomain+"/edge-service/v1/service/categorias/crear",
         "headers": {
             "Content-Type": "application/json",
             'Authorization': `Bearer ${token}`
@@ -200,7 +200,7 @@ function EliminarCategoria(categoria) {
 
 function callApiEliminarCategoria(categoria,token){
     $.ajax({
-        url: "http://localhost:8081/edge-service/v1/service/categorias/eliminar/" + categoria.idCategoria,
+        url: hostDomain+"/edge-service/v1/service/categorias/eliminar/" + categoria.idCategoria,
         type: 'DELETE',
         "headers": {
             'Authorization': `Bearer ${token}`
@@ -259,7 +259,7 @@ function actualizarCategoria() {
 function callApiActualizarCategoria(formData, token){
     $.ajax({
         type: "PUT",
-        url: "http://localhost:8081/edge-service/v1/service/categorias/actualizar/" + formData.idCategoria,
+        url: hostDomain+"/edge-service/v1/service/categorias/actualizar/" + formData.idCategoria,
           "headers": {
             "Content-Type": "application/json",
             'Authorization': `Bearer ${token}`

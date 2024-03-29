@@ -11,7 +11,7 @@ $(document).ready(function () {
 
 
 // Consultar y mostrar Ventas
-const apiUrl = "http://localhost:8081/edge-service/v1/service/venta/consultar/ByFecha";
+const apiUrl = hostDomain+"/edge-service/v1/service/venta/consultar/ByFecha";
 
 function formatearFechaParaAPI(fecha) {
   const partes = fecha.split('-');

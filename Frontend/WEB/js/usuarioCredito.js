@@ -11,7 +11,7 @@ function consultarusuariocredito() {
 function callApiConsultarUsuarioCredito(token){
     $.ajax({
         type: "GET",
-        url: "http://localhost:8081/edge-service/v1/service/usuario/credito/consultar",
+        url: hostDomain+"/edge-service/v1/service/usuario/credito/consultar",
         headers: {
             'Authorization': `Bearer ${token}`,
             "Content-Type": "application/json"
@@ -166,7 +166,7 @@ function callApiCrearUsuarioCredito(token,formData){
     $.ajax({
         type: "POST",
         url: "http://localhost:8081/edge-service/v1/service/usuario/credito/crear",
-        "headers": {
+        "headhostDomain+"
             "accept": "application/json",
             'Authorization': `Bearer ${token}`,
             "Content-Type": "application/json"
@@ -299,7 +299,7 @@ function EditarUsuarioCredito(usuariocredito) {
         type: "Put",
         enctype: 'multipart/form-data',
         url: "http://localhost:8081/edge-service/v1/service/usuario/credito/actualizar/id/" +$("#idUsuarioCredito").val(),
-        "headers": {
+        "headhostDomain+"
             "accept": "application/json",
             "Content-Type": "application/json",
             'Authorization': `Bearer ${token}`
@@ -409,7 +409,7 @@ function EditarUsuarioCredito(usuariocredito) {
         $.ajax({
             type: "GET",
             url: "http://localhost:8081/edge-service/v1/service/credito/consultar/id/" + usuariocredito.idUsuarioCredito,
-            "headers": {
+            "headhostDomain+"
                 "Content-Type": "application/json",
                 'Authorization': `Bearer ${token}`
             },
@@ -507,7 +507,7 @@ function EditarUsuarioCredito(usuariocredito) {
         $.ajax({
             type: "GET",
             url: "http://localhost:8081/edge-service/v1/service/abono/creditos/consultar/id/" + usuariocredito.idUsuarioCredito,
-            "headers": {
+            "headhostDomain+"
                 "Content-Type": "application/json",
                 'Authorization': `Bearer ${token}`
             },
@@ -623,7 +623,7 @@ function EditarUsuarioCredito(usuariocredito) {
         $.ajax({
             type: "GET",
             url: "http://localhost:8081/edge-service/v1/service/usuario/credito/consultar/id/" + idUsuarioCreditoSolo,
-            "headers": {
+            "headhostDomain+"
                 'Authorization': `Bearer ${token}`,
             },
             success: function(data) {
@@ -678,7 +678,7 @@ function EditarUsuarioCredito(usuariocredito) {
         $.ajax({
             type: "POST",
             url: "http://localhost:8081/edge-service/v1/service/abono/creditos/crear",
-            "headers": {
+            "headhostDomain+"
                 "accept": "application/json",
                 'Authorization': `Bearer ${token}`,
                 "Content-Type": "application/json"
@@ -730,7 +730,7 @@ function EditarUsuarioCredito(usuariocredito) {
         $.ajax({
             type: "GET",
             url: "http://localhost:8081/edge-service/v1/service/usuario/credito/consultar/id/" + idUsuarioCreditoSolo,
-            "headers": {
+            "headhostDomain+"
                 "accept": "application/json",
                 "Content-Type": "application/json",
                 'Authorization': `Bearer ${token}`
@@ -774,7 +774,7 @@ function EditarUsuarioCredito(usuariocredito) {
             type: "PUT",
             enctype: 'multipart/form-data',
             url: "http://localhost:8081/edge-service/v1/service/usuario/credito/actualizar/id/" + idUsuarioCreditoSolo,
-            "headers": {
+            "headhostDomain+"
                 "accept": "application/json",
                 "Content-Type": "application/json",
                 'Authorization': `Bearer ${token}`
@@ -859,7 +859,7 @@ function callApiBuscarVentaLogica(buscarVenta,token){
     $.ajax({
         type: "GET",
         url: "http://localhost:8081/edge-service/v1/service/venta/detalle/consultar/ByVenta/" + buscarVenta,
-        "headers": {
+        "headhostDomain+"
             "target": "consultar-venta-ByVenta",
             "Content-Type": "application/json",
             'Authorization': `Bearer ${token}`
@@ -923,7 +923,7 @@ function callApiCreditosByVenta(buscarVenta,idUsuarioCreditoSolo, token){
     $.ajax({
         type: "GET",
         url: "http://localhost:8081/edge-service/v1/service/venta/consultar/ByVenta/" + buscarVenta,
-        "headers": {
+        "headhostDomain+"
             "target": "consultar-venta-ByVenta",
             "Content-Type": "application/json",
             'Authorization': `Bearer ${token}`
@@ -973,7 +973,7 @@ function callApiCrearCreditos(formDataCredito, token) {
     $.ajax({
         type: "POST",
         url: "http://localhost:8081/edge-service/v1/service/creditos/crear",
-        headers: {
+        headehostDomain+"
             "accept": "application/json",
             "Content-Type": "application/json",
             'Authorization': `Bearer ${token}`
@@ -1044,7 +1044,7 @@ function actualizarUsuarioCreditoA(token) {
     $.ajax({
         type: "GET",
         url: "http://localhost:8081/edge-service/v1/service/usuario/credito/consultar/id/" + idUsuarioCreditoSolo,
-        "headers": {
+        "headhostDomain+"
             "Content-Type": "application/json",
             'Authorization': `Bearer ${token}`
         },
@@ -1110,7 +1110,7 @@ function callApiCrearUsuarioXId(idUsuarioCreditoSolo,formDataSumaCredito, token)
         type: "PUT",
         enctype: 'multipart/form-data',
         url: "http://localhost:8081/edge-service/v1/service/usuario/credito/actualizar/id/"+ idUsuarioCreditoSolo,
-        "headers": {
+        "headhostDomain+"
             "accept": "application/json",
             "Content-Type": "application/json",
             "Authorization": `Bearer ${token}`
