@@ -11,7 +11,7 @@ $(document).ready(function () {
 
 
 // Consultar y mostrar Ventas
-const apiUrl = hostDomain+"/edge-service/v1/service/venta/consultar/ByFecha";
+const apiUrl = "http://localhost:8081/edge-service/v1/service/venta/consultar/ByFecha";
 
 function formatearFechaParaAPI(fecha) {
   const partes = fecha.split('-');
@@ -99,7 +99,7 @@ function actualizarTablaVentas(ventas, pagina) {
       <td>${venta.fechaVenta}</td>
       <td>${totalVentaFormateado}</td>
       <td>
-        <button class="btn btn-editar" onclick="verDetalles(${venta.idVenta})"><i class="far fa-eye"></i></button>
+        <button class="btn btn-detalles" onclick="verDetalles(${venta.idVenta})">Detalles</button>
       </td>
     </tr>`;
     tablaVentas.innerHTML += fila;
@@ -145,7 +145,7 @@ async function callApiVerDetalles(idVenta, token) {
             method: 'GET',
             headers: myHeaders
         };
-    const response = await fetch(`http://localhost:8081/edge-service/v1/service/venta/consultar/ByVenta/${idVenta}`, requestOptions);
+    const response = await fetch(`http://localhost:8081/edge-service/v1/service/DetalleVentas/ByVenta${idVenta}`, requestOptions);
 
     if (!response.ok) {
       throw new Error(`Error de red: ${response.status}`);
