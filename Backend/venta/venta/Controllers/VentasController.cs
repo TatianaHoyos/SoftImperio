@@ -14,6 +14,7 @@ using venta.Model;
 using venta.Models;
 using venta.Repository;
 using venta.SignalR;
+using Microsoft.AspNetCore.Cors;
 
 namespace venta.Controllers
 {
