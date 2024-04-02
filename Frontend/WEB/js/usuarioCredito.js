@@ -11,7 +11,7 @@ function consultarusuariocredito() {
 function callApiConsultarUsuarioCredito(token){
     $.ajax({
         type: "GET",
-        url: hostDomain+"/edge-service/v1/service/usuario/credito/consultar",
+        url: "http://localhost:8081/edge-service/v1/service/usuario/credito/consultar",
         headers: {
             'Authorization': `Bearer ${token}`,
             "Content-Type": "application/json"
@@ -70,6 +70,7 @@ function onExitousuariocredito(data) {
             var boton2 = "<button onclick='DetalleCredito(" + JSON.stringify(usuariocredito) + ")' class='btn btn-eliminar' data-id='1'><i class='fas fa-money-bill-wave'></i></button>";
             var boton3 = "<button onclick='EliminarUsuarioCredito(" + JSON.stringify(usuariocredito) + ")' class='btn btn-eliminar' data-id='1'><i class='fa-solid fa-trash-can'></i></button>";
             var boton4 = "<button onclick='EditarUsuarioCredito(" + JSON.stringify(usuariocredito) + ")' class='btn btn-editar' data-toggle='modal' data-target='#formCrearUsuarioCredito'><i class='fas fa-edit'></i></button>";
+
             // Agrega la fila a la DataTable
             dataTable.row.add([
                 usuariocredito.idUsuarioCredito,
@@ -100,7 +101,7 @@ function onExitousuariocredito(data) {
 
 function mostrarFormularioCrearUsuarioCreditos() {
     var titulo = $("#tituloFormularioUsuarioCredito");
-    titulo.text("Crear un nuevo usuario crédito");
+    titulo.text("CREAR USUARIO CRÉDITO");
     var btnform = $("#btn-form");
     btnform.text("Guardar");
     btnform.off("click").click(crearUsuarioCredito);
@@ -166,7 +167,7 @@ function callApiCrearUsuarioCredito(token,formData){
     $.ajax({
         type: "POST",
         url: "http://localhost:8081/edge-service/v1/service/usuario/credito/crear",
-        "headhostDomain+"
+        "headers": {
             "accept": "application/json",
             'Authorization': `Bearer ${token}`,
             "Content-Type": "application/json"
@@ -186,7 +187,7 @@ function onExitoCrearUsuariocredito(data) {
         text: data.message,
         icon: 'success',
         showCancelButton: false,
-        confirmButtonColor: '#ae9243',
+        confirmButtonColor: '#d5c429',
         confirmButtonText: 'Confirmar',
     };
 
@@ -214,7 +215,7 @@ function onErrorusuariocreditocrear(error) {
 
 function mostrarFormularioActualizarCrearUsuarioCreditos() {
     var titulo = $("#tituloFormularioUsuarioCredito");
-    titulo.text("Actualizar un usuario crédito");
+    titulo.text("ACTUALIZAR USUARIO CRÉDITO");
     var btnform = $("#btn-form");
     btnform.text("Actualizar");
     btnform.off("click").click(function () {
@@ -230,7 +231,6 @@ function EditarUsuarioCredito(usuariocredito) {
     $("#nombre").val(usuariocredito.nombre);
     $("#documento").val(usuariocredito.documento);
     $("#telefono").val(usuariocredito.telefono);
-    $("#totalCredito").val(usuariocredito.totalCredito);
     console.log('Valor de usuariocredito:',usuariocredito);
     var btnform = $("#btn-form");
     btnform.click(function(){ actualizarUsuarioCredito(usuariocredito); });
@@ -241,9 +241,10 @@ function EditarUsuarioCredito(usuariocredito) {
         var nombre= $("#nombre").val();
         var documento= $("#documento").val();
         var telefono=  $("#telefono").val();
-        var totalCreditoA=usuariocredito.totalCredito
+        var totalCreditoA = usuariocredito.totalCredito; // Aquí se obtiene el totalCredito actual
+        console.log('totalCredito:', usuariocredito.totalCredito);
         console.log('cabio:',usuariocredito);
-        console.log('totalCredito:',totalCreditoA);
+        
 
 
         if (validarCampoVacio(nombre.length, 'Por favor, introduzca un nombre.')) {
@@ -299,7 +300,7 @@ function EditarUsuarioCredito(usuariocredito) {
         type: "Put",
         enctype: 'multipart/form-data',
         url: "http://localhost:8081/edge-service/v1/service/usuario/credito/actualizar/id/" +$("#idUsuarioCredito").val(),
-        "headhostDomain+"
+        "headers": {
             "accept": "application/json",
             "Content-Type": "application/json",
             'Authorization': `Bearer ${token}`
@@ -322,7 +323,7 @@ function EditarUsuarioCredito(usuariocredito) {
             text: data.message,
             icon: 'success',
             showCancelButton: false,
-            confirmButtonColor: '#ae9243',
+            confirmButtonColor: '#d5c429',
             confirmButtonText: 'Confirmar',
             timer: 1700,
         });
@@ -347,7 +348,7 @@ function EditarUsuarioCredito(usuariocredito) {
 
     function EliminarUsuarioCredito(usuariocredito) {
         Swal.fire({
-            title: 'Advertencia',
+            title: '¿Estás seguro?',
             text: '¿Estás seguro de eliminar el usuario crédito ' + usuariocredito.nombre + '?',
             icon: 'warning',
             showCancelButton: true,
@@ -384,7 +385,7 @@ function EditarUsuarioCredito(usuariocredito) {
                 Swal.fire({
                     icon: 'warning',
                     title: 'Oops',
-                    text:'No es posible eliminarlo. El usuario crédito tiene créditos o abonos asociados.',
+                    text: 'El usuario crédito ya tiene créditos o abonos asociados, por lo que no es posible eliminarlo.',
                     timer: 3500,
                     customClass: {
                         popup: 'tamanio-custom'
@@ -409,7 +410,7 @@ function EditarUsuarioCredito(usuariocredito) {
         $.ajax({
             type: "GET",
             url: "http://localhost:8081/edge-service/v1/service/credito/consultar/id/" + usuariocredito.idUsuarioCredito,
-            "headhostDomain+"
+            "headers": {
                 "Content-Type": "application/json",
                 'Authorization': `Bearer ${token}`
             },
@@ -456,12 +457,11 @@ function EditarUsuarioCredito(usuariocredito) {
                     dataTable.clear();
 
                     $.each(data, function (id, credito) {
-
                         // Agrega la fila a la DataTable
                         dataTable.row.add([
-                            (id+1),
+                            credito.idVenta,
                             '$'+credito.precioCredito,
-                            credito.fecha
+                            credito.fecha,
                         ]).draw();
                     });
                 } else {
@@ -495,6 +495,8 @@ function EditarUsuarioCredito(usuariocredito) {
 
 
 
+
+
     var idUsuarioCreditoA;
     function DetalleAbono(usuariocredito){
         handleAjaxRequest(function (token) {
@@ -507,7 +509,7 @@ function EditarUsuarioCredito(usuariocredito) {
         $.ajax({
             type: "GET",
             url: "http://localhost:8081/edge-service/v1/service/abono/creditos/consultar/id/" + usuariocredito.idUsuarioCredito,
-            "headhostDomain+"
+            "headers": {
                 "Content-Type": "application/json",
                 'Authorization': `Bearer ${token}`
             },
@@ -623,7 +625,7 @@ function EditarUsuarioCredito(usuariocredito) {
         $.ajax({
             type: "GET",
             url: "http://localhost:8081/edge-service/v1/service/usuario/credito/consultar/id/" + idUsuarioCreditoSolo,
-            "headhostDomain+"
+            "headers": {
                 'Authorization': `Bearer ${token}`,
             },
             success: function(data) {
@@ -638,7 +640,7 @@ function EditarUsuarioCredito(usuariocredito) {
     }
     function mostrarTotalCreditoEnFormulario(totalCredito) {
         // Muestra el totalCrédito en el formulario
-        $('#totalCreditoUsuario').text('$ '+totalCredito.toLocaleString('es-CO'));
+        $('#totalCreditoUsuario').text('$'+totalCredito);
     }
 
     var totalAbonar
@@ -655,7 +657,16 @@ function EditarUsuarioCredito(usuariocredito) {
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'El monto a abonar es mayor al total del crédito.',
+                text: 'El monto a abonar no puede ser mayor al total del crédito.',
+                showConfirmButton: false,
+                timer: 2700
+            });
+            return;
+        }else if(totalAbonar<1){
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'El monto a abonar no puede ser 0.',
                 showConfirmButton: false,
                 timer: 2700
             });
@@ -678,7 +689,7 @@ function EditarUsuarioCredito(usuariocredito) {
         $.ajax({
             type: "POST",
             url: "http://localhost:8081/edge-service/v1/service/abono/creditos/crear",
-            "headhostDomain+"
+            "headers": {
                 "accept": "application/json",
                 'Authorization': `Bearer ${token}`,
                 "Content-Type": "application/json"
@@ -698,7 +709,7 @@ function EditarUsuarioCredito(usuariocredito) {
             text: data.message,
             icon: 'success',
             showCancelButton: false,
-            confirmButtonColor: '#ae9243',
+            confirmButtonColor: '#d5c429',
             confirmButtonText: 'Confirmar',
         };
 
@@ -730,7 +741,7 @@ function EditarUsuarioCredito(usuariocredito) {
         $.ajax({
             type: "GET",
             url: "http://localhost:8081/edge-service/v1/service/usuario/credito/consultar/id/" + idUsuarioCreditoSolo,
-            "headhostDomain+"
+            "headers": {
                 "accept": "application/json",
                 "Content-Type": "application/json",
                 'Authorization': `Bearer ${token}`
@@ -774,7 +785,7 @@ function EditarUsuarioCredito(usuariocredito) {
             type: "PUT",
             enctype: 'multipart/form-data',
             url: "http://localhost:8081/edge-service/v1/service/usuario/credito/actualizar/id/" + idUsuarioCreditoSolo,
-            "headhostDomain+"
+            "headers": {
                 "accept": "application/json",
                 "Content-Type": "application/json",
                 'Authorization': `Bearer ${token}`
@@ -855,11 +866,12 @@ function buscarVentasLogica() {
     });
 }
 
+
 function callApiBuscarVentaLogica(buscarVenta,token){
     $.ajax({
         type: "GET",
         url: "http://localhost:8081/edge-service/v1/service/venta/detalle/consultar/ByVenta/" + buscarVenta,
-        "headhostDomain+"
+        "headers": {
             "target": "consultar-venta-ByVenta",
             "Content-Type": "application/json",
             'Authorization': `Bearer ${token}`
@@ -872,7 +884,7 @@ function callApiBuscarVentaLogica(buscarVenta,token){
                 $.each(data, function (id, detalleVenta) {
                     sumaSubtotal += detalleVenta.subTotalAPagar;
                     $('#tablaDetalleVenta').append('<tr><td>' + (id + 1) + '</td><td>' + detalleVenta.nombreProducto + '</td><td>' + detalleVenta.cantidadProducto +
-                        '</td><td>' +'$ ' + detalleVenta.subTotalAPagar.toLocaleString('es-CO'), '</td></tr>');
+                        '</td><td>' + detalleVenta.subTotalAPagar + '$' + '</td></tr>');
                 });
                 $('#tablaDetalleVenta').append('<tr><td colspan="3" class="text-center">TOTAL DE LA VENTA:</td><td>' + sumaSubtotal + '$</td></tr>');
                 totalVenta = sumaSubtotal;
@@ -880,11 +892,11 @@ function callApiBuscarVentaLogica(buscarVenta,token){
                 Swal.fire({
                     title: 'Oops',
                     text: 'El idVenta suministrado no se encuentra.',
-                    icon: 'error',
+                    icon: 'success',
                     showCancelButton: false,
                     confirmButtonColor: '#d33',
-                    confirmButtonColor: '#ae9243',
-                    confirmButtonText: 'Aceptar',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'ok',
                     timer: 1700,
                 }).then((result) => {
                 });
@@ -919,11 +931,17 @@ $(document).ready(function () {
     });
 });
 
+function consultarIdVentas() {
+    handleAjaxRequest(callApiConsultarIdVentas);
+}
+
+
+
 function callApiCreditosByVenta(buscarVenta,idUsuarioCreditoSolo, token){
     $.ajax({
         type: "GET",
         url: "http://localhost:8081/edge-service/v1/service/venta/consultar/ByVenta/" + buscarVenta,
-        "headhostDomain+"
+        "headers": {
             "target": "consultar-venta-ByVenta",
             "Content-Type": "application/json",
             'Authorization': `Bearer ${token}`
@@ -973,7 +991,7 @@ function callApiCrearCreditos(formDataCredito, token) {
     $.ajax({
         type: "POST",
         url: "http://localhost:8081/edge-service/v1/service/creditos/crear",
-        headehostDomain+"
+        headers: {
             "accept": "application/json",
             "Content-Type": "application/json",
             'Authorization': `Bearer ${token}`
@@ -1018,7 +1036,7 @@ function onExitoAsociarcredito(data) {
         text: data.message,
         icon: 'success',
         showCancelButton: false,
-        confirmButtonColor: '#ae9243',
+        confirmButtonColor: '#d5c429',
         confirmButtonText: 'Confirmar',
     };
 
@@ -1044,7 +1062,7 @@ function actualizarUsuarioCreditoA(token) {
     $.ajax({
         type: "GET",
         url: "http://localhost:8081/edge-service/v1/service/usuario/credito/consultar/id/" + idUsuarioCreditoSolo,
-        "headhostDomain+"
+        "headers": {
             "Content-Type": "application/json",
             'Authorization': `Bearer ${token}`
         },
@@ -1110,7 +1128,7 @@ function callApiCrearUsuarioXId(idUsuarioCreditoSolo,formDataSumaCredito, token)
         type: "PUT",
         enctype: 'multipart/form-data',
         url: "http://localhost:8081/edge-service/v1/service/usuario/credito/actualizar/id/"+ idUsuarioCreditoSolo,
-        "headhostDomain+"
+        "headers": {
             "accept": "application/json",
             "Content-Type": "application/json",
             "Authorization": `Bearer ${token}`
