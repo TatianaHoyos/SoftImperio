@@ -115,6 +115,10 @@ public class ControllerUsuarios {
             String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
             fileName = usuario.getNombre()  +"-"+ fileName;
 
+            String password = encryptService.encryptPassword(usuario.getDocumento());
+            System.out.println("Contraseña encriptada: "+password);
+            String hashPassword = encryptService.createHash(password);
+
             var usuariosEntity = new UsuariosEntity();
             usuariosEntity.setIdUsuarios(id);
             usuariosEntity.setRol(rol);
@@ -123,7 +127,7 @@ public class ControllerUsuarios {
             usuariosEntity.setEmail(usuario.getEmail());
             usuariosEntity.setTelefono(usuario.getTelefono());
             usuariosEntity.setFoto(uploadDir + fileName);
-            usuariosEntity.setPassword(usuario.getDocumento());
+            usuariosEntity.setPassword(hashPassword);
             usuariosEntity.setEstado(usuario.getEstado());
 
             var usuariodb = usuariosService.crearUsuario(usuariosEntity);
