@@ -1,3 +1,4 @@
+
 $(document).ready(function () {
   const fecha = new Date();
 
@@ -11,7 +12,7 @@ $(document).ready(function () {
 
 
 // Consultar y mostrar Ventas
-const apiUrl = "http://localhost:8081/edge-service/v1/service/venta/consultar/ByFecha";
+const apiUrl = "https://localhost:7084/api/Ventas/ByFecha";
 
 function formatearFechaParaAPI(fecha) {
   const partes = fecha.split('-');
@@ -31,48 +32,40 @@ const ventasPorPagina = 6; // Puedes ajustar el número de ventas por página
 function mostrarVentas(Finicial = "", Ffinal="") {
   var fechaInicial = "";
   var fechaFinal = "";
-
-  // Obtener fechas desde los elementos de input
   if (Ffinal === "" && Finicial === "") {
     fechaInicial = document.querySelector('#fecha-inicial').value;
     fechaFinal = document.querySelector('#fecha-final').value;
+
+    // Validar si las fechas están vacías
+    if (fechaInicial === "" || fechaFinal === "") {
+      mostrarAlerta("Por favor seleccione fechas.");
+      return; // Salir de la función si las fechas están vacías
+    }
   } else {
     fechaFinal = Ffinal;
     fechaInicial = Finicial;
   }
-
+  
   // Verificar si se han ingresado fechas
   const filtrarPorFechas = fechaInicial && fechaFinal;
 
   // Si se han ingresado fechas, ajustar las horas
   if (filtrarPorFechas) {
-    fechaInicial += ' 00:00:00'; // Agregar hora 00:00:00
-    fechaFinal += ' 23:59:59';   // Agregar hora 23:59:59
+    // Ajustar fecha inicial a las 00:00:00 horas
+    fechaInicial += 'T00:00:00';
+
+    // Ajustar fecha final al final del día (23:59:59 horas)
+    fechaFinal += 'T23:59:59';
   }
 
-  // Construir la URL de la solicitud a la API con las fechas seleccionadas o sin filtrar
+  // Aqui es donde se realiza una solicitud a la API con las fechas seleccionadas o sin filtrar
   let apiUrlConFechas = apiUrl;
 
   if (filtrarPorFechas) {
       apiUrlConFechas += `?fechaInicio=${fechaInicial}&fechaFin=${fechaFinal}`;
   }
 
-  handleAjaxRequest(function (token) {
-    callApiVentas(token, apiUrlConFechas);
-  });
-}
-
-
-  function callApiVentas(token, apiUrlConFechas){
-    var myHeaders = new Headers();
-  myHeaders.append('Authorization', `Bearer ${token}`);
-
-  var requestOptions = {
-      method: 'GET',
-      headers: myHeaders
-  };
-
-  fetch(apiUrlConFechas,requestOptions)
+  fetch(apiUrlConFechas)
     .then((response) => {
         if (!response.ok) {
             throw new Error(`Error de red: ${response.status}`);
@@ -86,7 +79,8 @@ function mostrarVentas(Finicial = "", Ffinal="") {
     .catch((error) => {
         console.error("Error al obtener datos de ventas:", error);
     });
-  }
+}
+
 
 // Función para actualizar la tabla de ventas con paginación
 function actualizarTablaVentas(ventas, pagina) {
@@ -136,23 +130,11 @@ document.getElementById('btnPaginaSiguiente').addEventListener('click', () => {
 });
 
 
-function verDetalles(idVenta){
-  handleAjaxRequest(function (token) {
-    callApiVerDetalles(idVenta,token);
-});
-}
 
 
-async function callApiVerDetalles(idVenta, token) {
+async function verDetalles(idVenta) {
   try {
-    var myHeaders = new Headers();
-        myHeaders.append('Authorization', `Bearer ${token}`);
-
-        var requestOptions = {
-            method: 'GET',
-            headers: myHeaders
-        };
-    const response = await fetch(`http://localhost:8081/edge-service/v1/service/DetalleVentas/ByVenta/${idVenta}`, requestOptions);
+    const response = await fetch(`https://localhost:7084/api/DetalleVentas/ByVenta/${idVenta}`);
 
     if (!response.ok) {
       throw new Error(`Error de red: ${response.status}`);
@@ -211,16 +193,9 @@ function mostrarDetallesEnModal(idVenta, detallesVenta) {
 
 
 // Función para mostrar todas las ventas sin filtrar por fechas
-function mostrarTodasLasVentas(token) {
+function mostrarTodasLasVentas() {
   // Realiza una solicitud a la API para obtener todas las ventas
-  var myHeaders = new Headers();
-        myHeaders.append('Authorization', `Bearer ${token}`);
-
-        var requestOptions = {
-            method: 'GET',
-            headers: myHeaders
-        };
-  fetch(apiUrl,requestOptions)
+  fetch(apiUrl)
       .then((response) => {
           if (!response.ok) {
               throw new Error(`Error de red: ${response.status}`);
@@ -237,4 +212,4 @@ function mostrarTodasLasVentas(token) {
 }
 
 // Llama a la función para mostrar todas las ventas al cargar la página
-handleAjaxRequest(mostrarTodasLasVentas);
+mostrarTodasLasVentas();

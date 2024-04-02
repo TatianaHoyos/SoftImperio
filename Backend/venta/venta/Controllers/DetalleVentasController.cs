@@ -128,7 +128,6 @@ namespace venta.Controllers
 
         // GET: api/DetalleVentas/ByVenta/{idVenta}
         [HttpGet("ByVenta/{idVenta}")]
-        [EnableCors("AllowOrigin")] // Agrega esta línea para habilitar CORS
         public async Task<ActionResult<IEnumerable<DetalleVentaDTO>>> GetDetallesVentaPorIdVenta(int idVenta)
         {
             var detallesVenta = await _context.DetalleVenta
@@ -153,4 +152,6 @@ namespace venta.Controllers
 
 
     }
+
+
 }
