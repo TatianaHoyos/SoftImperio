@@ -146,7 +146,7 @@
                         <button type="button" class="btn form-control"><strong>Reporte</strong></button>
                     </div>
                     <div class="col-md-2 mb-2">
-                        <button type="submit" class="btn form-control" onclick="downloadBackup()">
+                        <button type="button" id="backupButton" class="btn form-control">
                             <strong>BackupBD</strong>
                         </button>
                     </div>
@@ -179,6 +179,7 @@
         <script src="js/validaciones.js"></script>
         <script src="js/datosUsuario.js"></script>
         <script src="js/funciones.js"></script>
+        <script src="js/backup.js"></script>
         <script>
             $(document).ready(function () {
                 $("#menu-container").load("menu.html");
