@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using venta.Data;
 using venta.DTO;
 using venta.Models;
+using Microsoft.AspNetCore.Cors;
 
 namespace venta.Controllers
 {
@@ -127,13 +128,14 @@ namespace venta.Controllers
 
         // GET: api/DetalleVentas/ByVenta/{idVenta}
         [HttpGet("ByVenta/{idVenta}")]
+        [EnableCors("AllowOrigin")] // Agrega esta línea para habilitar CORS
         public async Task<ActionResult<IEnumerable<DetalleVentaDTO>>> GetDetallesVentaPorIdVenta(int idVenta)
         {
             var detallesVenta = await _context.DetalleVenta
                 .Where(detalle => detalle.IdVenta == idVenta)
                 .Select(detalle => new DetalleVentaDTO
                 {
-                    
+
                     CantidadProducto = detalle.CantidadProducto,
                     SubTotalAPagar = detalle.SubTotalAPagar,
                     NombreProducto = _context.Existencia

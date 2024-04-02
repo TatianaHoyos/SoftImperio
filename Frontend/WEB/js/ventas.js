@@ -11,7 +11,7 @@ $(document).ready(function () {
 
 
 // Consultar y mostrar Ventas
-const apiUrl = hostDomain+"/edge-service/v1/service/venta/consultar/ByFecha";
+const apiUrl = "http://localhost:8081/edge-service/v1/service/venta/consultar/ByFecha";
 
 function formatearFechaParaAPI(fecha) {
   const partes = fecha.split('-');
@@ -31,6 +31,8 @@ const ventasPorPagina = 6; // Puedes ajustar el número de ventas por página
 function mostrarVentas(Finicial = "", Ffinal="") {
   var fechaInicial = "";
   var fechaFinal = "";
+
+  // Obtener fechas desde los elementos de input
   if (Ffinal === "" && Finicial === "") {
     fechaInicial = document.querySelector('#fecha-inicial').value;
     fechaFinal = document.querySelector('#fecha-final').value;
@@ -38,12 +40,17 @@ function mostrarVentas(Finicial = "", Ffinal="") {
     fechaFinal = Ffinal;
     fechaInicial = Finicial;
   }
-  
 
   // Verificar si se han ingresado fechas
   const filtrarPorFechas = fechaInicial && fechaFinal;
 
-  // Aqui es donde se realiza una solicitud a la API con las fechas seleccionadas o sin filtrar
+  // Si se han ingresado fechas, ajustar las horas
+  if (filtrarPorFechas) {
+    fechaInicial += ' 00:00:00'; // Agregar hora 00:00:00
+    fechaFinal += ' 23:59:59';   // Agregar hora 23:59:59
+  }
+
+  // Construir la URL de la solicitud a la API con las fechas seleccionadas o sin filtrar
   let apiUrlConFechas = apiUrl;
 
   if (filtrarPorFechas) {
@@ -51,10 +58,10 @@ function mostrarVentas(Finicial = "", Ffinal="") {
   }
 
   handleAjaxRequest(function (token) {
-    callApiVentas(token,apiUrlConFechas);
-});
-  
-  }
+    callApiVentas(token, apiUrlConFechas);
+  });
+}
+
 
   function callApiVentas(token, apiUrlConFechas){
     var myHeaders = new Headers();
@@ -99,7 +106,7 @@ function actualizarTablaVentas(ventas, pagina) {
       <td>${venta.fechaVenta}</td>
       <td>${totalVentaFormateado}</td>
       <td>
-        <button class="btn btn-editar" onclick="verDetalles(${venta.idVenta})"><i class="far fa-eye"></i></button>
+        <button class="btn btn-detalles" onclick="verDetalles(${venta.idVenta})">Detalles</button>
       </td>
     </tr>`;
     tablaVentas.innerHTML += fila;
@@ -145,7 +152,7 @@ async function callApiVerDetalles(idVenta, token) {
             method: 'GET',
             headers: myHeaders
         };
-    const response = await fetch(`http://localhost:8081/edge-service/v1/service/venta/consultar/ByVenta/${idVenta}`, requestOptions);
+    const response = await fetch(`http://localhost:8081/edge-service/v1/service/DetalleVentas/ByVenta/${idVenta}`, requestOptions);
 
     if (!response.ok) {
       throw new Error(`Error de red: ${response.status}`);
@@ -231,11 +238,3 @@ function mostrarTodasLasVentas(token) {
 
 // Llama a la función para mostrar todas las ventas al cargar la página
 handleAjaxRequest(mostrarTodasLasVentas);
-
-
-
-
-
-
-
-
