@@ -60,7 +60,7 @@ function callApiAddCompra(token){
 function callAPiDeleteCompra(idCompra,token){
   $.ajax({
     type: 'DELETE',
-    url: `http://localhost:8081/edge-service/v1/service/compras/eliminar/${idCompra}`,
+    url: `${hostDomain}/edge-service/v1/service/compras/eliminar/${idCompra}`,
     "headers": {
       'Authorization': `Bearer ${token}`
   },
@@ -210,7 +210,7 @@ function alertaEliminarEditar(action,idProveedor) {
 
 function callApiConsultarCompra(token){
   $.ajax({
-    url: 'http://localhost:8081/edge-service/v1/service/compras/consultar',
+    url: hostDomain+'/edge-service/v1/service/compras/consultar',
     "headers": {
       'Authorization': `Bearer ${token}`
   },

@@ -79,7 +79,7 @@ function handleAjaxRequest(ajaxRequestFunction) {
 }
 
 function refreshAccessToken() {
-    var apiUrl = 'http://localhost:8081/edge-service/v1/authorization/refreshToken';
+    var apiUrl = hostDomain+'/edge-service/v1/authorization/refreshToken';
     var objetoRecuperado = JSON.parse(localStorage.getItem('miObjeto'));
     // Invocar la función Java para refrescar el token y devolver la promesa del nuevo token
     var myHeaders = new Headers();

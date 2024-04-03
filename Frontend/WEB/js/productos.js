@@ -50,12 +50,12 @@ function crearProducto(token) {
     formData.append('referenciaProducto', referenciaProducto);
     formData.append('stockMinimo', stockMinimo);
     formData.append('precioProducto', precioProducto);
-    formData.hostDomain+"
+    formData.append('foto', foto);
 
     $.ajax({
         type: "POST",
         enctype: 'multipart/form-data',
-        url: "http://localhost:8081/edge-service/v1/service/productos/crear",
+        url: hostDomain+"/edge-service/v1/service/productos/crear",
         'headers': {
            'Authorization': `Bearer ${token}`
         },
@@ -101,12 +101,12 @@ function onErrorCrearProducto(error) {
 
 
 }
-hostDomain+"
+
 
 function consultarProductos(token) {
     $.ajax({
         type: "GET",
-        url: "http://localhost:8081/edge-service/v1/service/productos/consultar",
+        url: hostDomain+"/edge-service/v1/service/productos/consultar",
         "headers": {
             "Content-Type": "application/json",
             'Authorization': `Bearer ${token}`
@@ -215,12 +215,12 @@ function EliminarProducto(Producto) {
                 callApiEliminarProducto(Producto,token);
             });
         }
-    });hostDomain+"
+    });
 }
 
 function callApiEliminarProducto(Producto,token){
     $.ajax({
-        url: "http://localhost:8081/edge-service/v1/service/productos/eliminar/" + Producto.idProductos,
+        url: hostDomain+"/edge-service/v1/service/productos/eliminar/" + Producto.idProductos,
         type: 'DELETE',
         "headers": {
    
@@ -267,12 +267,12 @@ function EditarProducto(producto) {
 function actualizarProducto(idProductos,token) {
     var form = $('#formCrearProducto')[0];
     // Create an FormData object 
-    var formDhostDomain+"m);
+    var formData = new FormData(form);
 
     $.ajax({
         type: "Put",
         enctype: 'multipart/form-data',
-        url: "http://localhost:8081/edge-service/v1/service/productos/actualizar/" + idProductos,
+        url: hostDomain+"/edge-service/v1/service/productos/actualizar/" + idProductos,
           "headers": {
             'Authorization': `Bearer ${token}`
         },
