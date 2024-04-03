@@ -258,8 +258,8 @@ function actualizarRol(idRol){
 function callApiActualizarRol(idRol, formData, token){
     $.ajax({
         type: "PUT",
-        url:"http://localhost:8081/edge-service/v1/service/roles/actualizar/"+idRol,
-        "heahostDomain+"
+        url:hostDomain+"/edge-service/v1/service/roles/actualizar/"+idRol,
+        "header":{
           "Content-Type": "application/json",
           'Authorization': `Bearer ${token}`
         },
@@ -309,7 +309,7 @@ Swal.fire({
 
 function callApiEliminar(idRol,token){
     $.ajax({
-        url: 'http://localhost:8081/edge-service/v1/service/roles/eliminar/'+ idRol,
+        url: hostDomain+'/edge-service/v1/service/roles/eliminar/'+ idRol,
         type: 'Delete',
         "headers": {
             'Authorization': `Bearer ${token}`
@@ -361,9 +361,9 @@ function guardarConfiguracion() {
 function callApiGuardarConfiguracion(data,token){
     $.ajax({
         type: "POST",
-        url:"http://localhost:8081/edge-service/v1/service/roles/configuracion/crear",
+        url:hostDomain+"/edge-service/v1/service/roles/configuracion/crear",
         "headers": {
-          "ChostDomain+"tion/json",
+            "Content-Type": "application/json",
           'Authorization': `Bearer ${token}`
         },
         data: JSON.stringify(data),
@@ -391,9 +391,9 @@ function onErrorCrearConfiguracion(error){
 function consultarPermiso(token) {
     $.ajax({
         type: "GET",
-        url: "http://localhost:8081/edge-service/v1/service/permisos/consultar",
+        url: hostDomain+"/edge-service/v1/service/permisos/consultar",
         "headers": {
-            "hostDomain+"ation/json",
+            "Content-Type": "application/json",
             'Authorization': `Bearer ${token}`
         },
         success: onExitoPermisos,

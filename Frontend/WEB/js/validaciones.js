@@ -141,20 +141,6 @@ function validarCampoVacio(longitudCampo,mensaje) {
     }
 }
 
-// function validarReferencia() {
-//     var referencia = document.getElementById("referencia").value;
-//     var mensajeReferencia = document.getElementById("mensajeReferencia");
-    
-//     // Eliminar caracteres no permitidos
-//     var referenciaLimpia = referencia.replace(/[^A-Za-z0-9\s]/g, '');
-//     document.getElementById("referencia").value = referenciaLimpia;
-
-//     if (referencia !== referenciaLimpia) {
-//         mensajeReferencia.textContent = "Solo se permiten letras, números y espacios."; // Mostrar mensaje de error
-//     } else {
-//         mensajeReferencia.textContent = ""; // Limpiar mensaje de error
-//     }
-// }
 
 
 //validaciones para form de productos y categorias

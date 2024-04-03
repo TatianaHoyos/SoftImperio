@@ -1,7 +1,7 @@
 // Función para obtener las ventas del ultimo mes
 async function obtenerVentasUltimoMes(token) {
     try {
-        var apiUrl = 'http://localhost:8081/edge-service/v1/service/venta/ultimo-mes/consultar';
+        var apiUrl = hostDomain+'/edge-service/v1/service/venta/ultimo-mes/consultar';
 
         var myHeaders = new Headers();
         myHeaders.append('Authorization', `Bearer ${token}`);
@@ -53,7 +53,7 @@ async function obtenerVentasUltimoMes(token) {
 
 async function obtenerComprasUltimoMes(token) {
     try {
-        var apiUrl = 'http://localhost:8081/edge-service/v1/service/compras/ultimo-mes/consultar';
+        var apiUrl = hostDomain+'/edge-service/v1/service/compras/ultimo-mes/consultar';
 
         var myHeaders = new Headers();
         myHeaders.append('Authorization', `Bearer ${token}`);
@@ -97,7 +97,7 @@ async function obtenerComprasUltimoMes(token) {
 
 async function obtenerCreditosUltimoMes(token) {
     try {
-        var apiUrl = 'http://localhost:8081/edge-service/v1/service/creditos/ultimo-mes/consultar';
+        var apiUrl = hostDomain+'/edge-service/v1/service/creditos/ultimo-mes/consultar';
 
         var myHeaders = new Headers();
         myHeaders.append('Authorization', `Bearer ${token}`);
@@ -174,7 +174,7 @@ function obtenerDatosCompletos(datos) {
 
 async function obtenerDatosGraficoVentas(token) {
     try {
-        var apiUrl = 'http://localhost:8081/edge-service/v1/service/venta/por-mes/consultar';
+        var apiUrl = hostDomain+'/edge-service/v1/service/venta/por-mes/consultar';
 
         const datos = await fetchData(apiUrl, token);
         //console.log('Datos completos de la API (Ventas):', datos);
@@ -197,7 +197,7 @@ async function obtenerDatosGraficoVentas(token) {
 
 async function obtenerDatosGraficoCompras(token) {
     try {
-        const datos = await fetchData('http://localhost:8081/edge-service/v1/service/compras/por-mes/consultar', token);
+        const datos = await fetchData(hostDomain+'/edge-service/v1/service/compras/por-mes/consultar', token);
         //console.log('Datos completos de la API (Compras):', datos);
         return datos;
     } catch (error) {
@@ -324,7 +324,7 @@ async function obtenerDatosGraficoProductos(token) {
             method: 'GET',
             headers: myHeaders
         };
-        const respuesta = await fetch('http://localhost:8081/edge-service/v1/service/productos/con/existencias', requestOptions);
+        const respuesta = await fetch(hostDomain+'/edge-service/v1/service/productos/con/existencias', requestOptions);
         if (!respuesta.ok) {
             throw new Error('Error al obtener los datos de productos. Estado de la respuesta: ' + respuesta.status);
         }

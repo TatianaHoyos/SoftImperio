@@ -549,7 +549,7 @@ handleAjaxRequest(function (token) {
 }
 function callApiEliminarUsuario(usuarios,token){
     $.ajax({
-        url: 'http://localhost:8081/edge-service/v1/service/usuario/eliminar/'+usuarios.idUsuarios,
+        url: hostDomain+'/edge-service/v1/service/usuario/eliminar/'+usuarios.idUsuarios,
         type: 'Delete',
         headers: {
             'Authorization': `Bearer ${token}`,
