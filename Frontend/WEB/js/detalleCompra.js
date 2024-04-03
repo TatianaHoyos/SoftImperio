@@ -55,7 +55,7 @@ function ObtenerDetalleCompra(){
 function callApiObtenerDetalleCompra(token,miTabla){
   const idCompra = urlParams.get('idCompra');
   $.ajax({
-    url: `http://localhost:8081/edge-service/v1/service/detalle-compras/consultar/id/${idCompra}`, // Reemplaza '2' con el ID que necesites
+    url: `${hostDomain}/edge-service/v1/service/detalle-compras/consultar/id/${idCompra}`, // Reemplaza '2' con el ID que necesites
     "headers": {
       'Authorization': `Bearer ${token}`
   },
@@ -155,7 +155,7 @@ function createButton(action, id) {
 function callApiDeleteDetail(token,id){
   $.ajax({
     type: 'DELETE',
-    url: 'http://localhost:8081/edge-service/v1/service/detalle-compras/eliminar/'+id,
+    url: hostDomain+'/edge-service/v1/service/detalle-compras/eliminar/'+id,
     "headers": {
       'Authorization': `Bearer ${token}`
   },

@@ -12,8 +12,8 @@ $(document).ready(function() {
 function buscarDatos(idProveedor, token) {
   $.ajax({
     type: "GET",
-    url: "http://localhost:8081/edge-service/v1/service/proveedor/consultar",
-    "headhostDomain+"
+    url: hostDomain+"/edge-service/v1/service/proveedor/consultar",
+    "header":{
         'Authorization': `Bearer ${token}`,
   },
     data: { query: idProveedor },
@@ -55,12 +55,12 @@ function consultarProveedor(idProveedor, token) {
 
     $.ajax({
         type: "GET",
-        url:"http://localhost:8081/edge-service/v1/service/proveedor/consultar/id/" + idProveedor,
+        url:hostDomain+"/edge-service/v1/service/proveedor/consultar/id/" + idProveedor,
         "headers": {
             "Content-Type": "application/json",
             'Authorization': `Bearer ${token}`
           },
-        succhostDomain+"
+          success: function (data){
           $("#documentoE").val(data.documento);
           $("#nombreE").val(data.nombre);
           $("#emailE").val(data.email);
@@ -92,13 +92,13 @@ function eliminarProveedor(idProveedor, token) {
         if (result.isConfirmed) {
             // Realizar la solicitud de eliminación AJAX
             const xhr = new XMLHttpRequest();
-            const pathDelete = "http://localhost:8081/edge-service/v1/service/proveedor/eliminar/id/" + idProveedor;
+            const pathDelete = hostDomain+"/edge-service/v1/service/proveedor/eliminar/id/" + idProveedor;
             xhr.open("DELETE", pathDelete, true);
             xhr.setRequestHeader('Authorization', `Bearer ${token}`);
             xhr.onload = function () {
               if (xhr.status === 200) {
               Swal.fire({
-                type: 'success'hostDomain+"
+                type: 'success',
                 icon:"success",
                 text: 'El proveedor ha sido eliminado. ',
                 showConfirmButton: false,
@@ -135,14 +135,14 @@ function callApiEditarProveedor(data,token){
 
   $.ajax({
     type: "PUT",
-    url: "http://localhost:8081/edge-service/v1/service/proveedor/actualizar/id/" + $("#idProveedorE").val(),
+    url: hostDomain+"/edge-service/v1/service/proveedor/actualizar/id/" + $("#idProveedorE").val(),
     "headers": {
       'Authorization': `Bearer ${token}`
     },
     data: JSON.stringify(data),
     contentType: "application/json",
     success: function(response) {
-      SwahostDomain+"
+      Swal.fire({
         type: 'success',
         text: 'Registro actualizado',
         icon:"success",
@@ -176,7 +176,7 @@ $(document).ready(function() {
 
 function callApiConsultarProveedor(token) {
   $.ajax({
-    url: 'http://localhost:8081/edge-service/v1/service/proveedor/consultar',
+    url: hostDomain+'/edge-service/v1/service/proveedor/consultar',
     "headers": {
       'Authorization': `Bearer ${token}`
     },
@@ -386,7 +386,7 @@ function crearUsuarioProveedor() {
 function callApiCrearProveedor(formData,token){
   $.ajax({
     type: "POST",
-    url: "http://localhost:8081/edge-service/v1/service/proveedor/crear",
+    url: hostDomain+"/edge-service/v1/service/proveedor/crear",
     "headers": {
         "Content-Type": "application/json",
         'Authorization': `Bearer ${token}`,
@@ -395,5 +395,5 @@ function callApiCrearProveedor(formData,token){
     success: onExitoCrearProveedor,
     error: onErrorProv
 
-});hostDomain+"
+});
 }

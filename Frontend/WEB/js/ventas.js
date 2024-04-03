@@ -12,7 +12,7 @@ $(document).ready(function () {
 
 
 // Consultar y mostrar Ventas
-const apiUrl = "https://localhost:7084/api/Ventas/ByFecha";
+const apiUrl = hostDomain+"/edge-service/v1/service/venta/consultar/ByFecha";
 
 function formatearFechaParaAPI(fecha) {
   const partes = fecha.split('-');
@@ -20,7 +20,7 @@ function formatearFechaParaAPI(fecha) {
   const [dia, mes, anio] = partes;
     return `${anio}-${mes}-${dia}`;
 }
-return fecha; 
+return fecha;
 }
 
 
@@ -134,7 +134,14 @@ document.getElementById('btnPaginaSiguiente').addEventListener('click', () => {
 
 async function verDetalles(idVenta) {
   try {
-    const response = await fetch(`https://localhost:7084/api/DetalleVentas/ByVenta/${idVenta}`);
+    var myHeaders = new Headers();
+        myHeaders.append('Authorization', `Bearer ${token}`);
+
+        var requestOptions = {
+            method: 'GET',
+            headers: myHeaders
+        };
+    const response = await fetch(`${hostDomain}/edge-service/v1/service/venta/detalle/consultar/ByVenta/${idVenta}`, requestOptions);
 
     if (!response.ok) {
       throw new Error(`Error de red: ${response.status}`);
