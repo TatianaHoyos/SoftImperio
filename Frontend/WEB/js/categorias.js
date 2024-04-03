@@ -20,7 +20,7 @@ function consultarCategorias(token) {
 function onExitoCategoriasDropDown(data) {
     categorias = data;
     var $dropdown = $("#idCategoria");
-    // $dropdown.append($("<option />").val("-1").text("Todos"));
+    $dropdown.empty();
     $.each(data, function () {
         $dropdown.append($("<option />").val(this.idCategoria).text(this.nombreCategoria));
     });
