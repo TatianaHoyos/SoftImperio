@@ -26,7 +26,7 @@ return fecha;
 
 let data;
 let paginaActual = 1;
-const ventasPorPagina = 6; // Puedes ajustar el número de ventas por página
+const ventasPorPagina = 8; // Puedes ajustar el número de ventas por página
 
 // Función para mostrar ventas dentro del rango de fechas
 function mostrarVentas(Finicial = "", Ffinal="") {
