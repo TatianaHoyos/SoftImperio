@@ -10,7 +10,7 @@ function addCompra() {
 function callApiAddCompra(token){
   $.ajax({
     type: "GET",
-    url: hostDomain+"/edge-service/v1/service/compras/consultar/1090208030",
+    url: hostDomain+"/edge-service/v1/service/Ventas/GenerarPDF",
     "headers": {
       'Authorization': `Bearer ${token}`
   },
@@ -87,7 +87,7 @@ handleAjaxRequest(callApiGenerarPdf);
 function callApiGenerarPdf(token){
   $.ajax({
     type: "GET",
-    url: hostDomain+"/edge-service/v1/service/compras/consultar/pdf",
+    url: hostDomain+"/edge-service/v1/service/ventas/consultar/pdf",
     "headers": {
       'Authorization': `Bearer ${token}`,
       'target' : 'pdf'

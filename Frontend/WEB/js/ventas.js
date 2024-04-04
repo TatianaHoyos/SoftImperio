@@ -12,7 +12,7 @@ $(document).ready(function () {
 
 
 // Consultar y mostrar Ventas
-const apiUrl = hostDomain+"/edge-service/v1/service/venta/consultar/ByFecha";
+const apiUrl = "https://localhost:7084/api/Ventas/ByFecha";
 
 function formatearFechaParaAPI(fecha) {
   const partes = fecha.split('-');
@@ -20,27 +20,21 @@ function formatearFechaParaAPI(fecha) {
   const [dia, mes, anio] = partes;
     return `${anio}-${mes}-${dia}`;
 }
-return fecha;
+return fecha; 
 }
 
 
 let data;
 let paginaActual = 1;
-const ventasPorPagina = 8; // Puedes ajustar el número de ventas por página
+const ventasPorPagina = 4; // Puedes ajustar el número de ventas por página
 
 // Función para mostrar ventas dentro del rango de fechas
-function mostrarVentas(Finicial = "", Ffinal="") {
+function mostrarVentas(Finicial = "", Ffinal="", pagina = 1) {
   var fechaInicial = "";
   var fechaFinal = "";
   if (Ffinal === "" && Finicial === "") {
     fechaInicial = document.querySelector('#fecha-inicial').value;
     fechaFinal = document.querySelector('#fecha-final').value;
-
-    // Validar si las fechas están vacías
-    if (fechaInicial === "" || fechaFinal === "") {
-      mostrarAlerta("Por favor seleccione fechas.");
-      return; // Salir de la función si las fechas están vacías
-    }
   } else {
     fechaFinal = Ffinal;
     fechaInicial = Finicial;
@@ -115,17 +109,15 @@ function actualizarTablaVentas(ventas, pagina) {
 document.getElementById('btnPaginaAnterior').addEventListener('click', () => {
   if (paginaActual > 1) {
     paginaActual--;
-    mostrarVentas();
+    mostrarVentas("", "", paginaActual);
   }
 });
 
 document.getElementById('btnPaginaSiguiente').addEventListener('click', () => {
-  // Puedes ajustar esto según la cantidad total de páginas
   const totalPaginas = Math.ceil(data.length / ventasPorPagina);
-
   if (paginaActual < totalPaginas) {
     paginaActual++;
-    mostrarVentas();
+    mostrarVentas("", "", paginaActual);
   }
 });
 
@@ -134,14 +126,7 @@ document.getElementById('btnPaginaSiguiente').addEventListener('click', () => {
 
 async function verDetalles(idVenta) {
   try {
-    var myHeaders = new Headers();
-        myHeaders.append('Authorization', `Bearer ${token}`);
-
-        var requestOptions = {
-            method: 'GET',
-            headers: myHeaders
-        };
-    const response = await fetch(`${hostDomain}/edge-service/v1/service/venta/detalle/consultar/ByVenta/${idVenta}`, requestOptions);
+    const response = await fetch(`https://localhost:7084/api/DetalleVentas/ByVenta/${idVenta}`);
 
     if (!response.ok) {
       throw new Error(`Error de red: ${response.status}`);
@@ -217,6 +202,63 @@ function mostrarTodasLasVentas() {
           console.error("Error al obtener datos de ventas:", error);
       });
 }
+
+// Llama a la función para mostrar todas las ventas al cargar la página
+mostrarTodasLasVentas();
+
+
+function generarPDF() {
+  handleAjaxRequest(callApiGenerarPdf);
+}
+
+function callApiGenerarPdf(token) {
+  $.ajax({
+    type: "GET",
+    url: "https://localhost:7084/api/Ventas/GenerarPDF",
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'target': 'pdf'
+    },
+    xhrFields: {
+      responseType: 'arraybuffer'
+    },
+    success: function (response, status, xhr) {
+      if (xhr.status === 200) {
+        const blob = new Blob([response], { type: 'application/pdf' });
+        const blobURL = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = blobURL;
+        link.download = 'Ventas.pdf';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        setTimeout(() => {
+          URL.revokeObjectURL(blobURL);
+        }, 5000);
+      } else {
+        Swal.fire({
+          title: 'Error',
+          text: `Error en la respuesta del servidor. Código de estado: ${xhr.status}`,
+          icon: "warning",
+          showCancelButton: false,
+          confirmButtonColor: '#ae9243',
+          confirmButtonText: 'Confirmar',
+        });
+      }
+    },
+    error: function (error) {
+      Swal.fire({
+        title: 'Error',
+        text: 'Error en la respuesta',
+        icon: "warning",
+        showCancelButton: false,
+        confirmButtonColor: '#ae9243',
+        confirmButtonText: 'Confirmar',
+      });
+    }
+  });
+}
+
 
 // Llama a la función para mostrar todas las ventas al cargar la página
 mostrarTodasLasVentas();
