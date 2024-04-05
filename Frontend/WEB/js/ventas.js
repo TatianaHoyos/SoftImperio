@@ -25,7 +25,7 @@ return fecha;
 
 let data;
 let paginaActual = 1;
-const ventasPorPagina = 6; // Puedes ajustar el número de ventas por página
+const ventasPorPagina = 4; // Puedes ajustar el número de ventas por página
 
 // Función para mostrar ventas dentro del rango de fechas
 function mostrarVentas(Finicial = "", Ffinal="") {
@@ -235,6 +235,60 @@ function mostrarTodasLasVentas(token) {
           console.error("Error al obtener datos de ventas:", error);
       });
 }
+
+
+function generarPDF() {
+  handleAjaxRequest(callApiGenerarPdf);
+}
+
+function callApiGenerarPdf(token) {
+  $.ajax({
+    type: "GET",
+    url: "https://localhost:7084/api/Ventas/GenerarPDF",
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'target': 'pdf'
+    },
+    xhrFields: {
+      responseType: 'arraybuffer'
+    },
+    success: function (response, status, xhr) {
+      if (xhr.status === 200) {
+        const blob = new Blob([response], { type: 'application/pdf' });
+        const blobURL = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = blobURL;
+        link.download = 'Ventas.pdf';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        setTimeout(() => {
+          URL.revokeObjectURL(blobURL);
+        }, 5000);
+      } else {
+        Swal.fire({
+          title: 'Error',
+          text: `Error en la respuesta del servidor. Código de estado: ${xhr.status}`,
+          icon: "warning",
+          showCancelButton: false,
+          confirmButtonColor: '#ae9243',
+          confirmButtonText: 'Confirmar',
+        });
+      }
+    },
+    error: function (error) {
+      Swal.fire({
+        title: 'Error',
+        text: 'Error en la respuesta',
+        icon: "warning",
+        showCancelButton: false,
+        confirmButtonColor: '#ae9243',
+        confirmButtonText: 'Confirmar',
+      });
+    }
+  });
+}
+
 
 // Llama a la función para mostrar todas las ventas al cargar la página
 handleAjaxRequest(mostrarTodasLasVentas);

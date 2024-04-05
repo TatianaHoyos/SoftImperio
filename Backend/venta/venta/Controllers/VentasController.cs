@@ -15,6 +15,8 @@ using venta.Models;
 using venta.Repository;
 using venta.SignalR;
 using Microsoft.AspNetCore.Cors;
+using QuestPDF.Fluent;
+using QuestPDF.Helpers;
 
 namespace venta.Controllers
 {
@@ -131,6 +133,97 @@ namespace venta.Controllers
             }
         }
 
+
+
+        //GET: api/Ventas/GenerarPDF
+        [HttpGet("GenerarPDF")]
+        public async Task<IActionResult> GenerarPDF()
+        {
+            List<Venta> ventas = await _context.Venta.ToListAsync();
+
+            if (ventas == null || ventas.Count == 0)
+            {
+                return NotFound("No hay datos para generar el PDF");
+            }
+            else
+            {
+                var pdf = Document.Create(document =>
+                {
+                    document.Page(page =>
+                    {
+                        page.Margin(30);
+                        page.Header().ShowOnce().Row(row =>
+                        {
+                            //var rutaImagen = Path.Combine(_webHostEnvironment.WebRootPath, "img/logo.png");
+                            //byte[] imagenData = System.IO.File.ReadAllBytes(rutaImagen);
+                            // Agregar el logo al encabezado
+                            //row.ConstantItem(95).Background(Colors.White).Image(imagenData);
+                            row.RelativeItem()
+                            .Column(col =>
+                            {
+                                col.Item().AlignCenter().Text("Discoteca Imperio").Bold().FontSize(12);
+                                col.Item().AlignCenter().Text("Dirección: Cll 49 #28-47").FontSize(10);
+                            });
+                            row.RelativeItem()
+                            .Column(col =>
+                            {
+                                col.Item().AlignCenter().Text("Reporte Ventas").FontSize(16);
+                                col.Item().AlignCenter().Text("Celular: 300 4395676").FontSize(10);
+                            });
+                            row.RelativeItem()
+                            .Column(col =>
+                            {
+                                col.Item().AlignCenter().Text(DateTime.Now.ToString("dd/MM/yyyy")).FontSize(10);
+                                col.Item().AlignCenter().Text(DateTime.Now.ToString("HH:mm:ss")).FontSize(10);
+                            });
+                        });
+                        page.Content().PaddingVertical(10).Column(col1 =>
+                        {
+                            col1.Item().AlignCenter().Text("Ventas").Bold().FontSize(16);
+                            col1.Item().PaddingVertical(15).Table(tabla =>
+                            {
+                                tabla.ColumnsDefinition(columns =>
+                                {
+                                    columns.RelativeColumn();
+                                    columns.RelativeColumn();
+                                });
+                                tabla.Header(header =>
+                                {
+                                    header.Cell().Background("#ae9243").BorderLeft(0.5f).BorderColor("#ae9243").
+                                    Padding(2).AlignCenter().Text("Fecha").Bold().FontColor("#ffffff");
+                                    header.Cell().Background("#ae9243").BorderLeft(0.5f).BorderColor("#ae9243").
+                                    Padding(2).AlignCenter().Text("Total").Bold().FontColor("#ffffff");
+                                });
+                                foreach (var venta in ventas)
+                                {
+                                    tabla.Cell().BorderLeft(0.5f).BorderColor("#b5b3b3")
+                                         .BorderBottom(0.5f).BorderColor("#b5b3b3")
+                                         .Padding(2).AlignCenter().Text(venta.fechaVenta).FontSize(10);
+                                    tabla.Cell().BorderRight(0.5f).BorderColor("#b5b3b3")
+                                         .BorderBottom(0.5f).BorderColor("#b5b3b3")
+                                         .Padding(2).AlignCenter().Text($"${venta.totalVenta}").FontSize(10);
+                                }
+                            });
+                        });
+                        page.Footer().Height(50)
+                        .AlignCenter()
+                        .Text(txt =>
+                        {
+                            txt.Span("Página ").FontSize(10);
+                            txt.CurrentPageNumber().FontSize(10);
+                            txt.Span(" de ").FontSize(10);
+                            txt.TotalPages().FontSize(10);
+                        });
+                    });
+                })
+                   .GeneratePdf();
+
+                Stream stream = new MemoryStream(pdf);
+                return File(stream, "aplication/pdf", "Ventas.pdf");
+            }
+
+
+        }
 
 
         // GET: api/Ventas
