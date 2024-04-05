@@ -662,7 +662,7 @@ spring:
                 accion: Consultar
             - RewritePath=/edge-service/v1/service/roles/consultar, /api/roles
 
-        - id: services-roles-consultar
+        - id: services-roles-consultar-id
           uri: ${HOST_API_JAVA:http://localhost:8080}
           predicates:
             - Path=/edge-service/v1/service/roles/consultar/id/**
@@ -672,7 +672,7 @@ spring:
               args:
                 modulo: Configuracion
                 accion: Consultar
-            - RewritePath=/edge-service/v1/service/roles/consultar/id/(?<idrol>.*), /api/roles/api/roles/{id}/$\{idusuario}
+            - RewritePath=/edge-service/v1/service/roles/consultar/id/(?<idrol>.*), /api/roles/$\{idrol}
 
         - id: services-roles-crear
           uri: ${HOST_API_JAVA:http://localhost:8080}
