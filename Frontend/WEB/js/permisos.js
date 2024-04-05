@@ -239,7 +239,37 @@ function eventoFormularioRol(){
     }else if(operacion=="actualizarRol"){
         var idRol=$("#idRolActualizar").val();
         actualizarRol(idRol);
+        
     }
+}
+
+
+function crearRol(){
+   
+    var formData = {
+       nombreRol:$("#nombreRol").val(),
+       estado:$("#estado").val(),
+    };
+    
+    handleAjaxRequest(function (token) {
+        callApiCrearRol(formData, token);
+    });
+
+}
+
+function callApiCrearRol(formData,token){
+
+    $.ajax({
+        type: "POST",
+        url:hostDomain+"/edge-service/v1/service/roles/crear",
+        "headers": {
+          "Content-Type": "application/json",
+          'Authorization': `Bearer ${token}`
+        },
+        data: JSON.stringify(formData),
+        success: onExitoCrearRol,
+        error: onErrorCrearRol
+   });
 }
 
 
@@ -259,7 +289,7 @@ function callApiActualizarRol(idRol, formData, token){
     $.ajax({
         type: "PUT",
         url:hostDomain+"/edge-service/v1/service/roles/actualizar/"+idRol,
-        "header":{
+        "headers":{
           "Content-Type": "application/json",
           'Authorization': `Bearer ${token}`
         },

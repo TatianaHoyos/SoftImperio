@@ -13,7 +13,7 @@ function buscarDatos(idProveedor, token) {
   $.ajax({
     type: "GET",
     url: hostDomain+"/edge-service/v1/service/proveedor/consultar",
-    "header":{
+    "headers":{
         'Authorization': `Bearer ${token}`,
   },
     data: { query: idProveedor },
