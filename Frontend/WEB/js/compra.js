@@ -5,7 +5,7 @@ $(document).ready(function() {
 function addCompra() {
     //window.location.href = 'comprasDetail.html';
     handleAjaxRequest(callApiAddCompra);
-    console.log("invoking API");
+   // console.log("invoking API");
   }
 function callApiAddCompra(token){
   $.ajax({
@@ -101,7 +101,7 @@ function callApiGenerarPdf(token){
         const blob = new Blob([response], { type: 'application/pdf' });
 
         // Crea una URL de objeto para el blob
-        const blobURL = URL.createObjectURL(blob);
+        const blobURL = URL.createObjectURL(blob);7
 
         // Crea un enlace invisible para descargar el PDF
         const link = document.createElement('a');

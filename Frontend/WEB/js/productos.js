@@ -304,7 +304,7 @@ function generarPDFProductos(){
 function callApiGenerarPdf(token){
       $.ajax({
         type: "GET",
-        url: "http://localhost:8080/api/producto/generar/pdf",
+        url: hostDomain+"/edge-service/v1/service/productos/pdf",
         "headers": {
           'Authorization': `Bearer ${token}`,
           'target' : 'pdf'
