@@ -1,12 +1,12 @@
 name: api_seguridad - java
 on:
   pull_request:
-    branches: [ tatiana2 ]
-    paths:
-      - 'Backend/api_seguridad/**'
-      - '.github/workflows/api-java.yaml'
+#    branches: [ tatiana2 ]
+#    paths:
+#      - 'Backend/api_seguridad/**'
+#      - '.github/workflows/api-java.yaml'
   push:
-    branches: [ tatiana2 ]
+    branches: [ main ]
     paths:
       - 'Backend/api_seguridad/**'
       - '.github/workflows/api-java.yaml'
@@ -48,7 +48,7 @@ jobs:
           SPRING_DATASOURCE_PASSWORD: prueba
 
   docker-build:
-    if: ${{ github.ref == 'refs/heads/tatiana2' }}
+    if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     environment: Production
     defaults:
