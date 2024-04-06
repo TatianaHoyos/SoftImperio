@@ -98,7 +98,6 @@ spring:
           uri: ${HOST_API_JAVA:http://localhost:8080}
           predicates:
             - Path=/edge-service/v1/service/productos/pdf
-            - Header=target, pdf
           filters:
             - name: AuthenticationFilter
               args:
@@ -306,6 +305,17 @@ spring:
                 modulo: Venta
                 accion: Consultar
             - RewritePath=/edge-service/v1/service/venta/consultar, /api/Ventas
+
+        - id: services-ventas-pdf
+          uri: ${HOST_API_VENTA:https://localhost:7084}
+          predicates:
+            - Path=/edge-service/v1/service/venta/consultar/pdf
+          filters:
+            - name: AuthenticationFilter
+              args:
+                modulo: Venta
+                accion: Consultar
+            - RewritePath=/edge-service/v1/service/venta/consultar/pdf, /api/Ventas/GenerarPDF
 
         - id: services-venta-mesa-crear
           uri: ${HOST_API_VENTA:https://localhost:7084}

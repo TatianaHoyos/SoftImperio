@@ -221,7 +221,7 @@ function mostrarFormularioActualizarCrearUsuarioCreditos() {
     btnform.off("click").click(function () {
         var idUsuarioCredito = $("#idUsuarioCredito").val();
         actualizarUsuarioCredito(idUsuarioCredito);
-        console.log('idUsuarioCredito:',idUsuarioCredito);
+       // console.log('idUsuarioCredito:',idUsuarioCredito);
     });
 }
 
@@ -231,7 +231,7 @@ function EditarUsuarioCredito(usuariocredito) {
     $("#nombre").val(usuariocredito.nombre);
     $("#documento").val(usuariocredito.documento);
     $("#telefono").val(usuariocredito.telefono);
-    console.log('Valor de usuariocredito:',usuariocredito);
+   // console.log('Valor de usuariocredito:',usuariocredito);
     var btnform = $("#btn-form");
     btnform.click(function(){ actualizarUsuarioCredito(usuariocredito); });
 }
@@ -242,8 +242,8 @@ function EditarUsuarioCredito(usuariocredito) {
         var documento= $("#documento").val();
         var telefono=  $("#telefono").val();
         var totalCreditoA = usuariocredito.totalCredito; // Aquí se obtiene el totalCredito actual
-        console.log('totalCredito:', usuariocredito.totalCredito);
-        console.log('cabio:',usuariocredito);
+      //  console.log('totalCredito:', usuariocredito.totalCredito);
+       // console.log('cabio:',usuariocredito);
         
 
 
@@ -290,7 +290,7 @@ function EditarUsuarioCredito(usuariocredito) {
             "telefono": telefono,
             "totalCredito": totalCreditoA,
         });
-        console.log(formData);
+        //console.log(formData);
         handleAjaxRequest(function (token) {
             callApiPutUsuarioCredito(formData,token);
         });
@@ -747,9 +747,9 @@ function EditarUsuarioCredito(usuariocredito) {
                 'Authorization': `Bearer ${token}`
             },
             success: function(usuarioCredito) {
-                console.log('usuario',usuarioCredito)
-                console.log('totalCredito',usuarioCredito.totalCredito)
-                console.log('total',totalAbonar)
+                // console.log('usuario',usuarioCredito)
+                // console.log('totalCredito',usuarioCredito.totalCredito)
+                // console.log('total',totalAbonar)
                 var restarTotalCredito= usuarioCredito.totalCredito - totalAbonar
 
                 var restCreditoData = {
@@ -759,7 +759,7 @@ function EditarUsuarioCredito(usuariocredito) {
                     "telefono": usuarioCredito.telefono,
                     "totalCredito": restarTotalCredito
                 };
-                console.log('usuario',restCreditoData)
+               // console.log('usuario',restCreditoData)
                 // Convertir a formato JSON
                 var formDataSumaCredito = JSON.stringify(restCreditoData);
 
@@ -1068,10 +1068,10 @@ function actualizarUsuarioCreditoA(token) {
         },
         success: function(usuarioCredito) {
             // Sumar totalVenta al totalCredito actual del UsuarioCredito
-            console.log('total',totalVenta)
-            console.log('usuario',idUsuarioCredito)
+            // console.log('total',totalVenta)
+            // console.log('usuario',idUsuarioCredito)
             var sumarTotalCredito=idUsuarioCredito.totalCredito+totalVenta
-            console.log('sumarTotalCredito',sumarTotalCredito)
+           // console.log('sumarTotalCredito',sumarTotalCredito)
 
             var sumaCreditoData = {
                 "idUsuarioCredito":  idUsuarioCreditoSolo,
@@ -1080,7 +1080,7 @@ function actualizarUsuarioCreditoA(token) {
                 "telefono": idUsuarioCredito.telefono,
                 "totalCredito": sumarTotalCredito
             };
-            console.log('usuario',sumaCreditoData)
+           // console.log('usuario',sumaCreditoData)
 
             // Convertir a formato JSON
             var formDataSumaCredito = JSON.stringify(sumaCreditoData);

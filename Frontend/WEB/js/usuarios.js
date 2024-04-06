@@ -2,7 +2,7 @@ $(document).ready(function () {
     $("#resultadoCrear").hide();
     handleAjaxRequest(consultarUsuarios);
     handleAjaxRequest(consultarRoles);
-    buscarUsuarioTabla();
+   
 });
 
 function consultarUsuarios(token) {

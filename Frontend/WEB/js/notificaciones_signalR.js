@@ -6,9 +6,9 @@ const connection = new signalR.HubConnectionBuilder()
 async function start() {
     try {
         await connection.start();
-        console.log("SignalR Connected.");
+      //  console.log("SignalR Connected.");
     } catch (err) {
-        console.log(err);
+      //  console.log(err);
         setTimeout(start, 5000);
     }
 };
@@ -28,7 +28,17 @@ const receiveMessage = async () => {
 
         });
     } catch (error) {
-        console.log(error);
+       // console.log(error);
+       Swal.fire({
+        title: 'Error',
+        text: 'Error en la respuesta',
+        icon:"warning",
+        showCancelButton: false,
+        confirmButtonColor: ' #ae9243 ',
+        confirmButtonText: 'Confirmar',
+    }).then((result) => {
+       
+    });
     }
 }
 
