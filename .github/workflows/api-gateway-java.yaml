@@ -38,7 +38,7 @@ jobs:
         run: ./gradlew cleanTest test
 
   docker-build:
-    if: ${{ github.ref == 'refs/heads/tatiana2' }}
+    if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
 
     defaults:
