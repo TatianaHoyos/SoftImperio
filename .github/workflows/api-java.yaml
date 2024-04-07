@@ -1,6 +1,6 @@
 name: api_seguridad - java
 on:
-  pull_request:
+#  pull_request:
 #    branches: [ tatiana2 ]
 #    paths:
 #      - 'Backend/api_seguridad/**'
