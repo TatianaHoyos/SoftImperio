@@ -292,7 +292,9 @@ Copiamos el ```ID``` de las imagenes que listamos en el paso anterior
 Ejecutamos los comandos reemplazando ID-IMAGE por el ID que copiamos:
 
 ```docker run -d -p 7084:80 --name pruebaNet ID-IMAGE```
+
 ```docker run -d -p 8080:8080 --name pruebaJava ID-IMAGE```
+
 ```docker run -e HOST_API_VENTA='http://pruebaNet' -e HOST_API_JAVA='http://pruebaJava:8080' -d -p 8081:8081 --name apigateway ID-IMAGE```
 
 ```docker ps``` Verificamos que los contenedores esten corriendo (deben visualizarse 3)
