@@ -27,6 +27,7 @@ import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
@@ -61,7 +62,8 @@ public class ControllerProducto {
     @Autowired
     private PdfUtil pdfUtil;
 
-    private String urlServer = "http://localhost:8080/";
+    @Value("${folder.image.products}")
+    private String folderImage;
 
     static Locale colombianLocale = new Locale("es", "CO");
     static NumberFormat colombianCurrencyFormat = NumberFormat.getCurrencyInstance(colombianLocale);
@@ -77,7 +79,6 @@ public class ControllerProducto {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                         .body(new Response("error", "Ya existe un producto igual"));
             }
-            String uploadDir = "producto-photos/";
             String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
             fileName = producto.getNombreProducto()  +"-"+ producto.getReferenciaProducto().concat(fileName);
 
@@ -89,12 +90,12 @@ public class ControllerProducto {
             //productoEntity.setIdProveedores(producto.getIdProveedores());
             productoEntity.setNombreProducto(producto.getNombreProducto());
             productoEntity.setPrecioProducto(producto.getPrecioProducto());
-            productoEntity.setFotoProducto(uploadDir + fileName);
+            productoEntity.setFotoProducto(folderImage + fileName);
             productoEntity.setReferenciaProducto(producto.getReferenciaProducto());
 
             var productodb = productoService.crearProducto(productoEntity);
             //Se guarda la foto en una carpeta del servidor
-            FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+            FileUploadUtil.saveFile(folderImage, fileName, multipartFile);
 
             if (productodb == null) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

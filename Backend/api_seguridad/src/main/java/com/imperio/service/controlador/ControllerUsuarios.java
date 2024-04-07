@@ -9,6 +9,7 @@ import com.imperio.service.services.EncryptService;
 import com.imperio.service.util.FileUploadUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,8 @@ public class ControllerUsuarios {
     @Autowired
     private EncryptService encryptService;
 
-    private String urlServer = "http://localhost:8080/";
+    @Value("${folder.image.users}")
+    private String folderImage;
 
     @PostMapping(value = "api/usuarios/crear", produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -38,7 +40,6 @@ public class ControllerUsuarios {
                                             @RequestParam("foto") MultipartFile multipartFile){
         try {
             var rol= rolService.obtenerRolesPorId(usuario.getIdRol());
-            String uploadDir = "usuarios-photos/";
             String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
             fileName = usuario.getNombre()  +"-"+ fileName;
 
@@ -53,13 +54,13 @@ public class ControllerUsuarios {
             usuariosEntity.setDocumento(usuario.getDocumento());
             usuariosEntity.setEmail(usuario.getEmail());
             usuariosEntity.setTelefono(usuario.getTelefono());
-            usuariosEntity.setFoto(uploadDir + fileName);
+            usuariosEntity.setFoto(folderImage + fileName);
             usuariosEntity.setPassword(hashPassword);
             usuariosEntity.setEstado("Activo");
 
             var usuariodb = usuariosService.crearUsuario(usuariosEntity);
             //Se guarda la foto en una carpeta del servidor
-            FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+            FileUploadUtil.saveFile(folderImage, fileName, multipartFile);
 
             if (usuariodb == null) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
