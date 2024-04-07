@@ -248,7 +248,7 @@ function EditarProducto(producto) {
     $("#stockMinimo").val(producto.existencia.stock);
     $("#precio").val(producto.precioProducto);
     var preview = document.getElementById("foto-preview");
-    preview.src = "http://localhost:8080/" + producto.fotoProducto;
+    preview.src = hostDomainImage+"/" + producto.fotoProducto;
     preview.style.display = "block";
     var btnform = $("#btn-form");
     

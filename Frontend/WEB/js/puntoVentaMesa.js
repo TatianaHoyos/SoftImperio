@@ -98,7 +98,7 @@ function mostrarProductos(data, categorias) {
             var productoCard = $("<div>").addClass("card m-2").css("width", "10rem").attr("id", "cardProducto");
 
             // Configurar la imagen
-            var imagen = $("<img>").addClass("card-img-top").css("background-color", "rgba(77, 76, 97, 0.28)").attr("src","http://localhost:8080/"+ producto.foto).attr("width", "100").attr("alt", "Producto");
+            var imagen = $("<img>").addClass("card-img-top").css("background-color", "rgba(77, 76, 97, 0.28)").attr("src",hostDomainImage+"/"+ producto.foto).attr("width", "100").attr("alt", "Producto");
             productoCard.append(imagen);
 
             // Configurar el cuerpo de la tarjeta
