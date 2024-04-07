@@ -264,7 +264,7 @@ Estos comandos se ejecutan una sola vez, sólo en la instalación y configuraci�
 
 Copiamos la url de las imagenes docker en el registry para descargarlas:
 
-![ecr-images-url](./Documentation/ec2/ecr-images-url.png "ecr-images-url") 
+![ecr-images-url](./Documentation/ec2/ecr-image-url.png "ecr-images-url") 
 
 2. Nos conectamos a la instancia EC2
 
