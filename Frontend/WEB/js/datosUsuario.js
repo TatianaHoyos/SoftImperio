@@ -11,7 +11,7 @@ function obtenerDatosUsuario(){
     // Asignar texto al nombre de usuario usando .html()
 $("#nombreUsuario").html("¡Hola! " + objetoRecuperado.nombre +" <span id='rolUsuario'></span>");
 
-     $("#imgUsuario").attr("src", "http://localhost:8080/" + objetoRecuperado.foto);
+     $("#imgUsuario").attr("src", hostDomainImage+"/" + objetoRecuperado.foto);
     
      $("#rolUsuario").text(objetoRecuperado.rol.nombreRol);
      if (!objetoRecuperado.rol.permisos.hasOwnProperty('Configuracion')){

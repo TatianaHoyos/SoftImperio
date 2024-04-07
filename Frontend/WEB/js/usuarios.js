@@ -344,7 +344,7 @@ function EditarUsuario(usuarios) {
     $("#telefono").val(usuarios.telefono);
     $("#estado").val(usuarios.estado);
     var preview = document.getElementById("foto-previewActualizar");
-    preview.src = "http://localhost:8080/"+usuarios.foto;
+    preview.src = hostDomainImage+"/"+usuarios.foto;
     preview.style.display = "block";
     var btnform = $("#btn-form");
     
