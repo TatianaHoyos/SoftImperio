@@ -4,43 +4,59 @@ package com.imperio.service.util;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.S3Object;
-import com.amazonaws.services.s3.model.S3ObjectInputStream;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
 
-@Service
-public class S3FileUploadUtil {
+@Slf4j
+public class FileUploadUtilS3 implements IFileUpload {
 
-    @Autowired
-    private AmazonS3 amazonS3Client;
+
+    private final AmazonS3 amazonS3Client;
     @Value("${aws.bucket.name}")
     private String bucketName;
 
-    public String saveFile(String folderName, String fileName, MultipartFile multipartFile) throws IOException {
-        ObjectMetadata metadata = new ObjectMetadata();
-        metadata.setContentLength(multipartFile.getSize());
-        amazonS3Client.putObject(new PutObjectRequest(bucketName + "/" + folderName, fileName, multipartFile.getInputStream(), metadata));
-        return fileName;
+    public FileUploadUtilS3(AmazonS3 amazonS3Client) {
+        this.amazonS3Client = amazonS3Client;
     }
 
-    public void deleteFile(String folderName, String fileName) {
-        amazonS3Client.deleteObject(bucketName + "/" + folderName, fileName);
+    public void saveFile(String folderName, String fileName, MultipartFile multipartFile) throws IOException {
+        try {
+            String s3Key = folderName.concat(fileName); // Construct the S3 key with the folder name
+
+            // Obtener el tipo de contenido del archivo
+            String contentType = multipartFile.getContentType();
+
+            // Crear metadata y configurar el tipo de contenido
+            ObjectMetadata metadata = new ObjectMetadata();
+            metadata.setContentLength(multipartFile.getSize());
+            metadata.setContentType(contentType);
+            amazonS3Client.putObject(new PutObjectRequest(bucketName,s3Key, multipartFile.getInputStream(), metadata));
+        } catch (Exception e){
+            log.error("save file s3", e);
+            throw e;
+        }
     }
 
-    public void renameFile(String folderName, String currentFileName, String newFileName) {
-        amazonS3Client.copyObject(bucketName + "/" + folderName, currentFileName, bucketName + "/" + folderName, newFileName);
-        amazonS3Client.deleteObject(bucketName + "/" + folderName, currentFileName);
+    public void deleteFile(String filePath) {
+        try {
+            amazonS3Client.deleteObject(bucketName, filePath);
+        } catch (Exception e){
+            log.error("delete file s3", e);
+            throw e;
+        }
     }
 
-    public byte[] getFile(String folderName, String fileName) throws IOException {
-        S3Object s3Object = amazonS3Client.getObject(bucketName + "/" + folderName, fileName);
-        S3ObjectInputStream inputStream = s3Object.getObjectContent();
-        return inputStream.readAllBytes();
+    public void renameFile(String currentFileName, String newFileName) {
+        try {
+            amazonS3Client.copyObject(bucketName, currentFileName, bucketName, newFileName);
+            amazonS3Client.deleteObject(bucketName, currentFileName);
+        } catch (Exception e){
+            log.error("rename file s3", e);
+            throw e;
+        }
     }
-
 }
 
