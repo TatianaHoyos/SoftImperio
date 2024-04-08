@@ -32,6 +32,7 @@ jobs:
         files: '["Frontend/WEB/js/configAmbiente.js"]'
       env:
         DOMAIN-EC2: http://ec2-44-204-45-192.compute-1.amazonaws.com
+        DOMAIN-S3: https://imperiofotos.s3.us-east-1.amazonaws.com
 
     - name: 📂 Set working directory
       run: cat Frontend/WEB/js/configAmbiente.js
