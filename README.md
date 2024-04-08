@@ -103,6 +103,8 @@ Estos archivos ```html``` ```css``` ```js``` deben quedar en la ruta ```/var/www
 
 ```sudo chmod -R 755 /var/www/html/```
 
+### Subir los archivos front web a la instancia EC2 ubuntu
+
 * Para subir los archivos a la instancia EC2 nos ayudamos de ```Github Actions```, usando ```Rsync Deployments Action```
 
 - Creamos un archivo en nuestro repositorio de github en la ruta ```.github/workflows/upload-front.yaml``` [upload-front.yaml](https://github.com/TatianaHoyos/SoftImperio/blob/main/.github/workflows/upload-front.yaml)
@@ -183,3 +185,188 @@ location / {
 Guardamos la configuración precionamos la combinación de teclas ```ctrl + o``` luego ```Enter``` y por último ```ctrl + x```
 
 Ahora podemos disfrutar de nuestro sitio web alojado en una instancia EC2
+
+### Configuración Docker en instancia EC2 ubuntu
+
+1. Nos conectamos a la instancia EC2 como lo hicimos anteriormente
+
+2. Instalamos docker ejecutando los siguientes comandos:
+
+```sudo apt-get install docker.io -y```
+
+```sudo systemctl start docker```
+
+```systemctl enable docker```
+
+```docker --version```
+
+```sudo usermod -a -G docker $(whoami)```
+
+3. Creamos una red dentro de docker para la comunicación entre los contenedores:
+
+```docker network ls```
+
+```docker network create --attachable imperionet```
+
+```docker network ls```
+
+4. Verificamos que exista el archivo ```/etc/docker/daemon.json``` y tenga contenido:
+
+```cat /etc/docker/daemon.json```
+
+Editamos el archivo o lo creammos:
+
+```sudo nano /etc/docker/deamon.json```
+
+el archivo debe tener este contenido:
+
+```json
+{
+ "dns": ["172.17.0.1", "8.8.8.8", "1.1.1.1"]
+}
+```
+
+Reiniciamos docker:
+
+```sudo systemctl restart docker```
+
+
+Estos comandos se ejecutan una sola vez, sólo en la instalación y configuración de docker
+
+### Compilar las APIs, Crear imagen docker y publicar las imagenes en Amazon Elastic Container Registry
+
+* Para compilar, crear la imegen docker y subir las imagenes a Amazon Elastic Container Registry nos ayudamos de ```Github Actions```
+
+- Creamos los archivos en nuestro repositorio de github en la ruta:
+  
+   ```.github/workflows/api-gateway-java.yaml``` para el API Gateway (Java) [api-gateway-java.yaml](https://github.com/TatianaHoyos/SoftImperio/blob/main/.github/workflows/api-gateway-java.yaml)
+
+   ```.github/workflows/api-java.yaml``` para el API Seguridad (Java) [api-java.yaml](https://github.com/TatianaHoyos/SoftImperio/blob/main/.github/workflows/api-java.yaml)
+
+   ```.github/workflows/api-venta-CSharp.yml``` para el API Venta (C#) [api-venta-CSharp.yml](https://github.com/TatianaHoyos/SoftImperio/blob/main/.github/workflows/api-venta-CSharp.yml)
+   
+
+- Los archivos contendrán tareas de compilación, creación de imagen docker y publicación de la imagen docker
+
+- Al ejecutar los Workflows y su ejecución es exitosa se visualizaran así:
+
+![github-action-apis-docker](./Documentation/ec2/github-action-apis-docker.png "github-action-apis-docker") 
+
+- De esa forma podremos visualizar las imagenes docker en Amazon Elastic Container Registry
+
+![ecr](./Documentation/ec2/ecr.png "ecr") 
+
+![ecr-images](./Documentation/ec2/ecr-images.png "ecr-images") 
+
+### Ejecutar las APIs por medio de las imagenes docker en la instancia EC2
+
+1. Hacer pull de las imagenes docker:
+
+Copiamos la url de las imagenes docker en el registry para descargarlas:
+
+![ecr-images-url](./Documentation/ec2/ecr-image-url.png "ecr-images-url") 
+
+2. Nos conectamos a la instancia EC2
+
+
+3. Ejecutamos los siguientes comandos
+
+```sudo systemctl status docker``` Verificamos que docker esté corriendo
+
+```docker pull url-image``` Reemplazamos la ```url-image``` por la url que copiamos anteriormente
+
+```docker pull public.ecr.aws/u8j8i3w5/imperio-public-registry:latest``` API Venta (C#)
+
+```docker pull public.ecr.aws/u8j8i3w5/imperio-public-registry:api-java-latest``` API Seguridad (Java)
+
+```docker pull public.ecr.aws/u8j8i3w5/imperio-public-registry:api-gateway-latest``` para el API Gateway (Java)
+
+1. Listamos las imagenes:
+
+```docker images```
+
+5. Corremos las imagenes docker
+
+Copiamos el ```ID``` de las imagenes que listamos en el paso anterior
+
+Ejecutamos los comandos reemplazando ID-IMAGE por el ID que copiamos:
+
+```docker run -d -p 7084:80 --name pruebaNet ID-IMAGE```
+
+```docker run -d -p 8080:8080 --name pruebaJava ID-IMAGE```
+
+```docker run -e HOST_API_VENTA='http://pruebaNet' -e HOST_API_JAVA='http://pruebaJava:8080' -d -p 8081:8081 --name apigateway ID-IMAGE```
+
+```docker ps``` Verificamos que los contenedores esten corriendo (deben visualizarse 3)
+
+```docker ps -a``` Para ver si hay algun contenedor en stop
+
+
+5. Añadimos los contenedores a la red que creamos anteriormente:
+
+```docker network connect imperionet pruebaNet```
+
+```docker network connect imperionet pruebaJava```
+
+```docker network connect imperionet apigateway```
+
+```docker network inspect imperionet``` Verificamos que los 3 contenedores estén dentro de la red
+
+
+#### Comandos de ayuda:
+
+```docker ps -a``` Ver todos los contenedores
+
+```docker stop pruebaJava``` Detener un contenedor en este caso ```pruebaJava```
+
+```docker start pruebaJava``` Iniciar un contenedor en este caso ```pruebaJava```
+
+```docker logs apigateway -f``` ver los logs en tiempo real de un contenedor en este caso ```apigateway```
+
+```docker rm pruebaJava``` eliminar un contenedor en este caso ```pruebaJava```
+
+```docker images``` listar las imagenes docker
+
+```docker rmi 35353aa23e91``` eliminar una imagen docker reemplazar ```35353aa23e91``` por el id correspondiente, vissualizado con el comando anterior
+
+### Configuración de Nginx para comunicar los contenedores
+
+Debemos crear un proxy en el servidor Nginx para redireccionar las solicitudes rest a los contenedores
+
+
+1. Editar el archivo:
+
+```sudo nano /etc/nginx/sites-available/default```
+
+debemos añadir al archivo lo siguiente:
+
+```
+location /edge-service {
+              #proxy_pass http://localhost:8081;
+              # Redirigir todas las solicitudes a http://localhost:8081
+                # Proxy_pass para enviar las solicitudes al servidor local
+                proxy_pass http://localhost:8081;
+
+                # Configuración de encabezados CORS
+                add_header 'Access-Control-Allow-Origin' '*';
+                add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS, PUT, DELETE';
+                add_header 'Access-Control-Allow-Headers' 'Content-Type, Authorization';
+
+                # Permitir solicitudes OPTIONS sin procesamiento adicional
+                if ($request_method = 'OPTIONS') {
+                        add_header 'Access-Control-Allow-Origin' '*';
+                        add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS, PUT, DELETE';
+                        add_header 'Access-Control-Allow-Headers' 'Content-Type, Authorization';
+                        add_header 'Access-Control-Max-Age' 1728000;
+                        add_header 'Content-Type' 'text/plain charset=UTF-8';
+                        add_header 'Content-Length' 0;
+                        return 204;
+                }
+        }
+```
+
+De esta forma todas las solicitudes al servidor Nginx que contengan ```/edge-service``` en la URL se redireccionará a ```http://localhost:8081``` que es el endpoint que expone el contenedor del apigateway
+
+. Reiniciar Nginx 
+
+```sudo service nginx restart```
