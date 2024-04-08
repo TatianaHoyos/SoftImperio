@@ -7,6 +7,7 @@ import com.imperio.service.repository.RolService;
 import com.imperio.service.repository.UsuariosService;
 import com.imperio.service.services.EncryptService;
 import com.imperio.service.util.FileUploadUtil;
+import com.imperio.service.util.IFileUpload;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,6 +31,9 @@ public class ControllerUsuarios {
 
     @Autowired
     private EncryptService encryptService;
+
+    @Autowired
+    private IFileUpload fileUpload;
 
     @Value("${folder.image.users}")
     private String folderImage;
@@ -60,7 +64,7 @@ public class ControllerUsuarios {
 
             var usuariodb = usuariosService.crearUsuario(usuariosEntity);
             //Se guarda la foto en una carpeta del servidor
-            FileUploadUtil.saveFile(folderImage, fileName, multipartFile);
+            fileUpload.saveFile(folderImage, fileName, multipartFile);
 
             if (usuariodb == null) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -132,7 +136,7 @@ public class ControllerUsuarios {
             usuariosEntity.setEstado(usuario.getEstado());
 
             var usuariodb = usuariosService.crearUsuario(usuariosEntity);
-            FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+            fileUpload.saveFile(uploadDir, fileName, multipartFile);
 
             if (usuariodb == null) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

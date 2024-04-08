@@ -1,5 +1,6 @@
 package com.imperio.service.util;
 
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -9,9 +10,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
-public class FileUploadUtil {
 
-    public static void saveFile(String uploadDir, String fileName,
+public class FileUploadUtil implements IFileUpload {
+
+    public void saveFile(String uploadDir, String fileName,
                                 MultipartFile multipartFile) throws IOException {
         Path uploadPath = Paths.get(uploadDir);
 
@@ -27,12 +29,12 @@ public class FileUploadUtil {
         }
     }
 
-    public static void deleteFile(String filePath) throws IOException {
+    public void deleteFile(String filePath) throws IOException {
         Path path = Paths.get(filePath);
         Files.deleteIfExists(path);
     }
 
-    public static void renameFile(String currentFilePath, String newFileName) throws IOException {
+    public void renameFile(String currentFilePath, String newFileName) throws IOException {
         Path currentPath = Paths.get(currentFilePath);
         Path newPath = currentPath.resolveSibling(newFileName);
 

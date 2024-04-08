@@ -5,27 +5,13 @@ import com.imperio.service.model.dto.producto.ProductoRequest;
 import com.imperio.service.model.dto.producto.ProductoResponse;
 import com.imperio.service.model.entity.ExistenciasEntity;
 import com.imperio.service.model.entity.ProductoEntity;
-import com.imperio.service.services.pdf.PdfUtil;
 import com.imperio.service.repository.CategoriaService;
 import com.imperio.service.repository.ExistenciasService;
 import com.imperio.service.repository.ProductoService;
-import com.imperio.service.services.pdf.model.ProductoReporte;
-import com.imperio.service.util.FileUploadUtil;
+import com.imperio.service.services.pdf.PdfUtil;
+import com.imperio.service.util.IFileUpload;
 import com.itextpdf.io.exceptions.IOException;
 import com.itextpdf.io.source.ByteArrayOutputStream;
-import com.itextpdf.kernel.colors.ColorConstants;
-import com.itextpdf.kernel.colors.DeviceRgb;
-import com.itextpdf.kernel.geom.PageSize;
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.layout.Document;
-import com.itextpdf.layout.borders.Border;
-import com.itextpdf.layout.borders.SolidBorder;
-import com.itextpdf.layout.element.Cell;
-import com.itextpdf.layout.element.Paragraph;
-import com.itextpdf.layout.element.Table;
-import com.itextpdf.layout.properties.TextAlignment;
-import com.itextpdf.layout.properties.UnitValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
@@ -40,10 +26,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.net.MalformedURLException;
-import java.sql.Array;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import java.util.Locale;
 
@@ -61,6 +45,9 @@ public class ControllerProducto {
 
     @Autowired
     private PdfUtil pdfUtil;
+
+    @Autowired
+    private IFileUpload fileUpload;
 
     @Value("${folder.image.products}")
     private String folderImage;
@@ -95,7 +82,7 @@ public class ControllerProducto {
 
             var productodb = productoService.crearProducto(productoEntity);
             //Se guarda la foto en una carpeta del servidor
-            FileUploadUtil.saveFile(folderImage, fileName, multipartFile);
+            fileUpload.saveFile(folderImage, fileName, multipartFile);
 
             if (productodb == null) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -138,7 +125,7 @@ public class ControllerProducto {
                 if (existenciaDB.getCantidad() == 0) {
                     var filePicture = existenciaDB.getProductos().getFotoProducto();
                     existenciasService.eliminarExistenciaYProducto(existenciaDB);
-                    FileUploadUtil.deleteFile(filePicture);
+                    fileUpload.deleteFile(filePicture);
                     return ResponseEntity.ok(new Response("exito", "se elimino el producto con exito"));
                 } else {
                     return ResponseEntity.status(HttpStatus.FAILED_DEPENDENCY)
@@ -193,13 +180,12 @@ public class ControllerProducto {
 
             var productoEntity = new ProductoEntity();
             if (multipartFile != null && !multipartFile.isEmpty()) {
-                String uploadDir = "producto-photos/";
                 String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
                 fileName = producto.getNombreProducto() + "-" + producto.getReferenciaProducto().concat(fileName);
-                productoEntity.setFotoProducto(uploadDir + fileName);
+                productoEntity.setFotoProducto(folderImage + fileName);
 
-                FileUploadUtil.deleteFile(productoDB.get().getFotoProducto());
-                FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+                fileUpload.deleteFile(productoDB.get().getFotoProducto());
+                fileUpload.saveFile(folderImage, fileName, multipartFile);
             } else {
                 // La imagen no llego para ser actualizada
                 productoEntity.setFotoProducto(productoDB.get().getFotoProducto());
