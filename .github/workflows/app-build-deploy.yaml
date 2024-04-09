@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./Backend/apigateway
+        working-directory: ./Frontend/Mobile
 
     steps:
       - uses: actions/checkout@v4
