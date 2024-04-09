@@ -1,0 +1,12 @@
+name: app - flutter
+on:
+#  pull_request:
+#    branches: [ tatiana2 ]
+#    paths:
+#      - 'Backend/apigateway/**'
+#      - '.github/workflows/api-gateway-java.yaml'
+  push:
+    branches: [ main ]
+    paths:
+      - 'Frontend/Mobile/**'
+      - '.github/workflows/app-build-deploy.yaml'
