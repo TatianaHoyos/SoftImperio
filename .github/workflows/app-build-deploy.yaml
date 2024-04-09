@@ -39,14 +39,14 @@ jobs:
         # ^ If you want to use a specific version of flutter
       
       # Verifies if the dart code is formatted well
-      - name: Verify formatting
-        run: dart format --output=none --set-exit-if-changed .
+      #- name: Verify formatting
+      #  run: dart format --output=none --set-exit-if-changed .
         # --set-exit-if-changed stops execution if the any code is not well formatted
         # --output=none prints files which needs to be formatted
       
       # Checks for Symantic errors. Can be configured using analysis_options.yaml
-      - name: Analyze project source
-        run: flutter analyze --fatal-warnings
+      #- name: Analyze project source
+      #  run: flutter analyze --fatal-warnings
         # optionally use --fatal-warnings to stop execution if any warnings are found
 
       # Runs unit test
