@@ -8,7 +8,7 @@ on:
   push:
     branches: [ main ]
     paths:
-      - 'Frontend/Mobile/**'
+      - 'Frontend/Mobile/login/**'
       - '.github/workflows/app-build-deploy.yaml'
 
 jobs:
@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./Frontend/Mobile
+        working-directory: ./Frontend/Mobile/login
 
     steps:
       - uses: actions/checkout@v4
