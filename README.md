@@ -365,6 +365,30 @@ location /edge-service {
         }
 ```
 
+Crear un proxy en Nginx para habilitar la comunicación websockets:
+
+1. Editar el archivo:
+
+```sudo nano /etc/nginx/sites-available/default```
+
+debemos añadir al archivo lo siguiente:
+
+
+```
+location /NotificarPedido { 
+                proxy_pass http://localhost:7084;
+               proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 86400;
+        }
+```
+
+
 De esta forma todas las solicitudes al servidor Nginx que contengan ```/edge-service``` en la URL se redireccionará a ```http://localhost:8081``` que es el endpoint que expone el contenedor del apigateway
 
 . Reiniciar Nginx 
