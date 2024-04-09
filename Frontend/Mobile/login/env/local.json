@@ -1,4 +1,4 @@
 {
-    "host": "http://192.168.20.31:8081",
-    "hostImages": "http://192.168.20.31:8080"
+    "host": "http://ec2-44-204-65-201.compute-1.amazonaws.com",
+    "hostImages": "https://imperiofotos.s3.us-east-1.amazonaws.com/"
 }

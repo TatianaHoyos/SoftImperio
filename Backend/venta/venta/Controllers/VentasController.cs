@@ -17,6 +17,7 @@ using venta.SignalR;
 using Microsoft.AspNetCore.Cors;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
+using System.Diagnostics;
 
 namespace venta.Controllers
 {
@@ -28,6 +29,8 @@ namespace venta.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IHubContext<MiClaseSignalR> _hubContext;
         private readonly IProductoRepository _productoService;
+
+        private static TraceSource ts = new TraceSource("VentasController");
 
         public VentasController(ApplicationDbContext context,
             IHubContext<MiClaseSignalR> hubContext,
@@ -289,6 +292,9 @@ namespace venta.Controllers
             }
 
             NotificarBarra();
+
+           
+            
             return new JsonResult(response);
           
         }
@@ -516,13 +522,23 @@ namespace venta.Controllers
             await _context.SaveChangesAsync();
         }
 
-        private async void NotificarBarra()
+        private async Task NotificarBarra()
         {
-           List<Venta> ventasPendientes = await ConsultarVentasPendientes();
-            // Convertir la lista a una cadena JSON
-            string jsonString = JsonConvert.SerializeObject(ventasPendientes);
-            // Notificar a la barra los pedidos en estado pendiente que hay en ventas a través de SignalR
-            _hubContext.Clients.All.SendAsync("ReceiveMessage", jsonString, "Usuario");
+            try
+            {
+                List<Venta> ventasPendientes = await ConsultarVentasPendientes();
+                // Convertir la lista a una cadena JSON
+                string jsonString = JsonConvert.SerializeObject(ventasPendientes);
+                // Notificar a la barra los pedidos en estado pendiente que hay en ventas a través de SignalR
+                _hubContext.Clients.All.SendAsync("ReceiveMessage", jsonString, "Usuario");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error al notificar a la barra:");
+                Console.WriteLine(e.Message); // Imprime el mensaje de la excepción
+                Console.WriteLine(e.StackTrace); // Imprime la pila de llamadas de la excepción
+            }
+            
         }
         private async Task<List<Venta>> ConsultarVentasPendientes()
         {
