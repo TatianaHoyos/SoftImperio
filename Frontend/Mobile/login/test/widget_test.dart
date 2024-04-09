@@ -9,22 +9,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:login/main.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+  testWidgets('MyApp Widget Test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
     await tester.pumpWidget(const MyApp());
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    // Verify that MyApp contains a MaterialApp widget.
+    expect(find.byType(MaterialApp), findsOneWidget);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    // Verify that the MaterialApp widget contains a MultiProvider widget.
+    expect(find.byType(MultiProvider), findsOneWidget);
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // Verify that the MultiProvider widget contains a MaterialApp widget.
+    expect(find.byType(MaterialApp), findsOneWidget);
+
+    // Verify that the MaterialApp widget has the correct routes defined.
+    //expect(find.byKey(const Key('/')), findsOneWidget);
+    expect(find.byKey(const Key('/punto_venta')), findsOneWidget);
+    expect(find.byKey(const Key('/screen_carrito')), findsOneWidget);
+    expect(find.byKey(const Key('/inicio')), findsOneWidget);
+
   });
 }
