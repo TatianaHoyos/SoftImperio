@@ -69,11 +69,11 @@ function callApiObtenerDetalleCompra(token,miTabla){
         var acciones = '';
         acciones += '<button class="btn btn-editar" onclick="editDetail(' + item.idDetalleCompra + ')"><i class="fas fa-edit"></i></button>';
         acciones += '&nbsp;&nbsp;&nbsp;&nbsp'; // Agrega un espacio en blanco
-        acciones += '<button class="btn btn-eliminar" onclick="deleteDetail(' + item.idDetalleCompra + ')"><i class="fas fa-trash"></i></button>';
+        acciones += '<button class="btn btn-eliminar" onclick="deleteDetail(' + item.idDetalleCompra + ')"><i class="fa-solid fa-trash-can"></i></button>';
         acciones += '</div>';
 
         miTabla.row.add([
-          item.idDetalleCompra,
+         // item.idDetalleCompra,
           item.producto,
           item.categoria,
           item.proveedor,
@@ -137,7 +137,7 @@ function createButton(action, id) {
   function deleteDetail(id) {
     Swal.fire({
       title: 'Confirma Eliminación',
-      text: 'Estas seguro de eliminar este detalle de la compra?',
+      text: '¿Está seguro de eliminar este detalle de la compra?',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#ae9243',
@@ -375,7 +375,7 @@ function callApiUpdateDetalleCompra(request,token){
 function confirmarYGuardarDetalleCliente() {
   Swal.fire({
     title: 'Confirmación',
-    text: '¿Estás seguro de que deseas guardar los cambios?',
+    text: '¿Está seguro de guardar los cambios?',
     icon: 'question',
     showCancelButton: true,
     confirmButtonColor: '#ae9243',
@@ -398,7 +398,6 @@ function confirmarYGuardarDetalleCliente() {
 //consultar productos
 
 function consultarProductos(token) {
-  console.log("esto se llama?");
 
   $.ajax({
       type: "GET",

@@ -161,8 +161,15 @@ namespace venta.Controllers
                 await _context.SaveChangesAsync();
             }
 
+
             //validar fecha compra
-            bool isCompraIsNotEditable = validarFechaCompra(compra[0].FechaCompra);
+            bool isCompraIsNotEditable = false;
+
+            if (compra.Count != 0)
+            {
+                isCompraIsNotEditable = validarFechaCompra(compra[0].FechaCompra);
+            }
+
             if (isCompraIsNotEditable)
             {
                 return BadRequest("No puedes editar o eliminar una compra después de 24 horas.");
