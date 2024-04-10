@@ -201,95 +201,106 @@ namespace venta.Controllers
             }
             else
             {
-                var pdf = Document.Create(document =>
+                try
                 {
-                    document.Page(page =>
+                    var pdf = Document.Create(document =>
                     {
-                        page.Margin(30);
-                        page.Header().ShowOnce().Row(row =>
+                        document.Page(page =>
                         {
-                            var rutaImagen = Path.Combine(_webHostEnvironment.WebRootPath, "img/logo.png");
-                            byte[] imagenData = System.IO.File.ReadAllBytes(rutaImagen);
-
-                            // Agregar el logo al encabezado
-                            row.ConstantItem(95).Background(Colors.White).Image(imagenData);
-
-
-                            row.RelativeItem()
-                            .Column(col =>
+                            page.Margin(30);
+                            page.Header().ShowOnce().Row(row =>
                             {
-                                col.Item().AlignCenter().Text("Discoteca Imperio").Bold().FontSize(12);
-                                col.Item().AlignCenter().Text("Dirección: Cll 49 #28-47").FontSize(10);                           
-                            });
+                                var rutaImagen = Path.Combine(_webHostEnvironment.WebRootPath, "img/logo.png");
+                                byte[] imagenData = System.IO.File.ReadAllBytes(rutaImagen);
 
-                            row.RelativeItem()
-                            .Column(col =>
-                            {
+                                // Agregar el logo al encabezado
+                                row.ConstantItem(95).Background(Colors.White).Image(imagenData);
 
-                                col.Item().AlignCenter().Text("Reporte Compras").FontSize(12);
-                                col.Item().AlignCenter().Text("Celular: 300 4395676").FontSize(10);
-                            });
 
-                            row.RelativeItem()
-                            .Column(col =>
-                            {
-                                col.Item().AlignCenter().Text(DateTime.Now.ToString("dd/MM/yyyy")).FontSize(10);
-                                col.Item().AlignCenter().Text(DateTime.Now.ToString("HH:mm:ss")).FontSize(10);
-                            });
-                        });
-                        
-
-                        page.Content().PaddingVertical(10).Column(col1 =>
-                        {
-                            col1.Item().AlignCenter().Text("Compras").Bold().FontSize(16);
-
-                            col1.Item().PaddingVertical(15).Table(tabla =>
-                            {
-                                tabla.ColumnsDefinition(columns =>
+                                row.RelativeItem()
+                                .Column(col =>
                                 {
-                                    columns.RelativeColumn();
-                                    columns.RelativeColumn();
-                                   
+                                    col.Item().AlignCenter().Text("Discoteca Imperio").Bold().FontSize(12);
+                                    col.Item().AlignCenter().Text("Dirección: Cll 49 #28-47").FontSize(10);
                                 });
 
-                                tabla.Header(header =>
+                                row.RelativeItem()
+                                .Column(col =>
                                 {
-                                    header.Cell().Background("#ae9243").BorderLeft(0.5f).BorderColor("#ae9243").
-                                    Padding(2).AlignCenter().Text("Fecha").Bold().FontColor("#ffffff");
-                                    header.Cell().Background("#ae9243").BorderLeft(0.5f).BorderColor("#ae9243").
-                                    Padding(2).AlignCenter().Text("Total").Bold().FontColor("#ffffff");
-                                    
+
+                                    col.Item().AlignCenter().Text("Reporte Compras").FontSize(12);
+                                    col.Item().AlignCenter().Text("Celular: 300 4395676").FontSize(10);
                                 });
 
-                                foreach (var compra in compras)
+                                row.RelativeItem()
+                                .Column(col =>
                                 {
-                                    tabla.Cell().BorderLeft(0.5f).BorderColor("#b5b3b3")
-                                         .BorderBottom(0.5f).BorderColor("#b5b3b3")
-                                         .Padding(2).AlignCenter().Text(compra.FechaCompra).FontSize(10);
+                                    col.Item().AlignCenter().Text(DateTime.Now.ToString("dd/MM/yyyy")).FontSize(10);
+                                    col.Item().AlignCenter().Text(DateTime.Now.ToString("HH:mm:ss")).FontSize(10);
+                                });
+                            });
 
-                                    tabla.Cell().BorderRight(0.5f).BorderColor("#b5b3b3")
-                                         .BorderBottom(0.5f).BorderColor("#b5b3b3")
-                                         .Padding(2).AlignCenter().Text($"${ compra.TotalCompra}").FontSize(10);
 
-                                }
+                            page.Content().PaddingVertical(10).Column(col1 =>
+                            {
+                                col1.Item().AlignCenter().Text("Compras").Bold().FontSize(16);
+
+                                col1.Item().PaddingVertical(15).Table(tabla =>
+                                {
+                                    tabla.ColumnsDefinition(columns =>
+                                    {
+                                        columns.RelativeColumn();
+                                        columns.RelativeColumn();
+
+                                    });
+
+                                    tabla.Header(header =>
+                                    {
+                                        header.Cell().Background("#ae9243").BorderLeft(0.5f).BorderColor("#ae9243").
+                                        Padding(2).AlignCenter().Text("Fecha").Bold().FontColor("#ffffff");
+                                        header.Cell().Background("#ae9243").BorderLeft(0.5f).BorderColor("#ae9243").
+                                        Padding(2).AlignCenter().Text("Total").Bold().FontColor("#ffffff");
+
+                                    });
+
+                                    foreach (var compra in compras)
+                                    {
+                                        tabla.Cell().BorderLeft(0.5f).BorderColor("#b5b3b3")
+                                             .BorderBottom(0.5f).BorderColor("#b5b3b3")
+                                             .Padding(2).AlignCenter().Text(compra.FechaCompra).FontSize(10);
+
+                                        tabla.Cell().BorderRight(0.5f).BorderColor("#b5b3b3")
+                                             .BorderBottom(0.5f).BorderColor("#b5b3b3")
+                                             .Padding(2).AlignCenter().Text($"${compra.TotalCompra}").FontSize(10);
+
+                                    }
+                                });
+                            });
+
+                            page.Footer().Height(50)
+                            .AlignCenter()
+                            .Text(txt =>
+                            {
+                                txt.Span("Página ").FontSize(10);
+                                txt.CurrentPageNumber().FontSize(10);
+                                txt.Span(" de ").FontSize(10);
+                                txt.TotalPages().FontSize(10);
                             });
                         });
+                    })
+                  .GeneratePdf();
 
-                        page.Footer().Height(50)
-                        .AlignCenter()
-                        .Text(txt =>
-                        {
-                            txt.Span("Página ").FontSize(10);
-                            txt.CurrentPageNumber().FontSize(10);
-                            txt.Span(" de ").FontSize(10);
-                            txt.TotalPages().FontSize(10);
-                        });
-                    });
-                })
-                   .GeneratePdf();
+                    Stream stream = new MemoryStream(pdf);
+                    return File(stream, "aplication/pdf", "Compras.pdf");
+                }
+                catch (Exception e)
+                {
 
-                Stream stream = new MemoryStream(pdf);
-                return File(stream, "aplication/pdf", "Compras.pdf");
+                    Console.WriteLine("Error al descargar pdf");
+                    Console.WriteLine(e.Message); // Imprime el mensaje de la excepción
+                    Console.WriteLine(e.StackTrace); // Imprime la pila de llamadas de la excepción
+                    return BadRequest("Error al descargar pdf");
+                }
             }
 
 
