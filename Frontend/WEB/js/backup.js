@@ -1,5 +1,5 @@
 function downloadBackup() {
-    var url = 'https://localhost:7084/api/Backup/backup/sql'; 
+    // var url = 'https://localhost:7084/api/Backup/backup/sql'; 
 
     // aqui se realiza la solicitud GET al servidor para descargar el archivo SQL
     fetch(url)
