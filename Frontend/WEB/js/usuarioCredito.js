@@ -557,7 +557,7 @@ function EditarUsuarioCredito(usuariocredito) {
                         dataTable.row.add([
                             (id+1),
                             abonocredito.fechaAbono,
-                            '$ '+abonocredito.precioAbono.toLocaleString('es-CO')
+                            '$'+abonocredito.precioAbono.toLocaleString('es-CO')
                         ]).draw();
                     });
                 } else {
@@ -636,7 +636,7 @@ function EditarUsuarioCredito(usuariocredito) {
     }
     function mostrarTotalCreditoEnFormulario(totalCredito) {
         // Muestra el totalCrédito en el formulario
-        $('#totalCreditoUsuario').text('$'+totalCredito);
+        $('#totalCreditoUsuario').text('$'+totalCredito.toLocaleString('es-CO'));
     }
 
     var totalAbonar
@@ -872,9 +872,9 @@ function callApiBuscarVentaLogica(buscarVenta,token){
                 $.each(data, function (id, detalleVenta) {
                     sumaSubtotal += detalleVenta.subTotalAPagar;
                     $('#tablaDetalleVenta').append('<tr><td>' + (id + 1) + '</td><td>' + detalleVenta.nombreProducto + '</td><td>' + detalleVenta.cantidadProducto +
-                        '</td><td>' + detalleVenta.subTotalAPagar + '$' + '</td></tr>');
+                        '</td><td>' +'$'+ detalleVenta.subTotalAPagar.toLocaleString('es-CO')+ '</td></tr>');
                 });
-                $('#tablaDetalleVenta').append('<tr><td colspan="3" class="text-center">TOTAL DE LA VENTA:</td><td>' + sumaSubtotal + '$</td></tr>');
+                $('#tablaDetalleVenta').append('<tr><td colspan="3" class="text-center">TOTAL DE LA VENTA:</td><td>' +'$'+ sumaSubtotal.toLocaleString('es-CO')+'</td></tr>');
                 totalVenta = sumaSubtotal;
             } else {
                 Swal.fire({
