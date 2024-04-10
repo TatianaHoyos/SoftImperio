@@ -307,7 +307,7 @@ spring:
             - RewritePath=/edge-service/v1/service/venta/consultar, /api/Ventas
 
         - id: services-ventas-pdf
-          uri: ${HOST_API_VENTA:https://localhost:7084}
+          uri: ${HOST_API_JAVA:http://localhost:8080}
           predicates:
             - Path=/edge-service/v1/service/venta/consultar/pdf
           filters:
@@ -315,7 +315,7 @@ spring:
               args:
                 modulo: Venta
                 accion: Consultar
-            - RewritePath=/edge-service/v1/service/venta/consultar/pdf, /api/Ventas/GenerarPDF
+            - RewritePath=/edge-service/v1/service/venta/consultar/pdf, /api/ventas/generar/pdf
 
         - id: services-venta-mesa-crear
           uri: ${HOST_API_VENTA:https://localhost:7084}
@@ -375,7 +375,7 @@ spring:
             - RewritePath=/edge-service/v1/service/compras/consultar, /api/Compra
 
         - id: services-compras-consultar
-          uri: ${HOST_API_VENTA:https://localhost:7084}
+          uri: ${HOST_API_JAVA:http://localhost:8080}
           predicates:
             - Path=/edge-service/v1/service/compras/consultar/pdf
             - Header=target, pdf
@@ -384,7 +384,7 @@ spring:
               args:
                 modulo: Compra
                 accion: Consultar
-            - RewritePath=/edge-service/v1/service/compras/consultar/pdf, /api/Compra/GenerarPDF
+            - RewritePath=/edge-service/v1/service/compras/consultar/pdf, /api/compras/generar/pdf
 
 
         - id: services-compras-consultar
