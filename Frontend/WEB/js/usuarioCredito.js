@@ -77,7 +77,7 @@ function onExitousuariocredito(data) {
                 usuariocredito.nombre,
                 usuariocredito.documento,
                 usuariocredito.telefono,
-                '$'+usuariocredito.totalCredito,
+                '$'+usuariocredito.totalCredito.toLocaleString('es-CO'),
                 boton0+' '+boton1+' '+boton2,
                 boton3+' '+boton4
             ]).draw();

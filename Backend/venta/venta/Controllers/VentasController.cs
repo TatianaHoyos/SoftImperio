@@ -16,7 +16,7 @@ using venta.Repository;
 using venta.SignalR;
 using Microsoft.AspNetCore.Cors;
 using QuestPDF.Fluent;
-using QuestPDF.Helpers;
+using QuestPDF.Helpers;                  
 
 namespace venta.Controllers
 {
