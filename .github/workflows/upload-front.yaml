@@ -31,7 +31,7 @@ jobs:
         tokenSuffix: '}'
         files: '["Frontend/WEB/js/configAmbiente.js"]'
       env:
-        DOMAIN-EC2: http:// ec2-52-91-20-252.compute-1.amazonaws.com
+        DOMAIN-EC2: http://ec2-52-91-20-252.compute-1.amazonaws.com
         DOMAIN-S3: https://imperiofotos.s3.us-east-1.amazonaws.com
 
     - name: 📂 Set working directory
