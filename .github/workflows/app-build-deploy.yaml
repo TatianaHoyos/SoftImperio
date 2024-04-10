@@ -38,17 +38,37 @@ jobs:
         run: flutter pub get
         # ^ If you want to use a specific version of flutter
       
-      # Verifies if the dart code is formatted well
-      #- name: Verify formatting
-      #  run: dart format --output=none --set-exit-if-changed .
-        # --set-exit-if-changed stops execution if the any code is not well formatted
-        # --output=none prints files which needs to be formatted
-      
-      # Checks for Symantic errors. Can be configured using analysis_options.yaml
-      #- name: Analyze project source
-      #  run: flutter analyze --fatal-warnings
-        # optionally use --fatal-warnings to stop execution if any warnings are found
-
       # Runs unit test
       - name: Run tests
         run: flutter test
+
+  app-deploy:
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./Frontend/Mobile/login
+    needs:
+      - flutter_job
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'corretto'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          # flutter-version: '3.16.8'
+      
+      # Fetches proj dependencies from pub
+      - name: Install dependencies
+        run: flutter pub get
+        # ^ If you want to use a specific version of flutter
+
+      - name: Build android apk
+        run: flutter build apk --release --dart-define-from-file=env/local.json
