@@ -73,7 +73,7 @@ function crearProducto(token) {
 function onExitoCrearProducto(data) {
     $("#formCrearProductos").modal("hide");
     Swal.fire({
-        title: 'Exito',
+        title: 'Éxito',
         text: data.message,
         type: 'success',
         icon:"success",
@@ -197,18 +197,16 @@ function onErrorProductos(error) {
         confirmButtonColor: ' #d5c429 ',
         confirmButtonText: 'Confirmar',
     }).then((result) => {
-       
     });
 }
 
 function EliminarProducto(Producto) {
     Swal.fire({
         title: '¿Estás seguro?',
-        text: 'Esta seguro de eliminar el producto ' + Producto.nombreProducto,
+        text: '¿Está seguro de eliminar el producto ' + Producto.nombreProducto,
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
+        confirmButtonColor: '#d5c429',
         confirmButtonText: 'Eliminar',
         cancelButtonText: 'Cancelar'
     }).then((result) => {
