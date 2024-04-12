@@ -289,7 +289,7 @@ function iniciarDataTables(data) {
         var boton2 = '<button onclick="deleteCompra( ' + proveedor.idCompra + ')" class="btn btn-eliminar" > <i class="fa-solid fa-trash-can"></i></button>';
          // Agrega la fila a la DataTable
         dataTable.row.add([
-          proveedor.idCompra,
+         // proveedor.idCompra,
           proveedor.fechaCompra.slice(0,-9),
           '$ '+proveedor.totalCompra.toLocaleString("es-CO"),
           boton1 + espacio + boton2

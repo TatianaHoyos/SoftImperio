@@ -32,10 +32,10 @@
 
                         <div class="form-row justify-content-center">
                             <div class="form-group col-md-6">
-                                <label for="nombre" class="text-white">Ingrese el nombre</label>
+                                <label for="nombre" class="text">Nombre</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" style="background-color: #e5c850"><i
+                                        <span class="input-group-text"><i
                                                 class="fas fa-user"></i></span>
                                     </div>
                                     <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre"
@@ -46,10 +46,10 @@
 
                         <div class="form-row justify-content-center">
                             <div class="form-group col-md-6">
-                                <label for="documento" class="text-white">Ingrese el documento</label>
+                                <label for="documento" class="text">Documento</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" style="background-color: #e5c850"><i
+                                        <span class="input-group-text"><i
                                                 class="far fa-id-card"></i></span>
                                     </div>
                                     <input type="text" class="form-control" id="documento" name="documento"
@@ -60,10 +60,10 @@
 
                         <div class="form-row justify-content-center">
                             <div class="form-group col-md-6">
-                                <label for="telefono" class="text-white">Ingrese un teléfono</label>
+                                <label for="telefono" class="text">Teléfono</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" style="background-color: #e5c850"><i
+                                        <span class="input-group-text"><i
                                                 class="fas fa-phone"></i></span>
                                     </div>
                                     <input type="tel" class="form-control" id="telefono" name="telefono"
@@ -88,11 +88,11 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div style="background-color: rgba(0, 0, 0, 0.869);">
-                    <h3 class="mt-3  text-white  text-center">DETALLES DE ABONOS</h4>
+                    <h3 class="mt-3  text-white  text-center">Detalle de abonos</h4>
                     <!-- <button type="button" class="btn btn-primary col-md-2 form-control btn mt-1 m-2"onclick="mostrarFormularioAbonar()"><strong>Abonar</strong> </button> -->
                     <button type="button" class="btn btn-primary col-md-2 form-control btn mt-1 m-2" onclick="mostrarFormularioAbonar(idUsuarioCreditoA)" data-toggle="modal"data-target=""><strong>Abonar</strong></button>
 
-                    <table id="tablaDetalleAbono" class="table table-dark table-striped mb-0 w-100">
+                    <table id="tablaDetalleAbono" class="table w-100">
                         <thead class="text-center">
                             <tr>
                             <th>#</th>
@@ -116,7 +116,7 @@
                         <input type="hidden" id="idUsuarioCredito">
                         <h4 id="tituloFormularioAbonarCreditos" class="mt-3 text-white text-center"></h4>
                         <div class="form-row justify-content-center">
-                            <h3 class="mt-3 text-white text-center">ABONAR</h4>
+                            <h3 class="mt-3 text-white text-center">Abonar</h4>
                         </div>
                         <div class="form-row justify-content-center">
                             <div class="form-group col-md-6">
@@ -127,15 +127,15 @@
                             <div class="form-group col-md-6">
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" style="background-color: #e5c850"><i class="fas fa-dollar-sign"></i></span>
+                                        <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
                                     </div>
                                     <input type="text" class="form-control" id="abonar" name="abonar" placeholder="Ingrese el monto a abonar" onkeypress="return validarNumeroUC(event)">
                                 </div>
                             </div>
                         </div>
                         <div class="form-group text-center mt-3">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                            <button type="button" class="btn btn-success" onclick="crearAbono()">Abonar</button>
+                            <button type="button" class="btn btn" data-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn" onclick="crearAbono()">Abonar</button>
                         </div>
                     </form>
                 </div>
@@ -148,8 +148,8 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div style="background-color: rgba(0, 0, 0, 0.869);">
-                    <h3 class="mt-3  text-white  text-center">CRÉDITOS ASOCIADOS</h4>
-                    <table id="tablaDetalleCredito" class="table table-dark table-striped mb-0 w-100">
+                    <h3 class="mt-3  text-white  text-center">Créditos asociados</h4>
+                    <table id="tablaDetalleCredito" class="table w-100">
                         <thead class="text-center">
                             <tr>
                             <th># Venta</th>
@@ -174,18 +174,18 @@
             <div style="background-color: rgba(0, 0, 0, 0.869);">
                 <form id="formAsociarCredito">
                     <h4 id="tituloasociarCreditos" class="mt-3 text-white text-center"></h4>
-                    <h3 class="modal-title" style="text-align: center; color: white;">ASOCIAR PEDIDO</h3>
+                    <h3 class="modal-title" style="text-align: center; color: white;">Asociar pedido</h3>
                     <div class="form-row justify-content-center">
                         <div class="form-group col-md-4">
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" style="background-color: #e5c850"><i class="fas fa-search"></i></span>
+                                        <span class="input-group-text"><i class="fas fa-search"></i></span>
                                     </div>
                                     <input type="" class="form-control" id="buscarVenta" name="buscarVenta" placeholder="Buscar" onkeypress="return validarNumeroUC(event)">
                                 </div>
                         </div>
                         <div class="form-group col-md-4">
-                            <button type="button" class="btn btn-success" onclick="buscarVentasLogica()">Buscar</button>
+                            <button type="button" class="btn btn" onclick="buscarVentasLogica()">Buscar</button>
                         </div>
                     </div>
                     <div class="contenido-principal">
@@ -207,26 +207,14 @@
                     </div>
 
                     <div class="form-group text-center mt-3">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        <button type="button" class="btn btn-success" onclick="CrearCredito()">Crear Crédito</button>
+                        <button type="button" class="btn btn" data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn" onclick="CrearCredito()">Crear Crédito</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   <h3 class="mt-3  text-white  text-center">Nuestros Usuarios Créditos</h4>

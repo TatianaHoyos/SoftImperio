@@ -77,7 +77,7 @@ function onExitousuariocredito(data) {
                 usuariocredito.nombre,
                 usuariocredito.documento,
                 usuariocredito.telefono,
-                '$'+usuariocredito.totalCredito,
+                '$ '+usuariocredito.totalCredito.toLocaleString('es-CO'),
                 boton0+' '+boton1+' '+boton2,
                 boton3+' '+boton4
             ]).draw();
@@ -146,7 +146,7 @@ function crearUsuarioCredito() {
         return false;
     }
 
-    if (validarCampoVacio(telefono.length, 'Por favor, introduzca un número de teléfono.')) {
+    if (validarCampoVacio(telefono.length, 'Por favor introduzca un número de teléfono.')) {
         return false;
     }
 
@@ -352,8 +352,7 @@ function EditarUsuarioCredito(usuariocredito) {
             text: '¿Estás seguro de eliminar el usuario crédito ' + usuariocredito.nombre + '?',
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
+            confirmButtonColor: '#d5c429',
             confirmButtonText: 'Eliminar',
             cancelButtonText: 'Cancelar'
         }).then((result) => {
@@ -460,7 +459,7 @@ function EditarUsuarioCredito(usuariocredito) {
                         // Agrega la fila a la DataTable
                         dataTable.row.add([
                             credito.idVenta,
-                            '$'+credito.precioCredito,
+                            '$ '+credito.precioCredito.toLocaleString('es-CO'),
                             credito.fecha,
                         ]).draw();
                     });
@@ -470,8 +469,7 @@ function EditarUsuarioCredito(usuariocredito) {
                         text: 'El usuario no tiene créditos asociados.',
                         icon: 'success',
                         showCancelButton: false,
-                        confirmButtonColor: '#d33',
-                        cancelButtonColor: '#3085d6',
+                        confirmButtonColor: '#d5c429',
                         confirmButtonText: 'Aceptar'
                     }).then((result) => {
                     });
@@ -483,8 +481,7 @@ function EditarUsuarioCredito(usuariocredito) {
                 text: error.message,
                 icon: 'error',
                 showCancelButton: false,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
+                confirmButtonColor: '#d5c429',
                 confirmButtonText: 'Aceptar'
             }).then((result) => {
             });
@@ -560,7 +557,7 @@ function EditarUsuarioCredito(usuariocredito) {
                         dataTable.row.add([
                             (id+1),
                             abonocredito.fechaAbono,
-                            '$'+abonocredito.precioAbono
+                            '$'+abonocredito.precioAbono.toLocaleString('es-CO')
                         ]).draw();
                     });
                 } else {
@@ -584,8 +581,7 @@ function EditarUsuarioCredito(usuariocredito) {
                     text: error.message,
                     icon: 'error',
                     showCancelButton: false,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
+                    confirmButtonColor: '#d5c429',
                     confirmButtonText: 'Aceptar'
                 }).then((result) => {
                 });
@@ -607,7 +603,7 @@ function EditarUsuarioCredito(usuariocredito) {
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'El total crédito del usuario crédito está en cero, por lo que no puede abonar.',
+                text: 'El total crédito del usuario crédito está en $0.',
                 showConfirmButton: false,
                 timer: 2700
             });
@@ -640,7 +636,7 @@ function EditarUsuarioCredito(usuariocredito) {
     }
     function mostrarTotalCreditoEnFormulario(totalCredito) {
         // Muestra el totalCrédito en el formulario
-        $('#totalCreditoUsuario').text('$'+totalCredito);
+        $('#totalCreditoUsuario').text('$'+totalCredito.toLocaleString('es-CO'));
     }
 
     var totalAbonar
@@ -831,14 +827,6 @@ function EditarUsuarioCredito(usuariocredito) {
     }
 
 
-
-
-
-
-
-
-
-
 var totalVenta;
 var idUsuarioCredito;
 
@@ -884,9 +872,9 @@ function callApiBuscarVentaLogica(buscarVenta,token){
                 $.each(data, function (id, detalleVenta) {
                     sumaSubtotal += detalleVenta.subTotalAPagar;
                     $('#tablaDetalleVenta').append('<tr><td>' + (id + 1) + '</td><td>' + detalleVenta.nombreProducto + '</td><td>' + detalleVenta.cantidadProducto +
-                        '</td><td>' + detalleVenta.subTotalAPagar + '$' + '</td></tr>');
+                        '</td><td>' +'$'+ detalleVenta.subTotalAPagar.toLocaleString('es-CO')+ '</td></tr>');
                 });
-                $('#tablaDetalleVenta').append('<tr><td colspan="3" class="text-center">TOTAL DE LA VENTA:</td><td>' + sumaSubtotal + '$</td></tr>');
+                $('#tablaDetalleVenta').append('<tr><td colspan="3" class="text-center">TOTAL DE LA VENTA:</td><td>' +'$'+ sumaSubtotal.toLocaleString('es-CO')+'</td></tr>');
                 totalVenta = sumaSubtotal;
             } else {
                 Swal.fire({
@@ -894,8 +882,7 @@ function callApiBuscarVentaLogica(buscarVenta,token){
                     text: 'El idVenta suministrado no se encuentra.',
                     icon: 'success',
                     showCancelButton: false,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
+                    confirmButtonColor: '#d5c429',
                     confirmButtonText: 'ok',
                     timer: 1700,
                 }).then((result) => {
@@ -908,8 +895,7 @@ function callApiBuscarVentaLogica(buscarVenta,token){
                 text: 'error',
                 icon: 'error',
                 showCancelButton: false,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
+                confirmButtonColor: '#d5c429',
                 confirmButtonText: 'Aceptar',
                 timer: 1700,
             }).then((result) => {
@@ -1098,7 +1084,7 @@ function actualizarUsuarioCreditoA(token) {
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'Error al obtener el UsuarioCredito.',
+                text: 'Error al obtener el usuario crédito.',
                 showConfirmButton: false,
                 timer: 2700
             });

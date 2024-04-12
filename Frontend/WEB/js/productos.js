@@ -166,7 +166,8 @@ function onExitoProductos(data) {
 
         var boton1 = "<button onclick='EliminarProducto(" + JSON.stringify(productos) + ")' class='btn btn-eliminar' data-id='1'><i class='fas fa-trash'></i></button>";
         var boton2 = "<button onclick='EditarProducto(" + JSON.stringify(productos) + ")' class='btn btn-editar' data-toggle='modal' data-target='#formCrearProductos'><i class='fas fa-edit'></i></button>";
-
+       
+        var total = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(productos.precioProducto);
         // Agrega la fila a la DataTable
         dataTable.row.add([
            productos.nombreCategoria,
@@ -174,7 +175,7 @@ function onExitoProductos(data) {
             productos.referenciaProducto,
             productos.existencia.stock,
             productos.existencia.cantidad,
-            productos.precioProducto,
+            total,
             boton1 +
             boton2
         ]).draw();

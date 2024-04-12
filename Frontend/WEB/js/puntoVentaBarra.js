@@ -262,7 +262,8 @@ function existeIdEnTabla(id) {
 function mostrarProductosTabla(nombre, precio, idProducto) {
     var botonEliminar = ' <th><button class="btn btn-danger"  onclick="eliminarRegistroPedido(this)"><i class="fas fa-trash-alt"></i></button></th>';
     var nombreProducto = ' <th>' + nombre + '</th>';
-    var precioProducto = ' <th class="precio">' + precio + '</th>';
+    const totalP = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(precio);
+    var precioProducto = ' <th class="precio">' + totalP + '</th>';
     var cantidadBoton = '<th><div class="quantity">'
         + '<div class="qty">'
         + ' <span class="minus bg-dark">-</span>'
@@ -271,7 +272,7 @@ function mostrarProductosTabla(nombre, precio, idProducto) {
         + '</div>' +
         '</div></th>';
 
-    var totalProductos = ' <th class="total">' + precio + '</th>';
+    var totalProductos = ' <th class="total">' + totalP + '</th>';
     $('#tabla').append('<tr id="tr-' + idProducto + '" >' + nombreProducto + precioProducto + cantidadBoton + totalProductos + botonEliminar + '</tr>');
 }
 
@@ -285,11 +286,14 @@ function contadorCantidad() {
         var precio = $(this).closest('tr').find('.precio');
         var total = $(this).closest('tr').find('.total');
 
-
+        const precioN =  parseInt(precio.text().replace(/[^0-9.-]+/g, '').replace('.', ''));
+       
         input.val(parseInt(input.val()) + 1);
         var cantidad = parseInt(input.val());
 
-        total.text(parseInt(precio.text()) * cantidad);
+        const totalFormato = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(parseInt(precioN) * cantidad);
+
+        total.text(totalFormato);
 
   //agregar valor de primer registro
   // Obtener el texto actual del elemento #totalVenta
@@ -299,7 +303,7 @@ function contadorCantidad() {
 const venta =  parseInt(totalVentaTexto.replace(/[^0-9.-]+/g, '').replace('.', ''));
 
         // var venta=  parseInt($("#totalVenta").text());
-        var totalV = venta+ parseInt( precio.text());
+        var totalV = venta+ parseInt( precioN);
         const totall = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(totalV);
 
             $("#totalVenta").text(totall);
@@ -312,13 +316,18 @@ const venta =  parseInt(totalVentaTexto.replace(/[^0-9.-]+/g, '').replace('.', '
         var precio = $(this).closest('tr').find('.precio');
         var total = $(this).closest('tr').find('.total');
 
+        const precioN =  parseInt(precio.text().replace(/[^0-9.-]+/g, '').replace('.', ''));
+        const totalN =  parseInt(total.text().replace(/[^0-9.-]+/g, '').replace('.', ''));
+
         input.val(parseInt(input.val()) - 1);
         var cantidad = parseInt(input.val());
         if (input.val() <= 0) {
             input.val(1);
         }
         if (cantidad > 0) {
-            total.text(parseInt(total.text()) - parseInt(precio.text()));
+
+            const totalF = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(parseInt(totalN) - parseInt(precioN));
+            total.text(totalF);
              //agregar valor de primer registro
              const totalVentaTexto = $("#totalVenta").text();
 
@@ -326,7 +335,7 @@ const venta =  parseInt(totalVentaTexto.replace(/[^0-9.-]+/g, '').replace('.', '
              const venta = parseInt(totalVentaTexto.replace(/[^0-9.-]+/g, '').replace('.', ''));
 
              
-        var totalV =  venta - parseInt( precio.text());
+        var totalV =  venta - parseInt( precioN);
         const totall = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(totalV);
 
         $("#totalVenta").text(totall);
@@ -368,9 +377,10 @@ function eliminarRegistroPedido(button) {
       const totalVentaTexto = $("#totalVenta").text();
       // Eliminar el formato de moneda y convertirlo a un número
       const venta = parseInt(totalVentaTexto.replace(/[^0-9.-]+/g, '').replace('.', ''));
+      const totalN = parseInt( total.text().replace(/[^0-9.-]+/g, '').replace('.', ''));
 
       
- var totalV = venta - parseInt( total.text());
+ var totalV = venta - parseInt(totalN);
  const totall = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(totalV);
 
       $("#totalVenta").text(totall);

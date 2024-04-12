@@ -1,6 +1,11 @@
+<<<<<<< HEAD
 function descargarCopiaSeguridad() {
     handleAjaxRequest(callApiDescargarCopiaSeguridad);
 }
+=======
+function downloadBackup() {
+    // var url = 'https://localhost:7084/api/Backup/backup/sql'; 
+>>>>>>> origin/main
 
 function callApiDescargarCopiaSeguridad(token) {
     $.ajax({

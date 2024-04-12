@@ -82,7 +82,7 @@ function consultarProveedor(idProveedor, token) {
 function eliminarProveedor(idProveedor, token) {
     Swal.fire({
         title: '¿Estás seguro?',
-        text: 'Esta seguro de eliminar el proveedor '+ idProveedor,
+        text: '¿Está seguro de eliminar el proveedor '+ idProveedor +'?',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#ae9243',
@@ -371,10 +371,10 @@ function crearUsuarioProveedor() {
   if (validarCampoVacio($("#email").val().length, 'Por favor ingrese email')) {
       return false;
   }
-  if (validarCampoVacio($("#telefono").val().length, 'Por favor ingrese telefono')) {
+  if (validarCampoVacio($("#telefono").val().length, 'Por favor ingrese teléfono')) {
       return false;
   }
-  if (validarCampoVacio($("#direccion").val().length, 'Por favor ingrese direccion')) {
+  if (validarCampoVacio($("#direccion").val().length, 'Por favor ingrese dirección')) {
       return false;
   }
 
