@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "858996589438",
+    "project_id": "softimperio-4d835",
+    "storage_bucket": "softimperio-4d835.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:858996589438:android:f17b961dc7972bc87c292f",
+        "android_client_info": {
+          "package_name": "com.imperio.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQoVfhsiC5WDMuTX7ROE-Lq0vgGlarDOY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

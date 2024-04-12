@@ -1,4 +1,4 @@
-package com.example.login
+package com.imperio.app
 
 import io.flutter.embedding.android.FlutterActivity
 
