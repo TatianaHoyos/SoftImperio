@@ -9,7 +9,7 @@ public class copiaSegurity {
             // Parámetros de conexión a la base de datos
             String user = "root";
             String password = "2002";
-            String database = "imperiosoft_funcional";
+            String database = "softimperio";
 
             // Ruta donde se guardará el archivo de copia de seguridad
             String backupPath = "C:\\Users\\USUARIO\\Documents\\copiasegurity\\CopiaSegurida.sql";

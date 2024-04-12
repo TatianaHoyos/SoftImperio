@@ -614,6 +614,17 @@ spring:
                 accion: Consultar
             - RewritePath=/edge-service/v1/service/creditos/consultar, /api/Creditos
 
+        ##BACKUP##
+        - id: services-backup-download
+          uri: ${HOST_API_JAVA:http://localhost:8080}
+          predicates:
+            - Path=/edge-service/v1/backup/download
+          filters:
+            - name: AuthenticationFilter
+              args:
+                modulo: Configuracion
+                accion: Consultar
+            - RewritePath=/edge-service/v1/backup/download, /api/backup/download
 
         ##USUARIOS##
         - id: services-usuarios-consultar
